@@ -11,7 +11,7 @@
 #
 # Happy Coding!
 
-service: domain
+service: domain-stack
 tenant: aengus
 app: ski-analytics
 
@@ -23,14 +23,12 @@ provider:
   name: aws
   runtime: java8
   variableSyntax: "\\${{([ ~:a-zA-Z0-9._\\'\",\\-\\/\\(\\)]+?)}}" # notice the double quotes for yaml to ignore the escape characters!
+  region: ca-central-1
+  stackName: ski-analytics-domain-stack
+
 
 custom:
   domainName: crunch.ski
-  certificateArn: arn:aws:acm:us-east-1:556823078430:certificate/a93d4ef5-7eb4-463f-b261-e47d6583e96e
-  alternateDomainName:
-    - ${{self:custom.domainName}}
-    - "*.${{self:custom.domainName}}"
-
   resourceTags:
               -
                 Key: "project"
@@ -39,13 +37,6 @@ custom:
                 Key: "module"
                 Value: "domain"
 
-  appS3Bucket:
-    Ref: S3BucketForApp
-# you can overwrite defaults here
-  stage: dev
-  region: ca-central-1
-
-function:
 resources:
   Resources:
     HostedZone:
@@ -55,61 +46,20 @@ resources:
           Comment: "HostedZone for ${{self:custom.domainName}}"
         HostedZoneTags: ${{self:custom.resourceTags}}
         Name: ${{self:custom.domainName}}
-    S3BucketForApp:
-      Type: AWS::S3::Bucket
-      Properties:
-        AccessControl: PublicRead
-        WebsiteConfiguration:
-          IndexDocument: index.html
-          ErrorDocument: error.html
-        BucketName: "hosted-site.${{self:custom.domainName}}"
-    CloudFrontOriginAccessIdentity:
-           Type: AWS::CloudFront::CloudFrontOriginAccessIdentity
-           Properties:
-             CloudFrontOriginAccessIdentityConfig:
-               Comment: Origin Access Identity for CloudFront Distro
-    CloudFrontDistroForApp:
-           Type: AWS::CloudFront::Distribution
-           Properties:
-              DistributionConfig:
-                   Comment: CDN for S3-backed webapp ${{self:custom.domainName}}
-                   Aliases:
-                     - ${{self:custom.domainName}}
-                   Enabled: 'true'
-                   DefaultCacheBehavior:
-                      ForwardedValues:
-                        QueryString: 'true'
-                      TargetOriginId: only-origin
-                      ViewerProtocolPolicy: redirect-to-https
-                   DefaultRootObject: index.html
-                   ViewerCertificate:
-                     AcmCertificateArn: ${{self:custom.certificateArn}}
-                     SslSupportMethod: sni-only
-                   Origins:
-                     - CustomOriginConfig:
-                        HTTPPort: '80'
-                        HTTPSPort: '443'
-                        OriginProtocolPolicy: http-only
-                       DomainName:
-                          Fn::Join: ['', [Ref: S3BucketForApp ,Fn::Join: ['', [".s3-website-", Ref: "AWS::Region", ".amazonaws.com"]] ] ]
-                       Id: only-origin
-              Tags: ${{self:custom.resourceTags}}
-    RecordSet:
-          Type: AWS::Route53::RecordSetGroup
-          Properties:
-            HostedZoneId:
-              Ref: HostedZone
-            RecordSets:
-                - Name: ${{self:custom.domainName}}
-                  Type: A
-                  AliasTarget:
-                    HostedZoneId: Z2FDTNDATAQYW2
-                    DNSName:
-                      Fn::GetAtt: [CloudFrontDistroForApp, DomainName]
   Outputs:
-    CloudFrontDistro:
+    HostedZoneRef:
+      Description: 'Hosted Zone for domain'
       Value:
-        Fn::GetAtt: [CloudFrontDistroForApp, DomainName]
+        Ref: HostedZone
+      Export:
+        Name:
+          Fn::Join: ['',[ Ref: AWS::StackName,'-HostedZone']]
+    NameServers:
+      Description: 'Name servers for hosted zone'
+      Value:
+          Fn::Join: [', ', Fn::GetAtt: [HostedZone, NameServers]]
+
+
 # commented as not receiving domain validation email.  create cert manually and do DNS validation as this isn't yet available via cloudformation
 #    Certificate:
 #          Type: AWS::CertificateManager::Certificate

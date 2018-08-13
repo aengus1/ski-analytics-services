@@ -1,21 +1,22 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="e0bdc5bc-f164-460e-911b-964805426644" name="Default" comment="CF template for domain">
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/docs/domain_setup.md" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/domain/.gitignore" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/domain/build.gradle" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/domain/gradle/wrapper/gradle-wrapper.properties" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/domain/gradlew" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/domain/gradlew.bat" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/domain/serverless.yml" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/domain/src/main/java/com/serverless/ApiGatewayResponse.java" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/domain/src/main/java/com/serverless/Handler.java" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/domain/src/main/java/com/serverless/Response.java" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/domain/src/main/resources/log4j.properties" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/gradle.xml" afterPath="$PROJECT_DIR$/.idea/gradle.xml" />
+    <list default="true" id="e0bdc5bc-f164-460e-911b-964805426644" name="Default" comment="SKAPI-2 SKAPI3 - added domain and frontend stacks">
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/domain/package-lock.json" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/frontend/.gitignore" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/frontend/build.gradle" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/frontend/deploy.sh" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/frontend/gradle/wrapper/gradle-wrapper.properties" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/frontend/gradlew" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/frontend/gradlew.bat" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/frontend/serverless.yml" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/frontend/src/main/java/com/serverless/ApiGatewayResponse.java" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/frontend/src/main/java/com/serverless/Handler.java" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/frontend/src/main/java/com/serverless/Response.java" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/frontend/src/main/resources/log4j.properties" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/serverless.yml" afterPath="$PROJECT_DIR$/serverless.yml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/docs/domain_setup.md" afterPath="$PROJECT_DIR$/docs/domain_setup.md" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/domain/serverless.yml" afterPath="$PROJECT_DIR$/domain/serverless.yml" />
     </list>
     <ignored path="$PROJECT_DIR$/.gradle/" />
     <ignored path="$PROJECT_DIR$/build/" />
@@ -25,6 +26,15 @@
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
     <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="DatabaseView">
+    <option name="SHOW_INTERMEDIATE" value="true" />
+    <option name="GROUP_SCHEMA" value="true" />
+    <option name="GROUP_CONTENTS" value="false" />
+    <option name="SORT_POSITIONED" value="false" />
+    <option name="SHOW_TABLE_DETAILS" value="true" />
+    <option name="SHOW_EMPTY_GROUPS" value="false" />
+    <option name="AUTO_SCROLL_FROM_SOURCE" value="false" />
   </component>
   <component name="ExecutionTargetManager" SELECTED_TARGET="default_target" />
   <component name="ExternalProjectsData">
@@ -123,54 +133,30 @@
       </state>
     </system>
   </component>
+  <component name="FavoritesManager">
+    <favorites_list name="ski-analytics-services" />
+  </component>
   <component name="FileEditorManager">
     <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
-      <file leaf-file-name="serverless.yml" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/serverless.yml">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="318">
-              <caret line="33" column="102" lean-forward="true" selection-start-line="33" selection-start-column="19" selection-end-line="33" selection-end-column="102" />
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="cloudformation-template-create-stack.json" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/.serverless/cloudformation-template-create-stack.json">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="0">
-              <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="serverless-state.json" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/.serverless/serverless-state.json">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="-353">
-              <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="cloudformation-template-update-stack.json" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/.serverless/cloudformation-template-update-stack.json">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="-1736">
-              <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
       <file leaf-file-name="domain_setup.md" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/docs/domain_setup.md">
           <provider selected="true" editor-type-id="split-provider[text-editor;markdown-preview-editor]">
             <state split_layout="SPLIT">
-              <first_editor relative-caret-position="350">
-                <caret line="29" column="104" lean-forward="false" selection-start-line="29" selection-start-column="104" selection-end-line="29" selection-end-column="104" />
+              <first_editor relative-caret-position="754">
+                <caret line="58" column="0" lean-forward="false" selection-start-line="58" selection-start-column="0" selection-end-line="58" selection-end-column="0" />
+                <folding />
+              </first_editor>
+              <second_editor />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="setup.md" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/docs/setup.md">
+          <provider selected="true" editor-type-id="split-provider[text-editor;markdown-preview-editor]">
+            <state split_layout="SPLIT">
+              <first_editor relative-caret-position="117">
+                <caret line="9" column="1" lean-forward="false" selection-start-line="9" selection-start-column="1" selection-end-line="9" selection-end-column="1" />
                 <folding />
               </first_editor>
               <second_editor />
@@ -181,29 +167,127 @@
       <file leaf-file-name="serverless.yml" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/domain/serverless.yml">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="335">
-              <caret line="45" column="22" lean-forward="true" selection-start-line="45" selection-start-column="22" selection-end-line="45" selection-end-column="22" />
+            <state relative-caret-position="767">
+              <caret line="59" column="64" lean-forward="false" selection-start-line="59" selection-start-column="64" selection-end-line="59" selection-end-column="64" />
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="serverless.yml" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/frontend/serverless.yml">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="-1673">
+              <caret line="104" column="28" lean-forward="true" selection-start-line="104" selection-start-column="28" selection-end-line="104" selection-end-column="28" />
               <folding />
             </state>
           </provider>
         </entry>
       </file>
       <file leaf-file-name="Response.java" pinned="false" current-in-tab="true">
-        <entry file="file://$PROJECT_DIR$/domain/src/main/java/com/serverless/Response.java">
+        <entry file="file://$PROJECT_DIR$/frontend/src/main/java/com/serverless/Response.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="30">
+            <state relative-caret-position="26">
               <caret line="2" column="17" lean-forward="false" selection-start-line="2" selection-start-column="17" selection-end-line="2" selection-end-column="17" />
               <folding />
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="cloudformation-template-create-stack.json" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/domain/.serverless/cloudformation-template-create-stack.json">
+      <file leaf-file-name="cloudformation-template-update-stack.json" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/frontend/.serverless/cloudformation-template-update-stack.json">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="180">
-              <caret line="12" column="7" lean-forward="true" selection-start-line="12" selection-start-column="7" selection-end-line="12" selection-end-column="7" />
+            <state relative-caret-position="-4333">
+              <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+              <folding>
+                <marker date="1534126783604" expanded="true" signature="0:11937" ph="{&quot;AWSTemplateFormatVersion&quot;: &quot;2010-09-09&quot;...}" />
+                <marker date="1534126783604" expanded="true" signature="145:11114" ph="{...}" />
+                <marker date="1534126783604" expanded="true" signature="1380:2106" ph="{&quot;Type&quot;: &quot;AWS::S3::BucketPolicy&quot;...}" />
+                <marker date="1534126783604" expanded="true" signature="1441:2106" ph="{...}" />
+                <marker date="1534126783604" expanded="true" signature="1534:2106" ph="{&quot;Version&quot;: &quot;2012-10-17&quot;...}" />
+                <marker date="1534126783604" expanded="true" signature="1594:2106" ph="[...]" />
+                <marker date="1534126783604" expanded="true" signature="1608:2106" ph="{&quot;Effect&quot;: &quot;Allow&quot;...}" />
+                <marker date="1534126783604" expanded="true" signature="8009:8329" ph="{&quot;Name&quot;: &quot;staging-app.crunch.ski&quot;...}" />
+                <marker date="1534126783604" expanded="true" signature="8009:8339" ph="[...]" />
+                <marker date="1534126783604" expanded="true" signature="8009:8347" ph="{&quot;Comment&quot;: &quot;Alias record for crunch.ski site and app&quot;...}" />
+                <marker date="1534126783604" expanded="true" signature="8009:8353" ph="{&quot;Type&quot;: &quot;AWS::Route53::RecordSetGroup&quot;...}" />
+                <marker date="1534126783604" expanded="true" signature="8086:8317" ph="{&quot;HostedZoneId&quot;: &quot;Z2FDTNDATAQYW2&quot;...}" />
+                <marker date="1534126783604" expanded="true" signature="8161:8303" ph="{...}" />
+                <marker date="1534126783604" expanded="true" signature="8193:8287" ph="[...]" />
+                <marker date="1534126783604" expanded="true" signature="8385:8658" ph="{&quot;Type&quot;: &quot;AWS::SSM::Parameter&quot;...}" />
+                <marker date="1534126783604" expanded="true" signature="8444:8652" ph="{&quot;Name&quot;: &quot;staging-app-bucket-name&quot;...}" />
+                <marker date="1534126783604" expanded="true" signature="8532:8577" ph="{&quot;Ref&quot;: &quot;S3BucketForApp&quot;...}" />
+                <marker date="1534126783604" expanded="true" signature="8687:8970" ph="{&quot;Type&quot;: &quot;AWS::SSM::Parameter&quot;...}" />
+                <marker date="1534126783604" expanded="true" signature="8746:8964" ph="{&quot;Name&quot;: &quot;staging-cfdistro-name&quot;...}" />
+                <marker date="1534126783604" expanded="true" signature="8832:8885" ph="{&quot;Ref&quot;: &quot;CloudFrontDistroForApp&quot;...}" />
+                <marker date="1534126783604" expanded="true" signature="8996:10909" ph="{&quot;Type&quot;: &quot;AWS::IAM::User&quot;...}" />
+                <marker date="1534126783604" expanded="true" signature="9050:10903" ph="{&quot;Path&quot;: &quot;/staging/deployment/&quot;...}" />
+                <marker date="1534126783604" expanded="true" signature="9157:10895" ph="[...]" />
+                <marker date="1534126783604" expanded="true" signature="9169:10885" ph="{&quot;PolicyName&quot;: &quot;allowPutDeleteAndPublicRead&quot;...}" />
+                <marker date="1534126783604" expanded="true" signature="9258:10873" ph="{&quot;Version&quot;: &quot;2012-10-17&quot;...}" />
+                <marker date="1534126783604" expanded="true" signature="9326:10859" ph="[...]" />
+                <marker date="1534126783604" expanded="true" signature="9344:9939" ph="{&quot;Effect&quot;: &quot;Allow&quot;...}" />
+                <marker date="1534126783604" expanded="true" signature="9411:9506" ph="[...]" />
+                <marker date="1534126783604" expanded="true" signature="9538:9921" ph="{...}" />
+                <marker date="1534126783604" expanded="true" signature="9572:9901" ph="[...]" />
+                <marker date="1534126783604" expanded="true" signature="9622:9879" ph="[...]" />
+                <marker date="1534126783604" expanded="true" signature="9648:9825" ph="{...}" />
+                <marker date="1534126783604" expanded="true" signature="9690:9799" ph="[...]" />
+                <marker date="1534126783604" expanded="true" signature="9957:10632" ph="{&quot;Effect&quot;: &quot;Allow&quot;...}" />
+                <marker date="1534126783604" expanded="true" signature="10024:10084" ph="[...]" />
+                <marker date="1534126783604" expanded="true" signature="10116:10614" ph="{...}" />
+                <marker date="1534126783604" expanded="true" signature="10150:10594" ph="[...]" />
+                <marker date="1534126783604" expanded="true" signature="10200:10572" ph="[...]" />
+                <marker date="1534126783604" expanded="true" signature="10266:10340" ph="{&quot;Ref&quot;: &quot;AWS::Region&quot;...}" />
+                <marker date="1534126783604" expanded="true" signature="10395:10472" ph="{&quot;Ref&quot;: &quot;AWS::AccountId&quot;...}" />
+                <marker date="1534126783604" expanded="true" signature="10650:10843" ph="{&quot;Effect&quot;: &quot;Allow&quot;...}" />
+                <marker date="1534126783604" expanded="true" signature="10717:10790" ph="[...]" />
+                <marker date="1534126783604" expanded="true" signature="10822:10825" ph="{...}" />
+                <marker date="1534126783604" expanded="true" signature="10940:11110" ph="{&quot;Type&quot;: &quot;AWS::IAM::AccessKey&quot;...}" />
+                <marker date="1534126783604" expanded="true" signature="10999:11104" ph="{&quot;Status&quot;: &quot;Active&quot;...}" />
+                <marker date="1534126783604" expanded="true" signature="11049:11096" ph="{&quot;Ref&quot;: &quot;CdDeploymentUser&quot;...}" />
+                <marker date="1534126783604" expanded="true" signature="11129:11935" ph="{...}" />
+                <marker date="1534126783604" expanded="true" signature="11169:11245" ph="{...}" />
+                <marker date="1534126783604" expanded="true" signature="11186:11239" ph="{&quot;Ref&quot;: &quot;ServerlessDeploymentBucket&quot;...}" />
+                <marker date="1534126783604" expanded="true" signature="11267:11315" ph="{&quot;Value&quot;: &quot;site-staging.crunch.ski&quot;...}" />
+                <marker date="1534126783604" expanded="true" signature="11336:11383" ph="{&quot;Value&quot;: &quot;app-staging.crunch.ski&quot;...}" />
+                <marker date="1534126783604" expanded="true" signature="11413:11539" ph="{...}" />
+                <marker date="1534126783604" expanded="true" signature="11430:11533" ph="{...}" />
+                <marker date="1534126783604" expanded="true" signature="11454:11525" ph="[...]" />
+                <marker date="1534126783604" expanded="true" signature="11568:11693" ph="{...}" />
+                <marker date="1534126783604" expanded="true" signature="11585:11687" ph="{...}" />
+                <marker date="1534126783604" expanded="true" signature="11609:11679" ph="[...]" />
+                <marker date="1534126783604" expanded="true" signature="11712:11783" ph="{...}" />
+                <marker date="1534126783604" expanded="true" signature="11729:11777" ph="{&quot;Ref&quot;: &quot;CdDeploymentAccessKey&quot;...}" />
+                <marker date="1534126783604" expanded="true" signature="11802:11931" ph="{...}" />
+                <marker date="1534126783604" expanded="true" signature="11819:11925" ph="{...}" />
+                <marker date="1534126783604" expanded="true" signature="11843:11917" ph="[...]" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="deploy.sh" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/frontend/deploy.sh">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="0">
+              <caret line="0" column="73" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="73" />
               <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="Response.java" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/domain/src/main/java/com/serverless/Response.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="26">
+              <caret line="2" column="17" lean-forward="false" selection-start-line="2" selection-start-column="17" selection-end-line="2" selection-end-column="17" />
+              <folding>
+                <element signature="e#289#290#0" expanded="false" />
+                <element signature="e#315#316#0" expanded="false" />
+                <element signature="e#357#358#0" expanded="false" />
+                <element signature="e#381#382#0" expanded="false" />
+              </folding>
             </state>
           </provider>
         </entry>
@@ -211,16 +295,9 @@
       <file leaf-file-name="serverless-state.json" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/domain/.serverless/serverless-state.json">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="424">
-              <caret line="205" column="20" lean-forward="true" selection-start-line="205" selection-start-column="20" selection-end-line="205" selection-end-column="20" />
-              <folding>
-                <marker date="1533059808025" expanded="true" signature="0:10489" ph="{...}" />
-                <marker date="1533059808025" expanded="true" signature="15:1587" ph="{&quot;service&quot;: &quot;domain&quot;...}" />
-                <marker date="1533059808025" expanded="true" signature="111:1587" ph="{&quot;name&quot;: &quot;aws&quot;...}" />
-                <marker date="1533059808025" expanded="true" signature="390:1587" ph="{&quot;AWSTemplateFormatVersion&quot;: &quot;2010-09-09&quot;...}" />
-                <marker date="1533059808025" expanded="true" signature="553:1587" ph="{...}" />
-                <marker date="1533059808025" expanded="true" signature="10461:10487" ph="{&quot;artifactDirectoryName&quot;: &quot;serverless/domain/dev/1532924570427-2018-07-30T04:22:50.427Z&quot;...}" />
-              </folding>
+            <state relative-caret-position="260">
+              <caret line="20" column="37" lean-forward="false" selection-start-line="20" selection-start-column="37" selection-end-line="20" selection-end-column="37" />
+              <folding />
             </state>
           </provider>
         </entry>
@@ -228,22 +305,11 @@
       <file leaf-file-name="cloudformation-template-update-stack.json" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/domain/.serverless/cloudformation-template-update-stack.json">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="0">
-              <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+            <state relative-caret-position="338">
+              <caret line="26" column="4" lean-forward="false" selection-start-line="26" selection-start-column="4" selection-end-line="26" selection-end-column="4" />
               <folding>
-                <marker date="1533059808021" expanded="true" signature="0:3962" ph="{&quot;AWSTemplateFormatVersion&quot;: &quot;2010-09-09&quot;...}" />
-                <marker date="1533059808021" expanded="true" signature="145:3674" ph="{...}" />
-                <marker date="1533059808021" expanded="true" signature="2870:2885" ph="{&quot;Id&quot;: &quot;only-origin&quot;...}" />
-                <marker date="1533059808021" expanded="true" signature="2870:2897" ph="[...]" />
-                <marker date="1533059808021" expanded="true" signature="2870:2907" ph="{&quot;Comment&quot;: &quot;CDN for S3-backed webapp crunch.ski&quot;...}" />
-                <marker date="1533059808021" expanded="true" signature="2870:3119" ph="{...}" />
-                <marker date="1533059808021" expanded="true" signature="2870:3670" ph="{&quot;Type&quot;: &quot;AWS::CloudFront::Distribution&quot;...}" />
-                <marker date="1533059808021" expanded="true" signature="2925:3111" ph="[...]" />
-                <marker date="1533059808021" expanded="true" signature="2937:3017" ph="{&quot;Key&quot;: &quot;project&quot;...}" />
-                <marker date="1533059808021" expanded="true" signature="3029:3101" ph="{&quot;Key&quot;: &quot;module&quot;...}" />
-                <marker date="1533059808021" expanded="true" signature="3689:3960" ph="{...}" />
-                <marker date="1533059808021" expanded="true" signature="3729:3956" ph="{...}" />
-                <marker date="1533059808021" expanded="true" signature="3746:3799" ph="{&quot;Ref&quot;: &quot;ServerlessDeploymentBucket&quot;...}" />
+                <marker date="1533785571985" expanded="true" signature="145:652" ph="{...}" />
+                <marker date="1533785571985" expanded="true" signature="1139:1147" ph="{...}" />
               </folding>
             </state>
           </provider>
@@ -258,8 +324,21 @@
       <find>hosted</find>
       <find>tags</find>
       <find>cname</find>
-      <find>join</find>
       <find>cloudfront</find>
+      <find>s3bucketforapp</find>
+      <find>appS3Bucket</find>
+      <find>DomainName</find>
+      <find>${{self:custom.appAlias}}</find>
+      <find>CloudFrontDistroForApp</find>
+      <find>region</find>
+      <find>account</find>
+      <find>alias</find>
+      <find>join</find>
+      <find>currentstage</find>
+      <find>fn::join</find>
+      <find>getatt</find>
+      <find>currentsta</find>
+      <find>domainsta</find>
     </findStrings>
   </component>
   <component name="Git.Settings">
@@ -559,8 +638,9 @@
         <option value="$PROJECT_DIR$/serverless.yml" />
         <option value="$PROJECT_DIR$/domain/.serverless/serverless-state.json" />
         <option value="$PROJECT_DIR$/domain/.serverless/cloudformation-template-update-stack.json" />
-        <option value="$PROJECT_DIR$/docs/domain_setup.md" />
         <option value="$PROJECT_DIR$/domain/serverless.yml" />
+        <option value="$PROJECT_DIR$/docs/domain_setup.md" />
+        <option value="$PROJECT_DIR$/frontend/serverless.yml" />
       </list>
     </option>
   </component>
@@ -570,10 +650,13 @@
     <detection-done>true</detection-done>
     <sorting>DEFINITION_ORDER</sorting>
   </component>
+  <component name="NodeModulesDirectoryManager">
+    <handled-path value="$PROJECT_DIR$/domain/node_modules" />
+  </component>
   <component name="ProjectFrameBounds">
-    <option name="x" value="1701" />
-    <option name="y" value="-86" />
-    <option name="width" value="1587" />
+    <option name="x" value="-23" />
+    <option name="y" value="76" />
+    <option name="width" value="1503" />
     <option name="height" value="824" />
   </component>
   <component name="ProjectLevelVcsManager" settingsEditedManually="true" />
@@ -592,6 +675,22 @@
       <foldersAlwaysOnTop value="true" />
     </navigator>
     <panes>
+      <pane id="ProjectPane">
+        <subPane>
+          <PATH>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="ski-analytics-services" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="ski-analytics-services" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+          </PATH>
+        </subPane>
+      </pane>
+      <pane id="PackagesPane" />
+      <pane id="Scratches" />
       <pane id="Scope">
         <subPane subId="Project Files">
           <PATH>
@@ -620,54 +719,10 @@
           </PATH>
         </subPane>
       </pane>
-      <pane id="Scratches" />
-      <pane id="PackagesPane" />
-      <pane id="ProjectPane">
-        <subPane>
-          <PATH>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="ski-analytics-services" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="ski-analytics-services" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-          </PATH>
-          <PATH>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="ski-analytics-services" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="ski-analytics-services" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="domain" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-          </PATH>
-          <PATH>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="ski-analytics-services" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="ski-analytics-services" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="docs" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-          </PATH>
-        </subPane>
-      </pane>
     </panes>
   </component>
   <component name="PropertiesComponent">
-    <property name="settings.editor.selected.configurable" value="preferences.pluginManager" />
+    <property name="settings.editor.selected.configurable" value="preferences.keymap" />
     <property name="WebServerToolWindowFactoryState" value="false" />
     <property name="aspect.path.notification.shown" value="true" />
     <property name="last_opened_file_path" value="$PROJECT_DIR$" />
@@ -1187,21 +1242,38 @@
       <option name="presentableId" value="Default" />
       <updated>1532320747434</updated>
       <workItem from="1532320752425" duration="3362000" />
-      <workItem from="1532325591697" duration="35509000" />
+      <workItem from="1532325591697" duration="79197000" />
+      <workItem from="1534042453362" duration="5709000" />
     </task>
+    <task id="LOCAL-00001" summary="CF template for domain">
+      <created>1533077361072</created>
+      <option name="number" value="00001" />
+      <option name="presentableId" value="LOCAL-00001" />
+      <option name="project" value="LOCAL" />
+      <updated>1533077361072</updated>
+    </task>
+    <option name="localTasksCounter" value="2" />
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="38871000" />
+    <option name="totallyTimeSpent" value="88268000" />
+  </component>
+  <component name="TodoView">
+    <todo-panel id="selected-file">
+      <is-autoscroll-to-source value="true" />
+    </todo-panel>
+    <todo-panel id="all">
+      <are-packages-shown value="true" />
+      <is-autoscroll-to-source value="true" />
+    </todo-panel>
   </component>
   <component name="ToolWindowManager">
-    <frame x="1701" y="-86" width="1587" height="824" extended-state="0" />
-    <editor active="true" />
+    <frame x="-23" y="76" width="1503" height="824" extended-state="0" />
     <layout>
       <window_info id="Palette" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Nl-Palette" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
       <window_info id="FindBugs-IDEA" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
-      <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="7" side_tool="true" content_ui="tabs" />
+      <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.2917847" sideWeight="0.50239563" order="7" side_tool="true" content_ui="tabs" />
       <window_info id="Maven Projects" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Properties" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Capture Tool" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
@@ -1212,16 +1284,16 @@
       <window_info id="UI Designer" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
       <window_info id="Debug" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.4" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
-      <window_info id="Messages" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.3286119" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
+      <window_info id="Messages" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.2917847" sideWeight="0.49760437" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Palette&#9;" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Image Layers" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
       <window_info id="Capture Analysis" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
-      <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.3286119" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
+      <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="CheckStyle" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
-      <window_info id="Terminal" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.3512748" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
-      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.22912621" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
-      <window_info id="Gradle" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.10485437" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
+      <window_info id="Terminal" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.3512748" sideWeight="0.6502396" order="7" side_tool="false" content_ui="tabs" />
+      <window_info id="Project" active="true" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.24572212" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
+      <window_info id="Gradle" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.11088296" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Theme Preview" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Favorites" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="2" side_tool="true" content_ui="tabs" />
       <window_info id="Cvs" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="4" side_tool="false" content_ui="tabs" />
@@ -1241,7 +1313,8 @@
   </component>
   <component name="VcsManagerConfiguration">
     <MESSAGE value="CF template for domain" />
-    <option name="LAST_COMMIT_MESSAGE" value="CF template for domain" />
+    <MESSAGE value="SKAPI-2 SKAPI3 - added domain and frontend stacks" />
+    <option name="LAST_COMMIT_MESSAGE" value="SKAPI-2 SKAPI3 - added domain and frontend stacks" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager />
@@ -1252,7 +1325,15 @@
     <option name="FILTER_TARGETS" value="false" />
   </component>
   <component name="editorHistoryManager">
-    <entry file="file://$PROJECT_DIR$/gradlew.bat">
+    <entry file="file://$PROJECT_DIR$/serverless.yml">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="429">
+          <caret line="33" column="102" lean-forward="false" selection-start-line="33" selection-start-column="19" selection-end-line="33" selection-end-column="102" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/.serverless/serverless-state.json">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="0">
           <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
@@ -1260,11 +1341,95 @@
         </state>
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/docs/domain_setup.md">
+      <provider selected="true" editor-type-id="split-provider[text-editor;markdown-preview-editor]">
+        <state split_layout="SPLIT">
+          <first_editor relative-caret-position="754">
+            <caret line="58" column="0" lean-forward="false" selection-start-line="58" selection-start-column="0" selection-end-line="58" selection-end-column="0" />
+            <folding />
+          </first_editor>
+          <second_editor />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/docs/setup.md">
+      <provider selected="true" editor-type-id="split-provider[text-editor;markdown-preview-editor]">
+        <state split_layout="SPLIT">
+          <first_editor relative-caret-position="117">
+            <caret line="9" column="1" lean-forward="false" selection-start-line="9" selection-start-column="1" selection-end-line="9" selection-end-column="1" />
+            <folding />
+          </first_editor>
+          <second_editor />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/domain/serverless.yml">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="767">
+          <caret line="59" column="64" lean-forward="false" selection-start-line="59" selection-start-column="64" selection-end-line="59" selection-end-column="64" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/frontend/deploy.sh">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="0">
+          <caret line="0" column="73" lean-forward="true" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="73" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/domain/src/main/java/com/serverless/Response.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="26">
+          <caret line="2" column="17" lean-forward="false" selection-start-line="2" selection-start-column="17" selection-end-line="2" selection-end-column="17" />
+          <folding>
+            <element signature="e#289#290#0" expanded="false" />
+            <element signature="e#315#316#0" expanded="false" />
+            <element signature="e#357#358#0" expanded="false" />
+            <element signature="e#381#382#0" expanded="false" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/domain/.serverless/serverless-state.json">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="260">
+          <caret line="20" column="37" lean-forward="false" selection-start-line="20" selection-start-column="37" selection-end-line="20" selection-end-column="37" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/domain/.serverless/cloudformation-template-update-stack.json">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="338">
+          <caret line="26" column="4" lean-forward="false" selection-start-line="26" selection-start-column="4" selection-end-line="26" selection-end-column="4" />
+          <folding>
+            <marker date="1533785571985" expanded="true" signature="145:652" ph="{...}" />
+            <marker date="1533785571985" expanded="true" signature="1139:1147" ph="{...}" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/frontend/serverless.yml">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="1157">
+          <caret line="89" column="18" lean-forward="false" selection-start-line="89" selection-start-column="18" selection-end-line="89" selection-end-column="18" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/gradlew.bat">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="0">
+          <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/gradlew">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="0">
           <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -1276,34 +1441,10 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/docs/setup.md">
-      <provider selected="true" editor-type-id="split-provider[text-editor;markdown-preview-editor]">
-        <state split_layout="SPLIT">
-          <first_editor relative-caret-position="135">
-            <caret line="9" column="1" lean-forward="false" selection-start-line="9" selection-start-column="1" selection-end-line="9" selection-end-column="1" />
-            <folding />
-          </first_editor>
-          <second_editor />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/src/main/java/com/serverless/ApiGatewayResponse.java">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="1485">
           <caret line="117" column="39" lean-forward="false" selection-start-line="117" selection-start-column="27" selection-end-line="117" selection-end-column="39" />
-          <folding>
-            <element signature="imports" expanded="false" />
-            <element signature="e#733#734#0" expanded="false" />
-            <element signature="e#757#758#0" expanded="false" />
-            <element signature="e#785#786#0" expanded="false" />
-            <element signature="e#803#804#0" expanded="false" />
-            <element signature="e#847#848#0" expanded="false" />
-            <element signature="e#868#869#0" expanded="false" />
-            <element signature="e#983#984#0" expanded="false" />
-            <element signature="e#1012#1013#0" expanded="false" />
-            <element signature="e#1048#1049#0" expanded="false" />
-            <element signature="e#1075#1076#0" expanded="false" />
-          </folding>
         </state>
       </provider>
     </entry>
@@ -1311,9 +1452,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="60">
           <caret line="10" column="13" lean-forward="false" selection-start-line="10" selection-start-column="13" selection-end-line="10" selection-end-column="13" />
-          <folding>
-            <element signature="imports" expanded="false" />
-          </folding>
         </state>
       </provider>
     </entry>
@@ -1321,13 +1459,12 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="0">
           <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
-          <folding />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/.serverless/cloudformation-template-update-stack.json">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-1736">
+        <state relative-caret-position="-8">
           <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
           <folding />
         </state>
@@ -1335,95 +1472,186 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/.serverless/cloudformation-template-create-stack.json">
       <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="-8">
+          <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/.serverless/serverless-state.json">
+      <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="0">
           <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
           <folding />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/.serverless/serverless-state.json">
+    <entry file="file://$PROJECT_DIR$/serverless.yml">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-353">
-          <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+        <state relative-caret-position="429">
+          <caret line="33" column="102" lean-forward="false" selection-start-line="33" selection-start-column="19" selection-end-line="33" selection-end-column="102" />
           <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/domain/.serverless/serverless-state.json">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="424">
-          <caret line="205" column="20" lean-forward="true" selection-start-line="205" selection-start-column="20" selection-end-line="205" selection-end-column="20" />
-          <folding>
-            <marker date="1533059808025" expanded="true" signature="0:10489" ph="{...}" />
-            <marker date="1533059808025" expanded="true" signature="15:1587" ph="{&quot;service&quot;: &quot;domain&quot;...}" />
-            <marker date="1533059808025" expanded="true" signature="111:1587" ph="{&quot;name&quot;: &quot;aws&quot;...}" />
-            <marker date="1533059808025" expanded="true" signature="390:1587" ph="{&quot;AWSTemplateFormatVersion&quot;: &quot;2010-09-09&quot;...}" />
-            <marker date="1533059808025" expanded="true" signature="553:1587" ph="{...}" />
-            <marker date="1533059808025" expanded="true" signature="10461:10487" ph="{&quot;artifactDirectoryName&quot;: &quot;serverless/domain/dev/1532924570427-2018-07-30T04:22:50.427Z&quot;...}" />
-          </folding>
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/domain/.serverless/cloudformation-template-create-stack.json">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="180">
-          <caret line="12" column="7" lean-forward="true" selection-start-line="12" selection-start-column="7" selection-end-line="12" selection-end-column="7" />
-          <folding />
+          <caret line="12" column="7" lean-forward="false" selection-start-line="12" selection-start-column="7" selection-end-line="12" selection-end-column="7" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/domain/src/main/java/com/serverless/Response.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="26">
+          <caret line="2" column="17" lean-forward="false" selection-start-line="2" selection-start-column="17" selection-end-line="2" selection-end-column="17" />
+          <folding>
+            <element signature="e#289#290#0" expanded="false" />
+            <element signature="e#315#316#0" expanded="false" />
+            <element signature="e#357#358#0" expanded="false" />
+            <element signature="e#381#382#0" expanded="false" />
+          </folding>
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/domain/.serverless/cloudformation-template-update-stack.json">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="0">
-          <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+        <state relative-caret-position="338">
+          <caret line="26" column="4" lean-forward="false" selection-start-line="26" selection-start-column="4" selection-end-line="26" selection-end-column="4" />
           <folding>
-            <marker date="1533059808021" expanded="true" signature="0:3962" ph="{&quot;AWSTemplateFormatVersion&quot;: &quot;2010-09-09&quot;...}" />
-            <marker date="1533059808021" expanded="true" signature="145:3674" ph="{...}" />
-            <marker date="1533059808021" expanded="true" signature="2870:2885" ph="{&quot;Id&quot;: &quot;only-origin&quot;...}" />
-            <marker date="1533059808021" expanded="true" signature="2870:2897" ph="[...]" />
-            <marker date="1533059808021" expanded="true" signature="2870:2907" ph="{&quot;Comment&quot;: &quot;CDN for S3-backed webapp crunch.ski&quot;...}" />
-            <marker date="1533059808021" expanded="true" signature="2870:3119" ph="{...}" />
-            <marker date="1533059808021" expanded="true" signature="2870:3670" ph="{&quot;Type&quot;: &quot;AWS::CloudFront::Distribution&quot;...}" />
-            <marker date="1533059808021" expanded="true" signature="2925:3111" ph="[...]" />
-            <marker date="1533059808021" expanded="true" signature="2937:3017" ph="{&quot;Key&quot;: &quot;project&quot;...}" />
-            <marker date="1533059808021" expanded="true" signature="3029:3101" ph="{&quot;Key&quot;: &quot;module&quot;...}" />
-            <marker date="1533059808021" expanded="true" signature="3689:3960" ph="{...}" />
-            <marker date="1533059808021" expanded="true" signature="3729:3956" ph="{...}" />
-            <marker date="1533059808021" expanded="true" signature="3746:3799" ph="{&quot;Ref&quot;: &quot;ServerlessDeploymentBucket&quot;...}" />
+            <marker date="1533785571985" expanded="true" signature="145:652" ph="{...}" />
+            <marker date="1533785571985" expanded="true" signature="1139:1147" ph="{...}" />
           </folding>
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/docs/domain_setup.md">
-      <provider selected="true" editor-type-id="split-provider[text-editor;markdown-preview-editor]">
-        <state split_layout="SPLIT">
-          <first_editor relative-caret-position="350">
-            <caret line="29" column="104" lean-forward="false" selection-start-line="29" selection-start-column="104" selection-end-line="29" selection-end-column="104" />
-            <folding />
-          </first_editor>
-          <second_editor />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/serverless.yml">
+    <entry file="file://$PROJECT_DIR$/domain/.serverless/serverless-state.json">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="318">
-          <caret line="33" column="102" lean-forward="true" selection-start-line="33" selection-start-column="19" selection-end-line="33" selection-end-column="102" />
+        <state relative-caret-position="260">
+          <caret line="20" column="37" lean-forward="false" selection-start-line="20" selection-start-column="37" selection-end-line="20" selection-end-column="37" />
           <folding />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/domain/serverless.yml">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="335">
-          <caret line="45" column="22" lean-forward="true" selection-start-line="45" selection-start-column="22" selection-end-line="45" selection-end-column="22" />
+        <state relative-caret-position="767">
+          <caret line="59" column="64" lean-forward="false" selection-start-line="59" selection-start-column="64" selection-end-line="59" selection-end-column="64" />
           <folding />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/domain/src/main/java/com/serverless/Response.java">
+    <entry file="file://$PROJECT_DIR$/docs/domain_setup.md">
+      <provider selected="true" editor-type-id="split-provider[text-editor;markdown-preview-editor]">
+        <state split_layout="SPLIT">
+          <first_editor relative-caret-position="754">
+            <caret line="58" column="0" lean-forward="false" selection-start-line="58" selection-start-column="0" selection-end-line="58" selection-end-column="0" />
+            <folding />
+          </first_editor>
+          <second_editor />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/docs/setup.md">
+      <provider selected="true" editor-type-id="split-provider[text-editor;markdown-preview-editor]">
+        <state split_layout="SPLIT">
+          <first_editor relative-caret-position="117">
+            <caret line="9" column="1" lean-forward="false" selection-start-line="9" selection-start-column="1" selection-end-line="9" selection-end-column="1" />
+            <folding />
+          </first_editor>
+          <second_editor />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/frontend/deploy.sh">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="30">
+        <state relative-caret-position="0">
+          <caret line="0" column="73" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="73" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/frontend/.serverless/cloudformation-template-update-stack.json">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="-4333">
+          <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+          <folding>
+            <marker date="1534126783604" expanded="true" signature="0:11937" ph="{&quot;AWSTemplateFormatVersion&quot;: &quot;2010-09-09&quot;...}" />
+            <marker date="1534126783604" expanded="true" signature="145:11114" ph="{...}" />
+            <marker date="1534126783604" expanded="true" signature="1380:2106" ph="{&quot;Type&quot;: &quot;AWS::S3::BucketPolicy&quot;...}" />
+            <marker date="1534126783604" expanded="true" signature="1441:2106" ph="{...}" />
+            <marker date="1534126783604" expanded="true" signature="1534:2106" ph="{&quot;Version&quot;: &quot;2012-10-17&quot;...}" />
+            <marker date="1534126783604" expanded="true" signature="1594:2106" ph="[...]" />
+            <marker date="1534126783604" expanded="true" signature="1608:2106" ph="{&quot;Effect&quot;: &quot;Allow&quot;...}" />
+            <marker date="1534126783604" expanded="true" signature="8009:8329" ph="{&quot;Name&quot;: &quot;staging-app.crunch.ski&quot;...}" />
+            <marker date="1534126783604" expanded="true" signature="8009:8339" ph="[...]" />
+            <marker date="1534126783604" expanded="true" signature="8009:8347" ph="{&quot;Comment&quot;: &quot;Alias record for crunch.ski site and app&quot;...}" />
+            <marker date="1534126783604" expanded="true" signature="8009:8353" ph="{&quot;Type&quot;: &quot;AWS::Route53::RecordSetGroup&quot;...}" />
+            <marker date="1534126783604" expanded="true" signature="8086:8317" ph="{&quot;HostedZoneId&quot;: &quot;Z2FDTNDATAQYW2&quot;...}" />
+            <marker date="1534126783604" expanded="true" signature="8161:8303" ph="{...}" />
+            <marker date="1534126783604" expanded="true" signature="8193:8287" ph="[...]" />
+            <marker date="1534126783604" expanded="true" signature="8385:8658" ph="{&quot;Type&quot;: &quot;AWS::SSM::Parameter&quot;...}" />
+            <marker date="1534126783604" expanded="true" signature="8444:8652" ph="{&quot;Name&quot;: &quot;staging-app-bucket-name&quot;...}" />
+            <marker date="1534126783604" expanded="true" signature="8532:8577" ph="{&quot;Ref&quot;: &quot;S3BucketForApp&quot;...}" />
+            <marker date="1534126783604" expanded="true" signature="8687:8970" ph="{&quot;Type&quot;: &quot;AWS::SSM::Parameter&quot;...}" />
+            <marker date="1534126783604" expanded="true" signature="8746:8964" ph="{&quot;Name&quot;: &quot;staging-cfdistro-name&quot;...}" />
+            <marker date="1534126783604" expanded="true" signature="8832:8885" ph="{&quot;Ref&quot;: &quot;CloudFrontDistroForApp&quot;...}" />
+            <marker date="1534126783604" expanded="true" signature="8996:10909" ph="{&quot;Type&quot;: &quot;AWS::IAM::User&quot;...}" />
+            <marker date="1534126783604" expanded="true" signature="9050:10903" ph="{&quot;Path&quot;: &quot;/staging/deployment/&quot;...}" />
+            <marker date="1534126783604" expanded="true" signature="9157:10895" ph="[...]" />
+            <marker date="1534126783604" expanded="true" signature="9169:10885" ph="{&quot;PolicyName&quot;: &quot;allowPutDeleteAndPublicRead&quot;...}" />
+            <marker date="1534126783604" expanded="true" signature="9258:10873" ph="{&quot;Version&quot;: &quot;2012-10-17&quot;...}" />
+            <marker date="1534126783604" expanded="true" signature="9326:10859" ph="[...]" />
+            <marker date="1534126783604" expanded="true" signature="9344:9939" ph="{&quot;Effect&quot;: &quot;Allow&quot;...}" />
+            <marker date="1534126783604" expanded="true" signature="9411:9506" ph="[...]" />
+            <marker date="1534126783604" expanded="true" signature="9538:9921" ph="{...}" />
+            <marker date="1534126783604" expanded="true" signature="9572:9901" ph="[...]" />
+            <marker date="1534126783604" expanded="true" signature="9622:9879" ph="[...]" />
+            <marker date="1534126783604" expanded="true" signature="9648:9825" ph="{...}" />
+            <marker date="1534126783604" expanded="true" signature="9690:9799" ph="[...]" />
+            <marker date="1534126783604" expanded="true" signature="9957:10632" ph="{&quot;Effect&quot;: &quot;Allow&quot;...}" />
+            <marker date="1534126783604" expanded="true" signature="10024:10084" ph="[...]" />
+            <marker date="1534126783604" expanded="true" signature="10116:10614" ph="{...}" />
+            <marker date="1534126783604" expanded="true" signature="10150:10594" ph="[...]" />
+            <marker date="1534126783604" expanded="true" signature="10200:10572" ph="[...]" />
+            <marker date="1534126783604" expanded="true" signature="10266:10340" ph="{&quot;Ref&quot;: &quot;AWS::Region&quot;...}" />
+            <marker date="1534126783604" expanded="true" signature="10395:10472" ph="{&quot;Ref&quot;: &quot;AWS::AccountId&quot;...}" />
+            <marker date="1534126783604" expanded="true" signature="10650:10843" ph="{&quot;Effect&quot;: &quot;Allow&quot;...}" />
+            <marker date="1534126783604" expanded="true" signature="10717:10790" ph="[...]" />
+            <marker date="1534126783604" expanded="true" signature="10822:10825" ph="{...}" />
+            <marker date="1534126783604" expanded="true" signature="10940:11110" ph="{&quot;Type&quot;: &quot;AWS::IAM::AccessKey&quot;...}" />
+            <marker date="1534126783604" expanded="true" signature="10999:11104" ph="{&quot;Status&quot;: &quot;Active&quot;...}" />
+            <marker date="1534126783604" expanded="true" signature="11049:11096" ph="{&quot;Ref&quot;: &quot;CdDeploymentUser&quot;...}" />
+            <marker date="1534126783604" expanded="true" signature="11129:11935" ph="{...}" />
+            <marker date="1534126783604" expanded="true" signature="11169:11245" ph="{...}" />
+            <marker date="1534126783604" expanded="true" signature="11186:11239" ph="{&quot;Ref&quot;: &quot;ServerlessDeploymentBucket&quot;...}" />
+            <marker date="1534126783604" expanded="true" signature="11267:11315" ph="{&quot;Value&quot;: &quot;site-staging.crunch.ski&quot;...}" />
+            <marker date="1534126783604" expanded="true" signature="11336:11383" ph="{&quot;Value&quot;: &quot;app-staging.crunch.ski&quot;...}" />
+            <marker date="1534126783604" expanded="true" signature="11413:11539" ph="{...}" />
+            <marker date="1534126783604" expanded="true" signature="11430:11533" ph="{...}" />
+            <marker date="1534126783604" expanded="true" signature="11454:11525" ph="[...]" />
+            <marker date="1534126783604" expanded="true" signature="11568:11693" ph="{...}" />
+            <marker date="1534126783604" expanded="true" signature="11585:11687" ph="{...}" />
+            <marker date="1534126783604" expanded="true" signature="11609:11679" ph="[...]" />
+            <marker date="1534126783604" expanded="true" signature="11712:11783" ph="{...}" />
+            <marker date="1534126783604" expanded="true" signature="11729:11777" ph="{&quot;Ref&quot;: &quot;CdDeploymentAccessKey&quot;...}" />
+            <marker date="1534126783604" expanded="true" signature="11802:11931" ph="{...}" />
+            <marker date="1534126783604" expanded="true" signature="11819:11925" ph="{...}" />
+            <marker date="1534126783604" expanded="true" signature="11843:11917" ph="[...]" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/frontend/serverless.yml">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="-1673">
+          <caret line="104" column="28" lean-forward="true" selection-start-line="104" selection-start-column="28" selection-end-line="104" selection-end-column="28" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/frontend/src/main/java/com/serverless/Response.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="26">
           <caret line="2" column="17" lean-forward="false" selection-start-line="2" selection-start-column="17" selection-end-line="2" selection-end-column="17" />
           <folding />
         </state>
