@@ -1,0 +1,87 @@
+
+service: authentication
+tenant: aengus
+app: ski-analytics
+
+provider:
+  name: aws
+  runtime: java8
+  variableSyntax: "\\${{([ ~:a-zA-Z0-9._\\'\",\\-\\/\\(\\)]+?)}}" # notice the double quotes for yaml to ignore the escape characters!
+  region: us-west-2
+  stackName: ${{self:custom.currentStage}}-ski-analytics-authentication-stack
+
+
+custom:
+  currentStage: ${{opt:stage, self:provider.stage}}
+
+resources:
+  Resources:
+    UserPool:
+      Type: AWS::Cognito::UserPool
+      Properties:
+        AdminCreateUserConfig:
+          AllowAdminCreateUserOnly: false
+          InviteMessageTemplate:
+#          TODO
+            EmailMessage:
+            EmailSubject: "Welcome to Crunch.Ski!"
+          UnusedAccountValidityDays: 365
+        AliasAttributes:
+            - email
+        AutoVerifiedAttributes:
+            - email
+        DeviceConfiguration:
+          ChallengeRequiredOnNewDevice: false
+          DeviceOnlyRememberedOnUserPrompt: false
+          #          TODO
+        EmailConfiguration:
+          ReplyToEmailAddress: noreply@crunch.ski
+          SourceArn:
+        MfaConfiguration: OFF
+        Policies:
+          PasswordPolicy:
+            MinimumLength: 8
+            RequireLowercase: true
+            RequireNumbers: true
+            RequireSymbols: false
+            RequireUppercase: true
+        Schema:
+          - AttributeDataType: String
+            DeveloperOnlyAttribute: false
+            Mutable: true
+            Name: First Name
+            StringAttributeConstraints:
+              MinLength: 2
+              MaxLength: 20
+            Required: true
+          - AttributeDataType: String
+            DeveloperOnlyAttribute: false
+            Mutable: true
+            Name: Last Name
+            StringAttributeConstraints:
+              MinLength: 2
+              MaxLength: 20
+            Required: true
+        UsernameAttributes:
+          - email
+        UserPoolName: ${{self:custom.currentStage}}-crunch-ski-userpool
+        UserPoolTags:
+          -  Key: "project"
+             Value: "ski-analytics"
+          -  Key: "module"
+             Value: "domain"
+
+
+
+
+
+
+
+
+
+
+#        BucketName: my-new-bucket
+#  Outputs:
+#     NewOutput:
+#       Description: "Description for the output"
+#       Value: "Some output value"
