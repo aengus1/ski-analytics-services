@@ -41,7 +41,7 @@ custom:
                 Value: "ski-analytics"
               -
                 Key: "module"
-                Value: "domain"
+                Value: "frontend"
   currentStage: ${{opt:stage, self:provider.stage}}
   appAlias:
         dev: 'dev-app'
