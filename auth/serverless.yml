@@ -7,7 +7,9 @@ provider:
   name: aws
   runtime: java8
   variableSyntax: "\\${{([ ~:a-zA-Z0-9._\\'\",\\-\\/\\(\\)]+?)}}" # notice the double quotes for yaml to ignore the escape characters!
+#  fallback to us-west as cognito not available in canada
   region: us-west-2
+  stage: staging
   stackName: ${{self:custom.currentStage}}-ski-analytics-authentication-stack
 
 
@@ -22,8 +24,8 @@ resources:
         AdminCreateUserConfig:
           AllowAdminCreateUserOnly: false
           InviteMessageTemplate:
-#          TODO
-            EmailMessage:
+            #EmailMessage: ${{file(src/main/resources/verification_email.html)}}
+            EmailMessage: "Hello there {username},  You're verification code is {####}"
             EmailSubject: "Welcome to Crunch.Ski!"
           UnusedAccountValidityDays: 365
         AliasAttributes:
@@ -33,10 +35,9 @@ resources:
         DeviceConfiguration:
           ChallengeRequiredOnNewDevice: false
           DeviceOnlyRememberedOnUserPrompt: false
-          #          TODO
-        EmailConfiguration:
-          ReplyToEmailAddress: noreply@crunch.ski
-          SourceArn:
+#        EmailConfiguration: -> this is erroring out saying invalid email address :(
+#          ReplyToEmailAddress: admin@ski-analytics.ca
+#          SourceArn: arn:aws:ses:us-west-2:556823078430:identity/ski-analytics.ca
         MfaConfiguration: OFF
         Policies:
           PasswordPolicy:
@@ -48,40 +49,37 @@ resources:
         Schema:
           - AttributeDataType: String
             DeveloperOnlyAttribute: false
-            Mutable: true
-            Name: First Name
-            StringAttributeConstraints:
-              MinLength: 2
-              MaxLength: 20
+            Mutable: false
+            Name: email
             Required: true
           - AttributeDataType: String
             DeveloperOnlyAttribute: false
             Mutable: true
-            Name: Last Name
+            Name: FirstName
             StringAttributeConstraints:
               MinLength: 2
               MaxLength: 20
-            Required: true
-        UsernameAttributes:
-          - email
+            Required: false
+          - AttributeDataType: String
+            DeveloperOnlyAttribute: false
+            Mutable: true
+            Name: LastName
+            StringAttributeConstraints:
+              MinLength: 2
+              MaxLength: 20
+            Required: false
         UserPoolName: ${{self:custom.currentStage}}-crunch-ski-userpool
         UserPoolTags:
-          -  Key: "project"
-             Value: "ski-analytics"
-          -  Key: "module"
-             Value: "domain"
+          project: ski-analytics
+          module: auth
 
-
-
-
-
-
-
-
-
-
-#        BucketName: my-new-bucket
-#  Outputs:
-#     NewOutput:
-#       Description: "Description for the output"
-#       Value: "Some output value"
+  Outputs:
+    UserPoolArn:
+      Value:
+        Ref: UserPool
+    UserPoolProviderName:
+      Value:
+        Fn::GetAtt: [UserPool, ProviderName]
+    UserPoolProviderUrl:
+      Value:
+        Fn::GetAtt: [UserPool, ProviderURL]
