@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="e0bdc5bc-f164-460e-911b-964805426644" name="Default" comment="">
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/auth/src/main/resources/verification_email.html" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/docs/email_setup.md" />
+    <list default="true" id="e0bdc5bc-f164-460e-911b-964805426644" name="Default" comment="SKAPI-4 SKAPI-5 finished first pass at userpool cf stack.  Added verification email but still figuring out how to support html email.  fixed buggy tags in frontend stack">
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/docs/cloudformation_polyfills.md" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/auth/serverless.yml" afterPath="$PROJECT_DIR$/auth/serverless.yml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/docs/email_setup.md" afterPath="$PROJECT_DIR$/docs/email_setup.md" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/frontend/serverless.yml" afterPath="$PROJECT_DIR$/frontend/serverless.yml" />
     </list>
     <ignored path="$PROJECT_DIR$/.gradle/" />
@@ -128,22 +128,81 @@
   </component>
   <component name="FileEditorManager">
     <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
-      <file leaf-file-name="serverless.yml" pinned="false" current-in-tab="false">
+      <file leaf-file-name="serverless.yml" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/auth/serverless.yml">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="205">
-              <caret line="75" column="2" lean-forward="true" selection-start-line="75" selection-start-column="2" selection-end-line="75" selection-end-column="2" />
+            <state relative-caret-position="224">
+              <caret line="79" column="31" lean-forward="false" selection-start-line="79" selection-start-column="31" selection-end-line="79" selection-end-column="31" />
               <folding />
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="serverless.yml" pinned="false" current-in-tab="true">
+      <file leaf-file-name="cloudformation_polyfills.md" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/docs/cloudformation_polyfills.md">
+          <provider selected="true" editor-type-id="split-provider[text-editor;markdown-preview-editor]">
+            <state split_layout="SPLIT">
+              <first_editor relative-caret-position="234">
+                <caret line="18" column="0" lean-forward="false" selection-start-line="18" selection-start-column="0" selection-end-line="18" selection-end-column="0" />
+                <folding />
+              </first_editor>
+              <second_editor />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="domain_setup.md" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/docs/domain_setup.md">
+          <provider selected="true" editor-type-id="split-provider[text-editor;markdown-preview-editor]">
+            <state split_layout="SPLIT">
+              <first_editor relative-caret-position="754">
+                <caret line="58" column="0" lean-forward="false" selection-start-line="58" selection-start-column="0" selection-end-line="58" selection-end-column="0" />
+                <folding />
+              </first_editor>
+              <second_editor />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="serverless.yml" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/domain/serverless.yml">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="169">
+              <caret line="13" column="21" lean-forward="false" selection-start-line="13" selection-start-column="21" selection-end-line="13" selection-end-column="21" />
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="serverless.yml" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/frontend/serverless.yml">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="158">
-              <caret line="253" column="2" lean-forward="true" selection-start-line="253" selection-start-column="2" selection-end-line="253" selection-end-column="2" />
+            <state relative-caret-position="837">
+              <caret line="272" column="52" lean-forward="false" selection-start-line="272" selection-start-column="46" selection-end-line="272" selection-end-column="52" />
               <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="cloudformation-template-update-stack.json" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/frontend/.serverless/cloudformation-template-update-stack.json">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="1053">
+              <caret line="81" column="11" lean-forward="false" selection-start-line="81" selection-start-column="11" selection-end-line="81" selection-end-column="11" />
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="email_setup.md" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/docs/email_setup.md">
+          <provider selected="true" editor-type-id="split-provider[text-editor;markdown-preview-editor]">
+            <state split_layout="SPLIT">
+              <first_editor relative-caret-position="585">
+                <caret line="45" column="82" lean-forward="false" selection-start-line="45" selection-start-column="82" selection-end-line="45" selection-end-column="82" />
+                <folding />
+              </first_editor>
+              <second_editor />
             </state>
           </provider>
         </entry>
@@ -173,6 +232,7 @@
       <find>currentsta</find>
       <find>domainsta</find>
       <find>email</find>
+      <find>secret</find>
     </findStrings>
   </component>
   <component name="Git.Settings">
@@ -480,8 +540,10 @@
         <option value="$PROJECT_DIR$/docs/domain_setup.md" />
         <option value="$PROJECT_DIR$/domain/serverless.yml" />
         <option value="$PROJECT_DIR$/auth/src/main/resources/verification_email.html" />
-        <option value="$PROJECT_DIR$/frontend/serverless.yml" />
         <option value="$PROJECT_DIR$/docs/email_setup.md" />
+        <option value="$PROJECT_DIR$/frontend/.serverless/cloudformation-template-update-stack.json" />
+        <option value="$PROJECT_DIR$/frontend/serverless.yml" />
+        <option value="$PROJECT_DIR$/docs/cloudformation_polyfills.md" />
         <option value="$PROJECT_DIR$/auth/serverless.yml" />
       </list>
     </option>
@@ -496,9 +558,8 @@
     <handled-path value="$PROJECT_DIR$/domain/node_modules" />
   </component>
   <component name="ProjectFrameBounds">
-    <option name="x" value="15" />
-    <option name="y" value="25" />
-    <option name="width" value="1503" />
+    <option name="y" value="23" />
+    <option name="width" value="1440" />
     <option name="height" value="824" />
   </component>
   <component name="ProjectLevelVcsManager" settingsEditedManually="true" />
@@ -517,86 +578,6 @@
       <foldersAlwaysOnTop value="true" />
     </navigator>
     <panes>
-      <pane id="ProjectPane">
-        <subPane>
-          <PATH>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="ski-analytics-services" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="ski-analytics-services" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-          </PATH>
-          <PATH>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="ski-analytics-services" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="ski-analytics-services" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="frontend" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-          </PATH>
-          <PATH>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="ski-analytics-services" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="ski-analytics-services" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="frontend" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="src" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="main" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-          </PATH>
-          <PATH>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="ski-analytics-services" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="ski-analytics-services" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="docs" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-          </PATH>
-          <PATH>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="ski-analytics-services" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="ski-analytics-services" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="auth" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-          </PATH>
-        </subPane>
-      </pane>
-      <pane id="PackagesPane" />
-      <pane id="Scratches" />
       <pane id="Scope">
         <subPane subId="Project Files">
           <PATH>
@@ -639,6 +620,50 @@
             <PATH_ELEMENT USER_OBJECT="ski-analytics-services">
               <option name="myItemId" value="" />
               <option name="myItemType" value="" />
+            </PATH_ELEMENT>
+          </PATH>
+        </subPane>
+      </pane>
+      <pane id="Scratches" />
+      <pane id="PackagesPane" />
+      <pane id="ProjectPane">
+        <subPane>
+          <PATH>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="ski-analytics-services" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="ski-analytics-services" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+          </PATH>
+          <PATH>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="ski-analytics-services" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="ski-analytics-services" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="frontend" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+          </PATH>
+          <PATH>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="ski-analytics-services" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="ski-analytics-services" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="auth" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
             </PATH_ELEMENT>
           </PATH>
         </subPane>
@@ -1168,7 +1193,9 @@
       <updated>1532320747434</updated>
       <workItem from="1532320752425" duration="3362000" />
       <workItem from="1532325591697" duration="79197000" />
-      <workItem from="1534042453362" duration="15132000" />
+      <workItem from="1534042453362" duration="18277000" />
+      <workItem from="1534478309510" duration="5690000" />
+      <workItem from="1534994992931" duration="1453000" />
     </task>
     <task id="LOCAL-00001" summary="CF template for domain">
       <created>1533077361072</created>
@@ -1198,11 +1225,18 @@
       <option name="project" value="LOCAL" />
       <updated>1534227204897</updated>
     </task>
-    <option name="localTasksCounter" value="5" />
+    <task id="LOCAL-00005" summary="SKAPI-4 SKAPI-5 finished first pass at userpool cf stack.  Added verification email but still figuring out how to support html email.  fixed buggy tags in frontend stack">
+      <created>1534312677320</created>
+      <option name="number" value="00005" />
+      <option name="presentableId" value="LOCAL-00005" />
+      <option name="project" value="LOCAL" />
+      <updated>1534312677320</updated>
+    </task>
+    <option name="localTasksCounter" value="6" />
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="97691000" />
+    <option name="totallyTimeSpent" value="107979000" />
   </component>
   <component name="TodoView">
     <todo-panel id="selected-file">
@@ -1214,12 +1248,12 @@
     </todo-panel>
   </component>
   <component name="ToolWindowManager">
-    <frame x="15" y="25" width="1503" height="824" extended-state="0" />
+    <frame x="0" y="23" width="1440" height="824" extended-state="6" />
     <layout>
       <window_info id="Palette" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Nl-Palette" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
       <window_info id="FindBugs-IDEA" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
-      <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.37252125" sideWeight="0.35318276" order="7" side_tool="true" content_ui="tabs" />
+      <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.37252125" sideWeight="0.36051503" order="7" side_tool="true" content_ui="tabs" />
       <window_info id="Maven Projects" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Properties" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Capture Tool" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
@@ -1230,22 +1264,22 @@
       <window_info id="UI Designer" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
       <window_info id="Debug" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.4" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
-      <window_info id="Messages" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.2917847" sideWeight="0.49760437" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Palette&#9;" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Image Layers" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
       <window_info id="Capture Analysis" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.3286119" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
       <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="CheckStyle" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
-      <window_info id="Terminal" active="true" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.37252125" sideWeight="0.64681727" order="7" side_tool="false" content_ui="tabs" />
-      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.24572212" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
-      <window_info id="Gradle" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.11088296" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
+      <window_info id="Terminal" active="true" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.37252125" sideWeight="0.639485" order="7" side_tool="false" content_ui="tabs" />
+      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.25250357" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
+      <window_info id="Gradle" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.11087268" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Theme Preview" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Favorites" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="2" side_tool="true" content_ui="tabs" />
       <window_info id="Cvs" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="4" side_tool="false" content_ui="tabs" />
       <window_info id="Message" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
       <window_info id="Commander" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.4" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
       <window_info id="Hierarchy" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="2" side_tool="false" content_ui="combo" />
+      <window_info id="Messages" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.2917847" sideWeight="0.49760437" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="SBT" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Inspection" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.4" sideWeight="0.5" order="5" side_tool="false" content_ui="tabs" />
       <window_info id="Find" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
@@ -1261,7 +1295,8 @@
     <MESSAGE value="CF template for domain" />
     <MESSAGE value="SKAPI-2 SKAPI3 - added domain and frontend stacks" />
     <MESSAGE value="SKAPI-4 SKAPI-5 started work on CF script for userpool" />
-    <option name="LAST_COMMIT_MESSAGE" value="SKAPI-4 SKAPI-5 started work on CF script for userpool" />
+    <MESSAGE value="SKAPI-4 SKAPI-5 finished first pass at userpool cf stack.  Added verification email but still figuring out how to support html email.  fixed buggy tags in frontend stack" />
+    <option name="LAST_COMMIT_MESSAGE" value="SKAPI-4 SKAPI-5 finished first pass at userpool cf stack.  Added verification email but still figuring out how to support html email.  fixed buggy tags in frontend stack" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager />
@@ -1272,11 +1307,91 @@
     <option name="FILTER_TARGETS" value="false" />
   </component>
   <component name="editorHistoryManager">
+    <entry file="file://$PROJECT_DIR$/auth/serverless.yml">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="0">
+          <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/docs/cloudformation_polyfills.md">
+      <provider selected="true" editor-type-id="split-provider[text-editor;markdown-preview-editor]">
+        <state split_layout="SPLIT">
+          <first_editor relative-caret-position="234">
+            <caret line="18" column="0" lean-forward="true" selection-start-line="18" selection-start-column="0" selection-end-line="18" selection-end-column="0" />
+            <folding />
+          </first_editor>
+          <second_editor />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/docs/domain_setup.md">
+      <provider selected="true" editor-type-id="split-provider[text-editor;markdown-preview-editor]">
+        <state split_layout="SPLIT">
+          <first_editor relative-caret-position="754">
+            <caret line="58" column="0" lean-forward="false" selection-start-line="58" selection-start-column="0" selection-end-line="58" selection-end-column="0" />
+            <folding />
+          </first_editor>
+          <second_editor />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/domain/serverless.yml">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="169">
+          <caret line="13" column="21" lean-forward="false" selection-start-line="13" selection-start-column="21" selection-end-line="13" selection-end-column="21" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/frontend/serverless.yml">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="3536">
+          <caret line="272" column="52" lean-forward="false" selection-start-line="272" selection-start-column="46" selection-end-line="272" selection-end-column="52" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/frontend/.serverless/cloudformation-template-update-stack.json">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="1053">
+          <caret line="81" column="11" lean-forward="true" selection-start-line="81" selection-start-column="11" selection-end-line="81" selection-end-column="11" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/auth/serverless.yml">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="0">
+          <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/frontend/serverless.yml">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="3289">
+          <caret line="253" column="2" lean-forward="true" selection-start-line="253" selection-start-column="2" selection-end-line="253" selection-end-column="2" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/docs/email_setup.md">
+      <provider selected="true" editor-type-id="split-provider[text-editor;markdown-preview-editor]">
+        <state split_layout="SPLIT">
+          <first_editor relative-caret-position="585">
+            <caret line="45" column="82" lean-forward="false" selection-start-line="45" selection-start-column="82" selection-end-line="45" selection-end-column="82" />
+            <folding />
+          </first_editor>
+          <second_editor />
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/serverless.yml">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="429">
           <caret line="33" column="102" lean-forward="false" selection-start-line="33" selection-start-column="19" selection-end-line="33" selection-end-column="102" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -1284,7 +1399,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="0">
           <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -1304,7 +1418,6 @@
         <state split_layout="SPLIT">
           <first_editor relative-caret-position="117">
             <caret line="9" column="1" lean-forward="false" selection-start-line="9" selection-start-column="1" selection-end-line="9" selection-end-column="1" />
-            <folding />
           </first_editor>
           <second_editor />
         </state>
@@ -1322,7 +1435,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="0">
           <caret line="0" column="73" lean-forward="true" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="73" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -1330,12 +1442,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="26">
           <caret line="2" column="17" lean-forward="false" selection-start-line="2" selection-start-column="17" selection-end-line="2" selection-end-column="17" />
-          <folding>
-            <element signature="e#289#290#0" expanded="false" />
-            <element signature="e#315#316#0" expanded="false" />
-            <element signature="e#357#358#0" expanded="false" />
-            <element signature="e#381#382#0" expanded="false" />
-          </folding>
         </state>
       </provider>
     </entry>
@@ -1343,7 +1449,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="260">
           <caret line="20" column="37" lean-forward="false" selection-start-line="20" selection-start-column="37" selection-end-line="20" selection-end-column="37" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -1351,10 +1456,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="338">
           <caret line="26" column="4" lean-forward="false" selection-start-line="26" selection-start-column="4" selection-end-line="26" selection-end-column="4" />
-          <folding>
-            <marker date="1533785571985" expanded="true" signature="145:652" ph="{...}" />
-            <marker date="1533785571985" expanded="true" signature="1139:1147" ph="{...}" />
-          </folding>
         </state>
       </provider>
     </entry>
@@ -1406,7 +1507,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="-8">
           <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -1421,7 +1521,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="0">
           <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -1429,7 +1528,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="429">
           <caret line="33" column="102" lean-forward="false" selection-start-line="33" selection-start-column="19" selection-end-line="33" selection-end-column="102" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -1444,12 +1542,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="26">
           <caret line="2" column="17" lean-forward="false" selection-start-line="2" selection-start-column="17" selection-end-line="2" selection-end-column="17" />
-          <folding>
-            <element signature="e#289#290#0" expanded="false" />
-            <element signature="e#315#316#0" expanded="false" />
-            <element signature="e#357#358#0" expanded="false" />
-            <element signature="e#381#382#0" expanded="false" />
-          </folding>
         </state>
       </provider>
     </entry>
@@ -1457,10 +1549,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="338">
           <caret line="26" column="4" lean-forward="false" selection-start-line="26" selection-start-column="4" selection-end-line="26" selection-end-column="4" />
-          <folding>
-            <marker date="1533785571985" expanded="true" signature="145:652" ph="{...}" />
-            <marker date="1533785571985" expanded="true" signature="1139:1147" ph="{...}" />
-          </folding>
         </state>
       </provider>
     </entry>
@@ -1468,6 +1556,73 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="260">
           <caret line="20" column="37" lean-forward="false" selection-start-line="20" selection-start-column="37" selection-end-line="20" selection-end-column="37" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/frontend/deploy.sh">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="0">
+          <caret line="0" column="73" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="73" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/gradlew">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="-340">
+          <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/frontend/src/main/java/com/serverless/Response.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="234">
+          <caret line="22" column="0" lean-forward="false" selection-start-line="22" selection-start-column="0" selection-end-line="22" selection-end-column="0" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/auth/src/main/resources/verification_email.html">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="274">
+          <caret line="589" column="14" lean-forward="false" selection-start-line="589" selection-start-column="14" selection-end-line="589" selection-end-column="14" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/docs/setup.md">
+      <provider selected="true" editor-type-id="split-provider[text-editor;markdown-preview-editor]">
+        <state split_layout="SPLIT">
+          <first_editor relative-caret-position="117">
+            <caret line="9" column="1" lean-forward="false" selection-start-line="9" selection-start-column="1" selection-end-line="9" selection-end-column="1" />
+          </first_editor>
+          <second_editor />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/auth/.serverless/cloudformation-template-update-stack.json">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="481">
+          <caret line="37" column="9" lean-forward="false" selection-start-line="37" selection-start-column="9" selection-end-line="37" selection-end-column="9" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/auth/.serverless/cloudformation-template-create-stack.json">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="0">
+          <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/domain/serverless.yml">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="169">
+          <caret line="13" column="21" lean-forward="false" selection-start-line="13" selection-start-column="21" selection-end-line="13" selection-end-column="21" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/frontend/.serverless/cloudformation-template-update-stack.json">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="1053">
+          <caret line="81" column="11" lean-forward="false" selection-start-line="81" selection-start-column="11" selection-end-line="81" selection-end-column="11" />
           <folding />
         </state>
       </provider>
@@ -1483,343 +1638,40 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/frontend/deploy.sh">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="0">
-          <caret line="0" column="73" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="73" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/frontend/.serverless/cloudformation-template-update-stack.json">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-4333">
-          <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
-          <folding>
-            <marker date="1534126783604" expanded="true" signature="0:11937" ph="{&quot;AWSTemplateFormatVersion&quot;: &quot;2010-09-09&quot;...}" />
-            <marker date="1534126783604" expanded="true" signature="145:11114" ph="{...}" />
-            <marker date="1534126783604" expanded="true" signature="1380:2106" ph="{&quot;Type&quot;: &quot;AWS::S3::BucketPolicy&quot;...}" />
-            <marker date="1534126783604" expanded="true" signature="1441:2106" ph="{...}" />
-            <marker date="1534126783604" expanded="true" signature="1534:2106" ph="{&quot;Version&quot;: &quot;2012-10-17&quot;...}" />
-            <marker date="1534126783604" expanded="true" signature="1594:2106" ph="[...]" />
-            <marker date="1534126783604" expanded="true" signature="1608:2106" ph="{&quot;Effect&quot;: &quot;Allow&quot;...}" />
-            <marker date="1534126783604" expanded="true" signature="8009:8329" ph="{&quot;Name&quot;: &quot;staging-app.crunch.ski&quot;...}" />
-            <marker date="1534126783604" expanded="true" signature="8009:8339" ph="[...]" />
-            <marker date="1534126783604" expanded="true" signature="8009:8347" ph="{&quot;Comment&quot;: &quot;Alias record for crunch.ski site and app&quot;...}" />
-            <marker date="1534126783604" expanded="true" signature="8009:8353" ph="{&quot;Type&quot;: &quot;AWS::Route53::RecordSetGroup&quot;...}" />
-            <marker date="1534126783604" expanded="true" signature="8086:8317" ph="{&quot;HostedZoneId&quot;: &quot;Z2FDTNDATAQYW2&quot;...}" />
-            <marker date="1534126783604" expanded="true" signature="8161:8303" ph="{...}" />
-            <marker date="1534126783604" expanded="true" signature="8193:8287" ph="[...]" />
-            <marker date="1534126783604" expanded="true" signature="8385:8658" ph="{&quot;Type&quot;: &quot;AWS::SSM::Parameter&quot;...}" />
-            <marker date="1534126783604" expanded="true" signature="8444:8652" ph="{&quot;Name&quot;: &quot;staging-app-bucket-name&quot;...}" />
-            <marker date="1534126783604" expanded="true" signature="8532:8577" ph="{&quot;Ref&quot;: &quot;S3BucketForApp&quot;...}" />
-            <marker date="1534126783604" expanded="true" signature="8687:8970" ph="{&quot;Type&quot;: &quot;AWS::SSM::Parameter&quot;...}" />
-            <marker date="1534126783604" expanded="true" signature="8746:8964" ph="{&quot;Name&quot;: &quot;staging-cfdistro-name&quot;...}" />
-            <marker date="1534126783604" expanded="true" signature="8832:8885" ph="{&quot;Ref&quot;: &quot;CloudFrontDistroForApp&quot;...}" />
-            <marker date="1534126783604" expanded="true" signature="8996:10909" ph="{&quot;Type&quot;: &quot;AWS::IAM::User&quot;...}" />
-            <marker date="1534126783604" expanded="true" signature="9050:10903" ph="{&quot;Path&quot;: &quot;/staging/deployment/&quot;...}" />
-            <marker date="1534126783604" expanded="true" signature="9157:10895" ph="[...]" />
-            <marker date="1534126783604" expanded="true" signature="9169:10885" ph="{&quot;PolicyName&quot;: &quot;allowPutDeleteAndPublicRead&quot;...}" />
-            <marker date="1534126783604" expanded="true" signature="9258:10873" ph="{&quot;Version&quot;: &quot;2012-10-17&quot;...}" />
-            <marker date="1534126783604" expanded="true" signature="9326:10859" ph="[...]" />
-            <marker date="1534126783604" expanded="true" signature="9344:9939" ph="{&quot;Effect&quot;: &quot;Allow&quot;...}" />
-            <marker date="1534126783604" expanded="true" signature="9411:9506" ph="[...]" />
-            <marker date="1534126783604" expanded="true" signature="9538:9921" ph="{...}" />
-            <marker date="1534126783604" expanded="true" signature="9572:9901" ph="[...]" />
-            <marker date="1534126783604" expanded="true" signature="9622:9879" ph="[...]" />
-            <marker date="1534126783604" expanded="true" signature="9648:9825" ph="{...}" />
-            <marker date="1534126783604" expanded="true" signature="9690:9799" ph="[...]" />
-            <marker date="1534126783604" expanded="true" signature="9957:10632" ph="{&quot;Effect&quot;: &quot;Allow&quot;...}" />
-            <marker date="1534126783604" expanded="true" signature="10024:10084" ph="[...]" />
-            <marker date="1534126783604" expanded="true" signature="10116:10614" ph="{...}" />
-            <marker date="1534126783604" expanded="true" signature="10150:10594" ph="[...]" />
-            <marker date="1534126783604" expanded="true" signature="10200:10572" ph="[...]" />
-            <marker date="1534126783604" expanded="true" signature="10266:10340" ph="{&quot;Ref&quot;: &quot;AWS::Region&quot;...}" />
-            <marker date="1534126783604" expanded="true" signature="10395:10472" ph="{&quot;Ref&quot;: &quot;AWS::AccountId&quot;...}" />
-            <marker date="1534126783604" expanded="true" signature="10650:10843" ph="{&quot;Effect&quot;: &quot;Allow&quot;...}" />
-            <marker date="1534126783604" expanded="true" signature="10717:10790" ph="[...]" />
-            <marker date="1534126783604" expanded="true" signature="10822:10825" ph="{...}" />
-            <marker date="1534126783604" expanded="true" signature="10940:11110" ph="{&quot;Type&quot;: &quot;AWS::IAM::AccessKey&quot;...}" />
-            <marker date="1534126783604" expanded="true" signature="10999:11104" ph="{&quot;Status&quot;: &quot;Active&quot;...}" />
-            <marker date="1534126783604" expanded="true" signature="11049:11096" ph="{&quot;Ref&quot;: &quot;CdDeploymentUser&quot;...}" />
-            <marker date="1534126783604" expanded="true" signature="11129:11935" ph="{...}" />
-            <marker date="1534126783604" expanded="true" signature="11169:11245" ph="{...}" />
-            <marker date="1534126783604" expanded="true" signature="11186:11239" ph="{&quot;Ref&quot;: &quot;ServerlessDeploymentBucket&quot;...}" />
-            <marker date="1534126783604" expanded="true" signature="11267:11315" ph="{&quot;Value&quot;: &quot;site-staging.crunch.ski&quot;...}" />
-            <marker date="1534126783604" expanded="true" signature="11336:11383" ph="{&quot;Value&quot;: &quot;app-staging.crunch.ski&quot;...}" />
-            <marker date="1534126783604" expanded="true" signature="11413:11539" ph="{...}" />
-            <marker date="1534126783604" expanded="true" signature="11430:11533" ph="{...}" />
-            <marker date="1534126783604" expanded="true" signature="11454:11525" ph="[...]" />
-            <marker date="1534126783604" expanded="true" signature="11568:11693" ph="{...}" />
-            <marker date="1534126783604" expanded="true" signature="11585:11687" ph="{...}" />
-            <marker date="1534126783604" expanded="true" signature="11609:11679" ph="[...]" />
-            <marker date="1534126783604" expanded="true" signature="11712:11783" ph="{...}" />
-            <marker date="1534126783604" expanded="true" signature="11729:11777" ph="{&quot;Ref&quot;: &quot;CdDeploymentAccessKey&quot;...}" />
-            <marker date="1534126783604" expanded="true" signature="11802:11931" ph="{...}" />
-            <marker date="1534126783604" expanded="true" signature="11819:11925" ph="{...}" />
-            <marker date="1534126783604" expanded="true" signature="11843:11917" ph="[...]" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/gradlew">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-340">
-          <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/frontend/src/main/java/com/serverless/Response.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="234">
-          <caret line="22" column="0" lean-forward="false" selection-start-line="22" selection-start-column="0" selection-end-line="22" selection-end-column="0" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/auth/src/main/resources/verification_email.html">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="274">
-          <caret line="589" column="14" lean-forward="false" selection-start-line="589" selection-start-column="14" selection-end-line="589" selection-end-column="14" />
-          <folding>
-            <element signature="n#style#0;n#body#0;n#html#0;n#!!top" expanded="true" />
-            <element signature="n#style#0;n#table#0;n#body#0;n#html#0;n#!!top" expanded="true" />
-            <element signature="n#style#0;n#tr#0;n#tbody#0;n#table#0;n#body#0;n#html#0;n#!!top" expanded="true" />
-            <element signature="n#style#0;n#td#0;n#tr#0;n#tbody#0;n#table#0;n#body#0;n#html#0;n#!!top" expanded="true" />
-            <element signature="n#style#0;n#div#0;n#td#0;n#tr#0;n#tbody#0;n#table#0;n#body#0;n#html#0;n#!!top" expanded="true" />
-            <element signature="n#style#0;n#div#0;n#div#0;n#td#0;n#tr#0;n#tbody#0;n#table#0;n#body#0;n#html#0;n#!!top" expanded="true" />
-            <element signature="n#style#0;n#div#0;n#div#0;n#div#0;n#td#0;n#tr#0;n#tbody#0;n#table#0;n#body#0;n#html#0;n#!!top" expanded="true" />
-            <element signature="n#style#0;n#div#0;n#div#0;n#div#0;n#div#0;n#td#0;n#tr#0;n#tbody#0;n#table#0;n#body#0;n#html#0;n#!!top" expanded="true" />
-            <element signature="n#style#0;n#div#0;n#div#0;n#div#0;n#div#0;n#div#0;n#td#0;n#tr#0;n#tbody#0;n#table#0;n#body#0;n#html#0;n#!!top" expanded="true" />
-            <element signature="n#style#0;n#div#0;n#div#0;n#div#0;n#div#0;n#div#0;n#div#0;n#td#0;n#tr#0;n#tbody#0;n#table#0;n#body#0;n#html#0;n#!!top" expanded="true" />
-            <element signature="n#style#0;n#table#0;n#div#0;n#div#0;n#div#0;n#div#0;n#div#0;n#div#0;n#td#0;n#tr#0;n#tbody#0;n#table#0;n#body#0;n#html#0;n#!!top" expanded="true" />
-            <element signature="n#style#0;n#tr#0;n#tbody#0;n#table#0;n#div#0;n#div#0;n#div#0;n#div#0;n#div#0;n#div#0;n#td#0;n#tr#0;n#tbody#0;n#table#0;n#body#0;n#html#0;n#!!top" expanded="true" />
-            <element signature="n#style#0;n#td#0;n#tr#0;n#tbody#0;n#table#0;n#div#0;n#div#0;n#div#0;n#div#0;n#div#0;n#div#0;n#td#0;n#tr#0;n#tbody#0;n#table#0;n#body#0;n#html#0;n#!!top" expanded="true" />
-            <element signature="n#style#0;n#table#0;n#td#0;n#tr#0;n#tbody#0;n#table#0;n#div#0;n#div#0;n#div#0;n#div#0;n#div#0;n#div#0;n#td#0;n#tr#0;n#tbody#0;n#table#0;n#body#0;n#html#0;n#!!top" expanded="true" />
-            <element signature="n#style#0;n#tr#0;n#tbody#0;n#table#0;n#td#0;n#tr#0;n#tbody#0;n#table#0;n#div#0;n#div#0;n#div#0;n#div#0;n#div#0;n#div#0;n#td#0;n#tr#0;n#tbody#0;n#table#0;n#body#0;n#html#0;n#!!top" expanded="true" />
-            <element signature="n#style#0;n#td#0;n#tr#0;n#tbody#0;n#table#0;n#td#0;n#tr#0;n#tbody#0;n#table#0;n#div#0;n#div#0;n#div#0;n#div#0;n#div#0;n#div#0;n#td#0;n#tr#0;n#tbody#0;n#table#0;n#body#0;n#html#0;n#!!top" expanded="true" />
-            <element signature="n#style#0;n#table#1;n#div#0;n#div#0;n#div#0;n#div#0;n#div#0;n#div#0;n#td#0;n#tr#0;n#tbody#0;n#table#0;n#body#0;n#html#0;n#!!top" expanded="true" />
-            <element signature="n#style#0;n#tr#0;n#tbody#0;n#table#1;n#div#0;n#div#0;n#div#0;n#div#0;n#div#0;n#div#0;n#td#0;n#tr#0;n#tbody#0;n#table#0;n#body#0;n#html#0;n#!!top" expanded="true" />
-            <element signature="n#style#0;n#td#0;n#tr#0;n#tbody#0;n#table#1;n#div#0;n#div#0;n#div#0;n#div#0;n#div#0;n#div#0;n#td#0;n#tr#0;n#tbody#0;n#table#0;n#body#0;n#html#0;n#!!top" expanded="true" />
-            <element signature="n#style#0;n#table#0;n#td#0;n#tr#0;n#tbody#0;n#table#1;n#div#0;n#div#0;n#div#0;n#div#0;n#div#0;n#div#0;n#td#0;n#tr#0;n#tbody#0;n#table#0;n#body#0;n#html#0;n#!!top" expanded="true" />
-            <element signature="n#style#0;n#tr#0;n#tbody#0;n#table#0;n#td#0;n#tr#0;n#tbody#0;n#table#1;n#div#0;n#div#0;n#div#0;n#div#0;n#div#0;n#div#0;n#td#0;n#tr#0;n#tbody#0;n#table#0;n#body#0;n#html#0;n#!!top" expanded="true" />
-            <element signature="n#style#0;n#td#0;n#tr#0;n#tbody#0;n#table#0;n#td#0;n#tr#0;n#tbody#0;n#table#1;n#div#0;n#div#0;n#div#0;n#div#0;n#div#0;n#div#0;n#td#0;n#tr#0;n#tbody#0;n#table#0;n#body#0;n#html#0;n#!!top" expanded="true" />
-            <element signature="n#style#0;n#div#0;n#div#0;n#div#0;n#div#0;n#div#0;n#div#0;n#div#0;n#td#0;n#tr#0;n#tbody#0;n#table#0;n#body#0;n#html#0;n#!!top" expanded="true" />
-            <element signature="n#src#0;n#img#0;n#div#0;n#div#0;n#div#0;n#div#0;n#div#0;n#div#0;n#div#0;n#td#0;n#tr#0;n#tbody#0;n#table#0;n#body#0;n#html#0;n#!!top" expanded="true" />
-            <element signature="n#style#0;n#img#0;n#div#0;n#div#0;n#div#0;n#div#0;n#div#0;n#div#0;n#div#0;n#td#0;n#tr#0;n#tbody#0;n#table#0;n#body#0;n#html#0;n#!!top" expanded="true" />
-            <element signature="n#style#0;n#div#1;n#td#0;n#tr#0;n#tbody#0;n#table#0;n#body#0;n#html#0;n#!!top" expanded="true" />
-            <element signature="n#style#0;n#div#0;n#div#1;n#td#0;n#tr#0;n#tbody#0;n#table#0;n#body#0;n#html#0;n#!!top" expanded="true" />
-            <element signature="n#style#0;n#div#0;n#div#0;n#div#1;n#td#0;n#tr#0;n#tbody#0;n#table#0;n#body#0;n#html#0;n#!!top" expanded="true" />
-            <element signature="n#style#0;n#div#0;n#div#0;n#div#0;n#div#1;n#td#0;n#tr#0;n#tbody#0;n#table#0;n#body#0;n#html#0;n#!!top" expanded="true" />
-            <element signature="n#style#0;n#div#0;n#div#0;n#div#0;n#div#0;n#div#1;n#td#0;n#tr#0;n#tbody#0;n#table#0;n#body#0;n#html#0;n#!!top" expanded="true" />
-            <element signature="n#style#0;n#div#0;n#div#0;n#div#0;n#div#0;n#div#0;n#div#1;n#td#0;n#tr#0;n#tbody#0;n#table#0;n#body#0;n#html#0;n#!!top" expanded="true" />
-            <element signature="n#style#0;n#table#0;n#div#0;n#div#0;n#div#0;n#div#0;n#div#0;n#div#1;n#td#0;n#tr#0;n#tbody#0;n#table#0;n#body#0;n#html#0;n#!!top" expanded="true" />
-            <element signature="n#style#0;n#tr#0;n#tbody#0;n#table#0;n#div#0;n#div#0;n#div#0;n#div#0;n#div#0;n#div#1;n#td#0;n#tr#0;n#tbody#0;n#table#0;n#body#0;n#html#0;n#!!top" expanded="true" />
-            <element signature="n#style#0;n#td#0;n#tr#0;n#tbody#0;n#table#0;n#div#0;n#div#0;n#div#0;n#div#0;n#div#0;n#div#1;n#td#0;n#tr#0;n#tbody#0;n#table#0;n#body#0;n#html#0;n#!!top" expanded="true" />
-            <element signature="n#style#0;n#table#0;n#td#0;n#tr#0;n#tbody#0;n#table#0;n#div#0;n#div#0;n#div#0;n#div#0;n#div#0;n#div#1;n#td#0;n#tr#0;n#tbody#0;n#table#0;n#body#0;n#html#0;n#!!top" expanded="true" />
-            <element signature="n#style#0;n#tr#0;n#tbody#0;n#table#0;n#td#0;n#tr#0;n#tbody#0;n#table#0;n#div#0;n#div#0;n#div#0;n#div#0;n#div#0;n#div#1;n#td#0;n#tr#0;n#tbody#0;n#table#0;n#body#0;n#html#0;n#!!top" expanded="true" />
-            <element signature="n#style#0;n#td#0;n#tr#0;n#tbody#0;n#table#0;n#td#0;n#tr#0;n#tbody#0;n#table#0;n#div#0;n#div#0;n#div#0;n#div#0;n#div#0;n#div#1;n#td#0;n#tr#0;n#tbody#0;n#table#0;n#body#0;n#html#0;n#!!top" expanded="true" />
-            <element signature="n#style#0;n#div#0;n#div#0;n#div#0;n#div#0;n#div#0;n#div#0;n#div#0;n#div#1;n#td#0;n#tr#0;n#tbody#0;n#table#0;n#body#0;n#html#0;n#!!top" expanded="true" />
-            <element signature="n#style#0;n#div#0;n#div#0;n#div#0;n#div#0;n#div#0;n#div#0;n#div#0;n#div#0;n#div#1;n#td#0;n#tr#0;n#tbody#0;n#table#0;n#body#0;n#html#0;n#!!top" expanded="true" />
-            <element signature="n#style#0;n#p#0;n#div#0;n#div#0;n#div#0;n#div#0;n#div#0;n#div#0;n#div#0;n#div#0;n#div#1;n#td#0;n#tr#0;n#tbody#0;n#table#0;n#body#0;n#html#0;n#!!top" expanded="true" />
-            <element signature="n#style#0;n#span#0;n#strong#0;n#p#0;n#div#0;n#div#0;n#div#0;n#div#0;n#div#0;n#div#0;n#div#0;n#div#0;n#div#1;n#td#0;n#tr#0;n#tbody#0;n#table#0;n#body#0;n#html#0;n#!!top" expanded="true" />
-            <element signature="n#style#0;n#p#1;n#div#0;n#div#0;n#div#0;n#div#0;n#div#0;n#div#0;n#div#0;n#div#0;n#div#1;n#td#0;n#tr#0;n#tbody#0;n#table#0;n#body#0;n#html#0;n#!!top" expanded="true" />
-            <element signature="n#style#0;n#span#0;n#p#1;n#div#0;n#div#0;n#div#0;n#div#0;n#div#0;n#div#0;n#div#0;n#div#0;n#div#1;n#td#0;n#tr#0;n#tbody#0;n#table#0;n#body#0;n#html#0;n#!!top" expanded="true" />
-            <element signature="n#style#0;n#span#0;n#span#0;n#p#1;n#div#0;n#div#0;n#div#0;n#div#0;n#div#0;n#div#0;n#div#0;n#div#0;n#div#1;n#td#0;n#tr#0;n#tbody#0;n#table#0;n#body#0;n#html#0;n#!!top" expanded="true" />
-            <element signature="n#style#0;n#table#1;n#div#0;n#div#0;n#div#0;n#div#0;n#div#0;n#div#1;n#td#0;n#tr#0;n#tbody#0;n#table#0;n#body#0;n#html#0;n#!!top" expanded="true" />
-            <element signature="n#style#0;n#tr#0;n#tbody#0;n#table#1;n#div#0;n#div#0;n#div#0;n#div#0;n#div#0;n#div#1;n#td#0;n#tr#0;n#tbody#0;n#table#0;n#body#0;n#html#0;n#!!top" expanded="true" />
-            <element signature="n#style#0;n#td#0;n#tr#0;n#tbody#0;n#table#1;n#div#0;n#div#0;n#div#0;n#div#0;n#div#0;n#div#1;n#td#0;n#tr#0;n#tbody#0;n#table#0;n#body#0;n#html#0;n#!!top" expanded="true" />
-            <element signature="n#style#0;n#table#0;n#td#0;n#tr#0;n#tbody#0;n#table#1;n#div#0;n#div#0;n#div#0;n#div#0;n#div#0;n#div#1;n#td#0;n#tr#0;n#tbody#0;n#table#0;n#body#0;n#html#0;n#!!top" expanded="true" />
-            <element signature="n#style#0;n#tr#0;n#tbody#0;n#table#0;n#td#0;n#tr#0;n#tbody#0;n#table#1;n#div#0;n#div#0;n#div#0;n#div#0;n#div#0;n#div#1;n#td#0;n#tr#0;n#tbody#0;n#table#0;n#body#0;n#html#0;n#!!top" expanded="true" />
-            <element signature="n#style#0;n#td#0;n#tr#0;n#tbody#0;n#table#0;n#td#0;n#tr#0;n#tbody#0;n#table#1;n#div#0;n#div#0;n#div#0;n#div#0;n#div#0;n#div#1;n#td#0;n#tr#0;n#tbody#0;n#table#0;n#body#0;n#html#0;n#!!top" expanded="true" />
-            <element signature="n#style#0;n#div#2;n#td#0;n#tr#0;n#tbody#0;n#table#0;n#body#0;n#html#0;n#!!top" expanded="true" />
-            <element signature="n#style#0;n#div#0;n#div#2;n#td#0;n#tr#0;n#tbody#0;n#table#0;n#body#0;n#html#0;n#!!top" expanded="true" />
-            <element signature="n#style#0;n#div#0;n#div#0;n#div#2;n#td#0;n#tr#0;n#tbody#0;n#table#0;n#body#0;n#html#0;n#!!top" expanded="true" />
-            <element signature="n#style#0;n#div#0;n#div#0;n#div#0;n#div#2;n#td#0;n#tr#0;n#tbody#0;n#table#0;n#body#0;n#html#0;n#!!top" expanded="true" />
-            <element signature="n#style#0;n#div#0;n#div#0;n#div#0;n#div#0;n#div#2;n#td#0;n#tr#0;n#tbody#0;n#table#0;n#body#0;n#html#0;n#!!top" expanded="true" />
-            <element signature="n#style#0;n#div#0;n#div#0;n#div#0;n#div#0;n#div#0;n#div#2;n#td#0;n#tr#0;n#tbody#0;n#table#0;n#body#0;n#html#0;n#!!top" expanded="true" />
-            <element signature="n#style#0;n#div#0;n#div#0;n#div#0;n#div#0;n#div#0;n#div#0;n#div#0;n#div#2;n#td#0;n#tr#0;n#tbody#0;n#table#0;n#body#0;n#html#0;n#!!top" expanded="true" />
-            <element signature="n#style#0;n#div#0;n#div#0;n#div#0;n#div#0;n#div#0;n#div#0;n#div#0;n#div#0;n#div#2;n#td#0;n#tr#0;n#tbody#0;n#table#0;n#body#0;n#html#0;n#!!top" expanded="true" />
-            <element signature="n#style#0;n#p#0;n#div#0;n#div#0;n#div#0;n#div#0;n#div#0;n#div#0;n#div#0;n#div#0;n#div#2;n#td#0;n#tr#0;n#tbody#0;n#table#0;n#body#0;n#html#0;n#!!top" expanded="true" />
-            <element signature="n#style#0;n#span#0;n#p#0;n#div#0;n#div#0;n#div#0;n#div#0;n#div#0;n#div#0;n#div#0;n#div#0;n#div#2;n#td#0;n#tr#0;n#tbody#0;n#table#0;n#body#0;n#html#0;n#!!top" expanded="true" />
-            <element signature="n#style#0;n#p#1;n#div#0;n#div#0;n#div#0;n#div#0;n#div#0;n#div#0;n#div#0;n#div#0;n#div#2;n#td#0;n#tr#0;n#tbody#0;n#table#0;n#body#0;n#html#0;n#!!top" expanded="true" />
-            <element signature="n#style#0;n#span#0;n#p#1;n#div#0;n#div#0;n#div#0;n#div#0;n#div#0;n#div#0;n#div#0;n#div#0;n#div#2;n#td#0;n#tr#0;n#tbody#0;n#table#0;n#body#0;n#html#0;n#!!top" expanded="true" />
-            <element signature="n#style#0;n#p#2;n#div#0;n#div#0;n#div#0;n#div#0;n#div#0;n#div#0;n#div#0;n#div#0;n#div#2;n#td#0;n#tr#0;n#tbody#0;n#table#0;n#body#0;n#html#0;n#!!top" expanded="true" />
-            <element signature="n#style#0;n#span#0;n#strong#0;n#em#0;n#p#2;n#div#0;n#div#0;n#div#0;n#div#0;n#div#0;n#div#0;n#div#0;n#div#0;n#div#2;n#td#0;n#tr#0;n#tbody#0;n#table#0;n#body#0;n#html#0;n#!!top" expanded="true" />
-            <element signature="n#style#0;n#div#3;n#td#0;n#tr#0;n#tbody#0;n#table#0;n#body#0;n#html#0;n#!!top" expanded="true" />
-            <element signature="n#style#0;n#div#0;n#div#3;n#td#0;n#tr#0;n#tbody#0;n#table#0;n#body#0;n#html#0;n#!!top" expanded="true" />
-            <element signature="n#style#0;n#div#0;n#div#0;n#div#3;n#td#0;n#tr#0;n#tbody#0;n#table#0;n#body#0;n#html#0;n#!!top" expanded="true" />
-            <element signature="n#style#0;n#div#0;n#div#0;n#div#0;n#div#3;n#td#0;n#tr#0;n#tbody#0;n#table#0;n#body#0;n#html#0;n#!!top" expanded="true" />
-            <element signature="n#style#0;n#div#0;n#div#0;n#div#0;n#div#0;n#div#3;n#td#0;n#tr#0;n#tbody#0;n#table#0;n#body#0;n#html#0;n#!!top" expanded="true" />
-            <element signature="n#style#0;n#div#0;n#div#0;n#div#0;n#div#0;n#div#0;n#div#3;n#td#0;n#tr#0;n#tbody#0;n#table#0;n#body#0;n#html#0;n#!!top" expanded="true" />
-            <element signature="n#style#0;n#table#0;n#div#0;n#div#0;n#div#0;n#div#0;n#div#0;n#div#3;n#td#0;n#tr#0;n#tbody#0;n#table#0;n#body#0;n#html#0;n#!!top" expanded="true" />
-            <element signature="n#style#0;n#tr#0;n#tbody#0;n#table#0;n#div#0;n#div#0;n#div#0;n#div#0;n#div#0;n#div#3;n#td#0;n#tr#0;n#tbody#0;n#table#0;n#body#0;n#html#0;n#!!top" expanded="true" />
-            <element signature="n#style#0;n#td#0;n#tr#0;n#tbody#0;n#table#0;n#div#0;n#div#0;n#div#0;n#div#0;n#div#0;n#div#3;n#td#0;n#tr#0;n#tbody#0;n#table#0;n#body#0;n#html#0;n#!!top" expanded="true" />
-            <element signature="n#style#0;n#table#0;n#td#0;n#tr#0;n#tbody#0;n#table#0;n#div#0;n#div#0;n#div#0;n#div#0;n#div#0;n#div#3;n#td#0;n#tr#0;n#tbody#0;n#table#0;n#body#0;n#html#0;n#!!top" expanded="true" />
-            <element signature="n#style#0;n#tr#0;n#tbody#0;n#table#0;n#td#0;n#tr#0;n#tbody#0;n#table#0;n#div#0;n#div#0;n#div#0;n#div#0;n#div#0;n#div#3;n#td#0;n#tr#0;n#tbody#0;n#table#0;n#body#0;n#html#0;n#!!top" expanded="true" />
-            <element signature="n#style#0;n#td#0;n#tr#0;n#tbody#0;n#table#0;n#td#0;n#tr#0;n#tbody#0;n#table#0;n#div#0;n#div#0;n#div#0;n#div#0;n#div#0;n#div#3;n#td#0;n#tr#0;n#tbody#0;n#table#0;n#body#0;n#html#0;n#!!top" expanded="true" />
-            <element signature="n#style#0;n#table#1;n#div#0;n#div#0;n#div#0;n#div#0;n#div#0;n#div#3;n#td#0;n#tr#0;n#tbody#0;n#table#0;n#body#0;n#html#0;n#!!top" expanded="true" />
-            <element signature="n#style#0;n#tr#0;n#tbody#0;n#table#1;n#div#0;n#div#0;n#div#0;n#div#0;n#div#0;n#div#3;n#td#0;n#tr#0;n#tbody#0;n#table#0;n#body#0;n#html#0;n#!!top" expanded="true" />
-            <element signature="n#style#0;n#td#0;n#tr#0;n#tbody#0;n#table#1;n#div#0;n#div#0;n#div#0;n#div#0;n#div#0;n#div#3;n#td#0;n#tr#0;n#tbody#0;n#table#0;n#body#0;n#html#0;n#!!top" expanded="true" />
-            <element signature="n#style#0;n#table#0;n#td#0;n#tr#0;n#tbody#0;n#table#1;n#div#0;n#div#0;n#div#0;n#div#0;n#div#0;n#div#3;n#td#0;n#tr#0;n#tbody#0;n#table#0;n#body#0;n#html#0;n#!!top" expanded="true" />
-            <element signature="n#style#0;n#tr#0;n#tbody#0;n#table#0;n#td#0;n#tr#0;n#tbody#0;n#table#1;n#div#0;n#div#0;n#div#0;n#div#0;n#div#0;n#div#3;n#td#0;n#tr#0;n#tbody#0;n#table#0;n#body#0;n#html#0;n#!!top" expanded="true" />
-            <element signature="n#style#0;n#td#0;n#tr#0;n#tbody#0;n#table#0;n#td#0;n#tr#0;n#tbody#0;n#table#1;n#div#0;n#div#0;n#div#0;n#div#0;n#div#0;n#div#3;n#td#0;n#tr#0;n#tbody#0;n#table#0;n#body#0;n#html#0;n#!!top" expanded="true" />
-            <element signature="n#style#0;n#div#1;n#div#0;n#div#0;n#div#3;n#td#0;n#tr#0;n#tbody#0;n#table#0;n#body#0;n#html#0;n#!!top" expanded="true" />
-            <element signature="n#style#0;n#div#0;n#div#1;n#div#0;n#div#0;n#div#3;n#td#0;n#tr#0;n#tbody#0;n#table#0;n#body#0;n#html#0;n#!!top" expanded="true" />
-            <element signature="n#style#0;n#div#0;n#div#0;n#div#1;n#div#0;n#div#0;n#div#3;n#td#0;n#tr#0;n#tbody#0;n#table#0;n#body#0;n#html#0;n#!!top" expanded="true" />
-            <element signature="n#style#0;n#table#0;n#div#0;n#div#0;n#div#1;n#div#0;n#div#0;n#div#3;n#td#0;n#tr#0;n#tbody#0;n#table#0;n#body#0;n#html#0;n#!!top" expanded="true" />
-            <element signature="n#style#0;n#tr#0;n#tbody#0;n#table#0;n#div#0;n#div#0;n#div#1;n#div#0;n#div#0;n#div#3;n#td#0;n#tr#0;n#tbody#0;n#table#0;n#body#0;n#html#0;n#!!top" expanded="true" />
-            <element signature="n#style#0;n#td#0;n#tr#0;n#tbody#0;n#table#0;n#div#0;n#div#0;n#div#1;n#div#0;n#div#0;n#div#3;n#td#0;n#tr#0;n#tbody#0;n#table#0;n#body#0;n#html#0;n#!!top" expanded="true" />
-            <element signature="n#style#0;n#table#0;n#td#0;n#tr#0;n#tbody#0;n#table#0;n#div#0;n#div#0;n#div#1;n#div#0;n#div#0;n#div#3;n#td#0;n#tr#0;n#tbody#0;n#table#0;n#body#0;n#html#0;n#!!top" expanded="true" />
-            <element signature="n#style#0;n#tr#0;n#tbody#0;n#table#0;n#td#0;n#tr#0;n#tbody#0;n#table#0;n#div#0;n#div#0;n#div#1;n#div#0;n#div#0;n#div#3;n#td#0;n#tr#0;n#tbody#0;n#table#0;n#body#0;n#html#0;n#!!top" expanded="true" />
-            <element signature="n#style#0;n#td#0;n#tr#0;n#tbody#0;n#table#0;n#td#0;n#tr#0;n#tbody#0;n#table#0;n#div#0;n#div#0;n#div#1;n#div#0;n#div#0;n#div#3;n#td#0;n#tr#0;n#tbody#0;n#table#0;n#body#0;n#html#0;n#!!top" expanded="true" />
-            <element signature="n#style#0;n#div#0;n#div#0;n#div#0;n#div#1;n#div#0;n#div#0;n#div#3;n#td#0;n#tr#0;n#tbody#0;n#table#0;n#body#0;n#html#0;n#!!top" expanded="true" />
-            <element signature="n#style#0;n#div#0;n#div#0;n#div#0;n#div#0;n#div#1;n#div#0;n#div#0;n#div#3;n#td#0;n#tr#0;n#tbody#0;n#table#0;n#body#0;n#html#0;n#!!top" expanded="true" />
-            <element signature="n#style#0;n#img#0;n#div#0;n#div#0;n#div#0;n#div#1;n#div#0;n#div#0;n#div#3;n#td#0;n#tr#0;n#tbody#0;n#table#0;n#body#0;n#html#0;n#!!top" expanded="true" />
-            <element signature="n#style#0;n#div#0;n#div#1;n#div#0;n#div#0;n#div#1;n#div#0;n#div#0;n#div#3;n#td#0;n#tr#0;n#tbody#0;n#table#0;n#body#0;n#html#0;n#!!top" expanded="true" />
-            <element signature="n#style#0;n#div#0;n#div#0;n#div#1;n#div#0;n#div#0;n#div#1;n#div#0;n#div#0;n#div#3;n#td#0;n#tr#0;n#tbody#0;n#table#0;n#body#0;n#html#0;n#!!top" expanded="true" />
-            <element signature="n#style#0;n#p#0;n#div#0;n#div#0;n#div#1;n#div#0;n#div#0;n#div#1;n#div#0;n#div#0;n#div#3;n#td#0;n#tr#0;n#tbody#0;n#table#0;n#body#0;n#html#0;n#!!top" expanded="true" />
-            <element signature="n#style#0;n#span#0;n#p#0;n#div#0;n#div#0;n#div#1;n#div#0;n#div#0;n#div#1;n#div#0;n#div#0;n#div#3;n#td#0;n#tr#0;n#tbody#0;n#table#0;n#body#0;n#html#0;n#!!top" expanded="true" />
-            <element signature="n#style#0;n#table#1;n#div#0;n#div#0;n#div#1;n#div#0;n#div#0;n#div#3;n#td#0;n#tr#0;n#tbody#0;n#table#0;n#body#0;n#html#0;n#!!top" expanded="true" />
-            <element signature="n#style#0;n#tr#0;n#tbody#0;n#table#1;n#div#0;n#div#0;n#div#1;n#div#0;n#div#0;n#div#3;n#td#0;n#tr#0;n#tbody#0;n#table#0;n#body#0;n#html#0;n#!!top" expanded="true" />
-            <element signature="n#style#0;n#td#0;n#tr#0;n#tbody#0;n#table#1;n#div#0;n#div#0;n#div#1;n#div#0;n#div#0;n#div#3;n#td#0;n#tr#0;n#tbody#0;n#table#0;n#body#0;n#html#0;n#!!top" expanded="true" />
-            <element signature="n#style#0;n#table#0;n#td#0;n#tr#0;n#tbody#0;n#table#1;n#div#0;n#div#0;n#div#1;n#div#0;n#div#0;n#div#3;n#td#0;n#tr#0;n#tbody#0;n#table#0;n#body#0;n#html#0;n#!!top" expanded="true" />
-            <element signature="n#style#0;n#tr#0;n#tbody#0;n#table#0;n#td#0;n#tr#0;n#tbody#0;n#table#1;n#div#0;n#div#0;n#div#1;n#div#0;n#div#0;n#div#3;n#td#0;n#tr#0;n#tbody#0;n#table#0;n#body#0;n#html#0;n#!!top" expanded="true" />
-            <element signature="n#style#0;n#td#0;n#tr#0;n#tbody#0;n#table#0;n#td#0;n#tr#0;n#tbody#0;n#table#1;n#div#0;n#div#0;n#div#1;n#div#0;n#div#0;n#div#3;n#td#0;n#tr#0;n#tbody#0;n#table#0;n#body#0;n#html#0;n#!!top" expanded="true" />
-            <element signature="n#style#0;n#div#2;n#div#0;n#div#0;n#div#3;n#td#0;n#tr#0;n#tbody#0;n#table#0;n#body#0;n#html#0;n#!!top" expanded="true" />
-            <element signature="n#style#0;n#div#0;n#div#2;n#div#0;n#div#0;n#div#3;n#td#0;n#tr#0;n#tbody#0;n#table#0;n#body#0;n#html#0;n#!!top" expanded="true" />
-            <element signature="n#style#0;n#div#0;n#div#0;n#div#2;n#div#0;n#div#0;n#div#3;n#td#0;n#tr#0;n#tbody#0;n#table#0;n#body#0;n#html#0;n#!!top" expanded="true" />
-            <element signature="n#style#0;n#table#0;n#div#0;n#div#0;n#div#2;n#div#0;n#div#0;n#div#3;n#td#0;n#tr#0;n#tbody#0;n#table#0;n#body#0;n#html#0;n#!!top" expanded="true" />
-            <element signature="n#style#0;n#tr#0;n#tbody#0;n#table#0;n#div#0;n#div#0;n#div#2;n#div#0;n#div#0;n#div#3;n#td#0;n#tr#0;n#tbody#0;n#table#0;n#body#0;n#html#0;n#!!top" expanded="true" />
-            <element signature="n#style#0;n#td#0;n#tr#0;n#tbody#0;n#table#0;n#div#0;n#div#0;n#div#2;n#div#0;n#div#0;n#div#3;n#td#0;n#tr#0;n#tbody#0;n#table#0;n#body#0;n#html#0;n#!!top" expanded="true" />
-            <element signature="n#style#0;n#table#0;n#td#0;n#tr#0;n#tbody#0;n#table#0;n#div#0;n#div#0;n#div#2;n#div#0;n#div#0;n#div#3;n#td#0;n#tr#0;n#tbody#0;n#table#0;n#body#0;n#html#0;n#!!top" expanded="true" />
-            <element signature="n#style#0;n#tr#0;n#tbody#0;n#table#0;n#td#0;n#tr#0;n#tbody#0;n#table#0;n#div#0;n#div#0;n#div#2;n#div#0;n#div#0;n#div#3;n#td#0;n#tr#0;n#tbody#0;n#table#0;n#body#0;n#html#0;n#!!top" expanded="true" />
-            <element signature="n#style#0;n#td#0;n#tr#0;n#tbody#0;n#table#0;n#td#0;n#tr#0;n#tbody#0;n#table#0;n#div#0;n#div#0;n#div#2;n#div#0;n#div#0;n#div#3;n#td#0;n#tr#0;n#tbody#0;n#table#0;n#body#0;n#html#0;n#!!top" expanded="true" />
-            <element signature="n#style#0;n#table#1;n#div#0;n#div#0;n#div#2;n#div#0;n#div#0;n#div#3;n#td#0;n#tr#0;n#tbody#0;n#table#0;n#body#0;n#html#0;n#!!top" expanded="true" />
-            <element signature="n#style#0;n#tr#0;n#tbody#0;n#table#1;n#div#0;n#div#0;n#div#2;n#div#0;n#div#0;n#div#3;n#td#0;n#tr#0;n#tbody#0;n#table#0;n#body#0;n#html#0;n#!!top" expanded="true" />
-            <element signature="n#style#0;n#td#0;n#tr#0;n#tbody#0;n#table#1;n#div#0;n#div#0;n#div#2;n#div#0;n#div#0;n#div#3;n#td#0;n#tr#0;n#tbody#0;n#table#0;n#body#0;n#html#0;n#!!top" expanded="true" />
-            <element signature="n#style#0;n#table#0;n#td#0;n#tr#0;n#tbody#0;n#table#1;n#div#0;n#div#0;n#div#2;n#div#0;n#div#0;n#div#3;n#td#0;n#tr#0;n#tbody#0;n#table#0;n#body#0;n#html#0;n#!!top" expanded="true" />
-            <element signature="n#style#0;n#tr#0;n#tbody#0;n#table#0;n#td#0;n#tr#0;n#tbody#0;n#table#1;n#div#0;n#div#0;n#div#2;n#div#0;n#div#0;n#div#3;n#td#0;n#tr#0;n#tbody#0;n#table#0;n#body#0;n#html#0;n#!!top" expanded="true" />
-            <element signature="n#style#0;n#td#0;n#tr#0;n#tbody#0;n#table#0;n#td#0;n#tr#0;n#tbody#0;n#table#1;n#div#0;n#div#0;n#div#2;n#div#0;n#div#0;n#div#3;n#td#0;n#tr#0;n#tbody#0;n#table#0;n#body#0;n#html#0;n#!!top" expanded="true" />
-            <element signature="n#style#0;n#div#4;n#td#0;n#tr#0;n#tbody#0;n#table#0;n#body#0;n#html#0;n#!!top" expanded="true" />
-            <element signature="n#style#0;n#div#0;n#div#4;n#td#0;n#tr#0;n#tbody#0;n#table#0;n#body#0;n#html#0;n#!!top" expanded="true" />
-            <element signature="n#style#0;n#div#0;n#div#0;n#div#4;n#td#0;n#tr#0;n#tbody#0;n#table#0;n#body#0;n#html#0;n#!!top" expanded="true" />
-            <element signature="n#style#0;n#div#0;n#div#0;n#div#0;n#div#4;n#td#0;n#tr#0;n#tbody#0;n#table#0;n#body#0;n#html#0;n#!!top" expanded="true" />
-            <element signature="n#style#0;n#div#0;n#div#0;n#div#0;n#div#0;n#div#4;n#td#0;n#tr#0;n#tbody#0;n#table#0;n#body#0;n#html#0;n#!!top" expanded="true" />
-            <element signature="n#style#0;n#div#0;n#div#0;n#div#0;n#div#0;n#div#0;n#div#4;n#td#0;n#tr#0;n#tbody#0;n#table#0;n#body#0;n#html#0;n#!!top" expanded="true" />
-            <element signature="n#style#0;n#table#0;n#div#0;n#div#0;n#div#0;n#div#0;n#div#0;n#div#4;n#td#0;n#tr#0;n#tbody#0;n#table#0;n#body#0;n#html#0;n#!!top" expanded="true" />
-            <element signature="n#style#0;n#tr#0;n#tbody#0;n#table#0;n#div#0;n#div#0;n#div#0;n#div#0;n#div#0;n#div#4;n#td#0;n#tr#0;n#tbody#0;n#table#0;n#body#0;n#html#0;n#!!top" expanded="true" />
-            <element signature="n#style#0;n#td#0;n#tr#0;n#tbody#0;n#table#0;n#div#0;n#div#0;n#div#0;n#div#0;n#div#0;n#div#4;n#td#0;n#tr#0;n#tbody#0;n#table#0;n#body#0;n#html#0;n#!!top" expanded="true" />
-            <element signature="n#style#0;n#table#0;n#td#0;n#tr#0;n#tbody#0;n#table#0;n#div#0;n#div#0;n#div#0;n#div#0;n#div#0;n#div#4;n#td#0;n#tr#0;n#tbody#0;n#table#0;n#body#0;n#html#0;n#!!top" expanded="true" />
-            <element signature="n#style#0;n#tr#0;n#tbody#0;n#table#0;n#td#0;n#tr#0;n#tbody#0;n#table#0;n#div#0;n#div#0;n#div#0;n#div#0;n#div#0;n#div#4;n#td#0;n#tr#0;n#tbody#0;n#table#0;n#body#0;n#html#0;n#!!top" expanded="true" />
-            <element signature="n#style#0;n#td#0;n#tr#0;n#tbody#0;n#table#0;n#td#0;n#tr#0;n#tbody#0;n#table#0;n#div#0;n#div#0;n#div#0;n#div#0;n#div#0;n#div#4;n#td#0;n#tr#0;n#tbody#0;n#table#0;n#body#0;n#html#0;n#!!top" expanded="true" />
-            <marker date="1534303603635" expanded="true" signature="289:427" ph="..." />
-            <marker date="1534303603635" expanded="true" signature="320:420" ph="..." />
-            <marker date="1534303603635" expanded="true" signature="8156:8182" ph="..." />
-            <marker date="1534303603635" expanded="true" signature="8694:8723" ph="..." />
-            <marker date="1534303603635" expanded="true" signature="8797:8810" ph="..." />
-            <marker date="1534303603635" expanded="true" signature="8849:8878" ph="..." />
-            <marker date="1534303603635" expanded="true" signature="8976:9211" ph="..." />
-            <marker date="1534303603635" expanded="true" signature="14064:14096" ph="..." />
-            <marker date="1534303603635" expanded="true" signature="14109:14147" ph="..." />
-            <marker date="1534303603635" expanded="true" signature="34899:34928" ph="..." />
-            <marker date="1534303603635" expanded="true" signature="35002:35015" ph="..." />
-            <marker date="1534303603635" expanded="true" signature="35054:35079" ph="..." />
-            <marker date="1534303603635" expanded="true" signature="35173:35408" ph="..." />
-            <marker date="1534303603635" expanded="true" signature="38050:38130" ph="..." />
-            <marker date="1534303603635" expanded="true" signature="41729:41758" ph="..." />
-            <marker date="1534303603635" expanded="true" signature="41832:41845" ph="..." />
-            <marker date="1534303603635" expanded="true" signature="41884:41909" ph="..." />
-            <marker date="1534303603635" expanded="true" signature="42003:42238" ph="..." />
-            <marker date="1534303603635" expanded="true" signature="42961:43042" ph="..." />
-            <marker date="1534303603635" expanded="true" signature="44857:44886" ph="..." />
-            <marker date="1534303603635" expanded="true" signature="44960:44973" ph="..." />
-            <marker date="1534303603635" expanded="true" signature="45012:45037" ph="..." />
-            <marker date="1534303603635" expanded="true" signature="45131:45366" ph="..." />
-            <marker date="1534303603635" expanded="true" signature="49970:50205" ph="..." />
-            <marker date="1534303603635" expanded="true" signature="52934:52966" ph="..." />
-            <marker date="1534303603635" expanded="true" signature="52979:53017" ph="..." />
-            <marker date="1534303603635" expanded="true" signature="53775:53856" ph="..." />
-            <marker date="1534303603635" expanded="true" signature="56725:56960" ph="..." />
-            <marker date="1534303603635" expanded="true" signature="62102:62131" ph="..." />
-            <marker date="1534303603635" expanded="true" signature="62205:62218" ph="..." />
-            <marker date="1534303603635" expanded="true" signature="62257:62286" ph="..." />
-            <marker date="1534303603635" expanded="true" signature="62380:62615" ph="..." />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/docs/setup.md">
-      <provider selected="true" editor-type-id="split-provider[text-editor;markdown-preview-editor]">
-        <state split_layout="SPLIT">
-          <first_editor relative-caret-position="117">
-            <caret line="9" column="1" lean-forward="false" selection-start-line="9" selection-start-column="1" selection-end-line="9" selection-end-column="1" />
-            <folding />
-          </first_editor>
-          <second_editor />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/domain/serverless.yml">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-289">
-          <caret line="13" column="21" lean-forward="false" selection-start-line="13" selection-start-column="21" selection-end-line="13" selection-end-column="21" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/auth/.serverless/cloudformation-template-update-stack.json">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="481">
-          <caret line="37" column="9" lean-forward="false" selection-start-line="37" selection-start-column="9" selection-end-line="37" selection-end-column="9" />
-          <folding>
-            <marker date="1534312058727" expanded="true" signature="0:2739" ph="{&quot;AWSTemplateFormatVersion&quot;: &quot;2010-09-09&quot;...}" />
-            <marker date="1534312058727" expanded="true" signature="145:2239" ph="{...}" />
-            <marker date="1534312058727" expanded="true" signature="238:2235" ph="{&quot;Type&quot;: &quot;AWS::Cognito::UserPool&quot;...}" />
-            <marker date="1534312058727" expanded="true" signature="300:2229" ph="{&quot;MfaConfiguration&quot;: &quot;OFF&quot;...}" />
-            <marker date="1534312058727" expanded="true" signature="335:470" ph="{&quot;AllowAdminCreateUserOnly&quot;: false...}" />
-            <marker date="1534312058727" expanded="true" signature="417:470" ph="{&quot;EmailMessage&quot;: &quot;&lt;!DOCTYPE HTML PUBLIC \&quot;-//W3C//DTD XHTML 1.0 Transitional //EN\&quot; \&quot;http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd\&quot;&gt;&lt;html xmlns=\&quot;http://www.w3.org/1999/xhtml\&quot; xmlns:v=\&quot;urn:schemas-microsoft-com:vml\&quot; xmlns:o=\&quot;urn:schemas-microsoft-com:office:office\&quot;&gt;&lt;head&gt;\n    &lt;!--[if gte mso 9]&gt;&lt;xml&gt;\n    &lt;o:OfficeDocumentSettings&gt;\n        &lt;o:AllowPNG/&gt;\n        &lt;o:PixelsPerInch&gt;96&lt;/o:PixelsPerInch&gt;\n    &lt;/o:OfficeDocumentSettings&gt;\n&lt;/xml&gt;&lt;![endif]--&gt;\n    &lt;meta http-equiv=\&quot;Content-Type\&quot; content=\&quot;text/html; charset=utf-8\&quot;&gt;\n    &lt;meta name=\&quot;viewport\&quot; content=\&quot;width=device-width\&quot;&gt;\n    &lt;!--[if !mso]&gt;&lt;!--&gt;&lt;meta http-equiv=\&quot;X-UA-Compatible\&quot; content=\&quot;IE=edge\&quot;&gt;&lt;!--&lt;![endif]--&gt;\n    &lt;title&gt;&lt;/title&gt;\n\n\n    &lt;style type=\&quot;text/css\&quot; id=\&quot;media-query\&quot;&gt;\n        body {\n            margin: 0;\n            padding: 0; }\n\n        table, tr, td {\n            vertical-align: top;\n            border-collapse: collapse; }\n\n        .ie-browser table, .mso-container table {\n            table-layout: fixed; }\n\n        * {\n            line-height: inherit; }\n\n        a[x-apple-data-detectors=true] {\n            color: inherit !important;\n            text-decoration: none !important; }\n\n        [owa] .img-container div, [owa] .img-container button {\n            display: block !important; }\n\n        [owa] .fullwidth button {\n            width: 100% !important; }\n\n        [owa] .block-grid .col {\n            display: table-cell;\n            float: none !important;\n            vertical-align: top; }\n\n        .ie-browser .num12, .ie-browser .block-grid, [owa] .num12, [owa] .block-grid {\n            width: 600px !important; }\n\n        .ExternalClass, .ExternalClass p, .ExternalClass span, .ExternalClass font, .ExternalClass td, .ExternalClass div {\n            line-height: 100%; }\n\n        .ie-browser .mixed-two-up .num4, [owa] .mixed-two-up .num4 {\n            width: 200px !important; }\n\n        .ie-browser .mixed-two-up .num8, [owa] .mixed-two-up .num8 {\n            width: 400px !important; }\n\n        .ie-browser .block-grid.two-up .col, [owa] .block-grid.two-up .col {\n            width: 300px !important; }\n\n        .ie-browser .block-grid.three-up .col, [owa] .block-grid.three-up .col {\n            width: 200px !important; }\n\n        .ie-browser .block-grid.four-up .col, [owa] .block-grid.four-up .col {\n            width: 150px !important; }\n\n        .ie-browser .block-grid.five-up .col, [owa] .block-grid.five-up .col {\n            width: 120px !important; }\n\n        .ie-browser .block-grid.six-up .col, [owa] .block-grid.six-up .col {\n            width: 100px !important; }\n\n        .ie-browser .block-grid.seven-up .col, [owa] .block-grid.seven-up .col {\n            width: 85px !important; }\n\n        .ie-browser .block-grid.eight-up .col, [owa] .block-grid.eight-up .col {\n            width: 75px !important; }\n\n        .ie-browser .block-grid.nine-up .col, [owa] .block-grid.nine-up .col {\n            width: 66px !important; }\n\n        .ie-browser .block-grid.ten-up .col, [owa] .block-grid.ten-up .col {\n            width: 60px !important; }\n\n        .ie-browser .block-grid.eleven-up .col, [owa] .block-grid.eleven-up .col {\n            width: 54px !important; }\n\n        .ie-browser .block-grid.twelve-up .col, [owa] .block-grid.twelve-up .col {\n            width: 50px !important; }\n\n        @media only screen and (min-width: 620px) {\n            .block-grid {\n                width: 600px !important; }\n            .block-grid .col {\n                vertical-align: top; }\n            .block-grid .col.num12 {\n                width: 600px !important; }\n            .block-grid.mixed-two-up .col.num4 {\n                width: 200px !important; }\n            .block-grid.mixed-two-up .col.num8 {\n                width: 400px !important; }\n            .block-grid.two-up .col {\n                width: 300px !important; }\n            .block-grid.three-up .col {\n                width: 200px !important; }\n            .block-grid.four-up .col {\n                width: 150px !important; }\n            .block-grid.five-up .col {\n                width: 120px !important; }\n            .block-grid.six-up .col {\n                width: 100px !important; }\n            .block-grid.seven-up .col {\n                width: 85px !important; }\n            .block-grid.eight-up .col {\n                width: 75px !important; }\n            .block-grid.nine-up .col {\n                width: 66px !important; }\n            .block-grid.ten-up .col {\n                width: 60px !important; }\n            .block-grid.eleven-up .col {\n                width: 54px !important; }\n            .block-grid.twelve-up .col {\n                width: 50px !important; } }\n\n        @media (max-width: 620px) {\n            .block-grid, .col {\n                min-width: 320px !important;\n                max-width: 100% !important;\n                display: block !important; }\n            .block-grid {\n                width: calc(100% - 40px) !important; }\n            .col {\n                width: 100% !important; }\n            .col &gt; div {\n                margin: 0 auto; }\n            img.fullwidth, img.fullwidthOnMobile {\n                max-width: 100% !important; }\n            .no-stack .col {\n                min-width: 0 !important;\n                display: table-cell !important; }\n            .no-stack.two-up .col {\n                width: 50% !important; }\n            .no-stack.mixed-two-up .col.num4 {\n                width: 33% !important; }\n            .no-stack.mixed-two-up .col.num8 {\n                width: 66% !important; }\n            .no-stack.three-up .col.num4 {\n                width: 33% !important; }\n            .no-stack.four-up .col.num3 {\n                width: 25% !important; }\n            .mobile_hide {\n                min-height: 0px;\n                max-height: 0px;\n                max-width: 0px;\n                display: none;\n                overflow: hidden;\n                font-size: 0px; } }\n\n    &lt;/style&gt;\n&lt;/head&gt;\n&lt;body class=\&quot;clean-body\&quot; style=\&quot;margin: 0;padding: 0;-webkit-text-size-adjust: 100%;background-color: ##FAF3E1\&quot;&gt;\n&lt;style type=\&quot;text/css\&quot; id=\&quot;media-query-bodytag\&quot;&gt;\n    @media (max-width: 520px) {\n        .block-grid {\n            min-width: 320px!important;\n            max-width: 100%!important;\n            width: 100%!important;\n            display: block!important;\n        }\n\n        .col {\n            min-width: 320px!important;\n            max-width: 100%!important;\n            width: 100%!important;\n            display: block!important;\n        }\n\n        .col &gt; div {\n            margin: 0 auto;\n        }\n\n        img.fullwidth {\n            max-width: 100%!important;\n        }\n        img.fullwidthOnMobile {\n            max-width: 100%!important;\n        }\n        .no-stack .col {\n            min-width: 0!important;\n            display: table-cell!important;\n        }\n        .no-stack.two-up .col {\n            width: 50%!important;\n        }\n        .no-stack.mixed-two-up .col.num4 {\n            width: 33%!important;\n        }\n        .no-stack.mixed-two-up .col.num8 {\n            width: 66%!important;\n        }\n        .no-stack.three-up .col.num4 {\n            width: 33%!important;\n        }\n        .no-stack.four-up .col.num3 {\n            width: 25%!important;\n        }\n        .mobile_hide {\n            min-height: 0px!important;\n            max-height: 0px!important;\n            max-width: 0px!important;\n            display: none!important;\n            overflow: hidden!important;\n            font-size: 0px!important;\n        }\n    }\n&lt;/style&gt;\n&lt;!--[if IE]&gt;&lt;div class=\&quot;ie-browser\&quot;&gt;&lt;![endif]--&gt;\n&lt;!--[if mso]&gt;&lt;div class=\&quot;mso-container\&quot;&gt;&lt;![endif]--&gt;\n&lt;table class=\&quot;nl-container\&quot; style=\&quot;border-collapse: collapse;table-layout: fixed;border-spacing: 0;mso-table-lspace: 0pt;mso-table-rspace: 0pt;vertical-align: top;min-width: 320px;Margin: 0 auto;background-color: ##FAF3E1;width: 100%\&quot; cellpadding=\&quot;0\&quot; cellspacing=\&quot;0\&quot;&gt;\n    &lt;tbody&gt;\n    &lt;tr style=\&quot;vertical-align: top\&quot;&gt;\n        &lt;td style=\&quot;word-break: break-word;border-collapse: collapse !important;vertical-align: top\&quot;&gt;\n            &lt;!--[if (mso)|(IE)]&gt;&lt;table width=\&quot;100%\&quot; cellpadding=\&quot;0\&quot; cellspacing=\&quot;0\&quot; border=\&quot;0\&quot;&gt;&lt;tr&gt;&lt;td align=\&quot;center\&quot; style=\&quot;background-color: ##FAF3E1;\&quot;&gt;&lt;![endif]--&gt;\n\n            &lt;div style=\&quot;background-color:transparent;\&quot;&gt;\n                &lt;div style=\&quot;Margin: 0 auto;min-width: 320px;max-width: 600px;overflow-wrap: break-word;word-wrap: break-word;word-break: break-word;background-color: transparent;\&quot; class=\&quot;block-grid \&quot;&gt;\n                    &lt;div style=\&quot;border-collapse: collapse;display: table;width: 100%;background-color:transparent;\&quot;&gt;\n                        &lt;!--[if (mso)|(IE)]&gt;&lt;table width=\&quot;100%\&quot; cellpadding=\&quot;0\&quot; cellspacing=\&quot;0\&quot; border=\&quot;0\&quot;&gt;&lt;tr&gt;&lt;td style=\&quot;background-color:transparent;\&quot; align=\&quot;center\&quot;&gt;&lt;table cellpadding=\&quot;0\&quot; cellspacing=\&quot;0\&quot; border=\&quot;0\&quot; style=\&quot;width: 600px;\&quot;&gt;&lt;tr class=\&quot;layout-full-width\&quot; style=\&quot;background-color:transparent;\&quot;&gt;&lt;![endif]--&gt;\n\n                        &lt;!--[if (mso)|(IE)]&gt;&lt;td align=\&quot;center\&quot; width=\&quot;600\&quot; style=\&quot; width:600px; padding-right: 0px; padding-left: 0px; padding-top:0px; padding-bottom:0px; border-top: 0px solid transparent; border-left: 0px solid transparent; border-bottom: 0px solid transparent; border-right: 0px solid transparent;\&quot; valign=\&quot;top\&quot;&gt;&lt;![endif]--&gt;\n                        &lt;div class=\&quot;col num12\&quot; style=\&quot;min-width: 320px;max-width: 600px;display: table-cell;vertical-align: top;\&quot;&gt;\n                            &lt;div style=\&quot;background-color: transparent; width: 100% !important;\&quot;&gt;\n                                &lt;!--[if (!mso)&amp;(!IE)]&gt;&lt;!--&gt;&lt;div style=\&quot;border-top: 0px solid transparent; border-left: 0px solid transparent; border-bottom: 0px solid transparent; border-right: 0px solid transparent; padding-top:0px; padding-bottom:0px; padding-right: 0px; padding-left: 0px;\&quot;&gt;&lt;!--&lt;![endif]--&gt;\n\n\n\n                                &lt;table border=\&quot;0\&quot; cellpadding=\&quot;0\&quot; cellspacing=\&quot;0\&quot; width=\&quot;100%\&quot; class=\&quot;divider \&quot; style=\&quot;border-collapse: collapse;table-layout: fixed;border-spacing: 0;mso-table-lspace: 0pt;mso-table-rspace: 0pt;vertical-align: top;min-width: 100%;-ms-text-size-adjust: 100%;-webkit-text-size-adjust: 100%\&quot;&gt;\n                                    &lt;tbody&gt;\n                                    &lt;tr style=\&quot;vertical-align: top\&quot;&gt;\n                                        &lt;td class=\&quot;divider_inner\&quot; style=\&quot;word-break: break-word;border-collapse: collapse !important;vertical-align: top;padding-right: 25px;padding-left: 25px;padding-top: 25px;padding-bottom: 25px;min-width: 100%;mso-line-height-rule: exactly;-ms-text-size-adjust: 100%;-webkit-text-size-adjust: 100%\&quot;&gt;\n                                            &lt;table class=\&quot;divider_content\&quot; align=\&quot;center\&quot; border=\&quot;0\&quot; cellpadding=\&quot;0\&quot; cellspacing=\&quot;0\&quot; width=\&quot;100%\&quot; style=\&quot;border-collapse: collapse;table-layout: fixed;border-spacing: 0;mso-table-lspace: 0pt;mso-table-rspace: 0pt;vertical-align: top;border-top: 0px solid transparent;-ms-text-size-adjust: 100%;-webkit-text-size-adjust: 100%\&quot;&gt;\n                                                &lt;tbody&gt;\n                                                &lt;tr style=\&quot;vertical-align: top\&quot;&gt;\n                                                    &lt;td style=\&quot;word-break: break-word;border-collapse: collapse !important;vertical-align: top;mso-line-height-rule: exactly;-ms-text-size-adjust: 100%;-webkit-text-size-adjust: 100%\&quot;&gt;\n                                                        &lt;span&gt;&lt;/span&gt;\n                                                    &lt;/td&gt;\n                                                &lt;/tr&gt;\n                                                &lt;/tbody&gt;\n                                            &lt;/table&gt;\n                                        &lt;/td&gt;\n                                    &lt;/tr&gt;\n                                    &lt;/tbody&gt;\n                                &lt;/table&gt;\n\n\n\n                                &lt;table border=\&quot;0\&quot; cellpadding=\&quot;0\&quot; cellspacing=\&quot;0\&quot; width=\&quot;100%\&quot; class=\&quot;divider \&quot; style=\&quot;border-collapse: collapse;table-layout: fixed;border-spacing: 0;mso-table-lspace: 0pt;mso-table-rspace: 0pt;vertical-align: top;min-width: 100%;-ms-text-size-adjust: 100%;-webkit-text-size-adjust: 100%\&quot;&gt;\n                                    &lt;tbody&gt;\n                                    &lt;tr style=\&quot;vertical-align: top\&quot;&gt;\n                                        &lt;td class=\&quot;divider_inner\&quot; style=\&quot;word-break: break-word;border-collapse: collapse !important;vertical-align: top;padding-right: 0px;padding-left: 0px;padding-top: 0px;padding-bottom: 0px;min-width: 100%;mso-line-height-rule: exactly;-ms-text-size-adjust: 100%;-webkit-text-size-adjust: 100%\&quot;&gt;\n                                            &lt;table class=\&quot;divider_content\&quot; height=\&quot;0px\&quot; align=\&quot;center\&quot; border=\&quot;0\&quot; cellpadding=\&quot;0\&quot; cellspacing=\&quot;0\&quot; width=\&quot;100%\&quot; style=\&quot;border-collapse: collapse;table-layout: fixed;border-spacing: 0;mso-table-lspace: 0pt;mso-table-rspace: 0pt;vertical-align: top;border-top: 11px solid ##8E8EF2;-ms-text-size-adjust: 100%;-webkit-text-size-adjust: 100%\&quot;&gt;\n                                                &lt;tbody&gt;\n                                                &lt;tr style=\&quot;vertical-align: top\&quot;&gt;\n                                                    &lt;td style=\&quot;word-break: break-word;border-collapse: collapse !important;vertical-align: top;font-size: 0px;line-height: 0px;mso-line-height-rule: exactly;-ms-text-size-adjust: 100%;-webkit-text-size-adjust: 100%\&quot;&gt;\n                                                        &lt;span&gt;&amp;##160;&lt;/span&gt;\n                                                    &lt;/td&gt;\n                                                &lt;/tr&gt;\n                                                &lt;/tbody&gt;\n                                            &lt;/table&gt;\n                                        &lt;/td&gt;\n                                    &lt;/tr&gt;\n                                    &lt;/tbody&gt;\n                                &lt;/table&gt;\n\n\n                                &lt;div align=\&quot;center\&quot; class=\&quot;img-container center  autowidth  \&quot; style=\&quot;padding-right: 0px;  padding-left: 0px;\&quot;&gt;\n                                    &lt;!--[if mso]&gt;&lt;table width=\&quot;100%\&quot; cellpadding=\&quot;0\&quot; cellspacing=\&quot;0\&quot; border=\&quot;0\&quot;&gt;&lt;tr style=\&quot;line-height:0px;line-height:0px;\&quot;&gt;&lt;td style=\&quot;padding-right: 0px; padding-left: 0px;\&quot; align=\&quot;center\&quot;&gt;&lt;![endif]--&gt;\n                                    &lt;img class=\&quot;center  autowidth \&quot; align=\&quot;center\&quot; border=\&quot;0\&quot; src=\&quot;data:image/png;base64,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\&quot; alt=\&quot;Image\&quot; title=\&quot;Image\&quot; style=\&quot;outline: none;text-decoration: none;-ms-interpolation-mode: bicubic;clear: both;display: block !important;border: 0;height: auto;float: none;width: 100%;max-width: 260px\&quot; width=\&quot;260\&quot;&gt;\n                                    &lt;!--[if mso]&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;![endif]--&gt;\n                                &lt;/div&gt;\n\n\n                                &lt;!--[if (!mso)&amp;(!IE)]&gt;&lt;!--&gt;&lt;/div&gt;&lt;!--&lt;![endif]--&gt;\n                            &lt;/div&gt;\n                        &lt;/div&gt;\n                        &lt;!--[if (mso)|(IE)]&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;![endif]--&gt;\n                    &lt;/div&gt;\n                &lt;/div&gt;\n            &lt;/div&gt;    &lt;div style=\&quot;background-color:transparent;\&quot;&gt;\n            &lt;div style=\&quot;Margin: 0 auto;min-width: 320px;max-width: 600px;overflow-wrap: break-word;word-wrap: break-word;word-break: break-word;background-color: ##FFFFFF;\&quot; class=\&quot;block-grid \&quot;&gt;\n                &lt;div style=\&quot;border-collapse: collapse;display: table;width: 100%;background-color:##FFFFFF;\&quot;&gt;\n                    &lt;!--[if (mso)|(IE)]&gt;&lt;table width=\&quot;100%\&quot; cellpadding=\&quot;0\&quot; cellspacing=\&quot;0\&quot; border=\&quot;0\&quot;&gt;&lt;tr&gt;&lt;td style=\&quot;background-color:transparent;\&quot; align=\&quot;center\&quot;&gt;&lt;table cellpadding=\&quot;0\&quot; cellspacing=\&quot;0\&quot; border=\&quot;0\&quot; style=\&quot;width: 600px;\&quot;&gt;&lt;tr class=\&quot;layout-full-width\&quot; style=\&quot;background-color:##FFFFFF;\&quot;&gt;&lt;![endif]--&gt;\n\n                    &lt;!--[if (mso)|(IE)]&gt;&lt;td align=\&quot;center\&quot; width=\&quot;600\&quot; style=\&quot; width:600px; padding-right: 0px; padding-left: 0px; padding-top:0px; padding-bottom:0px; border-top: 0px solid transparent; border-left: 0px solid transparent; border-bottom: 0px solid transparent; border-right: 0px solid transparent;\&quot; valign=\&quot;top\&quot;&gt;&lt;![endif]--&gt;\n                    &lt;div class=\&quot;col num12\&quot; style=\&quot;min-width: 320px;max-width: 600px;display: table-cell;vertical-align: top;\&quot;&gt;\n                        &lt;div style=\&quot;background-color: transparent; width: 100% !important;\&quot;&gt;\n                            &lt;!--[if (!mso)&amp;(!IE)]&gt;&lt;!--&gt;&lt;div style=\&quot;border-top: 0px solid transparent; border-left: 0px solid transparent; border-bottom: 0px solid transparent; border-right: 0px solid transparent; padding-top:0px; padding-bottom:0px; padding-right: 0px; padding-left: 0px;\&quot;&gt;&lt;!--&lt;![endif]--&gt;\n\n\n\n                            &lt;table border=\&quot;0\&quot; cellpadding=\&quot;0\&quot; cellspacing=\&quot;0\&quot; width=\&quot;100%\&quot; class=\&quot;divider \&quot; style=\&quot;border-collapse: collapse;table-layout: fixed;border-spacing: 0;mso-table-lspace: 0pt;mso-table-rspace: 0pt;vertical-align: top;min-width: 100%;-ms-text-size-adjust: 100%;-webkit-text-size-adjust: 100%\&quot;&gt;\n                                &lt;tbody&gt;\n                                &lt;tr style=\&quot;vertical-align: top\&quot;&gt;\n                                    &lt;td class=\&quot;divider_inner\&quot; style=\&quot;word-break: break-word;border-collapse: collapse !important;vertical-align: top;padding-right: 15px;padding-left: 15px;padding-top: 15px;padding-bottom: 15px;min-width: 100%;mso-line-height-rule: exactly;-ms-text-size-adjust: 100%;-webkit-text-size-adjust: 100%\&quot;&gt;\n                                        &lt;table class=\&quot;divider_content\&quot; align=\&quot;center\&quot; border=\&quot;0\&quot; cellpadding=\&quot;0\&quot; cellspacing=\&quot;0\&quot; width=\&quot;100%\&quot; style=\&quot;border-collapse: collapse;table-layout: fixed;border-spacing: 0;mso-table-lspace: 0pt;mso-table-rspace: 0pt;vertical-align: top;border-top: 0px solid transparent;-ms-text-size-adjust: 100%;-webkit-text-size-adjust: 100%\&quot;&gt;\n                                            &lt;tbody&gt;\n                                            &lt;tr style=\&quot;vertical-align: top\&quot;&gt;\n                                                &lt;td style=\&quot;word-break: break-word;border-collapse: collapse !important;vertical-align: top;mso-line-height-rule: exactly;-ms-text-size-adjust: 100%;-webkit-text-size-adjust: 100%\&quot;&gt;\n                                                    &lt;span&gt;&lt;/span&gt;\n                                                &lt;/td&gt;\n                                            &lt;/tr&gt;\n                                            &lt;/tbody&gt;\n                                        &lt;/table&gt;\n                                    &lt;/td&gt;\n                                &lt;/tr&gt;\n                                &lt;/tbody&gt;\n                            &lt;/table&gt;\n\n\n                            &lt;div class=\&quot;\&quot;&gt;\n                                &lt;!--[if mso]&gt;&lt;table width=\&quot;100%\&quot; cellpadding=\&quot;0\&quot; cellspacing=\&quot;0\&quot; border=\&quot;0\&quot;&gt;&lt;tr&gt;&lt;td style=\&quot;padding-right: 10px; padding-left: 30px; padding-top: 10px; padding-bottom: 5px;\&quot;&gt;&lt;![endif]--&gt;\n                                &lt;div style=\&quot;color:##555555;font-family:'Helvetica Neue', Helvetica, Arial, sans-serif;line-height:120%; padding-right: 10px; padding-left: 30px; padding-top: 10px; padding-bottom: 5px;\&quot;&gt;\n                                    &lt;div style=\&quot;font-size:12px;line-height:14px;color:##555555;font-family:'Helvetica Neue', Helvetica, Arial, sans-serif;text-align:left;\&quot;&gt;&lt;p style=\&quot;margin: 0;font-size: 14px;line-height: 17px\&quot;&gt;&lt;strong&gt;&lt;span style=\&quot;font-size: 24px; line-height: 28px;\&quot;&gt;Hello there,&lt;/span&gt;&lt;/strong&gt;&lt;/p&gt;&lt;p style=\&quot;margin: 0;font-size: 14px;line-height: 17px\&quot;&gt;&lt;span style=\&quot;font-size: 14px; line-height: 16px;\&quot;&gt;&lt;span style=\&quot;line-height: 16px; font-size: 14px;\&quot;&gt;You're verification code is &lt;strong&gt;{########}&lt;/strong&gt;&lt;/span&gt;&lt;/span&gt;&lt;/p&gt;&lt;/div&gt;\n                                &lt;/div&gt;\n                                &lt;!--[if mso]&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;![endif]--&gt;\n                            &lt;/div&gt;\n\n\n\n                            &lt;table border=\&quot;0\&quot; cellpadding=\&quot;0\&quot; cellspacing=\&quot;0\&quot; width=\&quot;100%\&quot; class=\&quot;divider \&quot; style=\&quot;border-collapse: collapse;table-layout: fixed;border-spacing: 0;mso-table-lspace: 0pt;mso-table-rspace: 0pt;vertical-align: top;min-width: 100%;-ms-text-size-adjust: 100%;-webkit-text-size-adjust: 100%\&quot;&gt;\n                                &lt;tbody&gt;\n                                &lt;tr style=\&quot;vertical-align: top\&quot;&gt;\n                                    &lt;td class=\&quot;divider_inner\&quot; style=\&quot;word-break: break-word;border-collapse: collapse !important;vertical-align: top;padding-right: 15px;padding-left: 15px;padding-top: 15px;padding-bottom: 15px;min-width: 100%;mso-line-height-rule: exactly;-ms-text-size-adjust: 100%;-webkit-text-size-adjust: 100%\&quot;&gt;\n                                        &lt;table class=\&quot;divider_content\&quot; align=\&quot;center\&quot; border=\&quot;0\&quot; cellpadding=\&quot;0\&quot; cellspacing=\&quot;0\&quot; width=\&quot;100%\&quot; style=\&quot;border-collapse: collapse;table-layout: fixed;border-spacing: 0;mso-table-lspace: 0pt;mso-table-rspace: 0pt;vertical-align: top;border-top: 0px solid transparent;-ms-text-size-adjust: 100%;-webkit-text-size-adjust: 100%\&quot;&gt;\n                                            &lt;tbody&gt;\n                                            &lt;tr style=\&quot;vertical-align: top\&quot;&gt;\n                                                &lt;td style=\&quot;word-break: break-word;border-collapse: collapse !important;vertical-align: top;mso-line-height-rule: exactly;-ms-text-size-adjust: 100%;-webkit-text-size-adjust: 100%\&quot;&gt;\n                                                    &lt;span&gt;&lt;/span&gt;\n                                                &lt;/td&gt;\n                                            &lt;/tr&gt;\n                                            &lt;/tbody&gt;\n                                        &lt;/table&gt;\n                                    &lt;/td&gt;\n                                &lt;/tr&gt;\n                                &lt;/tbody&gt;\n                            &lt;/table&gt;\n\n                            &lt;!--[if (!mso)&amp;(!IE)]&gt;&lt;!--&gt;&lt;/div&gt;&lt;!--&lt;![endif]--&gt;\n                        &lt;/div&gt;\n                    &lt;/div&gt;\n                    &lt;!--[if (mso)|(IE)]&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;![endif]--&gt;\n                &lt;/div&gt;\n            &lt;/div&gt;\n        &lt;/div&gt;    &lt;div style=\&quot;background-color:transparent;\&quot;&gt;\n            &lt;div style=\&quot;Margin: 0 auto;min-width: 320px;max-width: 600px;overflow-wrap: break-word;word-wrap: break-word;word-break: break-word;background-color: ##EDEDED;\&quot; class=\&quot;block-grid \&quot;&gt;\n                &lt;div style=\&quot;border-collapse: collapse;display: table;width: 100%;background-color:##EDEDED;\&quot;&gt;\n                    &lt;!--[if (mso)|(IE)]&gt;&lt;table width=\&quot;100%\&quot; cellpadding=\&quot;0\&quot; cellspacing=\&quot;0\&quot; border=\&quot;0\&quot;&gt;&lt;tr&gt;&lt;td style=\&quot;background-color:transparent;\&quot; align=\&quot;center\&quot;&gt;&lt;table cellpadding=\&quot;0\&quot; cellspacing=\&quot;0\&quot; border=\&quot;0\&quot; style=\&quot;width: 600px;\&quot;&gt;&lt;tr class=\&quot;layout-full-width\&quot; style=\&quot;background-color:##EDEDED;\&quot;&gt;&lt;![endif]--&gt;\n\n                    &lt;!--[if (mso)|(IE)]&gt;&lt;td align=\&quot;center\&quot; width=\&quot;600\&quot; style=\&quot; width:600px; padding-right: 0px; padding-left: 0px; padding-top:5px; padding-bottom:5px; border-top: 0px solid transparent; border-left: 0px solid transparent; border-bottom: 0px solid transparent; border-right: 0px solid transparent;\&quot; valign=\&quot;top\&quot;&gt;&lt;![endif]--&gt;\n                    &lt;div class=\&quot;col num12\&quot; style=\&quot;min-width: 320px;max-width: 600px;display: table-cell;vertical-align: top;\&quot;&gt;\n                        &lt;div style=\&quot;background-color: transparent; width: 100% !important;\&quot;&gt;\n                            &lt;!--[if (!mso)&amp;(!IE)]&gt;&lt;!--&gt;&lt;div style=\&quot;border-top: 0px solid transparent; border-left: 0px solid transparent; border-bottom: 0px solid transparent; border-right: 0px solid transparent; padding-top:5px; padding-bottom:5px; padding-right: 0px; padding-left: 0px;\&quot;&gt;&lt;!--&lt;![endif]--&gt;\n\n\n                            &lt;div class=\&quot;\&quot;&gt;\n                                &lt;!--[if mso]&gt;&lt;table width=\&quot;100%\&quot; cellpadding=\&quot;0\&quot; cellspacing=\&quot;0\&quot; border=\&quot;0\&quot;&gt;&lt;tr&gt;&lt;td style=\&quot;padding-right: 30px; padding-left: 30px; padding-top: 30px; padding-bottom: 30px;\&quot;&gt;&lt;![endif]--&gt;\n                                &lt;div style=\&quot;color:##555555;font-family:'Helvetica Neue', Helvetica, Arial, sans-serif;line-height:180%; padding-right: 30px; padding-left: 30px; padding-top: 30px; padding-bottom: 30px;\&quot;&gt;\n                                    &lt;div style=\&quot;font-size:12px;line-height:22px;color:##555555;font-family:'Helvetica Neue', Helvetica, Arial, sans-serif;text-align:left;\&quot;&gt;&lt;p style=\&quot;margin: 0;font-size: 12px;line-height: 22px\&quot;&gt;&lt;span style=\&quot;font-size: 14px; line-height: 25px;\&quot;&gt;If you didn't attempt to verify your email address with our service, please delete this email.&lt;/span&gt;&lt;/p&gt;&lt;p style=\&quot;margin: 0;font-size: 12px;line-height: 22px\&quot;&gt;&lt;span style=\&quot;font-size: 14px; line-height: 25px;\&quot;&gt;Cheers,&lt;/span&gt;&lt;/p&gt;&lt;p style=\&quot;margin: 0;font-size: 12px;line-height: 22px\&quot;&gt;&lt;em&gt;&lt;strong&gt;&lt;span style=\&quot;font-size: 14px; line-height: 25px;\&quot;&gt;The Crunch.Ski Team&lt;/span&gt;&lt;/strong&gt;&lt;/em&gt;&lt;/p&gt;&lt;/div&gt;\n                                &lt;/div&gt;\n                                &lt;!--[if mso]&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;![endif]--&gt;\n                            &lt;/div&gt;\n\n                            &lt;!--[if (!mso)&amp;(!IE)]&gt;&lt;!--&gt;&lt;/div&gt;&lt;!--&lt;![endif]--&gt;\n                        &lt;/div&gt;\n                    &lt;/div&gt;\n                    &lt;!--[if (mso)|(IE)]&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;![endif]--&gt;\n                &lt;/div&gt;\n            &lt;/div&gt;\n        &lt;/div&gt;    &lt;div style=\&quot;background-color:transparent;\&quot;&gt;\n            &lt;div style=\&quot;Margin: 0 auto;min-width: 320px;max-width: 600px;overflow-wrap: break-word;word-wrap: break-word;word-break: break-word;background-color: ##BBBBBB;\&quot; class=\&quot;block-grid three-up \&quot;&gt;\n                &lt;div style=\&quot;border-collapse: collapse;display: table;width: 100%;background-color:##BBBBBB;\&quot;&gt;\n                    &lt;!--[if (mso)|(IE)]&gt;&lt;table width=\&quot;100%\&quot; cellpadding=\&quot;0\&quot; cellspacing=\&quot;0\&quot; border=\&quot;0\&quot;&gt;&lt;tr&gt;&lt;td style=\&quot;background-color:transparent;\&quot; align=\&quot;center\&quot;&gt;&lt;table cellpadding=\&quot;0\&quot; cellspacing=\&quot;0\&quot; border=\&quot;0\&quot; style=\&quot;width: 600px;\&quot;&gt;&lt;tr class=\&quot;layout-full-width\&quot; style=\&quot;background-color:##BBBBBB;\&quot;&gt;&lt;![endif]--&gt;\n\n                    &lt;!--[if (mso)|(IE)]&gt;&lt;td align=\&quot;center\&quot; width=\&quot;200\&quot; style=\&quot; width:200px; padding-right: 0px; padding-left: 0px; padding-top:5px; padding-bottom:0px; border-top: 0px solid transparent; border-left: 0px solid transparent; border-bottom: 0px solid transparent; border-right: 0px solid transparent;\&quot; valign=\&quot;top\&quot;&gt;&lt;![endif]--&gt;\n                    &lt;div class=\&quot;col num4\&quot; style=\&quot;max-width: 320px;min-width: 200px;display: table-cell;vertical-align: top;\&quot;&gt;\n                        &lt;div style=\&quot;background-color: transparent; width: 100% !important;\&quot;&gt;\n                            &lt;!--[if (!mso)&amp;(!IE)]&gt;&lt;!--&gt;&lt;div style=\&quot;border-top: 0px solid transparent; border-left: 0px solid transparent; border-bottom: 0px solid transparent; border-right: 0px solid transparent; padding-top:5px; padding-bottom:0px; padding-right: 0px; padding-left: 0px;\&quot;&gt;&lt;!--&lt;![endif]--&gt;\n\n\n\n                            &lt;table border=\&quot;0\&quot; cellpadding=\&quot;0\&quot; cellspacing=\&quot;0\&quot; width=\&quot;100%\&quot; class=\&quot;divider \&quot; style=\&quot;border-collapse: collapse;table-layout: fixed;border-spacing: 0;mso-table-lspace: 0pt;mso-table-rspace: 0pt;vertical-align: top;min-width: 100%;-ms-text-size-adjust: 100%;-webkit-text-size-adjust: 100%\&quot;&gt;\n                                &lt;tbody&gt;\n                                &lt;tr style=\&quot;vertical-align: top\&quot;&gt;\n                                    &lt;td class=\&quot;divider_inner\&quot; style=\&quot;word-break: break-word;border-collapse: collapse !important;vertical-align: top;padding-right: 5px;padding-left: 5px;padding-top: 5px;padding-bottom: 5px;min-width: 100%;mso-line-height-rule: exactly;-ms-text-size-adjust: 100%;-webkit-text-size-adjust: 100%\&quot;&gt;\n                                        &lt;table class=\&quot;divider_content\&quot; align=\&quot;center\&quot; border=\&quot;0\&quot; cellpadding=\&quot;0\&quot; cellspacing=\&quot;0\&quot; width=\&quot;100%\&quot; style=\&quot;border-collapse: collapse;table-layout: fixed;border-spacing: 0;mso-table-lspace: 0pt;mso-table-rspace: 0pt;vertical-align: top;border-top: 0px solid transparent;-ms-text-size-adjust: 100%;-webkit-text-size-adjust: 100%\&quot;&gt;\n                                            &lt;tbody&gt;\n                                            &lt;tr style=\&quot;vertical-align: top\&quot;&gt;\n                                                &lt;td style=\&quot;word-break: break-word;border-collapse: collapse !important;vertical-align: top;mso-line-height-rule: exactly;-ms-text-size-adjust: 100%;-webkit-text-size-adjust: 100%\&quot;&gt;\n                                                    &lt;span&gt;&lt;/span&gt;\n                                                &lt;/td&gt;\n                                            &lt;/tr&gt;\n                                            &lt;/tbody&gt;\n                                        &lt;/table&gt;\n                                    &lt;/td&gt;\n                                &lt;/tr&gt;\n                                &lt;/tbody&gt;\n                            &lt;/table&gt;\n\n\n\n                            &lt;table border=\&quot;0\&quot; cellpadding=\&quot;0\&quot; cellspacing=\&quot;0\&quot; width=\&quot;100%\&quot; class=\&quot;divider \&quot; style=\&quot;border-collapse: collapse;table-layout: fixed;border-spacing: 0;mso-table-lspace: 0pt;mso-table-rspace: 0pt;vertical-align: top;min-width: 100%;-ms-text-size-adjust: 100%;-webkit-text-size-adjust: 100%\&quot;&gt;\n                                &lt;tbody&gt;\n                                &lt;tr style=\&quot;vertical-align: top\&quot;&gt;\n                                    &lt;td class=\&quot;divider_inner\&quot; style=\&quot;word-break: break-word;border-collapse: collapse !important;vertical-align: top;padding-right: 5px;padding-left: 5px;padding-top: 5px;padding-bottom: 5px;min-width: 100%;mso-line-height-rule: exactly;-ms-text-size-adjust: 100%;-webkit-text-size-adjust: 100%\&quot;&gt;\n                                        &lt;table class=\&quot;divider_content\&quot; align=\&quot;center\&quot; border=\&quot;0\&quot; cellpadding=\&quot;0\&quot; cellspacing=\&quot;0\&quot; width=\&quot;100%\&quot; style=\&quot;border-collapse: collapse;table-layout: fixed;border-spacing: 0;mso-table-lspace: 0pt;mso-table-rspace: 0pt;vertical-align: top;border-top: 0px solid transparent;-ms-text-size-adjust: 100%;-webkit-text-size-adjust: 100%\&quot;&gt;\n                                            &lt;tbody&gt;\n                                            &lt;tr style=\&quot;vertical-align: top\&quot;&gt;\n                                                &lt;td style=\&quot;word-break: break-word;border-collapse: collapse !important;vertical-align: top;mso-line-height-rule: exactly;-ms-text-size-adjust: 100%;-webkit-text-size-adjust: 100%\&quot;&gt;\n                                                    &lt;span&gt;&lt;/span&gt;\n                                                &lt;/td&gt;\n                                            &lt;/tr&gt;\n                                            &lt;/tbody&gt;\n                                        &lt;/table&gt;\n                                    &lt;/td&gt;\n                                &lt;/tr&gt;\n                                &lt;/tbody&gt;\n                            &lt;/table&gt;\n\n                            &lt;!--[if (!mso)&amp;(!IE)]&gt;&lt;!--&gt;&lt;/div&gt;&lt;!--&lt;![endif]--&gt;\n                        &lt;/div&gt;\n                    &lt;/div&gt;\n                    &lt;!--[if (mso)|(IE)]&gt;&lt;/td&gt;&lt;td align=\&quot;center\&quot; width=\&quot;200\&quot; style=\&quot; width:200px; padding-right: 0px; padding-left: 0px; padding-top:5px; padding-bottom:5px; border-top: 0px solid transparent; border-left: 0px solid transparent; border-bottom: 0px solid transparent; border-right: 0px solid transparent;\&quot; valign=\&quot;top\&quot;&gt;&lt;![endif]--&gt;\n                    &lt;div class=\&quot;col num4\&quot; style=\&quot;max-width: 320px;min-width: 200px;display: table-cell;vertical-align: top;\&quot;&gt;\n                        &lt;div style=\&quot;background-color: transparent; width: 100% !important;\&quot;&gt;\n                            &lt;!--[if (!mso)&amp;(!IE)]&gt;&lt;!--&gt;&lt;div style=\&quot;border-top: 0px solid transparent; border-left: 0px solid transparent; border-bottom: 0px solid transparent; border-right: 0px solid transparent; padding-top:5px; padding-bottom:5px; padding-right: 0px; padding-left: 0px;\&quot;&gt;&lt;!--&lt;![endif]--&gt;\n\n\n\n                            &lt;table border=\&quot;0\&quot; cellpadding=\&quot;0\&quot; cellspacing=\&quot;0\&quot; width=\&quot;100%\&quot; class=\&quot;divider \&quot; style=\&quot;border-collapse: collapse;table-layout: fixed;border-spacing: 0;mso-table-lspace: 0pt;mso-table-rspace: 0pt;vertical-align: top;min-width: 100%;-ms-text-size-adjust: 100%;-webkit-text-size-adjust: 100%\&quot;&gt;\n                                &lt;tbody&gt;\n                                &lt;tr style=\&quot;vertical-align: top\&quot;&gt;\n                                    &lt;td class=\&quot;divider_inner\&quot; style=\&quot;word-break: break-word;border-collapse: collapse !important;vertical-align: top;padding-right: 5px;padding-left: 5px;padding-top: 5px;padding-bottom: 5px;min-width: 100%;mso-line-height-rule: exactly;-ms-text-size-adjust: 100%;-webkit-text-size-adjust: 100%\&quot;&gt;\n                                        &lt;table class=\&quot;divider_content\&quot; align=\&quot;center\&quot; border=\&quot;0\&quot; cellpadding=\&quot;0\&quot; cellspacing=\&quot;0\&quot; width=\&quot;100%\&quot; style=\&quot;border-collapse: collapse;table-layout: fixed;border-spacing: 0;mso-table-lspace: 0pt;mso-table-rspace: 0pt;vertical-align: top;border-top: 0px solid transparent;-ms-text-size-adjust: 100%;-webkit-text-size-adjust: 100%\&quot;&gt;\n                                            &lt;tbody&gt;\n                                            &lt;tr style=\&quot;vertical-align: top\&quot;&gt;\n                                                &lt;td style=\&quot;word-break: break-word;border-collapse: collapse !important;vertical-align: top;mso-line-height-rule: exactly;-ms-text-size-adjust: 100%;-webkit-text-size-adjust: 100%\&quot;&gt;\n                                                    &lt;span&gt;&lt;/span&gt;\n                                                &lt;/td&gt;\n                                            &lt;/tr&gt;\n                                            &lt;/tbody&gt;\n                                        &lt;/table&gt;\n                                    &lt;/td&gt;\n                                &lt;/tr&gt;\n                                &lt;/tbody&gt;\n                            &lt;/table&gt;\n\n\n                            &lt;div align=\&quot;center\&quot; class=\&quot;img-container center  autowidth  \&quot; style=\&quot;padding-right: 0px;  padding-left: 0px;\&quot;&gt;\n                                &lt;!--[if mso]&gt;&lt;table width=\&quot;100%\&quot; cellpadding=\&quot;0\&quot; cellspacing=\&quot;0\&quot; border=\&quot;0\&quot;&gt;&lt;tr style=\&quot;line-height:0px;line-height:0px;\&quot;&gt;&lt;td style=\&quot;padding-right: 0px; padding-left: 0px;\&quot; align=\&quot;center\&quot;&gt;&lt;![endif]--&gt;\n                                &lt;div style=\&quot;line-height:10px;font-size:1px\&quot;&gt;&amp;##160;&lt;/div&gt;  &lt;img class=\&quot;center  autowidth \&quot; align=\&quot;center\&quot; border=\&quot;0\&quot; src=\&quot;https://d1oco4z2z1fhwp.cloudfront.net/templates/default/17/icon_mail_white.png\&quot; alt=\&quot;Image\&quot; title=\&quot;Image\&quot; style=\&quot;outline: none;text-decoration: none;-ms-interpolation-mode: bicubic;clear: both;display: block !important;border: 0;height: auto;float: none;width: 100%;max-width: 20px\&quot; width=\&quot;20\&quot;&gt;\n                                &lt;!--[if mso]&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;![endif]--&gt;\n                            &lt;/div&gt;\n\n\n\n                            &lt;div class=\&quot;\&quot;&gt;\n                                &lt;!--[if mso]&gt;&lt;table width=\&quot;100%\&quot; cellpadding=\&quot;0\&quot; cellspacing=\&quot;0\&quot; border=\&quot;0\&quot;&gt;&lt;tr&gt;&lt;td style=\&quot;padding-right: 10px; padding-left: 10px; padding-top: 10px; padding-bottom: 10px;\&quot;&gt;&lt;![endif]--&gt;\n                                &lt;div style=\&quot;color:##FFFFFF;font-family:'Helvetica Neue', Helvetica, Arial, sans-serif;line-height:120%; padding-right: 10px; padding-left: 10px; padding-top: 10px; padding-bottom: 10px;\&quot;&gt;\n                                    &lt;div style=\&quot;font-size:12px;line-height:14px;color:##FFFFFF;font-family:'Helvetica Neue', Helvetica, Arial, sans-serif;text-align:left;\&quot;&gt;&lt;p style=\&quot;margin: 0;font-size: 14px;line-height: 17px;text-align: center\&quot;&gt;&lt;span style=\&quot;font-size: 14px; line-height: 16px;\&quot;&gt;&lt;strong&gt;admin@crunch.ski&lt;/strong&gt;&lt;/span&gt;&lt;br&gt;&lt;/p&gt;&lt;/div&gt;\n                                &lt;/div&gt;\n                                &lt;!--[if mso]&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;![endif]--&gt;\n                            &lt;/div&gt;\n\n\n\n                            &lt;table border=\&quot;0\&quot; cellpadding=\&quot;0\&quot; cellspacing=\&quot;0\&quot; width=\&quot;100%\&quot; class=\&quot;divider \&quot; style=\&quot;border-collapse: collapse;table-layout: fixed;border-spacing: 0;mso-table-lspace: 0pt;mso-table-rspace: 0pt;vertical-align: top;min-width: 100%;-ms-text-size-adjust: 100%;-webkit-text-size-adjust: 100%\&quot;&gt;\n                                &lt;tbody&gt;\n                                &lt;tr style=\&quot;vertical-align: top\&quot;&gt;\n                                    &lt;td class=\&quot;divider_inner\&quot; style=\&quot;word-break: break-word;border-collapse: collapse !important;vertical-align: top;padding-right: 5px;padding-left: 5px;padding-top: 5px;padding-bottom: 5px;min-width: 100%;mso-line-height-rule: exactly;-ms-text-size-adjust: 100%;-webkit-text-size-adjust: 100%\&quot;&gt;\n                                        &lt;table class=\&quot;divider_content\&quot; align=\&quot;center\&quot; border=\&quot;0\&quot; cellpadding=\&quot;0\&quot; cellspacing=\&quot;0\&quot; width=\&quot;100%\&quot; style=\&quot;border-collapse: collapse;table-layout: fixed;border-spacing: 0;mso-table-lspace: 0pt;mso-table-rspace: 0pt;vertical-align: top;border-top: 0px solid transparent;-ms-text-size-adjust: 100%;-webkit-text-size-adjust: 100%\&quot;&gt;\n                                            &lt;tbody&gt;\n                                            &lt;tr style=\&quot;vertical-align: top\&quot;&gt;\n                                                &lt;td style=\&quot;word-break: break-word;border-collapse: collapse !important;vertical-align: top;mso-line-height-rule: exactly;-ms-text-size-adjust: 100%;-webkit-text-size-adjust: 100%\&quot;&gt;\n                                                    &lt;span&gt;&lt;/span&gt;\n                                                &lt;/td&gt;\n                                            &lt;/tr&gt;\n                                            &lt;/tbody&gt;\n                                        &lt;/table&gt;\n                                    &lt;/td&gt;\n                                &lt;/tr&gt;\n                                &lt;/tbody&gt;\n                            &lt;/table&gt;\n\n                            &lt;!--[if (!mso)&amp;(!IE)]&gt;&lt;!--&gt;&lt;/div&gt;&lt;!--&lt;![endif]--&gt;\n                        &lt;/div&gt;\n                    &lt;/div&gt;\n                    &lt;!--[if (mso)|(IE)]&gt;&lt;/td&gt;&lt;td align=\&quot;center\&quot; width=\&quot;200\&quot; style=\&quot; width:200px; padding-right: 0px; padding-left: 0px; padding-top:5px; padding-bottom:5px; border-top: 0px solid transparent; border-left: 0px solid transparent; border-bottom: 0px solid transparent; border-right: 0px solid transparent;\&quot; valign=\&quot;top\&quot;&gt;&lt;![endif]--&gt;\n                    &lt;div class=\&quot;col num4\&quot; style=\&quot;max-width: 320px;min-width: 200px;display: table-cell;vertical-align: top;\&quot;&gt;\n                        &lt;div style=\&quot;background-color: transparent; width: 100% !important;\&quot;&gt;\n                            &lt;!--[if (!mso)&amp;(!IE)]&gt;&lt;!--&gt;&lt;div style=\&quot;border-top: 0px solid transparent; border-left: 0px solid transparent; border-bottom: 0px solid transparent; border-right: 0px solid transparent; padding-top:5px; padding-bottom:5px; padding-right: 0px; padding-left: 0px;\&quot;&gt;&lt;!--&lt;![endif]--&gt;\n\n\n\n                            &lt;table border=\&quot;0\&quot; cellpadding=\&quot;0\&quot; cellspacing=\&quot;0\&quot; width=\&quot;100%\&quot; class=\&quot;divider \&quot; style=\&quot;border-collapse: collapse;table-layout: fixed;border-spacing: 0;mso-table-lspace: 0pt;mso-table-rspace: 0pt;vertical-align: top;min-width: 100%;-ms-text-size-adjust: 100%;-webkit-text-size-adjust: 100%\&quot;&gt;\n                                &lt;tbody&gt;\n                                &lt;tr style=\&quot;vertical-align: top\&quot;&gt;\n                                    &lt;td class=\&quot;divider_inner\&quot; style=\&quot;word-break: break-word;border-collapse: collapse !important;vertical-align: top;padding-right: 5px;padding-left: 5px;padding-top: 5px;padding-bottom: 5px;min-width: 100%;mso-line-height-rule: exactly;-ms-text-size-adjust: 100%;-webkit-text-size-adjust: 100%\&quot;&gt;\n                                        &lt;table class=\&quot;divider_content\&quot; align=\&quot;center\&quot; border=\&quot;0\&quot; cellpadding=\&quot;0\&quot; cellspacing=\&quot;0\&quot; width=\&quot;100%\&quot; style=\&quot;border-collapse: collapse;table-layout: fixed;border-spacing: 0;mso-table-lspace: 0pt;mso-table-rspace: 0pt;vertical-align: top;border-top: 0px solid transparent;-ms-text-size-adjust: 100%;-webkit-text-size-adjust: 100%\&quot;&gt;\n                                            &lt;tbody&gt;\n                                            &lt;tr style=\&quot;vertical-align: top\&quot;&gt;\n                                                &lt;td style=\&quot;word-break: break-word;border-collapse: collapse !important;vertical-align: top;mso-line-height-rule: exactly;-ms-text-size-adjust: 100%;-webkit-text-size-adjust: 100%\&quot;&gt;\n                                                    &lt;span&gt;&lt;/span&gt;\n                                                &lt;/td&gt;\n                                            &lt;/tr&gt;\n                                            &lt;/tbody&gt;\n                                        &lt;/table&gt;\n                                    &lt;/td&gt;\n                                &lt;/tr&gt;\n                                &lt;/tbody&gt;\n                            &lt;/table&gt;\n\n\n\n                            &lt;table border=\&quot;0\&quot; cellpadding=\&quot;0\&quot; cellspacing=\&quot;0\&quot; width=\&quot;100%\&quot; class=\&quot;divider \&quot; style=\&quot;border-collapse: collapse;table-layout: fixed;border-spacing: 0;mso-table-lspace: 0pt;mso-table-rspace: 0pt;vertical-align: top;min-width: 100%;-ms-text-size-adjust: 100%;-webkit-text-size-adjust: 100%\&quot;&gt;\n                                &lt;tbody&gt;\n                                &lt;tr style=\&quot;vertical-align: top\&quot;&gt;\n                                    &lt;td class=\&quot;divider_inner\&quot; style=\&quot;word-break: break-word;border-collapse: collapse !important;vertical-align: top;padding-right: 5px;padding-left: 5px;padding-top: 5px;padding-bottom: 5px;min-width: 100%;mso-line-height-rule: exactly;-ms-text-size-adjust: 100%;-webkit-text-size-adjust: 100%\&quot;&gt;\n                                        &lt;table class=\&quot;divider_content\&quot; align=\&quot;center\&quot; border=\&quot;0\&quot; cellpadding=\&quot;0\&quot; cellspacing=\&quot;0\&quot; width=\&quot;100%\&quot; style=\&quot;border-collapse: collapse;table-layout: fixed;border-spacing: 0;mso-table-lspace: 0pt;mso-table-rspace: 0pt;vertical-align: top;border-top: 0px solid transparent;-ms-text-size-adjust: 100%;-webkit-text-size-adjust: 100%\&quot;&gt;\n                                            &lt;tbody&gt;\n                                            &lt;tr style=\&quot;vertical-align: top\&quot;&gt;\n                                                &lt;td style=\&quot;word-break: break-word;border-collapse: collapse !important;vertical-align: top;mso-line-height-rule: exactly;-ms-text-size-adjust: 100%;-webkit-text-size-adjust: 100%\&quot;&gt;\n                                                    &lt;span&gt;&lt;/span&gt;\n                                                &lt;/td&gt;\n                                            &lt;/tr&gt;\n                                            &lt;/tbody&gt;\n                                        &lt;/table&gt;\n                                    &lt;/td&gt;\n                                &lt;/tr&gt;\n                                &lt;/tbody&gt;\n                            &lt;/table&gt;\n\n                            &lt;!--[if (!mso)&amp;(!IE)]&gt;&lt;!--&gt;&lt;/div&gt;&lt;!--&lt;![endif]--&gt;\n                        &lt;/div&gt;\n                    &lt;/div&gt;\n                    &lt;!--[if (mso)|(IE)]&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;![endif]--&gt;\n                &lt;/div&gt;\n            &lt;/div&gt;\n        &lt;/div&gt;    &lt;div style=\&quot;background-color:transparent;\&quot;&gt;\n            &lt;div style=\&quot;Margin: 0 auto;min-width: 320px;max-width: 600px;overflow-wrap: break-word;word-wrap: break-word;word-break: break-word;background-color: transparent;\&quot; class=\&quot;block-grid \&quot;&gt;\n                &lt;div style=\&quot;border-collapse: collapse;display: table;width: 100%;background-color:transparent;\&quot;&gt;\n                    &lt;!--[if (mso)|(IE)]&gt;&lt;table width=\&quot;100%\&quot; cellpadding=\&quot;0\&quot; cellspacing=\&quot;0\&quot; border=\&quot;0\&quot;&gt;&lt;tr&gt;&lt;td style=\&quot;background-color:transparent;\&quot; align=\&quot;center\&quot;&gt;&lt;table cellpadding=\&quot;0\&quot; cellspacing=\&quot;0\&quot; border=\&quot;0\&quot; style=\&quot;width: 600px;\&quot;&gt;&lt;tr class=\&quot;layout-full-width\&quot; style=\&quot;background-color:transparent;\&quot;&gt;&lt;![endif]--&gt;\n\n                    &lt;!--[if (mso)|(IE)]&gt;&lt;td align=\&quot;center\&quot; width=\&quot;600\&quot; style=\&quot; width:600px; padding-right: 0px; padding-left: 0px; padding-top:5px; padding-bottom:5px; border-top: 0px solid transparent; border-left: 0px solid transparent; border-bottom: 0px solid transparent; border-right: 0px solid transparent;\&quot; valign=\&quot;top\&quot;&gt;&lt;![endif]--&gt;\n                    &lt;div class=\&quot;col num12\&quot; style=\&quot;min-width: 320px;max-width: 600px;display: table-cell;vertical-align: top;\&quot;&gt;\n                        &lt;div style=\&quot;background-color: transparent; width: 100% !important;\&quot;&gt;\n                            &lt;!--[if (!mso)&amp;(!IE)]&gt;&lt;!--&gt;&lt;div style=\&quot;border-top: 0px solid transparent; border-left: 0px solid transparent; border-bottom: 0px solid transparent; border-right: 0px solid transparent; padding-top:5px; padding-bottom:5px; padding-right: 0px; padding-left: 0px;\&quot;&gt;&lt;!--&lt;![endif]--&gt;\n\n\n\n                            &lt;table border=\&quot;0\&quot; cellpadding=\&quot;0\&quot; cellspacing=\&quot;0\&quot; width=\&quot;100%\&quot; class=\&quot;divider \&quot; style=\&quot;border-collapse: collapse;table-layout: fixed;border-spacing: 0;mso-table-lspace: 0pt;mso-table-rspace: 0pt;vertical-align: top;min-width: 100%;-ms-text-size-adjust: 100%;-webkit-text-size-adjust: 100%\&quot;&gt;\n                                &lt;tbody&gt;\n                                &lt;tr style=\&quot;vertical-align: top\&quot;&gt;\n                                    &lt;td class=\&quot;divider_inner\&quot; style=\&quot;word-break: break-word;border-collapse: collapse !important;vertical-align: top;padding-right: 25px;padding-left: 25px;padding-top: 25px;padding-bottom: 25px;min-width: 100%;mso-line-height-rule: exactly;-ms-text-size-adjust: 100%;-webkit-text-size-adjust: 100%\&quot;&gt;\n                                        &lt;table class=\&quot;divider_content\&quot; align=\&quot;center\&quot; border=\&quot;0\&quot; cellpadding=\&quot;0\&quot; cellspacing=\&quot;0\&quot; width=\&quot;100%\&quot; style=\&quot;border-collapse: collapse;table-layout: fixed;border-spacing: 0;mso-table-lspace: 0pt;mso-table-rspace: 0pt;vertical-align: top;border-top: 0px solid transparent;-ms-text-size-adjust: 100%;-webkit-text-size-adjust: 100%\&quot;&gt;\n                                            &lt;tbody&gt;\n                                            &lt;tr style=\&quot;vertical-align: top\&quot;&gt;\n                                                &lt;td style=\&quot;word-break: break-word;border-collapse: collapse !important;vertical-align: top;mso-line-height-rule: exactly;-ms-text-size-adjust: 100%;-webkit-text-size-adjust: 100%\&quot;&gt;\n                                                    &lt;span&gt;&lt;/span&gt;\n                                                &lt;/td&gt;\n                                            &lt;/tr&gt;\n                                            &lt;/tbody&gt;\n                                        &lt;/table&gt;\n                                    &lt;/td&gt;\n                                &lt;/tr&gt;\n                                &lt;/tbody&gt;\n                            &lt;/table&gt;\n\n                            &lt;!--[if (!mso)&amp;(!IE)]&gt;&lt;!--&gt;&lt;/div&gt;&lt;!--&lt;![endif]--&gt;\n                        &lt;/div&gt;\n                    &lt;/div&gt;\n                    &lt;!--[if (mso)|(IE)]&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;![endif]--&gt;\n                &lt;/div&gt;\n            &lt;/div&gt;\n        &lt;/div&gt;   &lt;!--[if (mso)|(IE)]&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;![endif]--&gt;\n        &lt;/td&gt;\n    &lt;/tr&gt;\n    &lt;/tbody&gt;\n&lt;/table&gt;\n&lt;!--[if (mso)|(IE)]&gt;&lt;/div&gt;&lt;![endif]--&gt;\n\n\n&lt;/body&gt;&lt;/html&gt;&quot;...}" />
-            <marker date="1534312058727" expanded="true" signature="2054:2064" ph="[...]" />
-            <marker date="1534312058727" expanded="true" signature="2145:2221" ph="[...]" />
-            <marker date="1534312058727" expanded="true" signature="2254:2737" ph="{...}" />
-            <marker date="1534312058727" expanded="true" signature="2294:2733" ph="{...}" />
-            <marker date="1534312058727" expanded="true" signature="2311:2364" ph="{&quot;Ref&quot;: &quot;ServerlessDeploymentBucket&quot;...}" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/docs/email_setup.md">
       <provider selected="true" editor-type-id="split-provider[text-editor;markdown-preview-editor]">
         <state split_layout="SPLIT">
-          <first_editor relative-caret-position="322">
-            <caret line="41" column="2" lean-forward="true" selection-start-line="25" selection-start-column="0" selection-end-line="41" selection-end-column="2" />
+          <first_editor relative-caret-position="585">
+            <caret line="45" column="82" lean-forward="false" selection-start-line="45" selection-start-column="82" selection-end-line="45" selection-end-column="82" />
             <folding />
           </first_editor>
           <second_editor />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/auth/.serverless/cloudformation-template-create-stack.json">
+    <entry file="file://$PROJECT_DIR$/docs/cloudformation_polyfills.md">
+      <provider selected="true" editor-type-id="split-provider[text-editor;markdown-preview-editor]">
+        <state split_layout="SPLIT">
+          <first_editor relative-caret-position="234">
+            <caret line="18" column="0" lean-forward="false" selection-start-line="18" selection-start-column="0" selection-end-line="18" selection-end-column="0" />
+            <folding />
+          </first_editor>
+          <second_editor />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/frontend/serverless.yml">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="0">
-          <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+        <state relative-caret-position="837">
+          <caret line="272" column="52" lean-forward="false" selection-start-line="272" selection-start-column="46" selection-end-line="272" selection-end-column="52" />
           <folding />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/auth/serverless.yml">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="205">
-          <caret line="75" column="2" lean-forward="true" selection-start-line="75" selection-start-column="2" selection-end-line="75" selection-end-column="2" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/frontend/serverless.yml">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="158">
-          <caret line="253" column="2" lean-forward="true" selection-start-line="253" selection-start-column="2" selection-end-line="253" selection-end-column="2" />
+        <state relative-caret-position="224">
+          <caret line="79" column="31" lean-forward="false" selection-start-line="79" selection-start-column="31" selection-end-line="79" selection-end-column="31" />
           <folding />
         </state>
       </provider>

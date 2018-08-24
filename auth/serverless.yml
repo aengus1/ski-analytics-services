@@ -28,14 +28,14 @@ resources:
             EmailMessage: "Hello there {username},  You're verification code is {####}"
             EmailSubject: "Welcome to Crunch.Ski!"
           UnusedAccountValidityDays: 365
-        AliasAttributes:
-            - email
+        UsernameAttributes:
+          - email
         AutoVerifiedAttributes:
             - email
         DeviceConfiguration:
           ChallengeRequiredOnNewDevice: false
           DeviceOnlyRememberedOnUserPrompt: false
-#        EmailConfiguration: -> this is erroring out saying invalid email address :(
+#        EmailConfiguration: -> this is erroring out saying invalid email address :( set it manually in console
 #          ReplyToEmailAddress: admin@ski-analytics.ca
 #          SourceArn: arn:aws:ses:us-west-2:556823078430:identity/ski-analytics.ca
         MfaConfiguration: OFF
@@ -54,16 +54,16 @@ resources:
             Required: true
           - AttributeDataType: String
             DeveloperOnlyAttribute: false
-            Mutable: true
-            Name: FirstName
+            Mutable: false
+            Name: name
             StringAttributeConstraints:
               MinLength: 2
               MaxLength: 20
             Required: false
           - AttributeDataType: String
             DeveloperOnlyAttribute: false
-            Mutable: true
-            Name: LastName
+            Mutable: false
+            Name: familyName
             StringAttributeConstraints:
               MinLength: 2
               MaxLength: 20
@@ -72,6 +72,28 @@ resources:
         UserPoolTags:
           project: ski-analytics
           module: auth
+    UserPoolClient:
+      Type: AWS::Cognito::UserPoolClient
+      Properties:
+         ClientName: ${{self:custom.currentStage}}-crunch-ski-web
+         ExplicitAuthFlows:
+           - USER_PASSWORD_AUTH
+         GenerateSecret: false
+         UserPoolId:
+           Ref: UserPool
+
+#     IdentityPool:
+#       Type: "AWS::Cognito::IdentityPool"
+#       Properties:
+#         IdentityPoolName: ${{self:custom.currentStage}}-crunch-ski-identitypool
+#         AllowUnauthenticatedIdentities: false
+#         CognitoIdentityProviders:
+#           - ClientId:
+#               Ref: UserPool
+#             ProviderName:
+#               Fn::GetAtt: [UserPool, ProviderName]
+#             ServerSideTokenCheck: true
+
 
   Outputs:
     UserPoolArn:
@@ -83,3 +105,6 @@ resources:
     UserPoolProviderUrl:
       Value:
         Fn::GetAtt: [UserPool, ProviderURL]
+    UserPoolClientId:
+      Value:
+        Ref: UserPoolClient
