@@ -41,7 +41,7 @@ custom:
                 Value: "ski-analytics"
               -
                 Key: "module"
-                Value: "domain"
+                Value: "frontend"
   currentStage: ${{opt:stage, self:provider.stage}}
   appAlias:
         dev: 'dev-app'
@@ -102,13 +102,16 @@ resources:
                   Resource:
                     Fn::Join: ['', [Fn::GetAtt: [S3BucketForApp, Arn],"/*"]]
                   Principal: "*"
-                  Condition:
-                    StringLike:
-                      aws:Referer:
-                        - "http://${{self:custom.SITE_ALIAS}}${{self:custom.domainName}}"
-                        - "https://${{self:custom.SITE_ALIAS}}${{self:custom.domainName}}"
-                        - "http://www.${{self:custom.SITE_ALIAS}}${{self:custom.domainName}}"
-                        - "https://www.${{self:custom.SITE_ALIAS}}${{self:custom.domainName}}"
+                  # commented this as cloudfront does not pass the referer header to S3 origin.
+                   # this means the s3 bucket has full public read access.  may be better to change config so that
+                   # s3 bucket is not a public website, and add a cloudfront origin identity. revisit if need signed urls
+#                  Condition:
+#                    StringLike:
+#                      aws:Referer:
+#                        - "http://${{self:custom.APP_ALIAS}}.${{self:custom.domainName}}"
+#                        - "https://${{self:custom.APP_ALIAS}}.${{self:custom.domainName}}"
+#                        - "http://www.${{self:custom.APP_ALIAS}}.${{self:custom.domainName}}"
+#                        - "https://www.${{self:custom.APP_ALIAS}}.${{self:custom.domainName}}"
 
 
     CloudFrontDistroForSite:
