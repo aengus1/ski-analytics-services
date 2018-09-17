@@ -1,0 +1,273 @@
+# Welcome to Serverless!
+#
+# This file is the main config file for your service.
+# It's very minimal at this point and uses default values.
+# You can always add more config options for more control.
+# We've included some commented out config examples here.
+# Just uncomment any of them to get that config option.
+#
+# For full config options, check the docs:
+#    docs.serverless.com
+#
+# Happy Coding!
+
+service: frontend-stack
+tenant: aengus
+app: ski-analytics
+
+# You can pin your service to only deploy with a specific Serverless version
+# Check out our docs for more details
+# frameworkVersion: "=X.X.X"
+
+provider:
+  name: aws
+  runtime: java8
+  variableSyntax: "\\${{([ ~:a-zA-Z0-9._\\'\",\\-\\/\\(\\)]+?)}}" # notice the double quotes for yaml to ignore the escape characters!
+  stage: staging
+  region: ca-central-1
+  stackName: ${{self:custom.currentStage}}-ski-analytics-frontend-stack
+
+
+custom:
+  domainName: crunch.ski
+  certificateArn: arn:aws:acm:us-east-1:556823078430:certificate/a93d4ef5-7eb4-463f-b261-e47d6583e96e
+  alternateDomainName:
+    - ${{self:custom.domainName}}
+    - "*.${{self:custom.domainName}}"
+  cloudfrontOrigin: ${{self:custom.domainName}}
+  resourceTags:
+              -
+                Key: "project"
+                Value: "ski-analytics"
+              -
+                Key: "module"
+                Value: "frontend"
+  currentStage: ${{opt:stage, self:provider.stage}}
+  appAlias:
+        dev: 'dev-app'
+        prod: 'app'
+        staging: 'staging-app'
+  APP_ALIAS: ${{self:custom.appAlias.${{self:custom.currentStage}}}}
+  siteAlias:
+      dev: 'dev.'
+      prod: ''
+      staging: 'staging.'
+  SITE_ALIAS: ${{self:custom.siteAlias.${{self:custom.currentStage}}}}
+  domainStackName: ski-analytics-domain-stack
+
+resources:
+  Resources:
+    S3BucketForSite:
+      Type: AWS::S3::Bucket
+      Properties:
+        AccessControl: PublicRead
+        WebsiteConfiguration:
+          IndexDocument: index.html
+          ErrorDocument: error.html
+        BucketName: "site-${{self:custom.currentStage}}.${{self:custom.domainName}}"
+    S3BucketForApp:
+          Type: AWS::S3::Bucket
+          Properties:
+            AccessControl: PublicRead
+            WebsiteConfiguration:
+              IndexDocument: index.html
+              ErrorDocument: error.html
+            BucketName: "app-${{self:custom.currentStage}}.${{self:custom.domainName}}"
+            CorsConfiguration:
+              CorsRules:
+                - AllowedHeaders:
+                    - "Authorization"
+                    - "Content-*"
+                    - "Host"
+                  AllowedMethods:
+                    - "GET"
+                    - "HEAD"
+                    - "POST"
+                    - "PUT"
+                    - "DELETE"
+                  AllowedOrigins:
+                    - "*"
+                  Id: 'Allow all'
+    S3BucketPolicyForApp:
+          Type: AWS::S3::BucketPolicy
+          Properties:
+            Bucket:
+              Ref: S3BucketForApp
+            PolicyDocument:
+              Version: '2012-10-17'
+              Statement:
+                - Action:
+                    - s3:GetObject
+                  Effect: Allow
+                  Resource:
+                    Fn::Join: ['', [Fn::GetAtt: [S3BucketForApp, Arn],"/*"]]
+                  Principal: "*"
+                  # commented this as cloudfront does not pass the referer header to S3 origin.
+                   # this means the s3 bucket has full public read access.  may be better to change config so that
+                   # s3 bucket is not a public website, and add a cloudfront origin identity. revisit if need signed urls
+#                  Condition:
+#                    StringLike:
+#                      aws:Referer:
+#                        - "http://${{self:custom.APP_ALIAS}}.${{self:custom.domainName}}"
+#                        - "https://${{self:custom.APP_ALIAS}}.${{self:custom.domainName}}"
+#                        - "http://www.${{self:custom.APP_ALIAS}}.${{self:custom.domainName}}"
+#                        - "https://www.${{self:custom.APP_ALIAS}}.${{self:custom.domainName}}"
+
+
+    CloudFrontDistroForSite:
+           Type: AWS::CloudFront::Distribution
+           Properties:
+              DistributionConfig:
+                   Comment: CDN for S3-backed website ${{self:custom.domainName}}
+                   Aliases:
+                     - ${{self:custom.SITE_ALIAS}}${{self:custom.domainName}}
+                   Enabled: 'true'
+                   DefaultCacheBehavior:
+                      ForwardedValues:
+                        QueryString: 'true'
+                      TargetOriginId: only-origin
+                      ViewerProtocolPolicy: redirect-to-https
+                   DefaultRootObject: index.html
+                   ViewerCertificate:
+                     AcmCertificateArn: ${{self:custom.certificateArn}}
+                     SslSupportMethod: sni-only
+                   Origins:
+                     - CustomOriginConfig:
+                        HTTPPort: '80'
+                        HTTPSPort: '443'
+                        OriginProtocolPolicy: http-only
+                       DomainName:
+                          Fn::Join: ['', [Ref: S3BucketForSite ,Fn::Join: ['', [".s3-website.", Ref: "AWS::Region", ".amazonaws.com"]] ] ]
+                       Id: only-origin
+              Tags: ${{self:custom.resourceTags}}
+    CloudFrontDistroForApp:
+           Type: AWS::CloudFront::Distribution
+           Properties:
+              DistributionConfig:
+                   Comment: CDN for S3-backed webapp ${{self:custom.domainName}}
+                   Aliases:
+                     - "${{self:custom.APP_ALIAS}}.${{self:custom.domainName}}"
+                   Enabled: 'true'
+                   DefaultCacheBehavior:
+                      ForwardedValues:
+                        QueryString: 'true'
+                      Compress: true
+                      TargetOriginId: only-origin
+                      ViewerProtocolPolicy: redirect-to-https
+                   DefaultRootObject: index.html
+                   ViewerCertificate:
+                     AcmCertificateArn: ${{self:custom.certificateArn}}
+                     SslSupportMethod: sni-only
+                   CustomErrorResponses:
+                     - ErrorCachingMinTTL: 5
+                       ErrorCode: 404
+                       ResponseCode: 200
+                       ResponsePagePath: /index.html
+                   Origins:
+                     - CustomOriginConfig:
+                        HTTPPort: '80'
+                        HTTPSPort: '443'
+                        OriginProtocolPolicy: http-only
+                       DomainName:
+                          Fn::Join: ['', [Ref: S3BucketForApp ,Fn::Join: ['', [".s3-website.", Ref: "AWS::Region", ".amazonaws.com"]] ] ]
+                       Id: only-origin
+              Tags: ${{self:custom.resourceTags}}
+    RecordSet:
+          Type: AWS::Route53::RecordSetGroup
+          Properties:
+            HostedZoneId:
+              Fn::ImportValue:
+                Fn::Sub: ${{self:custom.domainStackName}}-HostedZone
+            Comment: Alias record for ${{self:custom.domainName}} site and app
+            RecordSets:
+                - Name: ${{self:custom.SITE_ALIAS}}${{self:custom.domainName}}
+                  Type: A
+                  AliasTarget:
+                    HostedZoneId: Z2FDTNDATAQYW2
+                    DNSName:
+                      Fn::GetAtt: [CloudFrontDistroForSite, DomainName]
+                - Name: www.${{self:custom.SITE_ALIAS}}${{self:custom.domainName}}
+                  Type: A
+                  AliasTarget:
+                    HostedZoneId: Z2FDTNDATAQYW2
+                    DNSName:
+                      Fn::GetAtt: [CloudFrontDistroForSite, DomainName]
+                - Name: ${{self:custom.APP_ALIAS}}.${{self:custom.domainName}}
+                  Type: A
+                  AliasTarget:
+                    HostedZoneId: Z2FDTNDATAQYW2
+                    DNSName:
+                      Fn::GetAtt: [CloudFrontDistroForApp, DomainName]
+                - Name: www.${{self:custom.APP_ALIAS}}.${{self:custom.domainName}}
+                  Type: A
+                  AliasTarget:
+                    HostedZoneId: Z2FDTNDATAQYW2
+                    DNSName:
+                      Fn::GetAtt: [CloudFrontDistroForApp, DomainName]
+    SsmParamForS3AppBucket:
+      Type: "AWS::SSM::Parameter"
+      Properties:
+        Name: "${{self:custom.currentStage}}-app-bucket-name"
+        Type: "String"
+        Value:
+          Ref: S3BucketForApp
+        Description: "SSM Parameter for storing S3 bucket name"
+    SsmParamForCfDistro:
+      Type: "AWS::SSM::Parameter"
+      Properties:
+        Name: "${{self:custom.currentStage}}-cfdistro-name"
+        Type: "String"
+        Value:
+          Ref: CloudFrontDistroForApp
+        Description: "SSM Parameter for storing CF distribution id"
+    CdDeploymentUser:
+      Type: AWS::IAM::User
+      Properties:
+        Path: "/${{self:custom.currentStage}}/deployment/"
+        UserName: ${{self:custom.currentStage}}-cd-deployment
+        Policies:
+        - PolicyName: allowPutDeleteAndPublicRead
+          PolicyDocument:
+            Version: '2012-10-17'
+            Statement:
+            - Effect: Allow
+              Action:
+              - s3:PutObject
+              - s3:DeleteObject
+              Resource:
+                Fn::Join: ['', [Fn::GetAtt: [S3BucketForApp, Arn],"/*"]]
+            - Effect: Allow
+              Action:
+              - ssm:GetParameter
+              Resource:
+                Fn::Join: ['', ["arn:aws:ssm:", Ref: "AWS::Region",":",Ref: "AWS::AccountId",":","parameter/${{self:custom.currentStage}}-*"]]
+            - Effect: Allow
+              Action:
+              - cloudfront:CreateInvalidation
+              Resource: "*"
+#              cloudfront doesn't support resource level permissions
+#                Fn::Join: ['', ["arn:aws:cloudfront::",Ref: "AWS::AccountId",":distribution/", Ref: CloudFrontDistroForApp ]]
+
+    CdDeploymentAccessKey:
+      Type: AWS::IAM::AccessKey
+      Properties:
+        Status: Active
+        UserName:
+          Ref: CdDeploymentUser
+  Outputs:
+    S3BucketSite:
+      Value: "site-${{self:custom.currentStage}}.${{self:custom.domainName}}"
+    S3BucketApp:
+      Value: "app-${{self:custom.currentStage}}.${{self:custom.domainName}}"
+    CloudFrontDistroSite:
+      Value:
+        Fn::GetAtt: [CloudFrontDistroForSite, DomainName]
+    CloudFrontDistroApp:
+      Value:
+        Fn::GetAtt: [CloudFrontDistroForApp, DomainName ]
+    AccessKey:
+        Value:
+            Ref: CdDeploymentAccessKey
+    SecretKey:
+        Value:
+          Fn::GetAtt: [CdDeploymentAccessKey, SecretAccessKey ]
