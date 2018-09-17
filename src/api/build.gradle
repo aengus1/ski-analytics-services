@@ -1,0 +1,30 @@
+plugins {
+    id 'java'
+}
+
+dependencies {
+    compile (
+            'com.amazonaws:aws-lambda-java-core:1.1.0',
+            'com.amazonaws:aws-java-sdk-s3:1.11.409',
+//            'com.amazonaws:aws-java-sdk-client:1.11.409',
+            'com.amazonaws:aws-lambda-java-log4j:1.0.0',
+            'com.fasterxml.jackson.core:jackson-core:2.8.5',
+            'com.fasterxml.jackson.core:jackson-databind:2.8.5',
+            'com.fasterxml.jackson.core:jackson-annotations:2.8.5'
+    )
+}
+
+task buildZip(type: Zip) {
+    baseName = "api"
+    from compileJava
+    from processResources
+    into('lib') {
+        from configurations.runtime
+    }
+}
+
+build.dependsOn buildZip
+
+task wrapper(type: Wrapper) {
+    gradleVersion = '3.5'
+}

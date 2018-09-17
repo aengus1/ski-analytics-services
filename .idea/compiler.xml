@@ -4,6 +4,8 @@
     <bytecodeTargetLevel target="1.8">
       <module name="ski-analytics-services_main" target="1.8" />
       <module name="ski-analytics-services_test" target="1.8" />
+      <module name="src_api_main" target="1.8" />
+      <module name="src_api_test" target="1.8" />
     </bytecodeTargetLevel>
   </component>
 </project>

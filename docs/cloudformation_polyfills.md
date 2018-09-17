@@ -22,3 +22,8 @@ previous step, adding an identity policy to the email domain that allows cognito
 - Lock down the app and site S3 buckets to only access through cloudformation.  I believe
 this has to be done by changing the buckets from public website to private and then adding a
 cloudformation origin access identity
+
+
+### API Stack
+- reference the cognito user pool ARN from the auth stack, to be used as an authorizer for the getActivityLambda 
+function.  This should be possible with some tweaking, despite an outstanding bug in sls. see https://github.com/serverless/serverless/issues/3129
