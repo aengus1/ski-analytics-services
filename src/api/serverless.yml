@@ -18,8 +18,10 @@ custom:
                 Value: "api"
   activityBucketName: "activity-${{self:custom.currentStage}}.${{self:custom.domainName}}"
   userPoolArn:
-    Fn::ImportValue:  UserPoolArn
-
+    Fn::ImportValue:
+      Fn::Join: ['', UserPoolArn]
+  activityTable:  ${{self:custom.currentStage}}-crunch-Activity
+#  authStack: ${{self:custom.currentStage}}-ski-analytics-authentication-stack
 
 provider:
   name: aws
@@ -33,6 +35,15 @@ provider:
       Action:
         - s3:GetObject
       Resource: "arn:aws:s3:::${{self:custom.activityBucketName}}/*"
+    - Effect: Allow
+      Action:
+        - dynamodb:Query
+        - dynamodb:Scan
+        - dynamodb:GetItem
+        - dynamodb:PutItem
+        - dynamodb:UpdateItem
+        - dynamodb:DeleteItem
+      Resource: "arn:aws:dynamodb:${{opt:region, self:provider.region}}:*:table/$${{self:custom.activityTable}}"
 
 package:
   artifact: build/distributions/api.zip
@@ -53,6 +64,7 @@ functions:
                 id: true
           authorizer:
             arn: arn:aws:cognito-idp:us-west-2:556823078430:userpool/us-west-2_FrH0UdrNz
+    Tags: ${{self:custom.resourceTags}}
             ## TODO revisit this. need a way to dynamically reference userpool arn from other stack
             ## had to hardcode this due to an issue with arns https://github.com/serverless/serverless/issues/3129
             ### note - to access this function you need to include an Authorizer header on the request, containing the
@@ -66,33 +78,44 @@ resources:
         AccessControl: PublicRead
         BucketName: ${{self:custom.activityBucketName}}
         Tags: ${{self:custom.resourceTags}}
-#    S3BucketPolicyForActixvityBucket:
-#              Type: AWS::S3::BucketPolicy
-#              Properties:
-#                Bucket:
-#                  Ref: S3BucketForActivity
-#                PolicyDocument:
-#                  Version: '2012-10-17'
-#                  Statement:
-#                    - Action:
-#                        - s3:GetObject
-#                      Effect: Allow
-#                      Resource:
-#                        Fn::Join: ['', [Fn::GetAtt: [S3BucketForActivity, Arn],"/*"]]
-#                      Principal:
-#                        AWS:
-#                          Fn::GetAtt: [GetActivityLambdaLambdaFunction, Arn]
+    DynamoTableForActivity:
+      Type: AWS::DynamoDB::Table
+      DeletionPolicy: Retain
+      Properties:
+        AttributeDefinitions:
+          - AttributeName: id
+            AttributeType: S
+          - AttributeName: date
+            AttributeType: S
+#          - AttributeName: user_id
+#            AttributeType: string
+        KeySchema:
+          - AttributeName: id
+            KeyType: HASH
+          - AttributeName: date
+            KeyType: RANGE
+        ProvisionedThroughput:
+          ReadCapacityUnits: 1
+          WriteCapacityUnits: 1
+        TableName: ${{self:custom.currentStage}}-crunch-Activity
+        Tags: ${{self:custom.resourceTags}}
 
 
-
-# you can add CloudFormation resource templates here
-#resources:
-#  Resources:
-#    NewResource:
-#      Type: AWS::S3::Bucket
+# attempt to use solution for referencing cf params: https://github.com/serverless/serverless/issues/3212#issuecomment-307341924
+# commented as can't reference variables across regions.
+#    GetActivityLambdaLambdaFunction:
 #      Properties:
-#        BucketName: my-new-bucket
-#  Outputs:
-#     NewOutput:
-#       Description: "Description for the output"
-#       Value: "Some output value"
+#        AuthorizationType: COGNITO_USER_POOLS
+#        AuthorizerId:
+#          Ref: CognitoAuthorizer
+#    CognitoAuthorizer:
+#      Type: AWS::ApiGateway::Authorizer
+#      Properties:
+#        IdentitySource: method.request.header.Authorization
+#        Name: cognito-authorizer
+#        RestApiId:
+#          Ref: ApiGatewayRestApi
+#        Type: COGNITO_USER_POOLS
+#        ProviderARNs:
+#          - ${{cf:${{self:custom.authStack}}.UserPool}}
+#

@@ -1,17 +1,60 @@
+
 plugins {
     id 'java'
 }
+
 
 dependencies {
     compile (
             'com.amazonaws:aws-lambda-java-core:1.1.0',
             'com.amazonaws:aws-java-sdk-s3:1.11.409',
-//            'com.amazonaws:aws-java-sdk-client:1.11.409',
+            'com.amazonaws:aws-java-sdk-dynamodb:1.11.166',
+            'com.amazonaws:aws-java-sdk-cognitoidp:1.11.442',
             'com.amazonaws:aws-lambda-java-log4j:1.0.0',
             'com.fasterxml.jackson.core:jackson-core:2.8.5',
             'com.fasterxml.jackson.core:jackson-databind:2.8.5',
             'com.fasterxml.jackson.core:jackson-annotations:2.8.5'
     )
+    testImplementation(
+            'org.junit.jupiter:junit-jupiter-api:5.1.0',
+            // https://mvnrepository.com/artifact/com.sun.jersey/jersey-client
+            'com.sun.jersey:jersey-client:1.19.4'
+
+    )
+    testRuntimeOnly(
+            'org.junit.jupiter:junit-jupiter-engine:5.1.0'
+    )
+}
+
+test {
+    useJUnitPlatform()
+
+    // explicitly include or exclude tests
+    include 'com/serverless/**'
+
+
+    // show standard out and standard error of the test JVM(s) on the console
+    testLogging.showStandardStreams = true
+
+    // set heap size for the test JVM(s)
+    minHeapSize = "128m"
+    maxHeapSize = "512m"
+
+    // set JVM arguments for the test JVM(s)
+    jvmArgs '-XX:MaxPermSize=256m'
+
+    // listen to events in the test execution lifecycle
+    beforeTest { descriptor ->
+        logger.lifecycle("Running test: " + descriptor)
+    }
+
+    // Fail the 'test' task on the first test failure
+    failFast = true
+
+    // listen to standard out and standard error of the test JVM(s)
+    onOutput { descriptor, event ->
+        logger.lifecycle("Test: " + descriptor + " produced standard out/err: " + event.message )
+    }
 }
 
 task buildZip(type: Zip) {

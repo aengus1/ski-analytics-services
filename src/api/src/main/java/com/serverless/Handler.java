@@ -2,10 +2,7 @@ package com.serverless;
 
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
-import java.util.Base64;
-import java.util.Collections;
-import java.util.Map;
-import java.util.HashMap;
+import java.util.*;
 
 import org.apache.log4j.Logger;
 
@@ -19,14 +16,38 @@ public class Handler implements RequestHandler<Map<String, Object>, ApiGatewayRe
 	@Override
 	public ApiGatewayResponse handleRequest(Map<String, Object> input, Context context) {
 		LOG.info("received: " + input);
+
 		String s3Bucket = System.getenv("s3ActivityBucketName");
 		LOG.info("bucket name" + s3Bucket);
-//		LOG.info(input.keySet().stream().map(e -> e.toString()).reduce(",",String::concat));
+		for(String s: input.keySet()){
+			LOG.info("key: " + s + " value: " + input.get(s));
+		}
+
+		LinkedHashMap<String,Object> requestContext = (LinkedHashMap<String,Object>) input.get("requestContext");
+		Map<String,Object> authorizer = (Map<String,Object>) requestContext.get("authorizer");
+//		for(String s: authorizer.keySet()){
+//			LOG.info("auth key: " + s + " value: " + authorizer.get(s));
+//		}
+		Map<String,Object> claims = (Map<String,Object>) authorizer.get("claims");
+//		for(String s: claims.keySet()){
+//			LOG.info("claims key: " + s + " value: " + claims.get(s));
+//		}
+		String username = (String) claims.get("cognito:username");
+//		String username = requestContext.split("cognito:username=")[1].split(",")[0];
+		LOG.info("username = " + username);
+
+		String cognitoId = context.getIdentity().getIdentityId();
+		LOG.info("cognito id = " + cognitoId);
+
 		Map<String,String> pathParams = (Map<String,String>) input.get("pathParameters");
 		LOG.info("id = " + pathParams.get("id"));
 		String id = pathParams.get("id");
 		String region = System.getenv("AWS_DEFAULT_REGION");
 		LOG.info("region = " + System.getenv("AWS_DEFAULT_REGION"));
+
+
+		//TODO -> check the owner of this activity from dynamodb table
+
 		S3Service service = new S3Service(region);
 
 		// Response responseBody = new Response("Go Serverless v1.x! Your function executed successfully!", input);

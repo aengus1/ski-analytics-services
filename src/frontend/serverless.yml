@@ -28,6 +28,7 @@ provider:
   stackName: ${{self:custom.currentStage}}-ski-analytics-frontend-stack
 
 
+
 custom:
   domainName: crunch.ski
   certificateArn: arn:aws:acm:us-east-1:556823078430:certificate/a93d4ef5-7eb4-463f-b261-e47d6583e96e

@@ -100,7 +100,7 @@ resources:
       Value:
         Ref: UserPool
       Export:
-        Name: UserPoolArn
+        Name: UserPoolArn-${{self:custom.currentStage}}
     UserPoolProviderName:
       Value:
         Fn::GetAtt: [UserPool, ProviderName]
