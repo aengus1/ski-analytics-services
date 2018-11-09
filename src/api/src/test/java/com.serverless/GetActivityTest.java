@@ -1,11 +1,37 @@
 package com.serverless;
-import com.sun.jersey.api.client.Client;
+
+import com.amazonaws.auth.AWSCredentialsProvider;
+import com.amazonaws.auth.profile.ProfileCredentialsProvider;
+import com.amazonaws.regions.Regions;
+import com.amazonaws.services.cloudformation.AmazonCloudFormation;
+import com.amazonaws.services.cloudformation.AmazonCloudFormationClientBuilder;
+import com.amazonaws.services.cloudformation.model.DescribeStacksResult;
+import com.amazonaws.services.cloudformation.model.Output;
+import com.amazonaws.services.cloudformation.model.Stack;
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestInstance;
+import ski.crunch.utils.AuthenticationHelper;
+import ski.crunch.utils.CloudFormationHelper;
+import ski.crunch.utils.NotFoundException;
+import ski.crunch.utils.ServerlessState;
 
+import javax.ws.rs.client.Client;
+import javax.ws.rs.client.ClientBuilder;
+import javax.ws.rs.client.Invocation;
+import javax.ws.rs.client.WebTarget;
 import javax.ws.rs.core.MediaType;
+import java.io.IOException;
+import java.nio.file.DirectoryStream;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.util.ArrayList;
+import java.util.List;
+
+import java.util.Optional;
+
 
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
 class JUnit5ExampleTest {
@@ -13,15 +39,59 @@ class JUnit5ExampleTest {
     private AuthenticationHelper helper = null;
     private final String testUserName = "testUser@test.com";
     private final String testPassword = "testPassword123";
+    private final static String AWS_PROFILE = "backend_dev";
+
+
+    public static List<String> fileList(String directory) {
+        List<String> fileNames = new ArrayList<>();
+        try (DirectoryStream<Path> directoryStream = Files.newDirectoryStream(Paths.get(directory))) {
+            for (Path path : directoryStream) {
+                fileNames.add(path.toString());
+            }
+        } catch (IOException ex) {}
+        return fileNames;
+    }
+
+
+
     @BeforeAll
     void retrieveAccessKey(){
 
-        //TODO retrieve userPoolID, clientID and region from cloudformation outputs
-        String clientId = "755f5d0elsg5ie96116540qm3u";
-        String userPoolId = "us-west-2_FrH0UdrNz";
-        String region = "us-west-2";
-        String profileName = "backend_dev";
-        this.helper = new AuthenticationHelper(userPoolId, clientId, "", region, profileName);
+//        List<String> files = fileList("./.serverless/");
+//        String res = files.stream().collect(Collectors.joining(","));
+//        System.out.println(res);
+//        System.exit(0);
+
+        // parse serverless-state output to retrieve userpool variables
+        ServerlessState apiStackServerlessState = null;
+        ServerlessState authStackServerlessState = null;
+        try {
+             apiStackServerlessState = ServerlessState.readServerlessState("./.serverless/serverless-state.json");
+            authStackServerlessState = ServerlessState.readServerlessState("./../auth/.serverless/serverless-state.json");
+        } catch (IOException e) {
+            System.err.println("Failed to read serverless-state.json. Exiting test suite");
+            e.printStackTrace();
+            System.exit(1);
+        }
+
+        // retrieve clientID from cloudformation outputs
+        String userPoolClientId = null;
+        try{
+            CloudFormationHelper cfHelper = new CloudFormationHelper(authStackServerlessState);
+             userPoolClientId = cfHelper.getStagingUserPoolClientId();
+
+        }catch(NotFoundException ex){
+            ex.printStackTrace();
+            System.exit(1);
+        }
+
+
+
+        String clientId = userPoolClientId;
+        String userPoolId = apiStackServerlessState.getUserPoolId();
+        String region = apiStackServerlessState.getUserPoolRegion();
+
+        this.helper = new AuthenticationHelper(userPoolId, clientId, "", region, AWS_PROFILE);
 
         helper.PerformAdminSignup(testUserName, testPassword);
 
@@ -33,7 +103,7 @@ class JUnit5ExampleTest {
         Client client = ClientBuilder.newClient();
         WebTarget target = client.target("http://foo").path("bar");
         Invocation.Builder invocationBuilder = target.request(MediaType.TEXT_PLAIN_TYPE);
-        Response response = invocationBuilder.get();
+//        Response response = invocationBuilder.get();
     }
 
 //    @Test

@@ -13,6 +13,7 @@
     <orderEntry type="library" name="Gradle: com.amazonaws:aws-lambda-java-core:1.1.0" level="project" />
     <orderEntry type="library" name="Gradle: com.amazonaws:aws-java-sdk-dynamodb:1.11.166" level="project" />
     <orderEntry type="library" name="Gradle: com.amazonaws:aws-java-sdk-s3:1.11.409" level="project" />
+    <orderEntry type="library" name="Gradle: com.amazonaws:aws-java-sdk-cloudformation:1.11.166" level="project" />
     <orderEntry type="library" name="Gradle: com.amazonaws:aws-java-sdk-cognitoidp:1.11.442" level="project" />
     <orderEntry type="library" name="Gradle: com.amazonaws:aws-java-sdk-kms:1.11.409" level="project" />
     <orderEntry type="library" name="Gradle: com.amazonaws:aws-java-sdk-core:1.11.442" level="project" />

@@ -1,4 +1,4 @@
-package com.serverless;
+package ski.crunch.utils;
 /*
  *  Copyright 2013-2016 Amazon.com,
  *  Inc. or its affiliates. All Rights Reserved.
@@ -32,8 +32,6 @@ import javax.crypto.Mac;
 import javax.crypto.SecretKey;
 import javax.crypto.ShortBufferException;
 import javax.crypto.spec.SecretKeySpec;
-import java.io.IOException;
-import java.io.InputStream;
 import java.math.BigInteger;
 import java.nio.charset.StandardCharsets;
 import java.security.*;
@@ -102,7 +100,7 @@ public class AuthenticationHelper {
     private String region;
     private String profileName;
 
-    AuthenticationHelper(String userPoolID, String clientid, String secretKey, String region, String profileName) {
+    public AuthenticationHelper(String userPoolID, String clientid, String secretKey, String region, String profileName) {
         do {
             a = new BigInteger(EPHEMERAL_KEY_LENGTH, SECURE_RANDOM).mod(N);
             A = g.modPow(a, N);
@@ -199,7 +197,7 @@ AWSCredentials awsCreds = new ProfileCredentialsProvider(profileName).getCredent
                 .withRegion(Regions.fromName(this.region))
                 .build();
     }
-    void PerformAdminSignup(String username, String password) {
+    public void PerformAdminSignup(String username, String password) {
         SignUpRequest request = createSignupRequest(this.clientId, username, password);
         try {
             AWSCognitoIdentityProvider cognitoIdentityProvider = buildIdpWithCreds(profileName);
@@ -241,7 +239,7 @@ AWSCredentials awsCreds = new ProfileCredentialsProvider(profileName).getCredent
      * @param password Password for the SRP request
      * @return the JWT token if the request is successful else null.
      */
-    String PerformSRPAuthentication(String username, String password) {
+    public String PerformSRPAuthentication(String username, String password) {
         String authresult = null;
 
         InitiateAuthRequest initiateAuthRequest = initiateUserSrpAuthRequest(username);
