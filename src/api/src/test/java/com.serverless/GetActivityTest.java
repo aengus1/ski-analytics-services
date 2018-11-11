@@ -57,11 +57,6 @@ class JUnit5ExampleTest {
     @BeforeAll
     void retrieveAccessKey(){
 
-//        List<String> files = fileList("./.serverless/");
-//        String res = files.stream().collect(Collectors.joining(","));
-//        System.out.println(res);
-//        System.exit(0);
-
         // parse serverless-state output to retrieve userpool variables
         ServerlessState apiStackServerlessState = null;
         ServerlessState authStackServerlessState = null;
@@ -98,6 +93,8 @@ class JUnit5ExampleTest {
         this.accessKey = helper.PerformSRPAuthentication(testUserName, testPassword);
 
     }
+
+
     @Test
     void justAnExample() {
         Client client = ClientBuilder.newClient();

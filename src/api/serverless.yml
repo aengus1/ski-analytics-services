@@ -69,6 +69,8 @@ functions:
             ## had to hardcode this due to an issue with arns https://github.com/serverless/serverless/issues/3129
             ### note - to access this function you need to include an Authorizer header on the request, containing the
             ### Id token - not the access token
+            ### SKIAPI-13 -> the value of ARN field here is now being referenced by ServerlessState class, parsing this for
+            ### use in test harness
 
 resources:
   Resources:
