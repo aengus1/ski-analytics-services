@@ -2,6 +2,9 @@ service: api
 tenant: aengus
 app: ski-analytics
 
+plugins:
+  - serverless-apigw-binary
+
 # You can pin your service to only deploy with a specific Serverless version
 # Check out our docs for more details
 # frameworkVersion: "=X.X.X"
@@ -17,11 +20,15 @@ custom:
                 Key: "module"
                 Value: "api"
   activityBucketName: "activity-${{self:custom.currentStage}}.${{self:custom.domainName}}"
+  rawActivityBucketName: "raw-activity-${{self:custom.currentStage}}.${{self:custom.domainName}}"
   userPoolArn:
     Fn::ImportValue:
       Fn::Join: ['', UserPoolArn]
   activityTable:  ${{self:custom.currentStage}}-crunch-Activity
 #  authStack: ${{self:custom.currentStage}}-ski-analytics-authentication-stack
+  apigwBinary:
+    types:
+      - '*/*'
 
 provider:
   name: aws
@@ -33,8 +40,21 @@ provider:
   iamRoleStatements:
     - Effect: Allow
       Action:
+        - s3:ListBucket
+      Resource: "arn:aws:s3:::${{self:custom.activityBucketName}}"
+    - Effect: Allow
+      Action:
         - s3:GetObject
       Resource: "arn:aws:s3:::${{self:custom.activityBucketName}}/*"
+    - Effect: Allow
+      Action:
+        - s3:PutObject
+        - s3:GetObject
+      Resource: "arn:aws:s3:::${{self:custom.rawActivityBucketName}}/*"
+    - Effect: Allow
+      Action:
+        - s3:ListBucket
+      Resource: "arn:aws:s3:::${{self:custom.rawActivityBucketName}}"
     - Effect: Allow
       Action:
         - dynamodb:Query
@@ -43,16 +63,17 @@ provider:
         - dynamodb:PutItem
         - dynamodb:UpdateItem
         - dynamodb:DeleteItem
-      Resource: "arn:aws:dynamodb:${{opt:region, self:provider.region}}:*:table/$${{self:custom.activityTable}}"
+      Resource: "arn:aws:dynamodb:${{opt:region, self:provider.region}}:*:table/${{self:custom.activityTable}}"
 
 package:
   artifact: build/distributions/api.zip
 
 functions:
   GetActivityLambda:
-    handler: com.serverless.Handler
+    handler: ski.crunch.activity.GetActivityHandler
     environment:
       s3ActivityBucketName: ${{self:custom.activityBucketName}}
+      activityTable: ${{self:custom.currentStage}}-crunch-Activity
     events:
       - http:
           path: activity/{id}
@@ -71,14 +92,31 @@ functions:
             ### Id token - not the access token
             ### SKIAPI-13 -> the value of ARN field here is now being referenced by ServerlessState class, parsing this for
             ### use in test harness
-
+  PutActivityLambda:
+    handler: ski.crunch.activity.PutActivityHandler
+    environment:
+      s3RawActivityBucketName: ${{self:custom.rawActivityBucketName}}
+      activityTable: ${{self:custom.currentStage}}-crunch-Activity
+    events:
+     - http:
+        path: activity
+        method: put
+        cors: true
+        authorizer:
+          arn: arn:aws:cognito-idp:us-west-2:556823078430:userpool/us-west-2_FrH0UdrNz
 resources:
   Resources:
     S3BucketForActivity:
       Type: AWS::S3::Bucket
       Properties:
-        AccessControl: PublicRead
+#        AccessControl: PublicRead
         BucketName: ${{self:custom.activityBucketName}}
+        Tags: ${{self:custom.resourceTags}}
+    S3RawBucketForActivity:
+      Type: AWS::S3::Bucket
+      Properties:
+#        AccessControl: PublicRead
+        BucketName: ${{self:custom.rawActivityBucketName}}
         Tags: ${{self:custom.resourceTags}}
     DynamoTableForActivity:
       Type: AWS::DynamoDB::Table

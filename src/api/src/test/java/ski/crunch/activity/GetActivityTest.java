@@ -1,4 +1,4 @@
-package com.serverless;
+package ski.crunch.activity;
 
 import com.amazonaws.auth.AWSCredentialsProvider;
 import com.amazonaws.auth.profile.ProfileCredentialsProvider;
@@ -8,6 +8,7 @@ import com.amazonaws.services.cloudformation.AmazonCloudFormationClientBuilder;
 import com.amazonaws.services.cloudformation.model.DescribeStacksResult;
 import com.amazonaws.services.cloudformation.model.Output;
 import com.amazonaws.services.cloudformation.model.Stack;
+import org.apache.log4j.Logger;
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
@@ -34,13 +35,13 @@ import java.util.Optional;
 
 
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
-class JUnit5ExampleTest {
+class GetActivityTest {
     private String accessKey = null;
     private AuthenticationHelper helper = null;
     private final String testUserName = "testUser@test.com";
     private final String testPassword = "testPassword123";
     private final static String AWS_PROFILE = "backend_dev";
-
+    private static final Logger LOG = Logger.getLogger(GetActivityTest.class);
 
     public static List<String> fileList(String directory) {
         List<String> fileNames = new ArrayList<>();
@@ -91,6 +92,7 @@ class JUnit5ExampleTest {
         helper.PerformAdminSignup(testUserName, testPassword);
 
         this.accessKey = helper.PerformSRPAuthentication(testUserName, testPassword);
+        LOG.info("ACCESS KEY: " + this.accessKey);
 
     }
 
@@ -114,8 +116,8 @@ class JUnit5ExampleTest {
 //
 //    }
 
-    @AfterAll
-    void tearDown() {
-        helper.deleteUser(this.testUserName);
-    }
+//    @AfterAll
+//    void tearDown() {
+//        helper.deleteUser(this.testUserName);
+//    }
 }

@@ -1,4 +1,4 @@
-package com.serverless;
+package ski.crunch.activity;
 
 import java.util.Map;
 

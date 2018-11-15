@@ -1,4 +1,4 @@
-package com.serverless;
+package ski.crunch.activity;
 
 /**
  * Created by aengusmccullough on 2018-09-20.

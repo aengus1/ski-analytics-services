@@ -1,7 +1,6 @@
-package com.serverless;
+package ski.crunch.activity;
 
 import java.io.IOException;
-import java.nio.charset.StandardCharsets;
 import java.util.*;
 
 import org.apache.log4j.Logger;
@@ -9,9 +8,9 @@ import org.apache.log4j.Logger;
 import com.amazonaws.services.lambda.runtime.Context;
 import com.amazonaws.services.lambda.runtime.RequestHandler;
 
-public class Handler implements RequestHandler<Map<String, Object>, ApiGatewayResponse> {
+public class GetActivityHandler implements RequestHandler<Map<String, Object>, ApiGatewayResponse> {
 
-	private static final Logger LOG = Logger.getLogger(Handler.class);
+	private static final Logger LOG = Logger.getLogger(GetActivityHandler.class);
 
 	@Override
 	public ApiGatewayResponse handleRequest(Map<String, Object> input, Context context) {
@@ -25,13 +24,13 @@ public class Handler implements RequestHandler<Map<String, Object>, ApiGatewayRe
 
 		LinkedHashMap<String,Object> requestContext = (LinkedHashMap<String,Object>) input.get("requestContext");
 		Map<String,Object> authorizer = (Map<String,Object>) requestContext.get("authorizer");
-//		for(String s: authorizer.keySet()){
-//			LOG.info("auth key: " + s + " value: " + authorizer.get(s));
-//		}
 		Map<String,Object> claims = (Map<String,Object>) authorizer.get("claims");
-//		for(String s: claims.keySet()){
-//			LOG.info("claims key: " + s + " value: " + claims.get(s));
-//		}
+		for(String s: claims.keySet()){
+			LOG.info("claims key: " + s + " value: " + claims.get(s));
+		}
+
+		String email = (String) claims.get("email");
+
 		String username = (String) claims.get("cognito:username");
 //		String username = requestContext.split("cognito:username=")[1].split(",")[0];
 		LOG.info("username = " + username);

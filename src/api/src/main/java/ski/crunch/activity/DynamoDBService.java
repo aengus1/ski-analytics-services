@@ -1,5 +1,6 @@
-package com.serverless;
+package ski.crunch.activity;
 
+import com.amazonaws.auth.AWSCredentialsProvider;
 import com.amazonaws.services.dynamodbv2.AmazonDynamoDB;
 import com.amazonaws.services.dynamodbv2.AmazonDynamoDBClientBuilder;
 import com.amazonaws.services.dynamodbv2.datamodeling.DynamoDBMapper;
@@ -19,7 +20,23 @@ public class DynamoDBService {
         this.client = AmazonDynamoDBClientBuilder.standard().build();
         config = new DynamoDBMapperConfig.Builder().withTableNameOverride(DynamoDBMapperConfig.TableNameOverride.withTableNameReplacement(tableName))
                 .build();
+
         this.mapper = new DynamoDBMapper(client, config);
+    }
+
+
+    /**
+     * Use this constructor if you need to use the S3link
+     * @param region
+     * @param tableName
+     * @param credentialsProvider
+     */
+    public DynamoDBService(String region, String tableName, AWSCredentialsProvider credentialsProvider) {
+        this.client = AmazonDynamoDBClientBuilder.standard().build();
+        config = new DynamoDBMapperConfig.Builder().withTableNameOverride(DynamoDBMapperConfig.TableNameOverride.withTableNameReplacement(tableName))
+                .build();
+
+        this.mapper = new DynamoDBMapper(client, config, credentialsProvider);
     }
 
 

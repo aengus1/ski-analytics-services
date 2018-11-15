@@ -33,7 +33,7 @@ test {
     useJUnitPlatform()
 
     // explicitly include or exclude tests
-    include 'com/serverless/**'
+    include 'ski/crunch/**'
 
 
     // show standard out and standard error of the test JVM(s) on the console
