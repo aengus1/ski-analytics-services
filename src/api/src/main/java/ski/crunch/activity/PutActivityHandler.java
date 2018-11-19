@@ -3,26 +3,19 @@ package ski.crunch.activity;
 import com.amazonaws.AmazonClientException;
 import com.amazonaws.auth.AWSCredentialsProvider;
 import com.amazonaws.auth.DefaultAWSCredentialsProviderChain;
-import com.amazonaws.auth.InstanceProfileCredentialsProvider;
-import com.amazonaws.regions.Region;
-import com.amazonaws.regions.Regions;
 import com.amazonaws.services.lambda.runtime.Context;
 import com.amazonaws.services.lambda.runtime.RequestHandler;
 
 
-import com.amazonaws.util.Base64;
 import org.apache.log4j.Logger;
 
-import java.io.ByteArrayInputStream;
-import java.io.ByteArrayOutputStream;
-import java.io.IOException;
-import java.time.LocalDate;
 import java.util.*;
 
 
 public class PutActivityHandler implements RequestHandler<Map<String, Object>, ApiGatewayResponse> {
 
-    private String s3Bucket = null;
+    private String s3RawActivityBucket = null;
+    private String s3ActivityBucket = null;
     private String region = null;
     private String activityTable = null;
     private S3Service s3 = null;
@@ -31,7 +24,8 @@ public class PutActivityHandler implements RequestHandler<Map<String, Object>, A
     private ActivityService activityService = null;
 
     public PutActivityHandler(){
-        this.s3Bucket = System.getenv("s3RawActivityBucketName");
+        this.s3RawActivityBucket = System.getenv("s3RawActivityBucketName");
+        this.s3ActivityBucket = System.getenv("s3ActivityBucketName");
         this.region = System.getenv("AWS_DEFAULT_REGION");
         this.activityTable = System.getenv("activityTable");
         this.s3 = new S3Service(region);
@@ -44,7 +38,8 @@ public class PutActivityHandler implements RequestHandler<Map<String, Object>, A
             LOG.error("Unable to obtain default aws credentials", e);
         }
         this.dynamo = new DynamoDBService(region,activityTable, credentialsProvider );
-        this.activityService = new ActivityService(s3, credentialsProvider, dynamo, region, s3Bucket, activityTable);
+        this.activityService = new ActivityService(s3, credentialsProvider, dynamo, region,
+                s3RawActivityBucket,s3ActivityBucket, activityTable);
     }
 
     private static final Logger LOG = Logger.getLogger(PutActivityHandler.class);

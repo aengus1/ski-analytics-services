@@ -12,7 +12,7 @@ import java.util.Date;
 public class ActivityItem {
 
     private String id;
-    private Date date;
+    private Date dateOfUpload;
     private S3Link rawActivity;
     private String sourceIp;
     private String userAgent;
@@ -20,6 +20,8 @@ public class ActivityItem {
     //possible states: PENDING, PROCESSED, ERROR
     private String status;  //TODO convert to enum when have time to figure out dynamo mapping
 
+
+    private String rawFileType;
 
 
     @DynamoDBHashKey(attributeName="id")
@@ -30,13 +32,14 @@ public class ActivityItem {
     public void setId(String id) {
         this.id = id;
     }
+
     @DynamoDBRangeKey(attributeName="date")
-    public Date getDate() {
-        return date;
+    public Date getDateOfUpload() {
+        return dateOfUpload;
     }
 
-    public void setDate(Date date) {
-        this.date = date;
+    public void setDateOfUpload(Date dateOfUpload) {
+        this.dateOfUpload = dateOfUpload;
     }
 
     public S3Link getRawActivity() {
@@ -77,6 +80,14 @@ public class ActivityItem {
 
     public void setStatus(String status) {
         this.status = status;
+    }
+
+    public String getRawFileType() {
+        return rawFileType;
+    }
+
+    public void setRawFileType(String rawFileType) {
+        this.rawFileType = rawFileType;
     }
 
 }

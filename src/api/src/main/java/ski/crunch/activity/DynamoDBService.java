@@ -5,6 +5,9 @@ import com.amazonaws.services.dynamodbv2.AmazonDynamoDB;
 import com.amazonaws.services.dynamodbv2.AmazonDynamoDBClientBuilder;
 import com.amazonaws.services.dynamodbv2.datamodeling.DynamoDBMapper;
 import com.amazonaws.services.dynamodbv2.datamodeling.DynamoDBMapperConfig;
+import com.amazonaws.services.dynamodbv2.document.Table;
+import com.amazonaws.services.dynamodbv2.document.spec.DeleteItemSpec;
+import com.amazonaws.services.dynamodbv2.document.DynamoDB;
 
 /**
  * Created by aengusmccullough on 2018-09-19.
@@ -12,6 +15,7 @@ import com.amazonaws.services.dynamodbv2.datamodeling.DynamoDBMapperConfig;
 public class DynamoDBService {
 
     AmazonDynamoDB client;
+    DynamoDB dynamo;
     DynamoDBMapper mapper;
     ActivityItem item;
     DynamoDBMapperConfig config;
@@ -20,6 +24,7 @@ public class DynamoDBService {
         this.client = AmazonDynamoDBClientBuilder.standard().build();
         config = new DynamoDBMapperConfig.Builder().withTableNameOverride(DynamoDBMapperConfig.TableNameOverride.withTableNameReplacement(tableName))
                 .build();
+        this.dynamo = new DynamoDB(client);
 
         this.mapper = new DynamoDBMapper(client, config);
     }
@@ -37,10 +42,17 @@ public class DynamoDBService {
                 .build();
 
         this.mapper = new DynamoDBMapper(client, config, credentialsProvider);
+        this.dynamo = new DynamoDB(client);
     }
 
 
     public DynamoDBMapper getMapper(){
         return this.mapper;
     }
+
+    public Table getTable(String tableName){
+        return this.dynamo.getTable(tableName);
+    }
+
+
 }

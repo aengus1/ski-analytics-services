@@ -3,6 +3,9 @@ package ski.crunch.activity;
 import java.io.IOException;
 import java.util.*;
 
+import com.amazonaws.AmazonClientException;
+import com.amazonaws.auth.AWSCredentialsProvider;
+import com.amazonaws.auth.DefaultAWSCredentialsProviderChain;
 import org.apache.log4j.Logger;
 
 import com.amazonaws.services.lambda.runtime.Context;
@@ -10,61 +13,43 @@ import com.amazonaws.services.lambda.runtime.RequestHandler;
 
 public class GetActivityHandler implements RequestHandler<Map<String, Object>, ApiGatewayResponse> {
 
-	private static final Logger LOG = Logger.getLogger(GetActivityHandler.class);
+    private String s3Bucket = null;
+    private String region = null;
+    private String activityTable = null;
+    private S3Service s3 = null;
+    private AWSCredentialsProvider credentialsProvider = null;
+    private DynamoDBService dynamo = null;
+    private ActivityService activityService = null;
 
-	@Override
-	public ApiGatewayResponse handleRequest(Map<String, Object> input, Context context) {
-		LOG.info("received: " + input);
+    private static final Logger LOG = Logger.getLogger(GetActivityHandler.class);
 
-		String s3Bucket = System.getenv("s3ActivityBucketName");
-		LOG.info("bucket name" + s3Bucket);
-		for(String s: input.keySet()){
-			LOG.info("key: " + s + " value: " + input.get(s));
-		}
+    public GetActivityHandler() {
+        this.s3Bucket = System.getenv("s3ActivityBucketName");
+        this.region = System.getenv("AWS_DEFAULT_REGION");
+        this.s3 = new S3Service(region);
+        String s3RawActivityBucket = System.getenv("s3RawActivityBucketName");
+        this.s3Bucket = System.getenv("s3ActivityBucketName");
+        this.region = System.getenv("AWS_DEFAULT_REGION");
+        this.activityTable = System.getenv("activityTable");
+        this.s3 = new S3Service(region);
 
-		LinkedHashMap<String,Object> requestContext = (LinkedHashMap<String,Object>) input.get("requestContext");
-		Map<String,Object> authorizer = (Map<String,Object>) requestContext.get("authorizer");
-		Map<String,Object> claims = (Map<String,Object>) authorizer.get("claims");
-		for(String s: claims.keySet()){
-			LOG.info("claims key: " + s + " value: " + claims.get(s));
-		}
-
-		String email = (String) claims.get("email");
-
-		String username = (String) claims.get("cognito:username");
-//		String username = requestContext.split("cognito:username=")[1].split(",")[0];
-		LOG.info("username = " + username);
-
-		String cognitoId = context.getIdentity().getIdentityId();
-		LOG.info("cognito id = " + cognitoId);
-
-		Map<String,String> pathParams = (Map<String,String>) input.get("pathParameters");
-		LOG.info("id = " + pathParams.get("id"));
-		String id = pathParams.get("id");
-		String region = System.getenv("AWS_DEFAULT_REGION");
-		LOG.info("region = " + System.getenv("AWS_DEFAULT_REGION"));
+        try {
+            this.credentialsProvider = DefaultAWSCredentialsProviderChain.getInstance();
+            credentialsProvider.getCredentials();
+            LOG.debug("Obtained default aws credentials");
+        } catch (AmazonClientException e) {
+            LOG.error("Unable to obtain default aws credentials", e);
+        }
+        this.dynamo = new DynamoDBService(region, activityTable, credentialsProvider);
+        this.activityService = new ActivityService(s3, credentialsProvider, dynamo, region,
+                s3RawActivityBucket, s3Bucket, activityTable);
+    }
 
 
-		//TODO -> check the owner of this activity from dynamodb table
+    @Override
+    public ApiGatewayResponse handleRequest(Map<String, Object> input, Context context) {
+        LOG.debug("GetActivityHandler called");
+        return activityService.getActivity(input, context);
+    }
 
-		S3Service service = new S3Service(region);
-
-		// Response responseBody = new Response("Go Serverless v1.x! Your function executed successfully!", input);
-		Map<String, String> headers = new HashMap<>();
-		headers.put("X-Powered-By", "AWS Lambda & Serverless");
-		headers.put("Content-Type", "application/x-protobuf");
-		byte[] binaryBody = null;
-		try {
-			binaryBody = service.getObject(s3Bucket,  id+ ".pbf");
-		} catch (IOException ex ) {
-			ex.printStackTrace();
-			LOG.error(" error reading file " + ex.getMessage());
-		}
-		return ApiGatewayResponse.builder()
-				.setStatusCode(200)
-				.setBinaryBody(binaryBody)
-				.setBase64Encoded(true)
-				.setHeaders(headers)
-				.build();
-	}
 }

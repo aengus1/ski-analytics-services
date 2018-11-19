@@ -49,6 +49,22 @@ return "";
         return userPoolARN.split("/")[1];
     }
 
+    public String getActivityTable(){
+        return rootNode.path("service").path("custom").path("activityTable").asText();
+    }
+
+    public String getRawActivityBucketName(){
+        return rootNode.path("service").path("custom").path("rawActivityBucketName").asText();
+    }
+
+    public String getActivityBucketName(){
+        return rootNode.path("service").path("custom").path("activityBucketName").asText();
+    }
+
+    public String getRegion(){
+        return rootNode.path("service").path("provider").path("region").asText();
+    }
+
     public final static ServerlessState readServerlessState(String filePath) throws IOException {
         String body = Files.lines(Paths.get(filePath),
                 StandardCharsets.UTF_8).collect(Collectors.joining("\n"));

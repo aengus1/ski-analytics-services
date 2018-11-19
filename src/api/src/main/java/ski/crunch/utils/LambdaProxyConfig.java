@@ -1,5 +1,6 @@
 package ski.crunch.utils;
 
+
 import java.util.List;
 import java.util.Map;
 
@@ -9,29 +10,37 @@ import java.util.Map;
 public class LambdaProxyConfig {
 
 
-    public LambdaProxyConfig(Map<String, Object> input) {
-        this.headers = new Headers();
-        this.requestContext = new RequestContext();
+    public LambdaProxyConfig(Map<String, Object> input) throws ParseException {
+        try {
+            this.headers = new Headers();
+            this.requestContext = new RequestContext();
 
-        //Parse input parameters
-        Map<String, Object> requestContext = (Map) input.get("requestContext");
-        Map<String, Object> identity = (Map) requestContext.get("identity");
-        Map<String, Object> authorizer = (Map<String, Object>) requestContext.get("authorizer");
-        Map<String, Object> claims = (Map<String, Object>) authorizer.get("claims");
+            //Parse input parameters
+            Map<String, Object> requestContext = (Map) input.get("requestContext");
+            Map<String, Object> identity = (Map) requestContext.get("identity");
+            Map<String, Object> authorizer = (Map<String, Object>) requestContext.get("authorizer");
+            Map<String, Object> claims = (Map<String, Object>) authorizer.get("claims");
+            Map<String, String> pathParams = (Map<String, String>) input.get("pathParameters");
+            Map<String, String> headers = (Map<String, String>) input.get("headers");
 
-        this.setBody((String) input.get("body"));
-        this.requestContext.getIdentity().setSourceIp((String) identity.get("sourceIp"));
-        this.requestContext.getIdentity().setUserAgent((String) identity.get("userAgent"));
-        this.requestContext.getIdentity().setSourceIp((String) identity.get("user"));
-        this.requestContext.getIdentity().setEmail((String) claims.get("email"));
-
+            this.getHeaders().setContentType(headers.get("Content-Type"));
+            this.getHeaders().setAccept(headers.get("Accept"));
+            this.setBody((String) input.get("body"));
+            this.requestContext.getIdentity().setSourceIp((String) identity.get("sourceIp"));
+            this.requestContext.getIdentity().setUserAgent((String) identity.get("userAgent"));
+            this.requestContext.getIdentity().setSourceIp((String) identity.get("user"));
+            this.requestContext.getIdentity().setEmail((String) claims.get("email"));
+            this.setPathParameters(pathParams);
+        }catch(Exception ex){
+            throw new ParseException("Error occurred parsing input", ex);
+        }
     }
 
     String resource;
     String path;
     String httpMethod;
     Map<String, String> queryStringParameters;
-    List<String> pathParameters;
+    Map<String,String> pathParameters;
     String stageVariables;
     String body;
     boolean isBase64Encoded;
@@ -70,11 +79,11 @@ public class LambdaProxyConfig {
         this.queryStringParameters = queryStringParameters;
     }
 
-    public List<String> getPathParameters() {
+    public Map<String,String> getPathParameters() {
         return pathParameters;
     }
 
-    public void setPathParameters(List<String> pathParameters) {
+    public void setPathParameters(Map<String,String> pathParameters) {
         this.pathParameters = pathParameters;
     }
 
@@ -122,14 +131,79 @@ public class LambdaProxyConfig {
    public  class Headers {
         String accept;
         String acceptEncoding;
-        String acceptLanguage;
+
+       public String getAcceptLanguage() {
+           return acceptLanguage;
+       }
+
+       public void setAcceptLanguage(String acceptLanguage) {
+           this.acceptLanguage = acceptLanguage;
+       }
+
+       public String getCacheControl() {
+           return cacheControl;
+       }
+
+       public void setCacheControl(String cacheControl) {
+           this.cacheControl = cacheControl;
+       }
+
+       public String getOrigin() {
+           return origin;
+       }
+
+       public void setOrigin(String origin) {
+           this.origin = origin;
+       }
+
+       public String getReferer() {
+           return referer;
+       }
+
+       public void setReferer(String referer) {
+           this.referer = referer;
+       }
+
+       public String getUserAgent() {
+           return userAgent;
+       }
+
+       public void setUserAgent(String userAgent) {
+           this.userAgent = userAgent;
+       }
+
+       public String getContentType() {
+           return contentType;
+       }
+
+       public void setContentType(String contentType) {
+           this.contentType = contentType;
+       }
+
+       public String getHost() {
+           return host;
+       }
+
+       public void setHost(String host) {
+           this.host = host;
+       }
+
+       String acceptLanguage;
         String cacheControl;
         String origin;
         String referer;
         String userAgent;
         String contentType;
         String host;
-    }
+
+       public String getAccept() {
+           return accept;
+       }
+
+       public void setAccept(String accept) {
+           this.accept = accept;
+       }
+   }
 
    public  class RequestContext {
         String path;

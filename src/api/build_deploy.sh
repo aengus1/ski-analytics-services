@@ -1,3 +1,12 @@
 #!/bin/bash
-../../gradlew build
-sls deploy -v
+
+
+if ../../gradlew build; then
+  echo "Gradle task succeeded. Deploying..." >&2
+  sls deploy -v
+
+else
+  echo "Gradle task failed. Aborting" >&2
+fi
+
+

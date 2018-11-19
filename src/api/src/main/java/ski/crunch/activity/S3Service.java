@@ -6,6 +6,7 @@ import com.amazonaws.services.dynamodbv2.datamodeling.S3Link;
 import com.amazonaws.services.s3.AmazonS3;
 import com.amazonaws.client.builder.AwsClientBuilder;
 import com.amazonaws.services.s3.AmazonS3ClientBuilder;
+import com.amazonaws.services.s3.internal.DeleteObjectsResponse;
 import com.amazonaws.services.s3.model.*;
 import com.amazonaws.util.IOUtils;
 import org.apache.log4j.Logger;
@@ -30,12 +31,19 @@ public class S3Service {
                 .build();
     }
 
+    public boolean doesObjectExist(String bucket, String key){
+        return this.s3Client.doesObjectExist(bucket, key);
+    }
 
     public byte[] getObject(String bucket, String key) throws IOException {
 
         S3Object object = this.s3Client.getObject(new GetObjectRequest(bucket, key));
 
         return IOUtils.toByteArray(object.getObjectContent());
+    }
+
+    public void deleteObject(String bucket, String key) throws IOException {
+         this.s3Client.deleteObject(bucket, key);
     }
 
     public void putObject(InputStream is, String bucketName, String objectKey, long length, String metaTitle) throws IOException{
