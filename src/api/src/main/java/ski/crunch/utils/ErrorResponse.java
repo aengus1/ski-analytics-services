@@ -3,7 +3,7 @@ package ski.crunch.utils;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.apache.log4j.Logger;
-import ski.crunch.activity.ActivityService;
+import ski.crunch.activity.service.ActivityService;
 
 public class ErrorResponse {
 

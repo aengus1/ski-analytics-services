@@ -20,7 +20,7 @@ custom:
                 Key: "module"
                 Value: "api"
   activityBucketName: "activity-${{self:custom.currentStage}}.${{self:custom.domainName}}"
-  rawActivityBucketName: "raw-activity-${{self:custom.currentStage}}.${{self:custom.domainName}}"
+  rawActivityBucketName: "activity-raw-${{self:custom.currentStage}}.${{self:custom.domainName}}"
   userPoolArn:
     Fn::ImportValue:
       Fn::Join: ['', UserPoolArn]
@@ -104,6 +104,18 @@ functions:
         cors: true
         authorizer:
           arn: arn:aws:cognito-idp:us-west-2:556823078430:userpool/us-west-2_FrH0UdrNz
+  ParseFitActivityLambda:
+    handler: ski.crunch.activity.ParseFitActivityLambda
+    environment:
+      s3ActivityBucketName: ${{self:custom.activityBucketName}}
+      s3rawActivityBucketName: ${{self:custom.rawActivityBucketName}}
+      activityTable: ${{self:custom.currentStage}}-crunch-Activity
+    events:
+     - s3: ForRawActivity
+       event: s3:ObjectCreated:*
+       rules:
+           - suffix: .fit
+
 resources:
   Resources:
     S3BucketForActivity:
@@ -112,12 +124,24 @@ resources:
 #        AccessControl: PublicRead
         BucketName: ${{self:custom.activityBucketName}}
         Tags: ${{self:custom.resourceTags}}
-    S3RawBucketForActivity:
+    S3BucketForRawActivity:
       Type: AWS::S3::Bucket
       Properties:
 #        AccessControl: PublicRead
         BucketName: ${{self:custom.rawActivityBucketName}}
         Tags: ${{self:custom.resourceTags}}
+    ParseFitActivityLambdaLambdaPermissionS3BucketForRawActivityS3:
+        Type: "AWS::Lambda::Permission"
+        Properties:
+          FunctionName:
+            "Fn::GetAtt":
+            - ParseFitActivityLambdaLambdaFunction
+            - Arn
+          Principal: "s3.amazonaws.com"
+          Action: "lambda:InvokeFunction"
+          SourceAccount:
+            Ref: AWS::AccountId
+          SourceArn: "arn:aws:s3:::${{self:custom.rawActivityBucketName}}"
     DynamoTableForActivity:
       Type: AWS::DynamoDB::Table
       DeletionPolicy: Retain

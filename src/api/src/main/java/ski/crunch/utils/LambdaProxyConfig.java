@@ -5,7 +5,7 @@ import java.util.List;
 import java.util.Map;
 
 /**
- * Model class to avoid having to custom parse the input map for every lambda proxy request
+ * Model class to avoid having to custom convert the input map for every lambda proxy request
  */
 public class LambdaProxyConfig {
 

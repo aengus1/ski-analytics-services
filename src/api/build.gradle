@@ -1,11 +1,13 @@
 
 plugins {
     id 'java'
+    id 'scala'
 }
 
 
 dependencies {
     compile (
+            'org.scala-lang:scala-library:2.11.12',
             'com.amazonaws:aws-lambda-java-core:1.1.0',
             'com.amazonaws:aws-java-sdk-s3:1.11.409',
             'com.amazonaws:aws-java-sdk-dynamodb:1.11.166',
@@ -14,13 +16,22 @@ dependencies {
             'com.amazonaws:aws-lambda-java-log4j:1.0.0',
             'com.fasterxml.jackson.core:jackson-core:2.8.5',
             'com.fasterxml.jackson.core:jackson-databind:2.8.5',
-            'com.fasterxml.jackson.core:jackson-annotations:2.8.5'
+            'com.fasterxml.jackson.core:jackson-annotations:2.8.5',
+            'com.google.protobuf:protobuf-java:3.5.0',
+            'commons-io:commons-io:2.5',
+            "com.vividsolutions:jts:1.13",
+            "org.geotools:gt-main:16.1",
+            "org.geotools:gt-epsg-hsql:16.1",
+
     )
     testImplementation(
+            'org.scalatest:scalatest_2.11:3.0.0',
             'org.junit.jupiter:junit-jupiter-api:5.1.0',
             // https://mvnrepository.com/artifact/com.sun.jersey/jersey-client
             'org.glassfish.jersey.core:jersey-client:2.5.1',
-            'com.fasterxml.jackson.core:jackson-core:2.9.7'
+            'com.fasterxml.jackson.core:jackson-core:2.9.7',
+            "org.scalactic:scalactic:3.0.1",
+            "org.scalatest:scalatest:3.0.1:test"
 
 
     )

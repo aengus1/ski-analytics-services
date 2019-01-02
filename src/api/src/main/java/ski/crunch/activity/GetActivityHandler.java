@@ -1,6 +1,5 @@
 package ski.crunch.activity;
 
-import java.io.IOException;
 import java.util.*;
 
 import com.amazonaws.AmazonClientException;
@@ -10,6 +9,10 @@ import org.apache.log4j.Logger;
 
 import com.amazonaws.services.lambda.runtime.Context;
 import com.amazonaws.services.lambda.runtime.RequestHandler;
+import ski.crunch.activity.model.ApiGatewayResponse;
+import ski.crunch.activity.service.ActivityService;
+import ski.crunch.activity.service.DynamoDBService;
+import ski.crunch.activity.service.S3Service;
 
 public class GetActivityHandler implements RequestHandler<Map<String, Object>, ApiGatewayResponse> {
 

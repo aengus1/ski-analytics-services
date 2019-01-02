@@ -3,9 +3,10 @@
   <component name="ProjectModuleManager">
     <modules>
       <module fileurl="file://$PROJECT_DIR$/.idea/modules/ski-analytics-services.iml" filepath="$PROJECT_DIR$/.idea/modules/ski-analytics-services.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/src/api/ski-analytics-services-src_api_test.iml" filepath="$PROJECT_DIR$/.idea/modules/src/api/ski-analytics-services-src_api_test.iml" group="src/api" />
       <module fileurl="file://$PROJECT_DIR$/.idea/modules/src/api/src_api.iml" filepath="$PROJECT_DIR$/.idea/modules/src/api/src_api.iml" group="src/api" />
       <module fileurl="file://$PROJECT_DIR$/.idea/modules/src/api/src_api_main.iml" filepath="$PROJECT_DIR$/.idea/modules/src/api/src_api_main.iml" group="src/api" />
-      <module fileurl="file://$PROJECT_DIR$/.idea/modules/src/api/src_api_test.iml" filepath="$PROJECT_DIR$/.idea/modules/src/api/src_api_test.iml" group="src/api" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/src/api/src_api_test.iml" filepath="$PROJECT_DIR$/.idea/modules/src/api/src_api_test.iml" />
     </modules>
   </component>
 </project>

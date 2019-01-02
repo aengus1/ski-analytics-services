@@ -8,6 +8,10 @@ import com.amazonaws.services.lambda.runtime.RequestHandler;
 
 
 import org.apache.log4j.Logger;
+import ski.crunch.activity.model.ApiGatewayResponse;
+import ski.crunch.activity.service.ActivityService;
+import ski.crunch.activity.service.DynamoDBService;
+import ski.crunch.activity.service.S3Service;
 
 import java.util.*;
 

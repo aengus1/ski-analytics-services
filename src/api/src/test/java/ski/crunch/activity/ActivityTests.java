@@ -1,9 +1,6 @@
 package ski.crunch.activity;
 
 import com.amazonaws.auth.profile.ProfileCredentialsProvider;
-import com.amazonaws.services.dynamodbv2.datamodeling.DynamoDBQueryExpression;
-import com.amazonaws.services.dynamodbv2.model.AttributeValue;
-import com.amazonaws.util.IOUtils;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.apache.log4j.Logger;
@@ -11,23 +8,29 @@ import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestInstance;
+import ski.crunch.activity.model.PutActivityResponse;
+import ski.crunch.activity.service.ActivityService;
+import ski.crunch.activity.service.DynamoDBService;
+import ski.crunch.activity.service.S3Service;
 import ski.crunch.utils.AuthenticationHelper;
 import ski.crunch.utils.CloudFormationHelper;
 import ski.crunch.utils.NotFoundException;
 import ski.crunch.utils.ServerlessState;
 
-import javax.ws.rs.client.*;
+import javax.ws.rs.client.Client;
+import javax.ws.rs.client.ClientBuilder;
+import javax.ws.rs.client.Entity;
+import javax.ws.rs.client.WebTarget;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
-import java.io.*;
+import java.io.IOException;
+import java.io.InputStream;
 import java.nio.file.DirectoryStream;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
@@ -64,7 +67,7 @@ class ActivityTests {
     @BeforeAll
     void retrieveAccessKey() {
 
-        // parse serverless-state output to retrieve userpool variables
+        // convert serverless-state output to retrieve userpool variables
         ServerlessState apiStackServerlessState = null;
         ServerlessState authStackServerlessState = null;
         try {
@@ -272,7 +275,7 @@ class ActivityTests {
     @AfterAll
     void tearDown() {
         activityService.deleteActivityItemById(activityId);
-        activityService.deleteRawActivityFromS3(activityId);
+        // activityService.deleteRawActivityFromS3(activityId+".fit");
         helper.deleteUser(this.testUserName);
     }
 
