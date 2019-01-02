@@ -1,0 +1,344 @@
+syntax = 'proto3';
+
+option java_package = "ski.crunch.activity.model";
+message Activity {
+
+Meta meta = 1;
+UserData userData  = 2;  //deprecated
+Summary summary = 3;
+Values values = 4;
+repeated FitEvent events = 5;
+string id = 6;
+repeated Session sessions = 7;
+repeated Segment pauses = 8;
+repeated Segment laps = 9;
+repeated Segment stops = 10;
+
+
+message Meta {
+    string createdTs = 1;   /* timestamp the activity was created */
+    FitManufacturer manufacturer = 2;  /* device manufacturer */
+    int32 product = 3;       /* device model */
+    double version = 4;       /* data format version */
+    string source = 5;         /* data  source  - e.g. fit,garmin,strava */
+    string uploadTs = 6;        /* date the file was uploaded */
+    Sport sport = 7;
+    SubSport subSport = 8;
+    string location = 9;   /* text description of location */
+    Weather weather = 10;    /* weather derived from a weather location / time api */
+}
+
+message UserData {
+    int32 feeling = 1;   /*  how user feels 1 -5 star */
+    string notes = 2;
+    repeated string tags = 3;
+    string userWeather = 4;   /* user input notes on weather */
+    /* TODO -> specify a data structure for gear */
+}
+
+message Weather {
+
+}
+
+message Summary {
+    map<string, bool> hasAttributeMap = 1;
+    string startTs = 2;
+    string endTs = 3;
+    double totalElapsed = 4;
+    double totalTimer = 5;
+    double totalMoving = 6;
+    double totalStopped = 7;
+    double totalPaused = 8;
+    double totalAscent = 9;
+    double totalDescent = 10;
+    double totalDistance = 11;
+    double totalCalories = 12;
+    int32 avgHr = 13;
+    int32 maxHr = 14;
+    int32 minHr = 15;
+    int32 avgCadence = 16;
+    int32 maxCadence = 17;
+    int32 minCadence = 18;
+    int32 avgTemp = 19;
+    int32 maxTemp = 20;
+    int32 minTemp = 21;
+
+    double avgSpeed = 22;
+    double maxSpeed = 23;
+
+    int32 minGradient = 24;
+    int32 maxGradient = 25;
+    int32 avgGradient = 26;
+    int32 nLaps = 27;
+
+    map<string, double> hrvs = 28;
+
+    double totalAscTime = 29;
+    double totalDescTime = 30;
+    double totalAscDist = 31;
+    double totalDescDist = 32;
+
+    double pauseDistance = 33;
+    int32 stopCount = 34;
+    int32 pauseCount = 35;
+}
+
+message Session{
+    Sport sport = 1;
+    SubSport subSport = 2;
+    Segment segment = 3;
+    Summary summary = 4;
+}
+
+message Values {
+    repeated string ts = 1;
+    repeated int32 hr = 2;
+    repeated double lat = 3;
+    repeated double lon = 4;
+    repeated double speed = 5;
+    repeated double altitude = 6;
+    repeated double grade = 7;
+    repeated double distance = 8;
+    repeated double temperature = 9;
+    repeated bool moving = 10;
+    repeated int32 cadence = 11;
+    map<string, double> hrvs = 12; //deprecated
+    repeated double hrv = 13;
+    repeated double vertical_speed = 14;
+
+}
+
+
+
+
+
+enum FitManufacturer {
+    UNKNOWN = 0;
+    GARMIN = 1;
+    GARMIN_FR405_ANTFS = 2;
+    ZEPHYR = 3;
+    DAYTON = 4;
+    IDT = 5;
+    SRM = 6;
+    QUARQ = 7;
+    IBIKE = 8;
+    SARIS = 9;
+    SPARK_HK = 10;
+    TANITA = 11;
+    ECHOWELL = 12;
+    DYNASTREAM_OEM = 13;
+    NAUTILUS = 14;
+    DYNASTREAM = 15;
+    TIMEX = 16;
+    METRIGEAR = 17;
+    XELIC = 18;
+    BEURER = 19;
+    CARDIOSPORT = 20;
+    A_AND_D = 21;
+    HMM = 22;
+    SUUNTO = 23;
+    THITA_ELEKTRONIK = 24;
+    GPULSE = 25;
+    CLEAN_MOBILE = 26;
+    PEDAL_BRAIN = 27;
+    PEAKSWARE = 28;
+    SAXONAR = 29;
+    LEMOND_FITNESS = 30;
+    DEXCOM = 31;
+    WAHOO_FITNESS = 32;
+    OCTANE_FITNESS = 33;
+    ARCHINOETICS = 34;
+    THE_HURT_BOX = 35;
+    CITIZEN_SYSTEMS = 36;
+    MAGELLAN = 37;
+    OSYNCE = 38;
+    HOLUX = 39;
+    CONCEPT2 = 40;
+    ONE_GIANT_LEAP = 42;
+    ACE_SENSOR = 43;
+    BRIM_BROTHERS = 44;
+    XPLOVA = 45;
+    PERCEPTION_DIGITAL = 46;
+    BF1SYSTEMS = 47;
+    PIONEER = 48;
+    SPANTEC = 49;
+    METALOGICS = 50;
+    I4IIIIS = 51;
+    SEIKO_EPSON = 52;
+    SEIKO_EPSON_OEM = 53;
+    IFOR_POWELL = 54;
+    MAXWELL_GUIDER = 55;
+    STAR_TRAC = 56;
+    BREAKAWAY = 57;
+    ALATECH_TECHNOLOGY_LTD = 58;
+    MIO_TECHNOLOGY_EUROPE = 59;
+    ROTOR = 60;
+    GEONAUTE = 61;
+    ID_BIKE = 62;
+    SPECIALIZED = 63;
+    WTEK = 64;
+    PHYSICAL_ENTERPRISES = 65;
+    NORTH_POLE_ENGINEERING = 66;
+    BKOOL = 67;
+    CATEYE = 68;
+    STAGES_CYCLING = 69;
+    SIGMASPORT = 70;
+    TOMTOM = 71;
+    PERIPEDAL = 72;
+    WATTBIKE = 73;
+    MOXY = 76;
+    CICLOSPORT = 77;
+    POWERBAHN = 78;
+    ACORN_PROJECTS_APS = 79;
+    LIFEBEAM = 80;
+    BONTRAGER = 81;
+    WELLGO = 82;
+    SCOSCHE = 83;
+    MAGURA = 84;
+    WOODWAY = 85;
+    ELITE = 86;
+    NIELSEN_KELLERMAN = 87;
+    DK_CITY = 88;
+    TACX = 89;
+    DIRECTION_TECHNOLOGY = 90;
+    MAGTONIC = 91;
+    ONEPARTCARBON = 92;
+    INSIDE_RIDE_TECHNOLOGIES = 93;
+    SOUND_OF_MOTION = 94;
+    STRYD = 95;
+    ICG = 96;
+    MIPULSE = 97;
+    BSX_ATHLETICS = 98;
+    LOOK = 99;
+    CAMPAGNOLO_SRL = 100;
+    BODY_BIKE_SMART = 101;
+    PRAXISWORKS = 102;
+    LIMITS_TECHNOLOGY = 103;
+    TOPACTION_TECHNOLOGY = 104;
+    COSINUSS = 105;
+    FITCARE = 106;
+    MAGENE = 107;
+    GIANT_MANUFACTURING_CO = 108;
+    TIGRASPORT = 109;
+    DEVELOPMENT = 255;
+    HEALTHANDLIFE = 257;
+    LEZYNE = 258;
+    SCRIBE_LABS = 259;
+    ZWIFT = 260;
+    WATTEAM = 261;
+    RECON = 262;
+    FAVERO_ELECTRONICS = 263;
+    DYNOVELO = 264;
+    STRAVA = 265;
+    PRECOR = 266;
+    BRYTON = 267;
+    SRAM = 268;
+    NAVMAN = 269;
+    COBI = 270;
+    SPIVI = 271;
+    MIO_MAGELLAN = 272;
+    EVESPORTS = 273;
+    SENSITIVUS_GAUGE = 274;
+    PODOON = 275;
+}
+
+message FitEvent {
+
+    int32 startIdx = 1;
+    int32 endIdx = 2;
+    string ts = 3;
+    string startTs = 4;
+    string event = 5;
+    EventType eventType = 6;
+    double timerTime = 7;
+    double elapsedTime = 8;
+    double movingTime = 9;
+    string trigger = 10;
+
+}
+
+message Segment {
+    string startTs = 1;
+    string stopTs = 2;
+    string startIdx = 3;
+    string stopIdx = 4;
+}
+
+enum EventType {
+    START = 0;
+    STOP = 1;
+    CONSECUTIVE_DEPRECIATED = 2;
+    MARKER = 3;
+    STOP_ALL = 4;
+    BEGIN_DEPRECIATED = 5;
+    END_DEPRECIATED = 6;
+    END_ALL_DEPRECIATED = 7;
+    STOP_DISABLE = 8;
+    STOP_DISABLE_ALL = 9;
+    NULL = 10;
+}
+
+enum Sport {
+    GENERIC = 0;
+    RUNNING = 1;
+    CYCLING = 2;
+    TRANSITION = 3;
+    FITNESS_EQUIPMENT = 4;
+    SWIMMING = 5;
+    BASKETBALL = 6;
+    SOCCER = 7;
+    TENNIS =8;
+    AMERICAN_FOOTBALL = 9;
+    TRAINING = 10;
+    WALKING = 11;
+    CROSS_COUNTRY_SKIING = 12;
+    ALPINE_SKIING = 13;
+    SNOWBOARDING = 14;
+    ROWING = 15;
+    MOUNTAINEERING = 16;
+    HIKING = 17;
+    MULTISPORT = 18;
+    PADDLING = 19;
+    ALL = 254;
+    INVALID = 255;
+}
+
+enum SubSport {
+    GENERIC_SUBSPORT = 0;
+    TREADMILL = 1;
+    STREET = 2;
+    TRAIL = 3;
+    TRACK = 4;
+    SPIN = 5;
+    INDOOR_CYCLING = 6;
+    ROAD = 7;
+    MOUNTAIN = 8;
+    DOWNHILL = 9;
+    RECUMBENT = 10;
+    CYCLOCROSS = 11;
+    HAND_CYCLING = 12;
+    TRACK_CYCLING = 13;
+    INDOOR_ROWING = 14;
+    ELLIPTICAL = 15;
+    STAIR_CLIMBING = 16;
+    LAP_SWIMMING = 17;
+    OPEN_WATER = 18;
+    FLEXIBILITY_TRAINING = 19;
+    STRENGTH_TRAINING = 20;
+    WARM_UP = 21;
+    MATCH = 22;
+    EXERCISE = 23;
+    CHALLENGE = 24;
+    INDOOR_SKIING = 25;
+    CARDIO_TRAINING = 26;
+    INDOOR_WALKING = 27;
+    ALL_SUBSPORT = 254;
+    INVALID_SUBSPORT = 255;
+
+
+}
+
+
+
+
+}
