@@ -1,498 +1,28 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="e0bdc5bc-f164-460e-911b-964805426644" name="Default" comment="SKAPI-14 SKAPI-13 refactoring and testing">
-      <change afterPath="$PROJECT_DIR$/.idea/hydra.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/libraries/Gradle__com_google_protobuf_protobuf_java_3_5_0.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/libraries/Gradle__com_googlecode_efficient_java_matrix_library_core_0_26.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/libraries/Gradle__com_vividsolutions_jts_1_13.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/libraries/Gradle__commons_io_commons_io_2_5.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/libraries/Gradle__commons_pool_commons_pool_1_5_4.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/libraries/Gradle__javax_media_jai_core_1_1_3.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/libraries/Gradle__jgridshift_jgridshift_1_0.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/libraries/Gradle__net_java_dev_jsr_275_jsr_275_1_0_beta_2.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/libraries/Gradle__net_sf_geographiclib_GeographicLib_Java_1_44.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/libraries/Gradle__org_geotools_gt_api_16_1.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/libraries/Gradle__org_geotools_gt_epsg_hsql_16_1.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/libraries/Gradle__org_geotools_gt_main_16_1.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/libraries/Gradle__org_geotools_gt_metadata_16_1.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/libraries/Gradle__org_geotools_gt_opengis_16_1.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/libraries/Gradle__org_geotools_gt_referencing_16_1.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/libraries/Gradle__org_hsqldb_hsqldb_2_3_0.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/libraries/Gradle__org_jdom_jdom_1_1_3.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/libraries/Gradle__org_scala_lang_modules_scala_parser_combinators_2_11_1_0_4.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/libraries/Gradle__org_scala_lang_modules_scala_xml_2_11_1_0_5.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/libraries/Gradle__org_scala_lang_scala_library_2_11_12.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/libraries/Gradle__org_scala_lang_scala_reflect_2_11_8.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/libraries/Gradle__org_scalactic_scalactic_2_11_3_0_0.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/libraries/Gradle__org_scalatest_scalatest_2_11_3_0_0.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/modules/src/api/ski-analytics-services-src_api_test.iml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/scala_compiler.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/api/src/main/java/com/garmin/fit/AccelerometerDataMesg.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/api/src/main/java/com/garmin/fit/AccelerometerDataMesgListener.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/api/src/main/java/com/garmin/fit/Activity.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/api/src/main/java/com/garmin/fit/ActivityClass.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/api/src/main/java/com/garmin/fit/ActivityLevel.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/api/src/main/java/com/garmin/fit/ActivityMesg.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/api/src/main/java/com/garmin/fit/ActivityMesgListener.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/api/src/main/java/com/garmin/fit/ActivitySubtype.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/api/src/main/java/com/garmin/fit/ActivityType.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/api/src/main/java/com/garmin/fit/AnalogWatchfaceLayout.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/api/src/main/java/com/garmin/fit/AntChannelIdMesg.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/api/src/main/java/com/garmin/fit/AntChannelIdMesgListener.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/api/src/main/java/com/garmin/fit/AntNetwork.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/api/src/main/java/com/garmin/fit/AntRxMesg.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/api/src/main/java/com/garmin/fit/AntRxMesgListener.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/api/src/main/java/com/garmin/fit/AntTxMesg.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/api/src/main/java/com/garmin/fit/AntTxMesgListener.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/api/src/main/java/com/garmin/fit/AntplusDeviceType.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/api/src/main/java/com/garmin/fit/AttitudeStage.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/api/src/main/java/com/garmin/fit/AttitudeValidity.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/api/src/main/java/com/garmin/fit/AutoActivityDetect.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/api/src/main/java/com/garmin/fit/AutoSyncFrequency.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/api/src/main/java/com/garmin/fit/AutolapTrigger.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/api/src/main/java/com/garmin/fit/Autoscroll.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/api/src/main/java/com/garmin/fit/AviationAttitudeMesg.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/api/src/main/java/com/garmin/fit/AviationAttitudeMesgListener.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/api/src/main/java/com/garmin/fit/BacklightMode.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/api/src/main/java/com/garmin/fit/BacklightTimeout.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/api/src/main/java/com/garmin/fit/BarometerDataMesg.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/api/src/main/java/com/garmin/fit/BarometerDataMesgListener.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/api/src/main/java/com/garmin/fit/BatteryStatus.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/api/src/main/java/com/garmin/fit/BenchPressExerciseName.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/api/src/main/java/com/garmin/fit/BikeLightBeamAngleMode.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/api/src/main/java/com/garmin/fit/BikeLightNetworkConfigType.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/api/src/main/java/com/garmin/fit/BikeProfileMesg.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/api/src/main/java/com/garmin/fit/BikeProfileMesgListener.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/api/src/main/java/com/garmin/fit/BloodPressureMesg.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/api/src/main/java/com/garmin/fit/BloodPressureMesgListener.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/api/src/main/java/com/garmin/fit/BodyLocation.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/api/src/main/java/com/garmin/fit/Bool.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/api/src/main/java/com/garmin/fit/BpStatus.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/api/src/main/java/com/garmin/fit/BufferEncoder.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/api/src/main/java/com/garmin/fit/BufferedMesgBroadcaster.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/api/src/main/java/com/garmin/fit/BufferedRecordMesg.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/api/src/main/java/com/garmin/fit/BufferedRecordMesgBroadcaster.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/api/src/main/java/com/garmin/fit/BufferedRecordMesgListener.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/api/src/main/java/com/garmin/fit/CRC.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/api/src/main/java/com/garmin/fit/CRC16.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/api/src/main/java/com/garmin/fit/CadenceZoneMesg.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/api/src/main/java/com/garmin/fit/CadenceZoneMesgListener.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/api/src/main/java/com/garmin/fit/CalfRaiseExerciseName.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/api/src/main/java/com/garmin/fit/CameraEventMesg.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/api/src/main/java/com/garmin/fit/CameraEventMesgListener.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/api/src/main/java/com/garmin/fit/CameraEventType.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/api/src/main/java/com/garmin/fit/CameraOrientationType.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/api/src/main/java/com/garmin/fit/CapabilitiesMesg.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/api/src/main/java/com/garmin/fit/CapabilitiesMesgListener.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/api/src/main/java/com/garmin/fit/CardioExerciseName.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/api/src/main/java/com/garmin/fit/CarryExerciseName.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/api/src/main/java/com/garmin/fit/Checksum.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/api/src/main/java/com/garmin/fit/ChopExerciseName.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/api/src/main/java/com/garmin/fit/CommTimeoutType.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/api/src/main/java/com/garmin/fit/ConnectivityCapabilities.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/api/src/main/java/com/garmin/fit/ConnectivityMesg.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/api/src/main/java/com/garmin/fit/ConnectivityMesgListener.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/api/src/main/java/com/garmin/fit/CoreExerciseName.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/api/src/main/java/com/garmin/fit/CourseCapabilities.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/api/src/main/java/com/garmin/fit/CourseMesg.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/api/src/main/java/com/garmin/fit/CourseMesgListener.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/api/src/main/java/com/garmin/fit/CoursePoint.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/api/src/main/java/com/garmin/fit/CoursePointMesg.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/api/src/main/java/com/garmin/fit/CoursePointMesgListener.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/api/src/main/java/com/garmin/fit/CrunchExerciseName.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/api/src/main/java/com/garmin/fit/CurlExerciseName.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/api/src/main/java/com/garmin/fit/DateMode.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/api/src/main/java/com/garmin/fit/DateTime.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/api/src/main/java/com/garmin/fit/DayOfWeek.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/api/src/main/java/com/garmin/fit/DeadliftExerciseName.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/api/src/main/java/com/garmin/fit/Decode.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/api/src/main/java/com/garmin/fit/DeveloperDataIdMesg.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/api/src/main/java/com/garmin/fit/DeveloperDataIdMesgListener.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/api/src/main/java/com/garmin/fit/DeveloperField.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/api/src/main/java/com/garmin/fit/DeveloperFieldDefinition.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/api/src/main/java/com/garmin/fit/DeveloperFieldDescription.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/api/src/main/java/com/garmin/fit/DeveloperFieldDescriptionListener.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/api/src/main/java/com/garmin/fit/DeviceIndex.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/api/src/main/java/com/garmin/fit/DeviceInfoMesg.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/api/src/main/java/com/garmin/fit/DeviceInfoMesgListener.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/api/src/main/java/com/garmin/fit/DeviceSettingsMesg.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/api/src/main/java/com/garmin/fit/DeviceSettingsMesgListener.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/api/src/main/java/com/garmin/fit/DigitalWatchfaceLayout.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/api/src/main/java/com/garmin/fit/DisplayHeart.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/api/src/main/java/com/garmin/fit/DisplayMeasure.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/api/src/main/java/com/garmin/fit/DisplayOrientation.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/api/src/main/java/com/garmin/fit/DisplayPosition.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/api/src/main/java/com/garmin/fit/DisplayPower.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/api/src/main/java/com/garmin/fit/DiveAlarmMesg.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/api/src/main/java/com/garmin/fit/DiveAlarmMesgListener.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/api/src/main/java/com/garmin/fit/DiveAlarmType.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/api/src/main/java/com/garmin/fit/DiveBacklightMode.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/api/src/main/java/com/garmin/fit/DiveGasMesg.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/api/src/main/java/com/garmin/fit/DiveGasMesgListener.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/api/src/main/java/com/garmin/fit/DiveGasStatus.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/api/src/main/java/com/garmin/fit/DiveSettingsMesg.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/api/src/main/java/com/garmin/fit/DiveSettingsMesgListener.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/api/src/main/java/com/garmin/fit/DiveSummaryMesg.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/api/src/main/java/com/garmin/fit/DiveSummaryMesgListener.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/api/src/main/java/com/garmin/fit/Event.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/api/src/main/java/com/garmin/fit/EventMesg.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/api/src/main/java/com/garmin/fit/EventMesgListener.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/api/src/main/java/com/garmin/fit/EventType.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/api/src/main/java/com/garmin/fit/ExdDataConceptConfigurationMesg.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/api/src/main/java/com/garmin/fit/ExdDataConceptConfigurationMesgListener.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/api/src/main/java/com/garmin/fit/ExdDataFieldConfigurationMesg.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/api/src/main/java/com/garmin/fit/ExdDataFieldConfigurationMesgListener.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/api/src/main/java/com/garmin/fit/ExdDataUnits.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/api/src/main/java/com/garmin/fit/ExdDescriptors.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/api/src/main/java/com/garmin/fit/ExdDisplayType.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/api/src/main/java/com/garmin/fit/ExdLayout.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/api/src/main/java/com/garmin/fit/ExdQualifiers.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/api/src/main/java/com/garmin/fit/ExdScreenConfigurationMesg.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/api/src/main/java/com/garmin/fit/ExdScreenConfigurationMesgListener.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/api/src/main/java/com/garmin/fit/ExerciseCategory.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/api/src/main/java/com/garmin/fit/ExerciseTitleMesg.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/api/src/main/java/com/garmin/fit/ExerciseTitleMesgListener.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/api/src/main/java/com/garmin/fit/Factory.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/api/src/main/java/com/garmin/fit/Field.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/api/src/main/java/com/garmin/fit/FieldBase.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/api/src/main/java/com/garmin/fit/FieldCapabilitiesMesg.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/api/src/main/java/com/garmin/fit/FieldCapabilitiesMesgListener.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/api/src/main/java/com/garmin/fit/FieldComponent.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/api/src/main/java/com/garmin/fit/FieldDefinition.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/api/src/main/java/com/garmin/fit/FieldDefinitionBase.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/api/src/main/java/com/garmin/fit/FieldDescriptionMesg.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/api/src/main/java/com/garmin/fit/FieldDescriptionMesgListener.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/api/src/main/java/com/garmin/fit/File.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/api/src/main/java/com/garmin/fit/FileCapabilitiesMesg.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/api/src/main/java/com/garmin/fit/FileCapabilitiesMesgListener.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/api/src/main/java/com/garmin/fit/FileCreatorMesg.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/api/src/main/java/com/garmin/fit/FileCreatorMesgListener.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/api/src/main/java/com/garmin/fit/FileEncoder.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/api/src/main/java/com/garmin/fit/FileFlags.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/api/src/main/java/com/garmin/fit/FileIdMesg.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/api/src/main/java/com/garmin/fit/FileIdMesgListener.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/api/src/main/java/com/garmin/fit/FileUtil.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/api/src/main/java/com/garmin/fit/Fit.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/api/src/main/java/com/garmin/fit/FitBaseType.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/api/src/main/java/com/garmin/fit/FitBaseUnit.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/api/src/main/java/com/garmin/fit/FitRuntimeException.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/api/src/main/java/com/garmin/fit/FitnessEquipmentState.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/api/src/main/java/com/garmin/fit/FlyeExerciseName.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/api/src/main/java/com/garmin/fit/GarminProduct.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/api/src/main/java/com/garmin/fit/Gender.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/api/src/main/java/com/garmin/fit/Goal.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/api/src/main/java/com/garmin/fit/GoalMesg.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/api/src/main/java/com/garmin/fit/GoalMesgListener.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/api/src/main/java/com/garmin/fit/GoalRecurrence.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/api/src/main/java/com/garmin/fit/GoalSource.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/api/src/main/java/com/garmin/fit/GpsMetadataMesg.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/api/src/main/java/com/garmin/fit/GpsMetadataMesgListener.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/api/src/main/java/com/garmin/fit/GyroscopeDataMesg.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/api/src/main/java/com/garmin/fit/GyroscopeDataMesgListener.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/api/src/main/java/com/garmin/fit/HipRaiseExerciseName.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/api/src/main/java/com/garmin/fit/HipStabilityExerciseName.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/api/src/main/java/com/garmin/fit/HipSwingExerciseName.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/api/src/main/java/com/garmin/fit/HrMesg.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/api/src/main/java/com/garmin/fit/HrMesgListener.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/api/src/main/java/com/garmin/fit/HrType.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/api/src/main/java/com/garmin/fit/HrZoneCalc.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/api/src/main/java/com/garmin/fit/HrZoneMesg.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/api/src/main/java/com/garmin/fit/HrZoneMesgListener.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/api/src/main/java/com/garmin/fit/HrmProfileMesg.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/api/src/main/java/com/garmin/fit/HrmProfileMesgListener.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/api/src/main/java/com/garmin/fit/HrvMesg.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/api/src/main/java/com/garmin/fit/HrvMesgListener.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/api/src/main/java/com/garmin/fit/HyperextensionExerciseName.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/api/src/main/java/com/garmin/fit/Intensity.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/api/src/main/java/com/garmin/fit/Language.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/api/src/main/java/com/garmin/fit/LanguageBits0.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/api/src/main/java/com/garmin/fit/LanguageBits1.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/api/src/main/java/com/garmin/fit/LanguageBits2.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/api/src/main/java/com/garmin/fit/LanguageBits3.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/api/src/main/java/com/garmin/fit/LanguageBits4.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/api/src/main/java/com/garmin/fit/LapMesg.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/api/src/main/java/com/garmin/fit/LapMesgListener.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/api/src/main/java/com/garmin/fit/LapTrigger.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/api/src/main/java/com/garmin/fit/LateralRaiseExerciseName.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/api/src/main/java/com/garmin/fit/LeftRightBalance.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/api/src/main/java/com/garmin/fit/LeftRightBalance100.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/api/src/main/java/com/garmin/fit/LegCurlExerciseName.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/api/src/main/java/com/garmin/fit/LegRaiseExerciseName.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/api/src/main/java/com/garmin/fit/LengthMesg.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/api/src/main/java/com/garmin/fit/LengthMesgListener.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/api/src/main/java/com/garmin/fit/LengthType.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/api/src/main/java/com/garmin/fit/LocalDateTime.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/api/src/main/java/com/garmin/fit/LocalDeviceType.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/api/src/main/java/com/garmin/fit/LocaltimeIntoDay.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/api/src/main/java/com/garmin/fit/LungeExerciseName.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/api/src/main/java/com/garmin/fit/MagnetometerDataMesg.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/api/src/main/java/com/garmin/fit/MagnetometerDataMesgListener.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/api/src/main/java/com/garmin/fit/Manifest.txt" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/api/src/main/java/com/garmin/fit/ManifestUsingJar.txt" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/api/src/main/java/com/garmin/fit/Manufacturer.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/api/src/main/java/com/garmin/fit/MemoGlobMesg.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/api/src/main/java/com/garmin/fit/MemoGlobMesgListener.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/api/src/main/java/com/garmin/fit/Mesg.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/api/src/main/java/com/garmin/fit/MesgBroadcastPlugin.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/api/src/main/java/com/garmin/fit/MesgBroadcaster.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/api/src/main/java/com/garmin/fit/MesgCapabilitiesMesg.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/api/src/main/java/com/garmin/fit/MesgCapabilitiesMesgListener.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/api/src/main/java/com/garmin/fit/MesgCount.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/api/src/main/java/com/garmin/fit/MesgDefinition.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/api/src/main/java/com/garmin/fit/MesgDefinitionListener.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/api/src/main/java/com/garmin/fit/MesgListener.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/api/src/main/java/com/garmin/fit/MesgNum.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/api/src/main/java/com/garmin/fit/MesgWithEvent.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/api/src/main/java/com/garmin/fit/MesgWithEventBroadcaster.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/api/src/main/java/com/garmin/fit/MesgWithEventListener.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/api/src/main/java/com/garmin/fit/MessageIndex.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/api/src/main/java/com/garmin/fit/MetZoneMesg.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/api/src/main/java/com/garmin/fit/MetZoneMesgListener.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/api/src/main/java/com/garmin/fit/MonitoringInfoMesg.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/api/src/main/java/com/garmin/fit/MonitoringInfoMesgListener.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/api/src/main/java/com/garmin/fit/MonitoringMesg.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/api/src/main/java/com/garmin/fit/MonitoringMesgListener.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/api/src/main/java/com/garmin/fit/MonitoringReader.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/api/src/main/java/com/garmin/fit/NmeaSentenceMesg.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/api/src/main/java/com/garmin/fit/NmeaSentenceMesgListener.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/api/src/main/java/com/garmin/fit/ObdiiDataMesg.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/api/src/main/java/com/garmin/fit/ObdiiDataMesgListener.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/api/src/main/java/com/garmin/fit/OhrSettingsMesg.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/api/src/main/java/com/garmin/fit/OhrSettingsMesgListener.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/api/src/main/java/com/garmin/fit/OlympicLiftExerciseName.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/api/src/main/java/com/garmin/fit/OneDSensorCalibrationMesg.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/api/src/main/java/com/garmin/fit/OneDSensorCalibrationMesgListener.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/api/src/main/java/com/garmin/fit/PadMesg.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/api/src/main/java/com/garmin/fit/PadMesgListener.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/api/src/main/java/com/garmin/fit/PlankExerciseName.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/api/src/main/java/com/garmin/fit/PlyoExerciseName.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/api/src/main/java/com/garmin/fit/PowerPhaseType.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/api/src/main/java/com/garmin/fit/PowerZoneMesg.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/api/src/main/java/com/garmin/fit/PowerZoneMesgListener.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/api/src/main/java/com/garmin/fit/Profile.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/api/src/main/java/com/garmin/fit/ProtocolValidator.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/api/src/main/java/com/garmin/fit/PullUpExerciseName.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/api/src/main/java/com/garmin/fit/PushUpExerciseName.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/api/src/main/java/com/garmin/fit/PwrZoneCalc.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/api/src/main/java/com/garmin/fit/RecordMesg.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/api/src/main/java/com/garmin/fit/RecordMesgListener.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/api/src/main/java/com/garmin/fit/RiderPositionType.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/api/src/main/java/com/garmin/fit/RowExerciseName.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/api/src/main/java/com/garmin/fit/RunExerciseName.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/api/src/main/java/com/garmin/fit/Schedule.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/api/src/main/java/com/garmin/fit/ScheduleMesg.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/api/src/main/java/com/garmin/fit/ScheduleMesgListener.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/api/src/main/java/com/garmin/fit/SdmProfileMesg.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/api/src/main/java/com/garmin/fit/SdmProfileMesgListener.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/api/src/main/java/com/garmin/fit/SegmentDeleteStatus.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/api/src/main/java/com/garmin/fit/SegmentFileMesg.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/api/src/main/java/com/garmin/fit/SegmentFileMesgListener.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/api/src/main/java/com/garmin/fit/SegmentIdMesg.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/api/src/main/java/com/garmin/fit/SegmentIdMesgListener.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/api/src/main/java/com/garmin/fit/SegmentLapMesg.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/api/src/main/java/com/garmin/fit/SegmentLapMesgListener.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/api/src/main/java/com/garmin/fit/SegmentLapStatus.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/api/src/main/java/com/garmin/fit/SegmentLeaderboardEntryMesg.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/api/src/main/java/com/garmin/fit/SegmentLeaderboardEntryMesgListener.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/api/src/main/java/com/garmin/fit/SegmentLeaderboardType.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/api/src/main/java/com/garmin/fit/SegmentPointMesg.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/api/src/main/java/com/garmin/fit/SegmentPointMesgListener.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/api/src/main/java/com/garmin/fit/SegmentSelectionType.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/api/src/main/java/com/garmin/fit/SensorType.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/api/src/main/java/com/garmin/fit/SessionMesg.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/api/src/main/java/com/garmin/fit/SessionMesgListener.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/api/src/main/java/com/garmin/fit/SessionTrigger.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/api/src/main/java/com/garmin/fit/SetMesg.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/api/src/main/java/com/garmin/fit/SetMesgListener.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/api/src/main/java/com/garmin/fit/SetType.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/api/src/main/java/com/garmin/fit/ShoulderPressExerciseName.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/api/src/main/java/com/garmin/fit/ShoulderStabilityExerciseName.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/api/src/main/java/com/garmin/fit/ShrugExerciseName.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/api/src/main/java/com/garmin/fit/Side.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/api/src/main/java/com/garmin/fit/SitUpExerciseName.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/api/src/main/java/com/garmin/fit/SlaveDeviceMesg.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/api/src/main/java/com/garmin/fit/SlaveDeviceMesgListener.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/api/src/main/java/com/garmin/fit/SoftwareMesg.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/api/src/main/java/com/garmin/fit/SoftwareMesgListener.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/api/src/main/java/com/garmin/fit/SourceType.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/api/src/main/java/com/garmin/fit/SpeedZoneMesg.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/api/src/main/java/com/garmin/fit/SpeedZoneMesgListener.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/api/src/main/java/com/garmin/fit/Sport.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/api/src/main/java/com/garmin/fit/SportBits0.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/api/src/main/java/com/garmin/fit/SportBits1.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/api/src/main/java/com/garmin/fit/SportBits2.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/api/src/main/java/com/garmin/fit/SportBits3.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/api/src/main/java/com/garmin/fit/SportBits4.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/api/src/main/java/com/garmin/fit/SportBits5.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/api/src/main/java/com/garmin/fit/SportBits6.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/api/src/main/java/com/garmin/fit/SportEvent.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/api/src/main/java/com/garmin/fit/SportMesg.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/api/src/main/java/com/garmin/fit/SportMesgListener.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/api/src/main/java/com/garmin/fit/SquatExerciseName.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/api/src/main/java/com/garmin/fit/StressLevelMesg.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/api/src/main/java/com/garmin/fit/StressLevelMesgListener.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/api/src/main/java/com/garmin/fit/StrokeType.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/api/src/main/java/com/garmin/fit/SubField.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/api/src/main/java/com/garmin/fit/SubSport.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/api/src/main/java/com/garmin/fit/SupportedExdScreenLayouts.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/api/src/main/java/com/garmin/fit/SwimStroke.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/api/src/main/java/com/garmin/fit/Switch.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/api/src/main/java/com/garmin/fit/ThreeDSensorCalibrationMesg.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/api/src/main/java/com/garmin/fit/ThreeDSensorCalibrationMesgListener.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/api/src/main/java/com/garmin/fit/TimeIntoDay.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/api/src/main/java/com/garmin/fit/TimeMode.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/api/src/main/java/com/garmin/fit/TimeZone.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/api/src/main/java/com/garmin/fit/TimerTrigger.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/api/src/main/java/com/garmin/fit/TimestampCorrelationMesg.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/api/src/main/java/com/garmin/fit/TimestampCorrelationMesgListener.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/api/src/main/java/com/garmin/fit/TissueModelType.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/api/src/main/java/com/garmin/fit/Tone.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/api/src/main/java/com/garmin/fit/TotalBodyExerciseName.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/api/src/main/java/com/garmin/fit/TotalsMesg.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/api/src/main/java/com/garmin/fit/TotalsMesgListener.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/api/src/main/java/com/garmin/fit/TrainingFileMesg.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/api/src/main/java/com/garmin/fit/TrainingFileMesgListener.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/api/src/main/java/com/garmin/fit/TricepsExtensionExerciseName.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/api/src/main/java/com/garmin/fit/TurnType.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/api/src/main/java/com/garmin/fit/UserLocalId.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/api/src/main/java/com/garmin/fit/UserProfileMesg.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/api/src/main/java/com/garmin/fit/UserProfileMesgListener.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/api/src/main/java/com/garmin/fit/VideoClipMesg.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/api/src/main/java/com/garmin/fit/VideoClipMesgListener.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/api/src/main/java/com/garmin/fit/VideoDescriptionMesg.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/api/src/main/java/com/garmin/fit/VideoDescriptionMesgListener.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/api/src/main/java/com/garmin/fit/VideoFrameMesg.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/api/src/main/java/com/garmin/fit/VideoFrameMesgListener.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/api/src/main/java/com/garmin/fit/VideoMesg.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/api/src/main/java/com/garmin/fit/VideoMesgListener.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/api/src/main/java/com/garmin/fit/VideoTitleMesg.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/api/src/main/java/com/garmin/fit/VideoTitleMesgListener.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/api/src/main/java/com/garmin/fit/WarmUpExerciseName.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/api/src/main/java/com/garmin/fit/WatchfaceMode.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/api/src/main/java/com/garmin/fit/WatchfaceSettingsMesg.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/api/src/main/java/com/garmin/fit/WatchfaceSettingsMesgListener.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/api/src/main/java/com/garmin/fit/WaterType.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/api/src/main/java/com/garmin/fit/WeatherAlertMesg.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/api/src/main/java/com/garmin/fit/WeatherAlertMesgListener.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/api/src/main/java/com/garmin/fit/WeatherConditionsMesg.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/api/src/main/java/com/garmin/fit/WeatherConditionsMesgListener.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/api/src/main/java/com/garmin/fit/WeatherReport.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/api/src/main/java/com/garmin/fit/WeatherSevereType.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/api/src/main/java/com/garmin/fit/WeatherSeverity.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/api/src/main/java/com/garmin/fit/WeatherStatus.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/api/src/main/java/com/garmin/fit/Weight.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/api/src/main/java/com/garmin/fit/WeightScaleMesg.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/api/src/main/java/com/garmin/fit/WeightScaleMesgListener.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/api/src/main/java/com/garmin/fit/WktStepDuration.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/api/src/main/java/com/garmin/fit/WktStepTarget.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/api/src/main/java/com/garmin/fit/WorkoutCapabilities.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/api/src/main/java/com/garmin/fit/WorkoutEquipment.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/api/src/main/java/com/garmin/fit/WorkoutHr.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/api/src/main/java/com/garmin/fit/WorkoutMesg.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/api/src/main/java/com/garmin/fit/WorkoutMesgListener.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/api/src/main/java/com/garmin/fit/WorkoutPower.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/api/src/main/java/com/garmin/fit/WorkoutSessionMesg.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/api/src/main/java/com/garmin/fit/WorkoutSessionMesgListener.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/api/src/main/java/com/garmin/fit/WorkoutStepMesg.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/api/src/main/java/com/garmin/fit/WorkoutStepMesgListener.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/api/src/main/java/com/garmin/fit/ZonesTargetMesg.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/api/src/main/java/com/garmin/fit/ZonesTargetMesgListener.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/api/src/main/java/com/garmin/fit/csv/CSVReader.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/api/src/main/java/com/garmin/fit/csv/CSVTool.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/api/src/main/java/com/garmin/fit/csv/CSVWriter.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/api/src/main/java/com/garmin/fit/csv/MesgCSVWriter.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/api/src/main/java/com/garmin/fit/csv/MesgCSVWriterBase.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/api/src/main/java/com/garmin/fit/csv/MesgDataCSVWriter.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/api/src/main/java/com/garmin/fit/csv/MesgFilter.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/api/src/main/java/com/garmin/fit/examples/DecodeExample.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/api/src/main/java/com/garmin/fit/examples/EncodeExample.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/api/src/main/java/com/garmin/fit/examples/MonitoringReaderExample.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/api/src/main/java/com/garmin/fit/plugins/HrToRecordMesgBroadcastPlugin.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/api/src/main/java/com/garmin/fit/plugins/ThreeDSensorAdjustmentPlugin.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/api/src/main/java/com/garmin/fit/plugins/examples/HrToRecordReaderExample.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/api/src/main/java/com/garmin/fit/plugins/examples/ThreeDSensorAdjustmentExample.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/api/src/main/java/com/garmin/fit/test/ActivityFileTimeStampTest.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/api/src/main/java/com/garmin/fit/test/FileIdTest.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/api/src/main/java/com/garmin/fit/test/MesgIndexTest.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/api/src/main/java/com/garmin/fit/test/Test.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/api/src/main/java/com/garmin/fit/test/TestTool.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/api/src/main/java/com/garmin/fit/test/Tests.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/api/src/main/java/ski/crunch/activity/ParseFitActivityLambda.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/api/src/main/java/ski/crunch/activity/model/ActivityOuterClass.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/api/src/main/java/ski/crunch/activity/model/processor/ActivityEvent.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/api/src/main/java/ski/crunch/activity/model/processor/ActivityHolder.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/api/src/main/java/ski/crunch/activity/model/processor/EventType.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/api/src/main/java/ski/crunch/activity/parser/ActivityHolderAdapter.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/api/src/main/java/ski/crunch/activity/parser/fit/AbstractMesgListener.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/api/src/main/java/ski/crunch/activity/parser/fit/ActivityMessageListener.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/api/src/main/java/ski/crunch/activity/parser/fit/EventMessageListener.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/api/src/main/java/ski/crunch/activity/parser/fit/FileIdMessageListener.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/api/src/main/java/ski/crunch/activity/parser/fit/FitActivityHolderAdapter.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/api/src/main/java/ski/crunch/activity/parser/fit/HrvMessageListener.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/api/src/main/java/ski/crunch/activity/parser/fit/LapMessageListener.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/api/src/main/java/ski/crunch/activity/parser/fit/RecordMessageListener.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/api/src/main/java/ski/crunch/activity/parser/fit/SessionMessageListener.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/api/src/main/java/ski/crunch/activity/processor/ActivityProcessor.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/api/src/main/java/ski/crunch/activity/processor/CalcGradeHandler.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/api/src/main/java/ski/crunch/activity/processor/CalcMovingHandler.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/api/src/main/java/ski/crunch/activity/processor/CreateHrvRecordHandler.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/api/src/main/java/ski/crunch/activity/processor/DetectLapHandler.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/api/src/main/java/ski/crunch/activity/processor/DetectPauseHandler.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/api/src/main/java/ski/crunch/activity/processor/Handler.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/api/src/main/java/ski/crunch/activity/processor/MergeDuplicateRecordHandler.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/api/src/main/java/ski/crunch/activity/processor/NullReplaceHandler.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/api/src/main/java/ski/crunch/activity/processor/PipelineManager.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/api/src/main/java/ski/crunch/activity/processor/RemoveSpikesHandler.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/api/src/main/java/ski/crunch/activity/processor/SortByTsHandler.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/api/src/main/java/ski/crunch/utils/ConvertibleOutputStream.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/api/src/main/java/ski/crunch/utils/FileUtils.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/api/src/main/resources/Activity.proto" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/api/src/main/resources/compileProto.sh" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/api/src/main/scala/scala/ski/crunch/activity/ActivityUtils.scala" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/api/src/main/scala/scala/ski/crunch/activity/processor/EventProcessor.scala" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/api/src/main/scala/scala/ski/crunch/activity/processor/RecordProcessor.scala" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/api/src/main/scala/scala/ski/crunch/activity/processor/model/ActivityRecord.scala" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/api/src/main/scala/scala/ski/crunch/activity/processor/model/ActivitySummary.scala" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/api/src/main/scala/scala/ski/crunch/activity/processor/model/Event.scala" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/api/src/test/java/ski/crunch/activity/ActivityPipelineTest.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/api/src/test/java/ski/crunch/activity/FitActivityHolderAdapterTest.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/api/src/test/resources/261217.fit" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/api/src/test/resources/garmin.fit" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/api/src/test/resources/garmin_test.fit" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/api/src/test/resources/interval_test.fit" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/api/src/test/resources/lappause.fit" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/api/src/test/resources/log4j.properties" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/api/src/test/resources/multisport.fit" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/api/src/test/resources/pausetest.fit" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/api/src/test/scala/DetectLapEventSpec.scala" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/api/src/test/scala/DetectMotionStopSpec.scala" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/api/src/test/scala/DetectPauseSpec.scala" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/api/src/test/scala/DetectTimerEventSpec.scala" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/api/src/test/scala/GarminDetectLapEventSpec.scala" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/api/src/test/scala/SuuntoDetectLapEventSpec.scala" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/compiler.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/compiler.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/modules.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/modules.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/modules/ski-analytics-services.iml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/modules/ski-analytics-services.iml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/modules/src/api/src_api_main.iml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/modules/src/api/src_api_main.iml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/modules/src/api/src_api_test.iml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/modules/src/api/src_api_test.iml" afterDir="false" />
+    <list default="true" id="e0bdc5bc-f164-460e-911b-964805426644" name="Default" comment="SKAPI-14 Activity Parsing and Processing">
+      <change afterPath="$PROJECT_DIR$/src/api/src/main/java/ski/crunch/activity/processor/CloseSegmentsHandler.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/api/src/main/java/ski/crunch/activity/processor/SetEventIndexHandler.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/api/src/test/resources/garmin_1.fit" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/checkstyle-idea.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/checkstyle-idea.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/libraries/Gradle__org_geotools_gt_main_16_1.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/libraries/Gradle__org_geotools_gt_main_16_1.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/libraries/Gradle__org_scalactic_scalactic_3_0_1.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/libraries/Gradle__org_scalactic_scalactic_3_0_1.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/modules/src/api/ski-analytics-services-src_api_test.iml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/modules/src/api/ski-analytics-services-src_api_test.iml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/build.gradle" beforeDir="false" afterPath="$PROJECT_DIR$/build.gradle" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/gradle/wrapper/gradle-wrapper.properties" beforeDir="false" afterPath="$PROJECT_DIR$/gradle/wrapper/gradle-wrapper.properties" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/api/build.gradle" beforeDir="false" afterPath="$PROJECT_DIR$/src/api/build.gradle" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/api/serverless.yml" beforeDir="false" afterPath="$PROJECT_DIR$/src/api/serverless.yml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/api/src/main/java/ski/crunch/activity/ActivityItem.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/api/src/main/java/ski/crunch/activity/model/ActivityItem.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/api/src/main/java/ski/crunch/activity/ActivityService.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/api/src/main/java/ski/crunch/activity/service/ActivityService.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/api/src/main/java/ski/crunch/activity/ApiGatewayResponse.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/api/src/main/java/ski/crunch/activity/model/ApiGatewayResponse.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/api/src/main/java/ski/crunch/activity/DynamoDBService.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/api/src/main/java/ski/crunch/activity/service/DynamoDBService.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/api/src/main/java/ski/crunch/activity/GetActivityHandler.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/api/src/main/java/ski/crunch/activity/GetActivityHandler.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/api/src/main/java/ski/crunch/activity/PutActivityHandler.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/api/src/main/java/ski/crunch/activity/PutActivityHandler.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/api/src/main/java/ski/crunch/activity/PutActivityResponse.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/api/src/main/java/ski/crunch/activity/model/PutActivityResponse.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/api/src/main/java/ski/crunch/activity/S3Service.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/api/src/main/java/ski/crunch/activity/service/S3Service.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/api/src/main/java/ski/crunch/utils/ErrorResponse.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/api/src/main/java/ski/crunch/utils/ErrorResponse.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/api/src/main/java/ski/crunch/utils/LambdaProxyConfig.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/api/src/main/java/ski/crunch/utils/LambdaProxyConfig.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/api/src/main/resources/log4j.properties" beforeDir="false" afterPath="$PROJECT_DIR$/src/api/src/main/resources/log4j.properties" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/api/src/test/java/ski/crunch/activity/ActivityTests.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/api/src/test/java/ski/crunch/activity/ActivityTests.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/api/src/main/java/ski/crunch/activity/model/processor/ActivityEvent.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/api/src/main/java/ski/crunch/activity/model/processor/ActivityEvent.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/api/src/main/java/ski/crunch/activity/processor/ActivityProcessor.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/api/src/main/java/ski/crunch/activity/processor/ActivityProcessor.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/api/src/main/java/ski/crunch/activity/processor/DetectLapHandler.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/api/src/main/java/ski/crunch/activity/processor/DetectLapHandler.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/api/src/main/scala/scala/ski/crunch/activity/processor/EventProcessor.scala" beforeDir="false" afterPath="$PROJECT_DIR$/src/api/src/main/scala/scala/ski/crunch/activity/processor/EventProcessor.scala" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/api/src/main/scala/scala/ski/crunch/activity/processor/RecordProcessor.scala" beforeDir="false" afterPath="$PROJECT_DIR$/src/api/src/main/scala/scala/ski/crunch/activity/processor/RecordProcessor.scala" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/api/src/test/java/ski/crunch/activity/ActivityPipelineTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/api/src/test/java/ski/crunch/activity/ActivityPipelineTest.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/api/src/test/scala/DetectLapEventSpec.scala" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/api/src/test/scala/DetectMotionStopSpec.scala" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/api/src/test/scala/DetectPauseSpec.scala" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/api/src/test/scala/DetectTimerEventSpec.scala" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/api/src/test/scala/GarminDetectLapEventSpec.scala" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/api/src/test/scala/SuuntoDetectLapEventSpec.scala" beforeDir="false" />
     </list>
     <ignored path="$PROJECT_DIR$/.gradle/" />
     <ignored path="$PROJECT_DIR$/build/" />
@@ -563,6 +93,30 @@
                 <item name="" type="6a2764b6:ExternalProjectsStructure$RootNode" />
                 <item name="ski-analytics-services" type="f1a62948:ProjectNode" />
                 <item name=":src/api" type="2d1252cf:ModuleNode" />
+                <item name="Source Sets" type="e897c970:GradleViewContributor$SourceSetsNode" />
+                <item name="test" type="396b929e:GradleViewContributor$SourceSetNode" />
+              </path>
+              <path>
+                <item name="" type="6a2764b6:ExternalProjectsStructure$RootNode" />
+                <item name="ski-analytics-services" type="f1a62948:ProjectNode" />
+                <item name=":src/api" type="2d1252cf:ModuleNode" />
+                <item name="Source Sets" type="e897c970:GradleViewContributor$SourceSetsNode" />
+                <item name="test" type="396b929e:GradleViewContributor$SourceSetNode" />
+                <item name="Dependencies" type="6de06a37:ExternalSystemViewDefaultContributor$MyDependenciesNode" />
+              </path>
+              <path>
+                <item name="" type="6a2764b6:ExternalProjectsStructure$RootNode" />
+                <item name="ski-analytics-services" type="f1a62948:ProjectNode" />
+                <item name=":src/api" type="2d1252cf:ModuleNode" />
+                <item name="Source Sets" type="e897c970:GradleViewContributor$SourceSetsNode" />
+                <item name="test" type="396b929e:GradleViewContributor$SourceSetNode" />
+                <item name="Dependencies" type="6de06a37:ExternalSystemViewDefaultContributor$MyDependenciesNode" />
+                <item name="org.scalatest:scalatest_2.11:3.0.0" type="cfea851d:ExternalSystemViewDefaultContributor$LibraryDependencyDataExternalSystemNode" />
+              </path>
+              <path>
+                <item name="" type="6a2764b6:ExternalProjectsStructure$RootNode" />
+                <item name="ski-analytics-services" type="f1a62948:ProjectNode" />
+                <item name=":src/api" type="2d1252cf:ModuleNode" />
                 <item name="Tasks" type="e4a08cd1:TasksNode" />
               </path>
               <path>
@@ -583,28 +137,30 @@
     <session id="496859650">
       <usages-collector id="statistics.lifecycle.project">
         <counts>
-          <entry key="project.closed" value="3" />
+          <entry key="project.closed" value="4" />
           <entry key="project.open.time.10" value="1" />
           <entry key="project.open.time.16" value="2" />
           <entry key="project.open.time.17" value="1" />
-          <entry key="project.opened" value="4" />
+          <entry key="project.open.time.23" value="1" />
+          <entry key="project.opened" value="5" />
         </counts>
       </usages-collector>
       <usages-collector id="statistics.file.types.open">
         <counts>
-          <entry key="Groovy" value="3" />
-          <entry key="JAVA" value="45" />
+          <entry key="Groovy" value="8" />
+          <entry key="JAVA" value="79" />
+          <entry key="PLAIN_TEXT" value="1" />
           <entry key="Properties" value="4" />
-          <entry key="Scala" value="20" />
+          <entry key="Scala" value="29" />
         </counts>
       </usages-collector>
       <usages-collector id="statistics.file.types.edit">
         <counts>
-          <entry key="Groovy" value="48" />
-          <entry key="JAVA" value="3335" />
-          <entry key="PLAIN_TEXT" value="19" />
+          <entry key="Groovy" value="65" />
+          <entry key="JAVA" value="7426" />
+          <entry key="PLAIN_TEXT" value="50" />
           <entry key="Properties" value="19" />
-          <entry key="Scala" value="4906" />
+          <entry key="Scala" value="5884" />
         </counts>
       </usages-collector>
     </session>
@@ -614,90 +170,111 @@
   </component>
   <component name="FileEditorManager">
     <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
-      <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/api/src/test/scala/DetectTimerEventSpec.scala">
-          <provider selected="true" editor-type-id="text-editor" />
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/api/src/test/scala/DetectMotionStopSpec.scala">
-          <provider selected="true" editor-type-id="text-editor" />
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/api/src/test/scala/DetectLapEventSpec.scala">
+      <file pinned="false" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/src/api/src/test/java/ski/crunch/activity/ActivityPipelineTest.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="-662">
-              <caret line="26" column="32" selection-start-line="26" selection-start-column="32" selection-end-line="26" selection-end-column="32" />
+            <state relative-caret-position="288">
+              <caret line="285" column="95" selection-start-line="285" selection-start-column="95" selection-end-line="285" selection-end-column="95" />
               <folding>
-                <element signature="e#0#26#0" expanded="true" />
+                <element signature="imports" expanded="true" />
               </folding>
             </state>
           </provider>
         </entry>
       </file>
       <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/api/src/main/java/ski/crunch/activity/model/processor/ActivityEvent.java">
+        <entry file="file://$PROJECT_DIR$/src/api/src/main/scala/scala/ski/crunch/activity/processor/EventProcessor.scala">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="26">
-              <caret line="2" column="13" selection-start-line="2" selection-start-column="13" selection-end-line="2" selection-end-column="13" />
+            <state relative-caret-position="353">
+              <caret line="150" column="42" selection-start-line="150" selection-start-column="42" selection-end-line="150" selection-end-column="42" />
+              <folding>
+                <element signature="e#45#61#0" expanded="true" />
+              </folding>
             </state>
           </provider>
         </entry>
       </file>
       <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/api/src/main/java/ski/crunch/activity/model/ActivityItem.java">
+        <entry file="file://$PROJECT_DIR$/src/api/src/main/scala/scala/ski/crunch/activity/processor/RecordProcessor.scala">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="126">
+              <caret line="91" column="6" selection-start-line="91" selection-start-column="6" selection-end-line="91" selection-end-column="6" />
+              <folding>
+                <element signature="e#45#78#0" expanded="true" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/api/src/main/java/ski/crunch/activity/processor/CreateHrvRecordHandler.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="13">
+              <caret line="14" column="13" selection-start-line="14" selection-start-column="13" selection-end-line="14" selection-end-column="13" />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/api/src/main/java/ski/crunch/activity/processor/DetectPauseHandler.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="145">
+              <caret line="12" column="11" selection-start-line="12" selection-start-column="11" selection-end-line="12" selection-end-column="11" />
+              <folding>
+                <element signature="imports" expanded="true" />
+                <element signature="e#402#403#0" expanded="true" />
+                <element signature="e#470#471#0" expanded="true" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/api/src/main/java/ski/crunch/activity/processor/MergeDuplicateRecordHandler.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="65">
+              <caret line="15" column="13" selection-start-line="15" selection-start-column="13" selection-end-line="15" selection-end-column="13" />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/api/src/main/java/ski/crunch/activity/processor/ActivityProcessor.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="323">
+              <caret line="39" column="49" selection-start-line="39" selection-start-column="49" selection-end-line="39" selection-end-column="49" />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/api/src/main/java/ski/crunch/activity/processor/SetEventIndexHandler.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="530">
+              <caret line="63" column="5" lean-forward="true" selection-start-line="63" selection-start-column="5" selection-end-line="63" selection-end-column="5" />
+              <folding>
+                <element signature="imports" expanded="true" />
+                <element signature="e#641#642#0" expanded="true" />
+                <element signature="e#709#710#0" expanded="true" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/api/src/main/java/ski/crunch/activity/processor/SortByTsHandler.java">
           <provider selected="true" editor-type-id="text-editor">
             <state relative-caret-position="117">
-              <caret line="11" column="13" selection-start-line="11" selection-start-column="13" selection-end-line="11" selection-end-column="13" />
+              <caret line="13" column="86" lean-forward="true" selection-start-line="13" selection-start-column="8" selection-end-line="13" selection-end-column="86" />
             </state>
           </provider>
         </entry>
       </file>
       <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/api/src/main/java/ski/crunch/activity/model/ActivityOuterClass.java">
+        <entry file="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/org.scala-lang/scala-library/2.11.12/66a32abd59b3f9bb690bba2efc7d7ef680157bcd/scala-library-2.11.12-sources.jar!/scala/Option.scala">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="65">
-              <caret line="5" column="19" selection-start-line="5" selection-start-column="19" selection-end-line="5" selection-end-column="19" />
-              <folding>
-                <element signature="e#0#616894#0" expanded="true" />
-              </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/api/src/main/java/ski/crunch/activity/model/ApiGatewayResponse.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="213">
-              <caret line="25" lean-forward="true" selection-start-line="25" selection-end-line="25" />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/api/src/main/java/ski/crunch/activity/model/PutActivityResponse.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="65">
-              <caret line="5" column="13" selection-start-line="5" selection-start-column="13" selection-end-line="5" selection-end-column="13" />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/api/src/main/java/ski/crunch/activity/parser/ActivityHolderAdapter.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="39">
-              <caret line="7" column="17" selection-start-line="7" selection-start-column="17" selection-end-line="7" selection-end-column="17" />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="true">
-        <entry file="file://$PROJECT_DIR$/src/api/src/main/java/ski/crunch/activity/parser/fit/FitActivityHolderAdapter.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="273">
-              <caret line="29" column="19" lean-forward="true" selection-start-line="29" selection-start-column="19" selection-end-line="29" selection-end-column="19" />
+            <state relative-caret-position="-708">
+              <caret line="238" column="20" selection-start-line="238" selection-start-column="20" selection-end-line="238" selection-end-column="20" />
             </state>
           </provider>
         </entry>
@@ -717,11 +294,6 @@
   </component>
   <component name="FindInProjectRecents">
     <findStrings>
-      <find>application/x-protobuf</find>
-      <find>protobuf</find>
-      <find>activitytable</find>
-      <find>gettable</find>
-      <find>parsefitactivity</find>
       <find>elf:custom</find>
       <find>ParseFitActivityLambda</find>
       <find>ParseFitActivityLambdaLambdaFunction</find>
@@ -745,8 +317,13 @@
       <find>event</find>
       <find>18:50:18</find>
       <find>println</find>
-      <find>lapmessage</find>
       <find>ActivityProcessor</find>
+      <find>lapmessage</find>
+      <find>pauseTest</find>
+      <find>end time:</find>
+      <find>lap</find>
+      <find>pauseTestGarmin</find>
+      <find>targetf</find>
     </findStrings>
     <replaceStrings>
       <replace />
@@ -758,6 +335,7 @@
     </replaceStrings>
     <dirStrings>
       <dir>$PROJECT_DIR$/src/api/src</dir>
+      <dir>$PROJECT_DIR$/src/api/src/main/java/ski/crunch/activity/processor</dir>
     </dirStrings>
   </component>
   <component name="Git.Settings">
@@ -1123,13 +701,13 @@
     </option>
     <option name="modificationStamps">
       <map>
-        <entry key="$PROJECT_DIR$" value="9254621088000" />
+        <entry key="$PROJECT_DIR$" value="9254786246000" />
         <entry key="$PROJECT_DIR$/.gradle" value="0" />
         <entry key="$PROJECT_DIR$/build.gradle" value="3822000275" />
         <entry key="$PROJECT_DIR$/gradle/wrapper/gradle-wrapper.properties" value="2371942159" />
         <entry key="$PROJECT_DIR$/settings.gradle" value="2352796936" />
         <entry key="$PROJECT_DIR$/src/api/.gradle" value="0" />
-        <entry key="$PROJECT_DIR$/src/api/build.gradle" value="3040310499" />
+        <entry key="$PROJECT_DIR$/src/api/build.gradle" value="2119477150" />
       </map>
     </option>
     <option name="projectBuildClasspath">
@@ -1320,15 +898,12 @@
   <component name="IdeDocumentHistory">
     <option name="CHANGED_PATHS">
       <list>
-        <option value="$PROJECT_DIR$/src/api/src/main/scala/scala/ski/crunch/activity/processor/model/ActivityHolder.scala" />
-        <option value="$PROJECT_DIR$/src/api/src/main/java/ski/crunch/activity/model/ActivityHolder.java" />
         <option value="$PROJECT_DIR$/src/api/src/main/java/ski/crunch/activity/model/processing/EventType.java" />
         <option value="$PROJECT_DIR$/src/api/src/main/java/ski/crunch/activity/model/processing/ActivityEvent.java" />
         <option value="$PROJECT_DIR$/src/api/src/main/java/ski/crunch/activity/model/processing/ActivityHolder.java" />
         <option value="$PROJECT_DIR$/src/api/src/main/java/ski/crunch/activity/parser/fit/AbstractMesgListener.java" />
         <option value="$PROJECT_DIR$/src/api/src/main/java/ski/crunch/activity/parser/ActivityHolderAdapter.java" />
         <option value="$PROJECT_DIR$/src/api/src/main/java/ski/crunch/activity/ParseFitActivityLambda.java" />
-        <option value="$PROJECT_DIR$/src/api/src/main/java/ski/crunch/activity/model/processor/ActivityEvent.java" />
         <option value="$PROJECT_DIR$/src/api/src/main/java/ski/crunch/activity/model/ActivityOuterClass.java" />
         <option value="$PROJECT_DIR$/src/api/src/main/resources/Activity.proto" />
         <option value="$PROJECT_DIR$/src/api/src/main/resources/compileProto.sh" />
@@ -1362,15 +937,18 @@
         <option value="$PROJECT_DIR$/src/api/src/main/java/ski/crunch/activity/parser/fit/EventMessageListener.java" />
         <option value="$PROJECT_DIR$/src/api/src/test/java/ski/crunch/activity/FitActivityHolderAdapterTest.java" />
         <option value="$PROJECT_DIR$/src/api/src/main/java/ski/crunch/activity/processor/CalcPauseHandler.java" />
-        <option value="$PROJECT_DIR$/src/api/src/test/java/ski/crunch/activity/ActivityPipelineTest.java" />
-        <option value="$PROJECT_DIR$/src/api/src/main/java/ski/crunch/activity/processor/ActivityProcessor.java" />
-        <option value="$PROJECT_DIR$/src/api/src/main/java/ski/crunch/activity/processor/DetectLapHandler.java" />
-        <option value="$PROJECT_DIR$/src/api/src/main/scala/scala/ski/crunch/activity/processor/EventProcessor.scala" />
+        <option value="$PROJECT_DIR$/src/api/src/test/scala/DetectLapEventSpec.scala" />
         <option value="$PROJECT_DIR$/src/api/src/main/scala/scala/ski/crunch/activity/processor/RecordProcessor.scala" />
-        <option value="$PROJECT_DIR$/build.gradle" />
         <option value="$PROJECT_DIR$/src/api/build.gradle" />
         <option value="$PROJECT_DIR$/src/api/src/test/scala/DetectPauseSpec.scala" />
-        <option value="$PROJECT_DIR$/src/api/src/test/scala/DetectLapEventSpec.scala" />
+        <option value="$PROJECT_DIR$/build.gradle" />
+        <option value="$PROJECT_DIR$/src/api/src/main/java/ski/crunch/activity/processor/CloseSegmentsHandler.java" />
+        <option value="$PROJECT_DIR$/src/api/src/main/java/ski/crunch/activity/model/processor/ActivityEvent.java" />
+        <option value="$PROJECT_DIR$/src/api/src/main/java/ski/crunch/activity/processor/DetectLapHandler.java" />
+        <option value="$PROJECT_DIR$/src/api/src/main/scala/scala/ski/crunch/activity/processor/EventProcessor.scala" />
+        <option value="$PROJECT_DIR$/src/api/src/main/java/ski/crunch/activity/processor/SetEventIndexHandler.java" />
+        <option value="$PROJECT_DIR$/src/api/src/main/java/ski/crunch/activity/processor/ActivityProcessor.java" />
+        <option value="$PROJECT_DIR$/src/api/src/test/java/ski/crunch/activity/ActivityPipelineTest.java" />
       </list>
     </option>
   </component>
@@ -1416,6 +994,7 @@
       <foldersAlwaysOnTop value="true" />
     </navigator>
     <panes>
+      <pane id="Scope" />
       <pane id="ProjectPane">
         <subPane>
           <expand>
@@ -1489,31 +1068,6 @@
               <item name="java" type="462c0819:PsiDirectoryNode" />
               <item name="crunch" type="462c0819:PsiDirectoryNode" />
               <item name="activity" type="462c0819:PsiDirectoryNode" />
-              <item name="model" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="ski-analytics-services" type="b2602c69:ProjectViewProjectNode" />
-              <item name="ski-analytics-services" type="8a07ba80:GradleTreeStructureProvider$GradleModuleDirectoryNode" />
-              <item name="src" type="462c0819:PsiDirectoryNode" />
-              <item name="api" type="8a07ba80:GradleTreeStructureProvider$GradleModuleDirectoryNode" />
-              <item name="src" type="462c0819:PsiDirectoryNode" />
-              <item name="main" type="8a07ba80:GradleTreeStructureProvider$GradleModuleDirectoryNode" />
-              <item name="java" type="462c0819:PsiDirectoryNode" />
-              <item name="crunch" type="462c0819:PsiDirectoryNode" />
-              <item name="activity" type="462c0819:PsiDirectoryNode" />
-              <item name="model" type="462c0819:PsiDirectoryNode" />
-              <item name="processor" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="ski-analytics-services" type="b2602c69:ProjectViewProjectNode" />
-              <item name="ski-analytics-services" type="8a07ba80:GradleTreeStructureProvider$GradleModuleDirectoryNode" />
-              <item name="src" type="462c0819:PsiDirectoryNode" />
-              <item name="api" type="8a07ba80:GradleTreeStructureProvider$GradleModuleDirectoryNode" />
-              <item name="src" type="462c0819:PsiDirectoryNode" />
-              <item name="main" type="8a07ba80:GradleTreeStructureProvider$GradleModuleDirectoryNode" />
-              <item name="java" type="462c0819:PsiDirectoryNode" />
-              <item name="crunch" type="462c0819:PsiDirectoryNode" />
-              <item name="activity" type="462c0819:PsiDirectoryNode" />
               <item name="parser" type="462c0819:PsiDirectoryNode" />
             </path>
             <path>
@@ -1526,13 +1080,91 @@
               <item name="java" type="462c0819:PsiDirectoryNode" />
               <item name="crunch" type="462c0819:PsiDirectoryNode" />
               <item name="activity" type="462c0819:PsiDirectoryNode" />
+              <item name="parser" type="462c0819:PsiDirectoryNode" />
+              <item name="fit" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="ski-analytics-services" type="b2602c69:ProjectViewProjectNode" />
+              <item name="ski-analytics-services" type="8a07ba80:GradleTreeStructureProvider$GradleModuleDirectoryNode" />
+              <item name="src" type="462c0819:PsiDirectoryNode" />
+              <item name="api" type="8a07ba80:GradleTreeStructureProvider$GradleModuleDirectoryNode" />
+              <item name="src" type="462c0819:PsiDirectoryNode" />
+              <item name="main" type="8a07ba80:GradleTreeStructureProvider$GradleModuleDirectoryNode" />
+              <item name="java" type="462c0819:PsiDirectoryNode" />
+              <item name="crunch" type="462c0819:PsiDirectoryNode" />
+              <item name="activity" type="462c0819:PsiDirectoryNode" />
               <item name="processor" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="ski-analytics-services" type="b2602c69:ProjectViewProjectNode" />
+              <item name="ski-analytics-services" type="8a07ba80:GradleTreeStructureProvider$GradleModuleDirectoryNode" />
+              <item name="src" type="462c0819:PsiDirectoryNode" />
+              <item name="api" type="8a07ba80:GradleTreeStructureProvider$GradleModuleDirectoryNode" />
+              <item name="src" type="462c0819:PsiDirectoryNode" />
+              <item name="main" type="8a07ba80:GradleTreeStructureProvider$GradleModuleDirectoryNode" />
+              <item name="scala" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="ski-analytics-services" type="b2602c69:ProjectViewProjectNode" />
+              <item name="ski-analytics-services" type="8a07ba80:GradleTreeStructureProvider$GradleModuleDirectoryNode" />
+              <item name="src" type="462c0819:PsiDirectoryNode" />
+              <item name="api" type="8a07ba80:GradleTreeStructureProvider$GradleModuleDirectoryNode" />
+              <item name="src" type="462c0819:PsiDirectoryNode" />
+              <item name="main" type="8a07ba80:GradleTreeStructureProvider$GradleModuleDirectoryNode" />
+              <item name="scala" type="462c0819:PsiDirectoryNode" />
+              <item name="activity" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="ski-analytics-services" type="b2602c69:ProjectViewProjectNode" />
+              <item name="ski-analytics-services" type="8a07ba80:GradleTreeStructureProvider$GradleModuleDirectoryNode" />
+              <item name="src" type="462c0819:PsiDirectoryNode" />
+              <item name="api" type="8a07ba80:GradleTreeStructureProvider$GradleModuleDirectoryNode" />
+              <item name="src" type="462c0819:PsiDirectoryNode" />
+              <item name="main" type="8a07ba80:GradleTreeStructureProvider$GradleModuleDirectoryNode" />
+              <item name="scala" type="462c0819:PsiDirectoryNode" />
+              <item name="activity" type="462c0819:PsiDirectoryNode" />
+              <item name="processor" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="ski-analytics-services" type="b2602c69:ProjectViewProjectNode" />
+              <item name="ski-analytics-services" type="8a07ba80:GradleTreeStructureProvider$GradleModuleDirectoryNode" />
+              <item name="src" type="462c0819:PsiDirectoryNode" />
+              <item name="api" type="8a07ba80:GradleTreeStructureProvider$GradleModuleDirectoryNode" />
+              <item name="src" type="462c0819:PsiDirectoryNode" />
+              <item name="test" type="8a07ba80:GradleTreeStructureProvider$GradleModuleDirectoryNode" />
+            </path>
+            <path>
+              <item name="ski-analytics-services" type="b2602c69:ProjectViewProjectNode" />
+              <item name="ski-analytics-services" type="8a07ba80:GradleTreeStructureProvider$GradleModuleDirectoryNode" />
+              <item name="src" type="462c0819:PsiDirectoryNode" />
+              <item name="api" type="8a07ba80:GradleTreeStructureProvider$GradleModuleDirectoryNode" />
+              <item name="src" type="462c0819:PsiDirectoryNode" />
+              <item name="test" type="8a07ba80:GradleTreeStructureProvider$GradleModuleDirectoryNode" />
+              <item name="java" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="ski-analytics-services" type="b2602c69:ProjectViewProjectNode" />
+              <item name="ski-analytics-services" type="8a07ba80:GradleTreeStructureProvider$GradleModuleDirectoryNode" />
+              <item name="src" type="462c0819:PsiDirectoryNode" />
+              <item name="api" type="8a07ba80:GradleTreeStructureProvider$GradleModuleDirectoryNode" />
+              <item name="src" type="462c0819:PsiDirectoryNode" />
+              <item name="test" type="8a07ba80:GradleTreeStructureProvider$GradleModuleDirectoryNode" />
+              <item name="java" type="462c0819:PsiDirectoryNode" />
+              <item name="activity" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="ski-analytics-services" type="b2602c69:ProjectViewProjectNode" />
+              <item name="ski-analytics-services" type="8a07ba80:GradleTreeStructureProvider$GradleModuleDirectoryNode" />
+              <item name="src" type="462c0819:PsiDirectoryNode" />
+              <item name="api" type="8a07ba80:GradleTreeStructureProvider$GradleModuleDirectoryNode" />
+              <item name="src" type="462c0819:PsiDirectoryNode" />
+              <item name="test" type="8a07ba80:GradleTreeStructureProvider$GradleModuleDirectoryNode" />
+              <item name="resources" type="462c0819:PsiDirectoryNode" />
             </path>
           </expand>
           <select />
         </subPane>
       </pane>
-      <pane id="Scope" />
       <pane id="PackagesPane" />
     </panes>
   </component>
@@ -1544,25 +1176,21 @@
     <property name="com.intellij.ide.scratch.LRUPopupBuilder$2/Languages" value="JSON" />
     <property name="extract.method.default.visibility" value="private" />
     <property name="last_opened_file_path" value="$PROJECT_DIR$" />
-    <property name="project.structure.last.edited" value="SDKs" />
-    <property name="project.structure.proportion" value="0.0" />
+    <property name="project.structure.last.edited" value="Libraries" />
+    <property name="project.structure.proportion" value="0.15" />
     <property name="project.structure.side.proportion" value="0.2" />
     <property name="settings.editor.selected.configurable" value="configurable.group.language" />
   </component>
   <component name="RecentsManager">
-    <key name="MoveFile.RECENT_KEYS">
-      <recent name="$PROJECT_DIR$/src/api/src/test/resources" />
-      <recent name="$PROJECT_DIR$/src/api/src/test/java" />
-      <recent name="$PROJECT_DIR$/src/api/src/test/com.serverless" />
-      <recent name="$PROJECT_DIR$/src/api/src/main/java/com/serverless" />
-      <recent name="$PROJECT_DIR$/src/api/src/test" />
+    <key name="CreateClassDialog.RecentsKey">
+      <recent name="ski.crunch.utils" />
     </key>
     <key name="MoveClassesOrPackagesDialog.RECENTS_KEY">
       <recent name="scala.ski.crunch.activity" />
     </key>
     <key name="CopyFile.RECENT_KEYS">
-      <recent name="$PROJECT_DIR$/src/api/src/test/scala" />
       <recent name="$PROJECT_DIR$/src/api/src/test/resources" />
+      <recent name="$PROJECT_DIR$/src/api/src/test/scala" />
       <recent name="$PROJECT_DIR$/src/api/src/main/scala/scala/ski/crunch/activity/processor/model" />
       <recent name="$PROJECT_DIR$/src/api/src/main/java/com/garmin" />
       <recent name="$PROJECT_DIR$/src/api/src/main/resources" />
@@ -1571,8 +1199,12 @@
       <recent name="scala.ski.crunch.activity.processor.model" />
       <recent name="ski.crunch.activity.model" />
     </key>
-    <key name="CreateClassDialog.RecentsKey">
-      <recent name="ski.crunch.utils" />
+    <key name="MoveFile.RECENT_KEYS">
+      <recent name="$PROJECT_DIR$/src/api/src/test/resources" />
+      <recent name="$PROJECT_DIR$/src/api/src/test/java" />
+      <recent name="$PROJECT_DIR$/src/api/src/test/com.serverless" />
+      <recent name="$PROJECT_DIR$/src/api/src/main/java/com/serverless" />
+      <recent name="$PROJECT_DIR$/src/api/src/test" />
     </key>
   </component>
   <component name="RunDashboard">
@@ -1587,7 +1219,7 @@
       </list>
     </option>
   </component>
-  <component name="RunManager" selected="JUnit.ActivityPipelineTest">
+  <component name="RunManager" selected="JUnit.ActivityPipelineTest.setEventIndexTest">
     <configuration default="true" type="AndroidTestRunConfigurationType" factoryName="Android Tests">
       <module name="" />
       <option name="TESTING_TYPE" value="0" />
@@ -1671,8 +1303,8 @@
       <setting name="debug" value="false" />
       <method v="2" />
     </configuration>
-    <configuration name="ActivityPipelineTest" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
-      <module name="src_api_test" />
+    <configuration name="ActivityPipelineTest (1)" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
+      <module name="ski-analytics-services-src_api_test" />
       <extension name="coverage">
         <pattern>
           <option name="PATTERN" value="ski.crunch.activity.*" />
@@ -1686,25 +1318,8 @@
         <option name="Make" enabled="true" />
       </method>
     </configuration>
-    <configuration name="ActivityPipelineTest.calcMovingTest" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
-      <module name="src_api_test" />
-      <extension name="coverage">
-        <pattern>
-          <option name="PATTERN" value="ski.crunch.activity.*" />
-          <option name="ENABLED" value="true" />
-        </pattern>
-      </extension>
-      <option name="PACKAGE_NAME" value="ski.crunch.activity" />
-      <option name="MAIN_CLASS_NAME" value="ski.crunch.activity.ActivityPipelineTest" />
-      <option name="METHOD_NAME" value="calcMovingTest" />
-      <option name="TEST_OBJECT" value="method" />
-      <option name="WORKING_DIRECTORY" value="$MODULE_DIR$" />
-      <method v="2">
-        <option name="Make" enabled="true" />
-      </method>
-    </configuration>
-    <configuration name="ActivityPipelineTest.calcPauseGarminTest" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
-      <module name="src_api_test" />
+    <configuration name="ActivityPipelineTest.calcPauseGarminTest (1)" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
+      <module name="ski-analytics-services-src_api_test" />
       <extension name="coverage">
         <pattern>
           <option name="PATTERN" value="ski.crunch.activity.*" />
@@ -1720,8 +1335,8 @@
         <option name="Make" enabled="true" />
       </method>
     </configuration>
-    <configuration name="ActivityPipelineTest.calcPauseSuuntoTest" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
-      <module name="src_api_test" />
+    <configuration name="ActivityPipelineTest.setEventIndexTest" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
+      <module name="ski-analytics-services-src_api_test" />
       <extension name="coverage">
         <pattern>
           <option name="PATTERN" value="ski.crunch.activity.*" />
@@ -1730,15 +1345,15 @@
       </extension>
       <option name="PACKAGE_NAME" value="ski.crunch.activity" />
       <option name="MAIN_CLASS_NAME" value="ski.crunch.activity.ActivityPipelineTest" />
-      <option name="METHOD_NAME" value="calcPauseSuuntoTest" />
+      <option name="METHOD_NAME" value="setEventIndexTest" />
       <option name="TEST_OBJECT" value="method" />
       <option name="WORKING_DIRECTORY" value="$MODULE_DIR$" />
       <method v="2">
         <option name="Make" enabled="true" />
       </method>
     </configuration>
-    <configuration name="FitActivityHolderAdapterTest" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
-      <module name="src_api_test" />
+    <configuration name="ActivityPipelineTest.testCloseSegmentsHandler (1)" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
+      <module name="ski-analytics-services-src_api_test" />
       <extension name="coverage">
         <pattern>
           <option name="PATTERN" value="ski.crunch.activity.*" />
@@ -1746,7 +1361,26 @@
         </pattern>
       </extension>
       <option name="PACKAGE_NAME" value="ski.crunch.activity" />
-      <option name="MAIN_CLASS_NAME" value="ski.crunch.activity.FitActivityHolderAdapterTest" />
+      <option name="MAIN_CLASS_NAME" value="ski.crunch.activity.ActivityPipelineTest" />
+      <option name="METHOD_NAME" value="testCloseSegmentsHandler" />
+      <option name="TEST_OBJECT" value="method" />
+      <option name="WORKING_DIRECTORY" value="$MODULE_DIR$" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="ActivityPipelineTest.testLapDetectGarmin" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
+      <module name="ski-analytics-services-src_api_test" />
+      <extension name="coverage">
+        <pattern>
+          <option name="PATTERN" value="ski.crunch.activity.*" />
+          <option name="ENABLED" value="true" />
+        </pattern>
+      </extension>
+      <option name="PACKAGE_NAME" value="ski.crunch.activity" />
+      <option name="MAIN_CLASS_NAME" value="ski.crunch.activity.ActivityPipelineTest" />
+      <option name="METHOD_NAME" value="testLapDetectGarmin" />
+      <option name="TEST_OBJECT" value="method" />
       <option name="WORKING_DIRECTORY" value="$MODULE_DIR$" />
       <method v="2">
         <option name="Make" enabled="true" />
@@ -1820,19 +1454,19 @@
     </configuration>
     <list>
       <item itemvalue="Groovy.build (1)" />
-      <item itemvalue="JUnit.FitActivityHolderAdapterTest" />
-      <item itemvalue="JUnit.ActivityPipelineTest" />
-      <item itemvalue="JUnit.ActivityPipelineTest.calcMovingTest" />
-      <item itemvalue="JUnit.ActivityPipelineTest.calcPauseSuuntoTest" />
-      <item itemvalue="JUnit.ActivityPipelineTest.calcPauseGarminTest" />
+      <item itemvalue="JUnit.ActivityPipelineTest (1)" />
+      <item itemvalue="JUnit.ActivityPipelineTest.testCloseSegmentsHandler (1)" />
+      <item itemvalue="JUnit.ActivityPipelineTest.calcPauseGarminTest (1)" />
+      <item itemvalue="JUnit.ActivityPipelineTest.testLapDetectGarmin" />
+      <item itemvalue="JUnit.ActivityPipelineTest.setEventIndexTest" />
     </list>
     <recent_temporary>
       <list>
-        <item itemvalue="JUnit.ActivityPipelineTest" />
-        <item itemvalue="JUnit.ActivityPipelineTest.calcPauseGarminTest" />
-        <item itemvalue="JUnit.ActivityPipelineTest.calcPauseSuuntoTest" />
-        <item itemvalue="JUnit.FitActivityHolderAdapterTest" />
-        <item itemvalue="JUnit.ActivityPipelineTest.calcMovingTest" />
+        <item itemvalue="JUnit.ActivityPipelineTest.setEventIndexTest" />
+        <item itemvalue="JUnit.ActivityPipelineTest.testLapDetectGarmin" />
+        <item itemvalue="JUnit.ActivityPipelineTest (1)" />
+        <item itemvalue="JUnit.ActivityPipelineTest.calcPauseGarminTest (1)" />
+        <item itemvalue="JUnit.ActivityPipelineTest.testCloseSegmentsHandler (1)" />
       </list>
     </recent_temporary>
   </component>
@@ -1881,7 +1515,8 @@
       <workItem from="1546194187415" duration="2664000" />
       <workItem from="1546227866272" duration="423000" />
       <workItem from="1546228320345" duration="2266000" />
-      <workItem from="1546230621793" duration="22992000" />
+      <workItem from="1546230621793" duration="27296000" />
+      <workItem from="1546489617333" duration="6406000" />
     </task>
     <task id="LOCAL-00001" summary="CF template for domain">
       <created>1533077361072</created>
@@ -1981,43 +1616,50 @@
       <option name="project" value="LOCAL" />
       <updated>1542610726516</updated>
     </task>
-    <option name="localTasksCounter" value="15" />
+    <task id="LOCAL-00015" summary="SKAPI-14 Activity Parsing and Processing">
+      <created>1546409228339</created>
+      <option name="number" value="00015" />
+      <option name="presentableId" value="LOCAL-00015" />
+      <option name="project" value="LOCAL" />
+      <updated>1546409228339</updated>
+    </task>
+    <option name="localTasksCounter" value="16" />
     <servers />
   </component>
   <component name="TestHistory">
-    <history-entry file="ActivityPipelineTest_calcPauseSuuntoTest - 2019.01.01 at 21h 02m 39s.xml">
-      <configuration name="ActivityPipelineTest.calcPauseSuuntoTest" configurationId="JUnit" />
+    <history-entry file="ActivityPipelineTest_testCloseSegmentsHandler_(1) - 2019.01.02 at 20h 55m 19s.xml">
+      <configuration name="ActivityPipelineTest.testCloseSegmentsHandler (1)" configurationId="JUnit" />
     </history-entry>
-    <history-entry file="ActivityPipelineTest_calcPauseSuuntoTest - 2019.01.01 at 21h 02m 56s.xml">
-      <configuration name="ActivityPipelineTest.calcPauseSuuntoTest" configurationId="JUnit" />
+    <history-entry file="ActivityPipelineTest_calcPauseGarminTest_(1) - 2019.01.02 at 21h 21m 03s.xml">
+      <configuration name="ActivityPipelineTest.calcPauseGarminTest (1)" configurationId="JUnit" />
     </history-entry>
-    <history-entry file="ActivityPipelineTest_calcPauseSuuntoTest - 2019.01.01 at 21h 03m 25s.xml">
-      <configuration name="ActivityPipelineTest.calcPauseSuuntoTest" configurationId="JUnit" />
+    <history-entry file="ActivityPipelineTest_(1) - 2019.01.02 at 21h 23m 19s.xml">
+      <configuration name="ActivityPipelineTest (1)" configurationId="JUnit" />
     </history-entry>
-    <history-entry file="ActivityPipelineTest_calcPauseSuuntoTest - 2019.01.01 at 21h 03m 42s.xml">
-      <configuration name="ActivityPipelineTest.calcPauseSuuntoTest" configurationId="JUnit" />
+    <history-entry file="ActivityPipelineTest_(1) - 2019.01.02 at 21h 41m 18s.xml">
+      <configuration name="ActivityPipelineTest (1)" configurationId="JUnit" />
     </history-entry>
-    <history-entry file="ActivityPipelineTest_calcPauseSuuntoTest - 2019.01.01 at 21h 04m 31s.xml">
-      <configuration name="ActivityPipelineTest.calcPauseSuuntoTest" configurationId="JUnit" />
+    <history-entry file="ActivityPipelineTest_testLapDetectGarmin - 2019.01.02 at 21h 43m 49s.xml">
+      <configuration name="ActivityPipelineTest.testLapDetectGarmin" configurationId="JUnit" />
     </history-entry>
-    <history-entry file="ActivityPipelineTest_calcPauseSuuntoTest - 2019.01.01 at 21h 05m 21s.xml">
-      <configuration name="ActivityPipelineTest.calcPauseSuuntoTest" configurationId="JUnit" />
+    <history-entry file="ActivityPipelineTest_testLapDetectGarmin - 2019.01.02 at 21h 45m 14s.xml">
+      <configuration name="ActivityPipelineTest.testLapDetectGarmin" configurationId="JUnit" />
     </history-entry>
-    <history-entry file="ActivityPipelineTest_calcPauseSuuntoTest - 2019.01.01 at 21h 05m 41s.xml">
-      <configuration name="ActivityPipelineTest.calcPauseSuuntoTest" configurationId="JUnit" />
+    <history-entry file="ActivityPipelineTest_testLapDetectGarmin - 2019.01.02 at 21h 46m 33s.xml">
+      <configuration name="ActivityPipelineTest.testLapDetectGarmin" configurationId="JUnit" />
     </history-entry>
-    <history-entry file="ActivityPipelineTest_calcPauseGarminTest - 2019.01.01 at 21h 06m 07s.xml">
-      <configuration name="ActivityPipelineTest.calcPauseGarminTest" configurationId="JUnit" />
+    <history-entry file="ActivityPipelineTest_testLapDetectGarmin - 2019.01.02 at 21h 47m 14s.xml">
+      <configuration name="ActivityPipelineTest.testLapDetectGarmin" configurationId="JUnit" />
     </history-entry>
-    <history-entry file="ActivityPipelineTest - 2019.01.01 at 21h 18m 08s.xml">
-      <configuration name="ActivityPipelineTest" configurationId="JUnit" />
+    <history-entry file="ActivityPipelineTest_setEventIndexTest - 2019.01.02 at 22h 11m 36s.xml">
+      <configuration name="ActivityPipelineTest.setEventIndexTest" configurationId="JUnit" />
     </history-entry>
-    <history-entry file="ActivityPipelineTest - 2019.01.01 at 21h 21m 24s.xml">
-      <configuration name="ActivityPipelineTest" configurationId="JUnit" />
+    <history-entry file="ActivityPipelineTest_setEventIndexTest - 2019.01.02 at 22h 12m 00s.xml">
+      <configuration name="ActivityPipelineTest.setEventIndexTest" configurationId="JUnit" />
     </history-entry>
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="375007000" />
+    <option name="totallyTimeSpent" value="385717000" />
   </component>
   <component name="TodoView">
     <todo-panel id="selected-file">
@@ -2030,7 +1672,47 @@
   </component>
   <component name="ToolWindowManager">
     <frame x="0" y="23" width="1401" height="824" extended-state="0" />
+    <editor active="true" />
     <layout>
+      <window_info content_ui="combo" id="Project" order="0" visible="true" weight="0.35099337" />
+      <window_info id="Structure" order="1" weight="0.2531273" />
+      <window_info id="Designer" order="2" />
+      <window_info id="Image Layers" order="3" />
+      <window_info id="UI Designer" order="4" />
+      <window_info id="Capture Tool" order="5" />
+      <window_info id="Favorites" order="6" side_tool="true" />
+      <window_info id="Nl-Palette" order="7" />
+      <window_info anchor="bottom" id="Message" order="0" />
+      <window_info anchor="bottom" id="Find" order="1" sideWeight="0.49742457" weight="0.32863188" />
+      <window_info anchor="bottom" id="Run" order="2" sideWeight="0.69389254" weight="0.42172074" />
+      <window_info active="true" anchor="bottom" id="Debug" order="3" sideWeight="0.72921264" visible="true" weight="0.39915374" />
+      <window_info anchor="bottom" id="Cvs" order="4" weight="0.25" />
+      <window_info anchor="bottom" id="Inspection" order="5" weight="0.4" />
+      <window_info anchor="bottom" id="TODO" order="6" sideWeight="0.49816042" weight="0.32863188" />
+      <window_info anchor="bottom" id="FindBugs-IDEA" order="7" />
+      <window_info anchor="bottom" x="1827" y="202" width="1217" height="450" id="Terminal" order="8" sideWeight="0.80206037" weight="0.370945" />
+      <window_info anchor="bottom" id="CheckStyle" order="9" />
+      <window_info anchor="bottom" id="Event Log" order="10" sideWeight="0.54083884" side_tool="true" weight="0.52468264" />
+      <window_info anchor="bottom" id="Messages" order="11" sideWeight="0.45916116" weight="0.52468264" />
+      <window_info anchor="bottom" id="Version Control" order="12" sideWeight="0.49816042" weight="0.32863188" />
+      <window_info anchor="bottom" id="Build" order="13" sideWeight="0.7880086" weight="0.31917807" />
+      <window_info anchor="bottom" id="Database Changes" order="14" show_stripe_button="false" />
+      <window_info anchor="bottom" id="Docker" order="15" show_stripe_button="false" />
+      <window_info anchor="right" id="Commander" order="0" weight="0.4" />
+      <window_info anchor="right" id="Ant Build" order="1" weight="0.25" />
+      <window_info anchor="right" content_ui="combo" id="Hierarchy" order="2" weight="0.25" />
+      <window_info anchor="right" id="Palette" order="3" />
+      <window_info anchor="right" id="Properties" order="4" />
+      <window_info anchor="right" id="Capture Analysis" order="5" />
+      <window_info anchor="right" id="Maven Projects" order="6" />
+      <window_info anchor="right" id="Gradle" order="7" weight="0.37527594" />
+      <window_info anchor="right" id="Database" order="8" weight="0.14716704" />
+      <window_info anchor="right" id="Palette&#9;" order="9" />
+      <window_info anchor="right" id="Theme Preview" order="10" />
+      <window_info anchor="right" id="SBT" order="11" />
+      <window_info anchor="right" id="Maven" order="12" />
+    </layout>
+    <layout-to-restore>
       <window_info active="true" content_ui="combo" id="Project" order="0" visible="true" weight="0.33554083" />
       <window_info id="Structure" order="1" weight="0.2531273" />
       <window_info id="Designer" order="2" />
@@ -2068,7 +1750,7 @@
       <window_info anchor="right" id="Theme Preview" order="10" />
       <window_info anchor="right" id="SBT" order="11" />
       <window_info anchor="right" id="Maven" order="12" />
-    </layout>
+    </layout-to-restore>
   </component>
   <component name="TypeScriptGeneratedFilesManager">
     <option name="version" value="1" />
@@ -2089,7 +1771,8 @@
     <MESSAGE value="SKAPI-13 - minor updates" />
     <MESSAGE value="SKAPI-14 Added putActivity lambda and done some refactoring" />
     <MESSAGE value="SKAPI-14 SKAPI-13 refactoring and testing" />
-    <option name="LAST_COMMIT_MESSAGE" value="SKAPI-14 SKAPI-13 refactoring and testing" />
+    <MESSAGE value="SKAPI-14 Activity Parsing and Processing" />
+    <option name="LAST_COMMIT_MESSAGE" value="SKAPI-14 Activity Parsing and Processing" />
   </component>
   <component name="WindowStateProjectService">
     <state width="352" height="262" key="Git.Branch.Popup" />
@@ -2116,6 +1799,12 @@
           <properties />
           <option name="timeStamp" value="17" />
         </line-breakpoint>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>file://$PROJECT_DIR$/src/api/src/test/java/ski/crunch/activity/ActivityPipelineTest.java</url>
+          <line>284</line>
+          <properties />
+          <option name="timeStamp" value="20" />
+        </line-breakpoint>
       </breakpoints>
     </breakpoint-manager>
   </component>
@@ -2124,89 +1813,6 @@
     <option name="FILTER_TARGETS" value="false" />
   </component>
   <component name="editorHistoryManager">
-    <entry file="file://$PROJECT_DIR$/src/api/src/main/java/ski/crunch/activity/processor/NullReplaceHandler.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="247">
-          <caret line="26" column="22" selection-start-line="23" selection-start-column="6" selection-end-line="26" selection-end-column="22" />
-          <folding>
-            <element signature="imports" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/com.amazonaws/aws-lambda-java-log4j/1.0.0/9860bfb639ee4ab2f3a7bb6cb9c566c23bd00ebb/aws-lambda-java-log4j-1.0.0-sources.jar!/com/amazonaws/services/lambda/runtime/log4j/LambdaAppender.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-103">
-          <caret line="15" column="13" selection-start-line="15" selection-start-column="13" selection-end-line="15" selection-end-column="13" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="jar:///Library/Java/JavaVirtualMachines/jdk1.8.0_31.jdk/Contents/Home/src.zip!/java/util/ArrayList.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-2594">
-          <caret line="1248" selection-start-line="1248" selection-end-line="1248" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/org.junit.platform/junit-platform-commons/1.1.0/39d7c2eec7178ba6e53445a2851e66a966a7472f/junit-platform-commons-1.1.0-sources.jar!/org/junit/platform/commons/util/ReflectionUtils.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="4667">
-          <caret line="435" selection-start-line="435" selection-end-line="435" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/org.junit.jupiter/junit-jupiter-engine/5.1.0/6ee32e577850a9004e80a5685ff1afe5af781837/junit-jupiter-engine-5.1.0-sources.jar!/org/junit/jupiter/engine/execution/ExecutableInvoker.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="1105">
-          <caret line="114" selection-start-line="114" selection-end-line="114" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/org.junit.platform/junit-platform-engine/1.1.0/ec15fab8c638286957da5f1916088c8031c19a2/junit-platform-engine-1.1.0-sources.jar!/org/junit/platform/engine/support/hierarchical/HierarchicalTestExecutor.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="819">
-          <caret line="84" selection-start-line="84" selection-end-line="84" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/api/src/main/java/ski/crunch/activity/processor/PipelineManager.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="223">
-          <caret line="34" selection-start-line="34" selection-end-line="34" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/com.vividsolutions/jts/1.13/ee922fa0a39de08d193337739d336779e3dfa774/jts-1.13-sources.jar!/com/vividsolutions/jts/geom/Coordinate.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="187">
-          <caret line="125" selection-start-line="125" selection-end-line="125" />
-          <folding>
-            <element signature="e#3683#3684#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/org.scala-lang/scala-library/2.11.12/66a32abd59b3f9bb690bba2efc7d7ef680157bcd/scala-library-2.11.12-sources.jar!/scala/collection/LinearSeqOptimized.scala">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="133">
-          <caret line="123" column="6" selection-start-line="123" selection-start-column="6" selection-end-line="123" selection-end-column="6" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/org.junit.jupiter/junit-jupiter-engine/5.1.0/6ee32e577850a9004e80a5685ff1afe5af781837/junit-jupiter-engine-5.1.0-sources.jar!/org/junit/jupiter/engine/execution/ThrowableCollector.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="146">
-          <caret line="44" selection-start-line="44" selection-end-line="44" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/org.junit.platform/junit-platform-engine/1.1.0/ec15fab8c638286957da5f1916088c8031c19a2/junit-platform-engine-1.1.0-sources.jar!/org/junit/platform/engine/support/hierarchical/SingleTestExecutor.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="167">
-          <caret line="66" selection-start-line="66" selection-end-line="66" />
-        </state>
-      </provider>
-    </entry>
     <entry file="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/org.junit.jupiter/junit-jupiter-engine/5.1.0/6ee32e577850a9004e80a5685ff1afe5af781837/junit-jupiter-engine-5.1.0-sources.jar!/org/junit/jupiter/engine/descriptor/TestMethodTestDescriptor.java">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="243">
@@ -2225,11 +1831,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="293">
           <caret line="26" column="5" lean-forward="true" selection-start-line="26" selection-start-column="5" selection-end-line="26" selection-end-column="5" />
-          <folding>
-            <element signature="imports" expanded="true" />
-            <element signature="e#235#236#0" expanded="true" />
-            <element signature="e#268#269#0" expanded="true" />
-          </folding>
         </state>
       </provider>
     </entry>
@@ -2272,25 +1873,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="132">
           <caret line="39" column="28" selection-start-line="39" selection-start-column="28" selection-end-line="39" selection-end-column="28" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/api/src/main/java/ski/crunch/activity/processor/CalcGradeHandler.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="250">
-          <caret line="20" column="8" selection-start-line="20" selection-start-column="8" selection-end-line="24" selection-end-column="22" />
-          <folding>
-            <element signature="imports" expanded="true" />
-            <element signature="e#492#493#0" expanded="true" />
-            <element signature="e#560#561#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/api/src/main/java/ski/crunch/activity/model/processor/EventType.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="104">
-          <caret line="8" column="28" selection-start-line="8" selection-start-column="28" selection-end-line="8" selection-end-column="28" />
         </state>
       </provider>
     </entry>
@@ -2351,110 +1933,10 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/api/src/main/java/ski/crunch/activity/processor/ActivityProcessor.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="442">
-          <caret line="34" column="47" selection-start-line="34" selection-start-column="47" selection-end-line="34" selection-end-column="47" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/api/src/main/java/ski/crunch/activity/processor/DetectLapHandler.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="195">
-          <caret line="15" column="5" selection-start-line="15" selection-start-column="5" selection-end-line="15" selection-end-column="5" />
-          <folding>
-            <element signature="imports" expanded="true" />
-            <element signature="e#265#266#0" expanded="true" />
-            <element signature="e#313#314#0" expanded="true" />
-            <element signature="e#246#247#0" expanded="true" />
-            <element signature="e#273#274#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/api/src/test/java/ski/crunch/activity/ActivityPipelineTest.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="132">
-          <caret line="224" column="44" selection-start-line="224" selection-start-column="44" selection-end-line="224" selection-end-column="44" />
-          <folding>
-            <element signature="imports" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/api/src/main/java/ski/crunch/activity/processor/DetectPauseHandler.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="312">
-          <caret line="24" selection-start-line="24" selection-end-line="24" />
-          <folding>
-            <element signature="imports" expanded="true" />
-            <element signature="e#261#262#0" expanded="true" />
-            <element signature="e#333#334#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/src/api/src/main/scala/scala/ski/crunch/activity/processor/model/ActivityRecord.scala">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="393">
           <caret line="102" column="9" selection-start-line="102" selection-start-column="9" selection-end-line="102" selection-end-column="9" />
-          <folding>
-            <element signature="e#51#84#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/api/src/main/scala/scala/ski/crunch/activity/processor/RecordProcessor.scala">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="139">
-          <caret line="196" selection-start-line="196" selection-end-line="196" />
-          <folding>
-            <element signature="e#45#78#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/api/src/main/java/ski/crunch/activity/parser/fit/LapMessageListener.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-59">
-          <caret line="14" column="13" selection-start-line="14" selection-start-column="13" selection-end-line="14" selection-end-column="13" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/api/src/main/scala/scala/ski/crunch/activity/processor/EventProcessor.scala">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-575">
-          <caret line="41" column="177" selection-start-line="40" selection-start-column="8" selection-end-line="41" selection-end-column="177" />
-          <folding>
-            <element signature="e#45#61#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/build.gradle">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="221">
-          <caret line="17" column="8" selection-start-line="17" selection-start-column="8" selection-end-line="17" selection-end-column="8" />
-          <folding>
-            <element signature="n#!!doc" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/api/build.gradle">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="429">
-          <caret line="33" column="48" selection-start-line="33" selection-start-column="48" selection-end-line="33" selection-end-column="48" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/api/src/test/scala/DetectPauseSpec.scala">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="247">
-          <caret line="19" column="31" lean-forward="true" selection-start-line="19" selection-start-column="31" selection-end-line="19" selection-end-column="31" />
-          <folding>
-            <element signature="e#0#26#0" expanded="true" />
-          </folding>
         </state>
       </provider>
     </entry>
@@ -2470,20 +1952,24 @@
     <entry file="file://$PROJECT_DIR$/src/api/src/test/scala/DetectMotionStopSpec.scala">
       <provider selected="true" editor-type-id="text-editor" />
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/api/src/test/scala/DetectLapEventSpec.scala">
+    <entry file="file://$PROJECT_DIR$/src/api/src/main/java/ski/crunch/activity/parser/fit/FitActivityHolderAdapter.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-662">
-          <caret line="26" column="32" selection-start-line="26" selection-start-column="32" selection-end-line="26" selection-end-column="32" />
-          <folding>
-            <element signature="e#0#26#0" expanded="true" />
-          </folding>
+        <state relative-caret-position="273">
+          <caret line="29" column="19" selection-start-line="29" selection-start-column="19" selection-end-line="29" selection-end-column="19" />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/api/src/main/java/ski/crunch/activity/model/processor/ActivityEvent.java">
+    <entry file="file://$PROJECT_DIR$/src/api/src/main/java/ski/crunch/activity/parser/ActivityHolderAdapter.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="26">
-          <caret line="2" column="13" selection-start-line="2" selection-start-column="13" selection-end-line="2" selection-end-column="13" />
+        <state relative-caret-position="39">
+          <caret line="7" column="17" selection-start-line="7" selection-start-column="17" selection-end-line="7" selection-end-column="17" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/api/src/main/java/ski/crunch/activity/model/PutActivityResponse.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="65">
+          <caret line="5" column="13" selection-start-line="5" selection-start-column="13" selection-end-line="5" selection-end-column="13" />
         </state>
       </provider>
     </entry>
@@ -2496,7 +1982,7 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/src/api/src/main/java/ski/crunch/activity/model/ActivityOuterClass.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="65">
+        <state relative-caret-position="52">
           <caret line="5" column="19" selection-start-line="5" selection-start-column="19" selection-end-line="5" selection-end-column="19" />
           <folding>
             <element signature="e#0#616894#0" expanded="true" />
@@ -2506,29 +1992,228 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/src/api/src/main/java/ski/crunch/activity/model/ApiGatewayResponse.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="213">
-          <caret line="25" lean-forward="true" selection-start-line="25" selection-end-line="25" />
+        <state relative-caret-position="221">
+          <caret line="25" selection-start-line="25" selection-end-line="25" />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/api/src/main/java/ski/crunch/activity/model/PutActivityResponse.java">
+    <entry file="file://$PROJECT_DIR$/src/api/src/main/java/ski/crunch/activity/processor/CalcGradeHandler.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="252">
+          <caret line="20" selection-start-line="20" selection-end-line="20" />
+          <folding>
+            <element signature="imports" expanded="true" />
+            <element signature="e#492#493#0" expanded="true" />
+            <element signature="e#560#561#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/api/src/test/scala/DetectPauseSpec.scala">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="212">
+          <caret line="172" column="1" selection-start-line="172" selection-start-column="1" selection-end-line="172" selection-end-column="1" />
+          <folding>
+            <element signature="e#0#26#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/api/src/test/scala/DetectLapEventSpec.scala">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="65">
-          <caret line="5" column="13" selection-start-line="5" selection-start-column="13" selection-end-line="5" selection-end-column="13" />
+          <caret line="5" lean-forward="true" selection-start-line="5" selection-end-line="5" />
+          <folding>
+            <element signature="e#0#26#0" expanded="true" />
+          </folding>
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/api/src/main/java/ski/crunch/activity/parser/ActivityHolderAdapter.java">
+    <entry file="file://$PROJECT_DIR$/src/api/src/main/java/ski/crunch/activity/parser/fit/SessionMessageListener.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="39">
-          <caret line="7" column="17" selection-start-line="7" selection-start-column="17" selection-end-line="7" selection-end-column="17" />
+        <state relative-caret-position="140">
+          <caret line="27" selection-start-line="27" selection-end-line="27" />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/api/src/main/java/ski/crunch/activity/parser/fit/FitActivityHolderAdapter.java">
+    <entry file="file://$PROJECT_DIR$/src/api/build.gradle">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="273">
-          <caret line="29" column="19" lean-forward="true" selection-start-line="29" selection-start-column="19" selection-end-line="29" selection-end-column="19" />
+        <state relative-caret-position="-368">
+          <caret line="32" column="43" selection-start-line="32" selection-start-column="43" selection-end-line="32" selection-end-column="43" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/build.gradle">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="260">
+          <caret line="20" column="9" selection-start-line="20" selection-start-column="9" selection-end-line="20" selection-end-column="9" />
+          <folding>
+            <element signature="n#!!doc" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/api/src/test/java/ski/crunch/activity/ActivityTests.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="122">
+          <caret line="12" column="51" selection-start-line="12" selection-start-column="51" selection-end-line="12" selection-end-column="51" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/settings.gradle">
+      <provider selected="true" editor-type-id="text-editor">
+        <state>
+          <folding>
+            <element signature="n#!!doc" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/api/src/main/java/ski/crunch/activity/model/processor/EventType.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="26">
+          <caret line="2" column="12" selection-start-line="2" selection-start-column="12" selection-end-line="2" selection-end-column="12" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/api/src/test/resources/garmin_1.fit">
+      <provider selected="true" editor-type-id="text-editor" />
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/api/src/main/java/ski/crunch/activity/parser/fit/LapMessageListener.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="301">
+          <caret line="54" column="43" selection-start-line="54" selection-start-column="34" selection-end-line="54" selection-end-column="43" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/api/src/main/java/ski/crunch/activity/model/processor/ActivityEvent.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="92">
+          <caret line="17" column="23" selection-start-line="17" selection-start-column="23" selection-end-line="17" selection-end-column="23" />
+          <folding>
+            <element signature="e#980#981#0" expanded="true" />
+            <element signature="e#1012#1013#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/api/src/main/java/ski/crunch/activity/processor/DetectLapHandler.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="221">
+          <caret line="17" column="40" selection-start-line="17" selection-start-column="40" selection-end-line="17" selection-end-column="40" />
+          <folding>
+            <element signature="imports" expanded="true" />
+            <element signature="e#317#318#0" expanded="true" />
+            <element signature="e#385#386#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="jar:///Library/Java/JavaVirtualMachines/jdk1.8.0_31.jdk/Contents/Home/src.zip!/java/util/function/Predicate.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="133">
+          <caret line="48" column="12" selection-start-line="48" selection-start-column="12" selection-end-line="48" selection-end-column="12" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/api/src/main/java/ski/crunch/activity/processor/CloseSegmentsHandler.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="1250">
+          <caret line="102" selection-start-line="102" selection-end-line="102" />
+          <folding>
+            <element signature="imports" expanded="true" />
+            <element signature="e#378#379#0" expanded="true" />
+            <element signature="e#446#447#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/api/src/main/scala/scala/ski/crunch/activity/processor/EventProcessor.scala">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="353">
+          <caret line="150" column="42" selection-start-line="150" selection-start-column="42" selection-end-line="150" selection-end-column="42" />
+          <folding>
+            <element signature="e#45#61#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/api/src/main/java/ski/crunch/activity/processor/MergeDuplicateRecordHandler.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="65">
+          <caret line="15" column="13" selection-start-line="15" selection-start-column="13" selection-end-line="15" selection-end-column="13" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/api/src/main/java/ski/crunch/activity/processor/DetectPauseHandler.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="145">
+          <caret line="12" column="11" selection-start-line="12" selection-start-column="11" selection-end-line="12" selection-end-column="11" />
+          <folding>
+            <element signature="imports" expanded="true" />
+            <element signature="e#402#403#0" expanded="true" />
+            <element signature="e#470#471#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/api/src/main/java/ski/crunch/activity/processor/CreateHrvRecordHandler.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="13">
+          <caret line="14" column="13" selection-start-line="14" selection-start-column="13" selection-end-line="14" selection-end-column="13" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/api/src/main/scala/scala/ski/crunch/activity/processor/RecordProcessor.scala">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="126">
+          <caret line="91" column="6" selection-start-line="91" selection-start-column="6" selection-end-line="91" selection-end-column="6" />
+          <folding>
+            <element signature="e#45#78#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/org.scala-lang/scala-library/2.11.12/66a32abd59b3f9bb690bba2efc7d7ef680157bcd/scala-library-2.11.12-sources.jar!/scala/Option.scala">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="-708">
+          <caret line="238" column="20" selection-start-line="238" selection-start-column="20" selection-end-line="238" selection-end-column="20" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/api/src/main/java/ski/crunch/activity/processor/SortByTsHandler.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="117">
+          <caret line="13" column="86" lean-forward="true" selection-start-line="13" selection-start-column="8" selection-end-line="13" selection-end-column="86" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/api/src/main/java/ski/crunch/activity/processor/SetEventIndexHandler.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="530">
+          <caret line="63" column="5" lean-forward="true" selection-start-line="63" selection-start-column="5" selection-end-line="63" selection-end-column="5" />
+          <folding>
+            <element signature="imports" expanded="true" />
+            <element signature="e#641#642#0" expanded="true" />
+            <element signature="e#709#710#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/api/src/main/java/ski/crunch/activity/processor/ActivityProcessor.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="323">
+          <caret line="39" column="49" selection-start-line="39" selection-start-column="49" selection-end-line="39" selection-end-column="49" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/api/src/test/java/ski/crunch/activity/ActivityPipelineTest.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="288">
+          <caret line="285" column="95" selection-start-line="285" selection-start-column="95" selection-end-line="285" selection-end-column="95" />
+          <folding>
+            <element signature="imports" expanded="true" />
+          </folding>
         </state>
       </provider>
     </entry>
@@ -2613,7 +2298,7 @@
       </state>
       <state key="ProjectLibrariesConfigurable.UI">
         <settings>
-          <last-edited>Gradle: com.amazonaws:aws-java-sdk-cloudformation:1.11.166</last-edited>
+          <last-edited>Gradle: org.scalactic:scalactic:3.0.1</last-edited>
           <splitter-proportions>
             <option name="proportions">
               <list>

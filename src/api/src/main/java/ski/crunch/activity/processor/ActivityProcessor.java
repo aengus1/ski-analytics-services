@@ -16,6 +16,9 @@ public class ActivityProcessor {
         Handler calcGradeHandler = new CalcGradeHandler();
         Handler calcMovingHandler = new CalcMovingHandler();
         Handler detectPauseHandler = new DetectPauseHandler();
+        Handler closeSegmentsHandler = new CloseSegmentsHandler();
+        Handler setEventIndexHandler = new SetEventIndexHandler();
+        Handler detectLapHandler = new DetectLapHandler();
 
         // detect detect lap events
         // detect motion stops
@@ -33,6 +36,9 @@ public class ActivityProcessor {
         manager.addHandler(calcGradeHandler);
         manager.addHandler(calcMovingHandler);
         manager.addHandler(detectPauseHandler);
+        manager.addHandler(closeSegmentsHandler);
+        manager.addHandler(setEventIndexHandler);
+        manager.addHandler(detectLapHandler);
 
         return manager.doPipeline(holder);
     }

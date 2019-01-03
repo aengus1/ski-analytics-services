@@ -30,8 +30,7 @@ dependencies {
             // https://mvnrepository.com/artifact/com.sun.jersey/jersey-client
             'org.glassfish.jersey.core:jersey-client:2.5.1',
             'com.fasterxml.jackson.core:jackson-core:2.9.7',
-            "org.scalactic:scalactic:3.0.1",
-            "org.scalatest:scalatest:3.0.1:test"
+            "org.scalactic:scalactic:3.0.1"
 
 
     )

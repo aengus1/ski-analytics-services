@@ -15,6 +15,16 @@ public class ActivityEvent {
         this.eventType = eventType;
         this.ts = timestamp;
         this.timer = 0;
+        this.info = "";
+
+    }
+
+    public ActivityEvent(int index, EventType eventType, String timestamp, String info){
+        this.index = index;
+        this.eventType = eventType;
+        this.ts = timestamp;
+        this.timer = 0;
+        this.info = info;
 
     }
 
@@ -23,6 +33,7 @@ public class ActivityEvent {
         this.eventType = null;
         this.ts = null;
         this.info = "";
+        this.trigger = "";
     }
 
     public int getIndex() {

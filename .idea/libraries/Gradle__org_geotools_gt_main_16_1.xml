@@ -1,7 +1,6 @@
 <component name="libraryTable">
   <library name="Gradle: org.geotools:gt-main:16.1">
     <CLASSES>
-      <root url="file://$PROJECT_DIR$/Could not find org.geotools:gt-main:16.1." />
       <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/org.geotools/gt-main/16.1/afe8634c9c73523ed53f3053ea5c0b3fd19fe918/gt-main-16.1.jar!/" />
     </CLASSES>
     <JAVADOC />
