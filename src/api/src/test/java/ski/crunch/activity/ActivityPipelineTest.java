@@ -29,12 +29,14 @@ import java.util.stream.Collectors;
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
 public class ActivityPipelineTest {
 
-    private static final Logger LOG = Logger.getLogger(FitActivityHolderAdapterTest.class);
+    private static final Logger LOG = Logger.getLogger(ActivityPipelineTest.class);
     private static final SimpleDateFormat targetFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss");
     ;
     public static String testFile = "261217.fit";
     public static String pauseTest = "interval_test.fit";
+    public static String multisport = "multisport.fit";
     public static String pauseTestGarmin = "garmin_test.fit";
+    public static String lapTestGarmin = "garmin_1.fit";
     private PipelineManager<ActivityHolder> manager = new PipelineManager<>();
 
     @BeforeAll
@@ -244,6 +246,54 @@ public class ActivityPipelineTest {
         System.out.println(pauseStarts.get(1).getIndex() + " " + pauseStarts.get(1).getTs());
         System.out.println(pauseStops.get(1).getIndex() + " " + pauseStops.get(1).getTs());
     }
+
+    @Test
+    public void testCloseSegmentsHandler() {
+
+        ActivityHolder holder = setupActivity(multisport);
+        PipelineManager localManager = new PipelineManager();
+        localManager.addHandler(new CloseSegmentsHandler());
+        localManager.doPipeline(holder);
+        assertEquals(holder.getEvents().stream().filter(x -> x.getEventType().equals(EventType.ACTIVITY_START)).count(),1);
+        assertEquals(holder.getEvents().stream().filter(x -> x.getEventType().equals(EventType.ACTIVITY_STOP)).count(),1);
+        assertEquals(holder.getEvents().stream().filter(x -> x.getEventType().equals(EventType.LAP_START)).count(),
+                holder.getEvents().stream().filter(x -> x.getEventType().equals(EventType.LAP_STOP)).count());
+        assertEquals(holder.getEvents().stream().filter(x -> x.getEventType().equals(EventType.SESSION_START)).count(),
+                holder.getEvents().stream().filter(x -> x.getEventType().equals(EventType.SESSION_STOP)).count());
+//        assertEquals(holder.getEvents().stream().filter(x -> x.getEventType().equals(EventType.MOTION_START)).count(),
+//                holder.getEvents().stream().filter(x -> x.getEventType().equals(EventType.MOTION_STOP)).count());
+
+    }
+
+    @Test
+    public void setEventIndexTest() {
+
+
+        ActivityHolder holder = setupActivity(pauseTest);
+        PipelineManager localManager = new PipelineManager<ActivityHolder>();
+        localManager.addHandler(new CloseSegmentsHandler());
+        localManager.addHandler(new SortByTsHandler());
+        localManager.addHandler(new SetEventIndexHandler());
+
+        localManager.doPipeline(holder);
+
+        //ensure all events have their index set
+        assertTrue(holder.getEvents().stream().filter(x -> !x.getEventType().equals(EventType.UNKNOWN)
+                && x.getIndex()==-999).collect(Collectors.toList()).isEmpty());
+
+
+        //spot check the activity start and stop to ensure they are set to first and last indexes
+        assertEquals(holder.getEvents().stream()
+                .filter(x -> x.getEventType().equals(EventType.ACTIVITY_START)).findFirst().get().getIndex(),0);
+
+        for(int i = holder.getRecords().size() - 1; i > (holder.getRecords().size() - 10); i--){
+            System.out.println(holder.getRecords().get(i).ts() + " " + i);
+        }
+        assertEquals(holder.getRecords().size() - 1, holder.getEvents().stream()
+                .filter(x -> x.getEventType().equals(EventType.ACTIVITY_STOP)).findFirst().get().getIndex());
+
+    }
+
 
     private static Optional<ActivityRecord> findRecord(String ts, List<ActivityRecord> records) {
         ActivityRecord record = null;

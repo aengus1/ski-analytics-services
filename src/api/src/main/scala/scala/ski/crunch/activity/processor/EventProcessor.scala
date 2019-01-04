@@ -5,10 +5,10 @@ import java.util
 import com.garmin.fit.Manufacturer
 import ski.crunch.activity.model.processor.{ActivityEvent, ActivityHolder, EventType}
 
+import scala.annotation.tailrec
 import scala.collection.JavaConversions._
 import scala.ski.crunch.activity.processor.model.ActivityRecord
 import scala.collection.JavaConverters._
-
 
 
 class EventProcessor(holder: ActivityHolder) {
@@ -18,9 +18,9 @@ class EventProcessor(holder: ActivityHolder) {
     * indicates the percentage of records that adhere to the sampling rate.
     * e.g. threshold = 0.8 => if less than 80% of records have the same time gap between them (e.g. 1 sec, 10 sec etc)
     * then we will give up on pause detection
-    *  Garmin devices are not affected by this because they use explicit event messages for pause detection
+    * Garmin devices are not affected by this because they use explicit event messages for pause detection
     *
-    *  Other device manufacturers are not currently supported
+    * Other device manufacturers are not currently supported
     *
     */
   private val PAUSE_DETECTION_THRESHOLD = 0.8
@@ -109,6 +109,53 @@ class EventProcessor(holder: ActivityHolder) {
   }
 
   def detectLapEvents(): EventProcessor = {
-    return this
+    //suunto lap button press is coded as lap, manual.  interval timer as lap, distance.
+    // for garmin auto-lap is coded as lap, distance, manual is coded as lap, session_end
+
+
+    val records = holder.getRecords.toList
+    val events = holder.getEvents.toList
+    val nonLapEvents: List[ActivityEvent] = events.filter(x => !x.getEventType.equals(EventType.LAP_START) && !x.getEventType.equals(EventType.LAP_STOP))
+    val recordProcessor = new RecordProcessor(records)
+    val index = recordProcessor.buildTsIndex()
+
+    holder.getManufacturer match {
+
+      //SUUNTO lap button press is coded as lap, manual (interval timer is coded as lap, distance)
+      case "SUUNTO" => {
+        val startLapEvents = events.filter(x => x.getEventType.equals(EventType.LAP_START) && x.getTrigger == "MANUAL")
+          .map(x => new ActivityEvent(index.get(x.getTs).getOrElse(-999), EventType.LAP_START, x.getTs))
+
+        val stopLapEvents = events.filter(x => x.getEventType.equals(EventType.LAP_STOP) && x.getTrigger == "MANUAL")
+          .map(x => new ActivityEvent(index.get(x.getTs).getOrElse(-999), EventType.LAP_STOP, x.getTs))
+        val eventResults: List[ActivityEvent] = startLapEvents ++ stopLapEvents ++ nonLapEvents
+        val res: java.util.ArrayList[ActivityEvent] = new java.util.ArrayList[ActivityEvent](eventResults.reverse.asJava)
+        holder.setEvents(res)
+        new EventProcessor(holder)
+      }
+      case "GARMIN" => {
+        // lap button press on garmin is coded as lap - session_end.  autolap is coded as lap - distance
+        val startLapEvents = events.filter(x => x.getEventType.equals(EventType.LAP_START) && x.getTrigger == "SESSION_END")
+          .map(x => new ActivityEvent(index.get(x.getTs).getOrElse(-999), EventType.LAP_START, x.getTs))
+
+        val startAutoLapEvents = events.filter(x => x.getEventType.equals(EventType.LAP_START) && x.getTrigger == "DISTANCE")
+          .map(x => new ActivityEvent(index.get(x.getTs).getOrElse(-999), EventType.LAP_START, x.getTs, "autolap"))
+
+        val stopLapEvents = events.filter(x => x.getEventType.equals(EventType.LAP_STOP) && x.getTrigger == "SESSION_END")
+          .map(x => new ActivityEvent(index.get(x.getTs).getOrElse(-999), EventType.LAP_STOP, x.getTs))
+
+        val stopAutoLapEvents = events.filter(x => x.getEventType.equals(EventType.LAP_STOP) && x.getTrigger == "SESSION_END")
+          .map(x => new ActivityEvent(index.get(x.getTs).getOrElse(-999), EventType.LAP_STOP, x.getTs, "autolap"))
+
+        val eventResults: List[ActivityEvent] = startLapEvents ++ startAutoLapEvents ++ stopLapEvents ++ stopAutoLapEvents ++nonLapEvents
+        val res: java.util.ArrayList[ActivityEvent] = new java.util.ArrayList[ActivityEvent](eventResults.reverse.asJava)
+        holder.setEvents(res)
+        new EventProcessor(holder)
+
+      }
+      case _ => None
+    }
+
+    return new EventProcessor(holder)
   }
 }

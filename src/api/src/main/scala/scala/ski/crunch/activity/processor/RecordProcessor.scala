@@ -197,7 +197,7 @@ class RecordProcessor(records: List[ActivityRecord]) {
 
     //group the gaps between reading by their frequency. return a sorted map (gap(seconds), frequency))
     val gaps = records.sliding(2).map(x => ActivityRecord.tsDiff(x.head.ts, x.tail.head.ts)).toList.groupBy(identity).map(x => (x._1, x._2.size)).toList.sortBy(_._2).reverse
-
+    this
   }
 
 
