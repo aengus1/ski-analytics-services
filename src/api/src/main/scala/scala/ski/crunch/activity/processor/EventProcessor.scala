@@ -110,7 +110,7 @@ class EventProcessor(holder: ActivityHolder) {
 
   def detectLapEvents(): EventProcessor = {
     //suunto lap button press is coded as lap, manual.  interval timer as lap, distance.
-    // for garmin auto-lap is coded as lap, distance.  figure out other ones for garmin
+    // for garmin auto-lap is coded as lap, distance, manual is coded as lap, session_end
 
 
     val records = holder.getRecords.toList

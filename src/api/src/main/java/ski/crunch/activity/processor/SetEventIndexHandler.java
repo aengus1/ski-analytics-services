@@ -27,7 +27,7 @@ public class SetEventIndexHandler implements  Handler<ActivityHolder> {
         RecordProcessor recordProcessor = new RecordProcessor(scalaList);
         HashMap<String, Object> recordIndex = recordProcessor.buildTsIndex();
         for (ActivityEvent event : events) {
-            if (event.getIndex() == 0) {
+            if (event.getIndex() == 0 || event.getIndex()== -999) {
                 if (!recordIndex.get(event.getTs()).isEmpty()) {
                     Integer idx = (Integer) recordIndex.get(event.getTs()).get();
                     event.setIndex(idx);
@@ -51,9 +51,9 @@ public class SetEventIndexHandler implements  Handler<ActivityHolder> {
         Date eventTs = targetFormat.parse(event.getTs());
 
         Map<Date, Integer> otherTs = new java.util.HashMap<>();
-        int i = 0;
-        for (ActivityRecord r : holder.getRecords()) {
-            otherTs.put(targetFormat.parse(r.ts()), i++);
+
+        for (int j = 0; j < holder.getRecords().size(); j++) {
+            otherTs.put(targetFormat.parse(holder.getRecords().get(j).ts()), j);
         }
         Date closest = Collections.min(otherTs.keySet(), (d1, d2) -> {
             long diff1 = Math.abs(d1.getTime() - eventTs.getTime());

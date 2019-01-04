@@ -269,25 +269,31 @@ public class ActivityPipelineTest {
     public void setEventIndexTest() {
 
 
-        ActivityHolder holder = setupActivity(lapTestGarmin);
-        List<ActivityEvent> events = holder.getEvents();
-        List<ActivityEvent> knownEvents = events.stream().filter(x -> x.getEventType().equals(EventType.UNKNOWN)).collect(Collectors.toList());
+        ActivityHolder holder = setupActivity(pauseTest);
         PipelineManager localManager = new PipelineManager<ActivityHolder>();
+        localManager.addHandler(new CloseSegmentsHandler());
+        localManager.addHandler(new SortByTsHandler());
         localManager.addHandler(new SetEventIndexHandler());
-//        localManager.addHandler( new CloseSegmentsHandler());
-//        localManager.addHandler(new DetectLapHandler());
+
         localManager.doPipeline(holder);
 
         //ensure all events have their index set
         assertTrue(holder.getEvents().stream().filter(x -> !x.getEventType().equals(EventType.UNKNOWN)
                 && x.getIndex()==-999).collect(Collectors.toList()).isEmpty());
 
-         events = holder.getEvents();
-         //todo -> add test cases to ensure that correct index is being set.  This is important
 
+        //spot check the activity start and stop to ensure they are set to first and last indexes
+        assertEquals(holder.getEvents().stream()
+                .filter(x -> x.getEventType().equals(EventType.ACTIVITY_START)).findFirst().get().getIndex(),0);
 
+        for(int i = holder.getRecords().size() - 1; i > (holder.getRecords().size() - 10); i--){
+            System.out.println(holder.getRecords().get(i).ts() + " " + i);
+        }
+        assertEquals(holder.getRecords().size() - 1, holder.getEvents().stream()
+                .filter(x -> x.getEventType().equals(EventType.ACTIVITY_STOP)).findFirst().get().getIndex());
 
     }
+
 
     private static Optional<ActivityRecord> findRecord(String ts, List<ActivityRecord> records) {
         ActivityRecord record = null;

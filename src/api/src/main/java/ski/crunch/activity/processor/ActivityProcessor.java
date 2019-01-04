@@ -37,8 +37,8 @@ public class ActivityProcessor {
         manager.addHandler(calcMovingHandler);
         manager.addHandler(detectPauseHandler);
         manager.addHandler(closeSegmentsHandler);
-        manager.addHandler(setEventIndexHandler);
         manager.addHandler(detectLapHandler);
+        manager.addHandler(setEventIndexHandler);
 
         return manager.doPipeline(holder);
     }
