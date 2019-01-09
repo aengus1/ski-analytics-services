@@ -22,9 +22,7 @@ message Meta {
     double version = 4;       /* data format version */
     string source = 5;         /* data  source  - e.g. fit,garmin,strava */
     string uploadTs = 6;        /* date the file was uploaded */
-    Sport sport = 7;
-    SubSport subSport = 8;
-    string location = 9;   /* text description of location */
+    Location location = 9;   /* text description of location */
     Weather weather = 10;    /* weather derived from a weather location / time api */
 }
 
@@ -37,9 +35,67 @@ message UserData {
 }
 
 message Weather {
+    double temperature = 1;  //celsius
+    double apparentTemperature = 2;  //celsius
+    float windSpeed = 3; // km/h
+    int32 windDirection = 4;  //degrees
+    float cloudCover = 5;  //ratio 0 - 1
+    float pressure = 6; //hectopascals
+    PrecipType precipType = 7;
+    double precipIntensity = 8;  //mm/hour
+    double precipAccumulation = 9; // cm
+    float visibility  = 10; // km
+    WeatherIcon icon = 11;
+    float humidity = 12; // ratio  0 1
+    float snowDepth = 13; //cm
+    float snowInPast24Hours = 14;  //cm
 
 }
 
+enum PrecipType {
+    RAIN = 0;
+    SLEET = 1;
+    SNOW = 2;
+}
+
+enum WeatherIcon {
+    CLEAR_DAY = 0;
+    CLEAR_NIGHT = 1;
+    RAIN_ICON = 2;
+    SNOW_ICON = 3;
+    SLEET_ICON = 4;
+    WIND = 5;
+    FOG = 6;
+    CLOUDY = 7;
+    PARTLY_CLOUDY_DAY = 8;
+    PARTLY_CLOUDY_NIGHT = 9;
+}
+
+message Location {
+    double lat = 1;
+    double lon = 2;
+    LocationSource source = 3;
+    string address1 = 4;
+    string address2 = 5;
+    string city = 6;
+    string county  = 7;
+    string prov = 8;
+    string country = 9;
+    string zip = 10;
+    repeated Geofence fences = 11;
+
+}
+
+enum LocationSource {
+    GOOGLE = 0;
+    HERE = 2;
+
+}
+
+message Geofence {
+    int32 id = 1;
+    string name = 2;
+}
 message Summary {
     map<string, bool> hasAttributeMap = 1;
     string startTs = 2;
@@ -244,17 +300,12 @@ enum FitManufacturer {
 
 message FitEvent {
 
-    int32 startIdx = 1;
-    int32 endIdx = 2;
-    string ts = 3;
-    string startTs = 4;
-    string event = 5;
-    EventType eventType = 6;
-    double timerTime = 7;
-    double elapsedTime = 8;
-    double movingTime = 9;
-    string trigger = 10;
-
+    int32 index = 1;
+    string ts = 2;
+    string event = 3;
+    EventType eventType = 4;
+    string  info = 5;
+    string  trigger =6;
 }
 
 message Segment {
@@ -262,6 +313,7 @@ message Segment {
     string stopTs = 2;
     string startIdx = 3;
     string stopIdx = 4;
+    Summary summary =5;
 }
 
 enum EventType {
@@ -332,6 +384,13 @@ enum SubSport {
     INDOOR_SKIING = 25;
     CARDIO_TRAINING = 26;
     INDOOR_WALKING = 27;
+    CLASSIC_XC = 28;
+    SKATE_XC = 29;
+    TELEMARK_XC = 30;
+    BACKCOUNTRY_XC = 31;
+    ALPINE_TOURING = 32;
+    SKIMO = 33;
+
     ALL_SUBSPORT = 254;
     INVALID_SUBSPORT = 255;
 
