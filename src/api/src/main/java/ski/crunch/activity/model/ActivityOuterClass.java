@@ -407,6 +407,381 @@ public final class ActivityOuterClass {
     }
 
     /**
+     * Protobuf enum {@code Activity.PrecipType}
+     */
+    public enum PrecipType
+        implements com.google.protobuf.ProtocolMessageEnum {
+      /**
+       * <code>RAIN = 0;</code>
+       */
+      RAIN(0),
+      /**
+       * <code>SLEET = 1;</code>
+       */
+      SLEET(1),
+      /**
+       * <code>SNOW = 2;</code>
+       */
+      SNOW(2),
+      UNRECOGNIZED(-1),
+      ;
+
+      /**
+       * <code>RAIN = 0;</code>
+       */
+      public static final int RAIN_VALUE = 0;
+      /**
+       * <code>SLEET = 1;</code>
+       */
+      public static final int SLEET_VALUE = 1;
+      /**
+       * <code>SNOW = 2;</code>
+       */
+      public static final int SNOW_VALUE = 2;
+
+
+      public final int getNumber() {
+        if (this == UNRECOGNIZED) {
+          throw new java.lang.IllegalArgumentException(
+              "Can't get the number of an unknown enum value.");
+        }
+        return value;
+      }
+
+      /**
+       * @deprecated Use {@link #forNumber(int)} instead.
+       */
+      @java.lang.Deprecated
+      public static PrecipType valueOf(int value) {
+        return forNumber(value);
+      }
+
+      public static PrecipType forNumber(int value) {
+        switch (value) {
+          case 0: return RAIN;
+          case 1: return SLEET;
+          case 2: return SNOW;
+          default: return null;
+        }
+      }
+
+      public static com.google.protobuf.Internal.EnumLiteMap<PrecipType>
+          internalGetValueMap() {
+        return internalValueMap;
+      }
+      private static final com.google.protobuf.Internal.EnumLiteMap<
+          PrecipType> internalValueMap =
+            new com.google.protobuf.Internal.EnumLiteMap<PrecipType>() {
+              public PrecipType findValueByNumber(int number) {
+                return PrecipType.forNumber(number);
+              }
+            };
+
+      public final com.google.protobuf.Descriptors.EnumValueDescriptor
+          getValueDescriptor() {
+        return getDescriptor().getValues().get(ordinal());
+      }
+      public final com.google.protobuf.Descriptors.EnumDescriptor
+          getDescriptorForType() {
+        return getDescriptor();
+      }
+      public static final com.google.protobuf.Descriptors.EnumDescriptor
+          getDescriptor() {
+        return ski.crunch.activity.model.ActivityOuterClass.Activity.getDescriptor().getEnumTypes().get(0);
+      }
+
+      private static final PrecipType[] VALUES = values();
+
+      public static PrecipType valueOf(
+          com.google.protobuf.Descriptors.EnumValueDescriptor desc) {
+        if (desc.getType() != getDescriptor()) {
+          throw new java.lang.IllegalArgumentException(
+            "EnumValueDescriptor is not for this type.");
+        }
+        if (desc.getIndex() == -1) {
+          return UNRECOGNIZED;
+        }
+        return VALUES[desc.getIndex()];
+      }
+
+      private final int value;
+
+      private PrecipType(int value) {
+        this.value = value;
+      }
+
+      // @@protoc_insertion_point(enum_scope:Activity.PrecipType)
+    }
+
+    /**
+     * Protobuf enum {@code Activity.WeatherIcon}
+     */
+    public enum WeatherIcon
+        implements com.google.protobuf.ProtocolMessageEnum {
+      /**
+       * <code>CLEAR_DAY = 0;</code>
+       */
+      CLEAR_DAY(0),
+      /**
+       * <code>CLEAR_NIGHT = 1;</code>
+       */
+      CLEAR_NIGHT(1),
+      /**
+       * <code>RAIN_ICON = 2;</code>
+       */
+      RAIN_ICON(2),
+      /**
+       * <code>SNOW_ICON = 3;</code>
+       */
+      SNOW_ICON(3),
+      /**
+       * <code>SLEET_ICON = 4;</code>
+       */
+      SLEET_ICON(4),
+      /**
+       * <code>WIND = 5;</code>
+       */
+      WIND(5),
+      /**
+       * <code>FOG = 6;</code>
+       */
+      FOG(6),
+      /**
+       * <code>CLOUDY = 7;</code>
+       */
+      CLOUDY(7),
+      /**
+       * <code>PARTLY_CLOUDY_DAY = 8;</code>
+       */
+      PARTLY_CLOUDY_DAY(8),
+      /**
+       * <code>PARTLY_CLOUDY_NIGHT = 9;</code>
+       */
+      PARTLY_CLOUDY_NIGHT(9),
+      UNRECOGNIZED(-1),
+      ;
+
+      /**
+       * <code>CLEAR_DAY = 0;</code>
+       */
+      public static final int CLEAR_DAY_VALUE = 0;
+      /**
+       * <code>CLEAR_NIGHT = 1;</code>
+       */
+      public static final int CLEAR_NIGHT_VALUE = 1;
+      /**
+       * <code>RAIN_ICON = 2;</code>
+       */
+      public static final int RAIN_ICON_VALUE = 2;
+      /**
+       * <code>SNOW_ICON = 3;</code>
+       */
+      public static final int SNOW_ICON_VALUE = 3;
+      /**
+       * <code>SLEET_ICON = 4;</code>
+       */
+      public static final int SLEET_ICON_VALUE = 4;
+      /**
+       * <code>WIND = 5;</code>
+       */
+      public static final int WIND_VALUE = 5;
+      /**
+       * <code>FOG = 6;</code>
+       */
+      public static final int FOG_VALUE = 6;
+      /**
+       * <code>CLOUDY = 7;</code>
+       */
+      public static final int CLOUDY_VALUE = 7;
+      /**
+       * <code>PARTLY_CLOUDY_DAY = 8;</code>
+       */
+      public static final int PARTLY_CLOUDY_DAY_VALUE = 8;
+      /**
+       * <code>PARTLY_CLOUDY_NIGHT = 9;</code>
+       */
+      public static final int PARTLY_CLOUDY_NIGHT_VALUE = 9;
+
+
+      public final int getNumber() {
+        if (this == UNRECOGNIZED) {
+          throw new java.lang.IllegalArgumentException(
+              "Can't get the number of an unknown enum value.");
+        }
+        return value;
+      }
+
+      /**
+       * @deprecated Use {@link #forNumber(int)} instead.
+       */
+      @java.lang.Deprecated
+      public static WeatherIcon valueOf(int value) {
+        return forNumber(value);
+      }
+
+      public static WeatherIcon forNumber(int value) {
+        switch (value) {
+          case 0: return CLEAR_DAY;
+          case 1: return CLEAR_NIGHT;
+          case 2: return RAIN_ICON;
+          case 3: return SNOW_ICON;
+          case 4: return SLEET_ICON;
+          case 5: return WIND;
+          case 6: return FOG;
+          case 7: return CLOUDY;
+          case 8: return PARTLY_CLOUDY_DAY;
+          case 9: return PARTLY_CLOUDY_NIGHT;
+          default: return null;
+        }
+      }
+
+      public static com.google.protobuf.Internal.EnumLiteMap<WeatherIcon>
+          internalGetValueMap() {
+        return internalValueMap;
+      }
+      private static final com.google.protobuf.Internal.EnumLiteMap<
+          WeatherIcon> internalValueMap =
+            new com.google.protobuf.Internal.EnumLiteMap<WeatherIcon>() {
+              public WeatherIcon findValueByNumber(int number) {
+                return WeatherIcon.forNumber(number);
+              }
+            };
+
+      public final com.google.protobuf.Descriptors.EnumValueDescriptor
+          getValueDescriptor() {
+        return getDescriptor().getValues().get(ordinal());
+      }
+      public final com.google.protobuf.Descriptors.EnumDescriptor
+          getDescriptorForType() {
+        return getDescriptor();
+      }
+      public static final com.google.protobuf.Descriptors.EnumDescriptor
+          getDescriptor() {
+        return ski.crunch.activity.model.ActivityOuterClass.Activity.getDescriptor().getEnumTypes().get(1);
+      }
+
+      private static final WeatherIcon[] VALUES = values();
+
+      public static WeatherIcon valueOf(
+          com.google.protobuf.Descriptors.EnumValueDescriptor desc) {
+        if (desc.getType() != getDescriptor()) {
+          throw new java.lang.IllegalArgumentException(
+            "EnumValueDescriptor is not for this type.");
+        }
+        if (desc.getIndex() == -1) {
+          return UNRECOGNIZED;
+        }
+        return VALUES[desc.getIndex()];
+      }
+
+      private final int value;
+
+      private WeatherIcon(int value) {
+        this.value = value;
+      }
+
+      // @@protoc_insertion_point(enum_scope:Activity.WeatherIcon)
+    }
+
+    /**
+     * Protobuf enum {@code Activity.LocationSource}
+     */
+    public enum LocationSource
+        implements com.google.protobuf.ProtocolMessageEnum {
+      /**
+       * <code>GOOGLE = 0;</code>
+       */
+      GOOGLE(0),
+      /**
+       * <code>HERE = 2;</code>
+       */
+      HERE(2),
+      UNRECOGNIZED(-1),
+      ;
+
+      /**
+       * <code>GOOGLE = 0;</code>
+       */
+      public static final int GOOGLE_VALUE = 0;
+      /**
+       * <code>HERE = 2;</code>
+       */
+      public static final int HERE_VALUE = 2;
+
+
+      public final int getNumber() {
+        if (this == UNRECOGNIZED) {
+          throw new java.lang.IllegalArgumentException(
+              "Can't get the number of an unknown enum value.");
+        }
+        return value;
+      }
+
+      /**
+       * @deprecated Use {@link #forNumber(int)} instead.
+       */
+      @java.lang.Deprecated
+      public static LocationSource valueOf(int value) {
+        return forNumber(value);
+      }
+
+      public static LocationSource forNumber(int value) {
+        switch (value) {
+          case 0: return GOOGLE;
+          case 2: return HERE;
+          default: return null;
+        }
+      }
+
+      public static com.google.protobuf.Internal.EnumLiteMap<LocationSource>
+          internalGetValueMap() {
+        return internalValueMap;
+      }
+      private static final com.google.protobuf.Internal.EnumLiteMap<
+          LocationSource> internalValueMap =
+            new com.google.protobuf.Internal.EnumLiteMap<LocationSource>() {
+              public LocationSource findValueByNumber(int number) {
+                return LocationSource.forNumber(number);
+              }
+            };
+
+      public final com.google.protobuf.Descriptors.EnumValueDescriptor
+          getValueDescriptor() {
+        return getDescriptor().getValues().get(ordinal());
+      }
+      public final com.google.protobuf.Descriptors.EnumDescriptor
+          getDescriptorForType() {
+        return getDescriptor();
+      }
+      public static final com.google.protobuf.Descriptors.EnumDescriptor
+          getDescriptor() {
+        return ski.crunch.activity.model.ActivityOuterClass.Activity.getDescriptor().getEnumTypes().get(2);
+      }
+
+      private static final LocationSource[] VALUES = values();
+
+      public static LocationSource valueOf(
+          com.google.protobuf.Descriptors.EnumValueDescriptor desc) {
+        if (desc.getType() != getDescriptor()) {
+          throw new java.lang.IllegalArgumentException(
+            "EnumValueDescriptor is not for this type.");
+        }
+        if (desc.getIndex() == -1) {
+          return UNRECOGNIZED;
+        }
+        return VALUES[desc.getIndex()];
+      }
+
+      private final int value;
+
+      private LocationSource(int value) {
+        this.value = value;
+      }
+
+      // @@protoc_insertion_point(enum_scope:Activity.LocationSource)
+    }
+
+    /**
      * Protobuf enum {@code Activity.FitManufacturer}
      */
     public enum FitManufacturer
@@ -1603,7 +1978,7 @@ public final class ActivityOuterClass {
       }
       public static final com.google.protobuf.Descriptors.EnumDescriptor
           getDescriptor() {
-        return ski.crunch.activity.model.ActivityOuterClass.Activity.getDescriptor().getEnumTypes().get(0);
+        return ski.crunch.activity.model.ActivityOuterClass.Activity.getDescriptor().getEnumTypes().get(3);
       }
 
       private static final FitManufacturer[] VALUES = values();
@@ -1782,7 +2157,7 @@ public final class ActivityOuterClass {
       }
       public static final com.google.protobuf.Descriptors.EnumDescriptor
           getDescriptor() {
-        return ski.crunch.activity.model.ActivityOuterClass.Activity.getDescriptor().getEnumTypes().get(1);
+        return ski.crunch.activity.model.ActivityOuterClass.Activity.getDescriptor().getEnumTypes().get(4);
       }
 
       private static final EventType[] VALUES = values();
@@ -2060,7 +2435,7 @@ public final class ActivityOuterClass {
       }
       public static final com.google.protobuf.Descriptors.EnumDescriptor
           getDescriptor() {
-        return ski.crunch.activity.model.ActivityOuterClass.Activity.getDescriptor().getEnumTypes().get(2);
+        return ski.crunch.activity.model.ActivityOuterClass.Activity.getDescriptor().getEnumTypes().get(5);
       }
 
       private static final Sport[] VALUES = values();
@@ -2204,6 +2579,30 @@ public final class ActivityOuterClass {
        */
       INDOOR_WALKING(27),
       /**
+       * <code>CLASSIC_XC = 28;</code>
+       */
+      CLASSIC_XC(28),
+      /**
+       * <code>SKATE_XC = 29;</code>
+       */
+      SKATE_XC(29),
+      /**
+       * <code>TELEMARK_XC = 30;</code>
+       */
+      TELEMARK_XC(30),
+      /**
+       * <code>BACKCOUNTRY_XC = 31;</code>
+       */
+      BACKCOUNTRY_XC(31),
+      /**
+       * <code>ALPINE_TOURING = 32;</code>
+       */
+      ALPINE_TOURING(32),
+      /**
+       * <code>SKIMO = 33;</code>
+       */
+      SKIMO(33),
+      /**
        * <code>ALL_SUBSPORT = 254;</code>
        */
       ALL_SUBSPORT(254),
@@ -2327,6 +2726,30 @@ public final class ActivityOuterClass {
        */
       public static final int INDOOR_WALKING_VALUE = 27;
       /**
+       * <code>CLASSIC_XC = 28;</code>
+       */
+      public static final int CLASSIC_XC_VALUE = 28;
+      /**
+       * <code>SKATE_XC = 29;</code>
+       */
+      public static final int SKATE_XC_VALUE = 29;
+      /**
+       * <code>TELEMARK_XC = 30;</code>
+       */
+      public static final int TELEMARK_XC_VALUE = 30;
+      /**
+       * <code>BACKCOUNTRY_XC = 31;</code>
+       */
+      public static final int BACKCOUNTRY_XC_VALUE = 31;
+      /**
+       * <code>ALPINE_TOURING = 32;</code>
+       */
+      public static final int ALPINE_TOURING_VALUE = 32;
+      /**
+       * <code>SKIMO = 33;</code>
+       */
+      public static final int SKIMO_VALUE = 33;
+      /**
        * <code>ALL_SUBSPORT = 254;</code>
        */
       public static final int ALL_SUBSPORT_VALUE = 254;
@@ -2382,6 +2805,12 @@ public final class ActivityOuterClass {
           case 25: return INDOOR_SKIING;
           case 26: return CARDIO_TRAINING;
           case 27: return INDOOR_WALKING;
+          case 28: return CLASSIC_XC;
+          case 29: return SKATE_XC;
+          case 30: return TELEMARK_XC;
+          case 31: return BACKCOUNTRY_XC;
+          case 32: return ALPINE_TOURING;
+          case 33: return SKIMO;
           case 254: return ALL_SUBSPORT;
           case 255: return INVALID_SUBSPORT;
           default: return null;
@@ -2410,7 +2839,7 @@ public final class ActivityOuterClass {
       }
       public static final com.google.protobuf.Descriptors.EnumDescriptor
           getDescriptor() {
-        return ski.crunch.activity.model.ActivityOuterClass.Activity.getDescriptor().getEnumTypes().get(3);
+        return ski.crunch.activity.model.ActivityOuterClass.Activity.getDescriptor().getEnumTypes().get(6);
       }
 
       private static final SubSport[] VALUES = values();
@@ -2530,40 +2959,29 @@ public final class ActivityOuterClass {
           getUploadTsBytes();
 
       /**
-       * <code>.Activity.Sport sport = 7;</code>
+       * <pre>
+       * text description of location 
+       * </pre>
+       *
+       * <code>.Activity.Location location = 9;</code>
        */
-      int getSportValue();
-      /**
-       * <code>.Activity.Sport sport = 7;</code>
-       */
-      ski.crunch.activity.model.ActivityOuterClass.Activity.Sport getSport();
-
-      /**
-       * <code>.Activity.SubSport subSport = 8;</code>
-       */
-      int getSubSportValue();
-      /**
-       * <code>.Activity.SubSport subSport = 8;</code>
-       */
-      ski.crunch.activity.model.ActivityOuterClass.Activity.SubSport getSubSport();
-
+      boolean hasLocation();
       /**
        * <pre>
        * text description of location 
        * </pre>
        *
-       * <code>string location = 9;</code>
+       * <code>.Activity.Location location = 9;</code>
        */
-      java.lang.String getLocation();
+      ski.crunch.activity.model.ActivityOuterClass.Activity.Location getLocation();
       /**
        * <pre>
        * text description of location 
        * </pre>
        *
-       * <code>string location = 9;</code>
+       * <code>.Activity.Location location = 9;</code>
        */
-      com.google.protobuf.ByteString
-          getLocationBytes();
+      ski.crunch.activity.model.ActivityOuterClass.Activity.LocationOrBuilder getLocationOrBuilder();
 
       /**
        * <pre>
@@ -2609,9 +3027,6 @@ public final class ActivityOuterClass {
         version_ = 0D;
         source_ = "";
         uploadTs_ = "";
-        sport_ = 0;
-        subSport_ = 0;
-        location_ = "";
       }
 
       @java.lang.Override
@@ -2679,22 +3094,17 @@ public final class ActivityOuterClass {
                 uploadTs_ = s;
                 break;
               }
-              case 56: {
-                int rawValue = input.readEnum();
-
-                sport_ = rawValue;
-                break;
-              }
-              case 64: {
-                int rawValue = input.readEnum();
-
-                subSport_ = rawValue;
-                break;
-              }
               case 74: {
-                java.lang.String s = input.readStringRequireUtf8();
+                ski.crunch.activity.model.ActivityOuterClass.Activity.Location.Builder subBuilder = null;
+                if (location_ != null) {
+                  subBuilder = location_.toBuilder();
+                }
+                location_ = input.readMessage(ski.crunch.activity.model.ActivityOuterClass.Activity.Location.parser(), extensionRegistry);
+                if (subBuilder != null) {
+                  subBuilder.mergeFrom(location_);
+                  location_ = subBuilder.buildPartial();
+                }
 
-                location_ = s;
                 break;
               }
               case 82: {
@@ -2910,78 +3320,37 @@ public final class ActivityOuterClass {
         }
       }
 
-      public static final int SPORT_FIELD_NUMBER = 7;
-      private int sport_;
-      /**
-       * <code>.Activity.Sport sport = 7;</code>
-       */
-      public int getSportValue() {
-        return sport_;
-      }
-      /**
-       * <code>.Activity.Sport sport = 7;</code>
-       */
-      public ski.crunch.activity.model.ActivityOuterClass.Activity.Sport getSport() {
-        ski.crunch.activity.model.ActivityOuterClass.Activity.Sport result = ski.crunch.activity.model.ActivityOuterClass.Activity.Sport.valueOf(sport_);
-        return result == null ? ski.crunch.activity.model.ActivityOuterClass.Activity.Sport.UNRECOGNIZED : result;
-      }
-
-      public static final int SUBSPORT_FIELD_NUMBER = 8;
-      private int subSport_;
-      /**
-       * <code>.Activity.SubSport subSport = 8;</code>
-       */
-      public int getSubSportValue() {
-        return subSport_;
-      }
-      /**
-       * <code>.Activity.SubSport subSport = 8;</code>
-       */
-      public ski.crunch.activity.model.ActivityOuterClass.Activity.SubSport getSubSport() {
-        ski.crunch.activity.model.ActivityOuterClass.Activity.SubSport result = ski.crunch.activity.model.ActivityOuterClass.Activity.SubSport.valueOf(subSport_);
-        return result == null ? ski.crunch.activity.model.ActivityOuterClass.Activity.SubSport.UNRECOGNIZED : result;
-      }
-
       public static final int LOCATION_FIELD_NUMBER = 9;
-      private volatile java.lang.Object location_;
+      private ski.crunch.activity.model.ActivityOuterClass.Activity.Location location_;
       /**
        * <pre>
        * text description of location 
        * </pre>
        *
-       * <code>string location = 9;</code>
+       * <code>.Activity.Location location = 9;</code>
        */
-      public java.lang.String getLocation() {
-        java.lang.Object ref = location_;
-        if (ref instanceof java.lang.String) {
-          return (java.lang.String) ref;
-        } else {
-          com.google.protobuf.ByteString bs = 
-              (com.google.protobuf.ByteString) ref;
-          java.lang.String s = bs.toStringUtf8();
-          location_ = s;
-          return s;
-        }
+      public boolean hasLocation() {
+        return location_ != null;
       }
       /**
        * <pre>
        * text description of location 
        * </pre>
        *
-       * <code>string location = 9;</code>
+       * <code>.Activity.Location location = 9;</code>
        */
-      public com.google.protobuf.ByteString
-          getLocationBytes() {
-        java.lang.Object ref = location_;
-        if (ref instanceof java.lang.String) {
-          com.google.protobuf.ByteString b = 
-              com.google.protobuf.ByteString.copyFromUtf8(
-                  (java.lang.String) ref);
-          location_ = b;
-          return b;
-        } else {
-          return (com.google.protobuf.ByteString) ref;
-        }
+      public ski.crunch.activity.model.ActivityOuterClass.Activity.Location getLocation() {
+        return location_ == null ? ski.crunch.activity.model.ActivityOuterClass.Activity.Location.getDefaultInstance() : location_;
+      }
+      /**
+       * <pre>
+       * text description of location 
+       * </pre>
+       *
+       * <code>.Activity.Location location = 9;</code>
+       */
+      public ski.crunch.activity.model.ActivityOuterClass.Activity.LocationOrBuilder getLocationOrBuilder() {
+        return getLocation();
       }
 
       public static final int WEATHER_FIELD_NUMBER = 10;
@@ -3047,14 +3416,8 @@ public final class ActivityOuterClass {
         if (!getUploadTsBytes().isEmpty()) {
           com.google.protobuf.GeneratedMessageV3.writeString(output, 6, uploadTs_);
         }
-        if (sport_ != ski.crunch.activity.model.ActivityOuterClass.Activity.Sport.GENERIC.getNumber()) {
-          output.writeEnum(7, sport_);
-        }
-        if (subSport_ != ski.crunch.activity.model.ActivityOuterClass.Activity.SubSport.GENERIC_SUBSPORT.getNumber()) {
-          output.writeEnum(8, subSport_);
-        }
-        if (!getLocationBytes().isEmpty()) {
-          com.google.protobuf.GeneratedMessageV3.writeString(output, 9, location_);
+        if (location_ != null) {
+          output.writeMessage(9, getLocation());
         }
         if (weather_ != null) {
           output.writeMessage(10, getWeather());
@@ -3088,16 +3451,9 @@ public final class ActivityOuterClass {
         if (!getUploadTsBytes().isEmpty()) {
           size += com.google.protobuf.GeneratedMessageV3.computeStringSize(6, uploadTs_);
         }
-        if (sport_ != ski.crunch.activity.model.ActivityOuterClass.Activity.Sport.GENERIC.getNumber()) {
+        if (location_ != null) {
           size += com.google.protobuf.CodedOutputStream
-            .computeEnumSize(7, sport_);
-        }
-        if (subSport_ != ski.crunch.activity.model.ActivityOuterClass.Activity.SubSport.GENERIC_SUBSPORT.getNumber()) {
-          size += com.google.protobuf.CodedOutputStream
-            .computeEnumSize(8, subSport_);
-        }
-        if (!getLocationBytes().isEmpty()) {
-          size += com.google.protobuf.GeneratedMessageV3.computeStringSize(9, location_);
+            .computeMessageSize(9, getLocation());
         }
         if (weather_ != null) {
           size += com.google.protobuf.CodedOutputStream
@@ -3132,10 +3488,11 @@ public final class ActivityOuterClass {
             .equals(other.getSource());
         result = result && getUploadTs()
             .equals(other.getUploadTs());
-        result = result && sport_ == other.sport_;
-        result = result && subSport_ == other.subSport_;
-        result = result && getLocation()
-            .equals(other.getLocation());
+        result = result && (hasLocation() == other.hasLocation());
+        if (hasLocation()) {
+          result = result && getLocation()
+              .equals(other.getLocation());
+        }
         result = result && (hasWeather() == other.hasWeather());
         if (hasWeather()) {
           result = result && getWeather()
@@ -3165,12 +3522,10 @@ public final class ActivityOuterClass {
         hash = (53 * hash) + getSource().hashCode();
         hash = (37 * hash) + UPLOADTS_FIELD_NUMBER;
         hash = (53 * hash) + getUploadTs().hashCode();
-        hash = (37 * hash) + SPORT_FIELD_NUMBER;
-        hash = (53 * hash) + sport_;
-        hash = (37 * hash) + SUBSPORT_FIELD_NUMBER;
-        hash = (53 * hash) + subSport_;
-        hash = (37 * hash) + LOCATION_FIELD_NUMBER;
-        hash = (53 * hash) + getLocation().hashCode();
+        if (hasLocation()) {
+          hash = (37 * hash) + LOCATION_FIELD_NUMBER;
+          hash = (53 * hash) + getLocation().hashCode();
+        }
         if (hasWeather()) {
           hash = (37 * hash) + WEATHER_FIELD_NUMBER;
           hash = (53 * hash) + getWeather().hashCode();
@@ -3316,12 +3671,12 @@ public final class ActivityOuterClass {
 
           uploadTs_ = "";
 
-          sport_ = 0;
-
-          subSport_ = 0;
-
-          location_ = "";
-
+          if (locationBuilder_ == null) {
+            location_ = null;
+          } else {
+            location_ = null;
+            locationBuilder_ = null;
+          }
           if (weatherBuilder_ == null) {
             weather_ = null;
           } else {
@@ -3356,9 +3711,11 @@ public final class ActivityOuterClass {
           result.version_ = version_;
           result.source_ = source_;
           result.uploadTs_ = uploadTs_;
-          result.sport_ = sport_;
-          result.subSport_ = subSport_;
-          result.location_ = location_;
+          if (locationBuilder_ == null) {
+            result.location_ = location_;
+          } else {
+            result.location_ = locationBuilder_.build();
+          }
           if (weatherBuilder_ == null) {
             result.weather_ = weather_;
           } else {
@@ -3426,15 +3783,8 @@ public final class ActivityOuterClass {
             uploadTs_ = other.uploadTs_;
             onChanged();
           }
-          if (other.sport_ != 0) {
-            setSportValue(other.getSportValue());
-          }
-          if (other.subSport_ != 0) {
-            setSubSportValue(other.getSubSportValue());
-          }
-          if (!other.getLocation().isEmpty()) {
-            location_ = other.location_;
-            onChanged();
+          if (other.hasLocation()) {
+            mergeLocation(other.getLocation());
           }
           if (other.hasWeather()) {
             mergeWeather(other.getWeather());
@@ -3873,112 +4223,31 @@ public final class ActivityOuterClass {
           return this;
         }
 
-        private int sport_ = 0;
-        /**
-         * <code>.Activity.Sport sport = 7;</code>
-         */
-        public int getSportValue() {
-          return sport_;
-        }
-        /**
-         * <code>.Activity.Sport sport = 7;</code>
-         */
-        public Builder setSportValue(int value) {
-          sport_ = value;
-          onChanged();
-          return this;
-        }
-        /**
-         * <code>.Activity.Sport sport = 7;</code>
-         */
-        public ski.crunch.activity.model.ActivityOuterClass.Activity.Sport getSport() {
-          ski.crunch.activity.model.ActivityOuterClass.Activity.Sport result = ski.crunch.activity.model.ActivityOuterClass.Activity.Sport.valueOf(sport_);
-          return result == null ? ski.crunch.activity.model.ActivityOuterClass.Activity.Sport.UNRECOGNIZED : result;
-        }
-        /**
-         * <code>.Activity.Sport sport = 7;</code>
-         */
-        public Builder setSport(ski.crunch.activity.model.ActivityOuterClass.Activity.Sport value) {
-          if (value == null) {
-            throw new NullPointerException();
-          }
-          
-          sport_ = value.getNumber();
-          onChanged();
-          return this;
-        }
-        /**
-         * <code>.Activity.Sport sport = 7;</code>
-         */
-        public Builder clearSport() {
-          
-          sport_ = 0;
-          onChanged();
-          return this;
-        }
-
-        private int subSport_ = 0;
-        /**
-         * <code>.Activity.SubSport subSport = 8;</code>
-         */
-        public int getSubSportValue() {
-          return subSport_;
-        }
-        /**
-         * <code>.Activity.SubSport subSport = 8;</code>
-         */
-        public Builder setSubSportValue(int value) {
-          subSport_ = value;
-          onChanged();
-          return this;
-        }
-        /**
-         * <code>.Activity.SubSport subSport = 8;</code>
-         */
-        public ski.crunch.activity.model.ActivityOuterClass.Activity.SubSport getSubSport() {
-          ski.crunch.activity.model.ActivityOuterClass.Activity.SubSport result = ski.crunch.activity.model.ActivityOuterClass.Activity.SubSport.valueOf(subSport_);
-          return result == null ? ski.crunch.activity.model.ActivityOuterClass.Activity.SubSport.UNRECOGNIZED : result;
-        }
-        /**
-         * <code>.Activity.SubSport subSport = 8;</code>
-         */
-        public Builder setSubSport(ski.crunch.activity.model.ActivityOuterClass.Activity.SubSport value) {
-          if (value == null) {
-            throw new NullPointerException();
-          }
-          
-          subSport_ = value.getNumber();
-          onChanged();
-          return this;
-        }
-        /**
-         * <code>.Activity.SubSport subSport = 8;</code>
-         */
-        public Builder clearSubSport() {
-          
-          subSport_ = 0;
-          onChanged();
-          return this;
-        }
-
-        private java.lang.Object location_ = "";
+        private ski.crunch.activity.model.ActivityOuterClass.Activity.Location location_ = null;
+        private com.google.protobuf.SingleFieldBuilderV3<
+            ski.crunch.activity.model.ActivityOuterClass.Activity.Location, ski.crunch.activity.model.ActivityOuterClass.Activity.Location.Builder, ski.crunch.activity.model.ActivityOuterClass.Activity.LocationOrBuilder> locationBuilder_;
         /**
          * <pre>
          * text description of location 
          * </pre>
          *
-         * <code>string location = 9;</code>
+         * <code>.Activity.Location location = 9;</code>
          */
-        public java.lang.String getLocation() {
-          java.lang.Object ref = location_;
-          if (!(ref instanceof java.lang.String)) {
-            com.google.protobuf.ByteString bs =
-                (com.google.protobuf.ByteString) ref;
-            java.lang.String s = bs.toStringUtf8();
-            location_ = s;
-            return s;
+        public boolean hasLocation() {
+          return locationBuilder_ != null || location_ != null;
+        }
+        /**
+         * <pre>
+         * text description of location 
+         * </pre>
+         *
+         * <code>.Activity.Location location = 9;</code>
+         */
+        public ski.crunch.activity.model.ActivityOuterClass.Activity.Location getLocation() {
+          if (locationBuilder_ == null) {
+            return location_ == null ? ski.crunch.activity.model.ActivityOuterClass.Activity.Location.getDefaultInstance() : location_;
           } else {
-            return (java.lang.String) ref;
+            return locationBuilder_.getMessage();
           }
         }
         /**
@@ -3986,36 +4255,37 @@ public final class ActivityOuterClass {
          * text description of location 
          * </pre>
          *
-         * <code>string location = 9;</code>
+         * <code>.Activity.Location location = 9;</code>
          */
-        public com.google.protobuf.ByteString
-            getLocationBytes() {
-          java.lang.Object ref = location_;
-          if (ref instanceof String) {
-            com.google.protobuf.ByteString b = 
-                com.google.protobuf.ByteString.copyFromUtf8(
-                    (java.lang.String) ref);
-            location_ = b;
-            return b;
+        public Builder setLocation(ski.crunch.activity.model.ActivityOuterClass.Activity.Location value) {
+          if (locationBuilder_ == null) {
+            if (value == null) {
+              throw new NullPointerException();
+            }
+            location_ = value;
+            onChanged();
           } else {
-            return (com.google.protobuf.ByteString) ref;
+            locationBuilder_.setMessage(value);
           }
+
+          return this;
         }
         /**
          * <pre>
          * text description of location 
          * </pre>
          *
-         * <code>string location = 9;</code>
+         * <code>.Activity.Location location = 9;</code>
          */
         public Builder setLocation(
-            java.lang.String value) {
-          if (value == null) {
-    throw new NullPointerException();
-  }
-  
-          location_ = value;
-          onChanged();
+            ski.crunch.activity.model.ActivityOuterClass.Activity.Location.Builder builderForValue) {
+          if (locationBuilder_ == null) {
+            location_ = builderForValue.build();
+            onChanged();
+          } else {
+            locationBuilder_.setMessage(builderForValue.build());
+          }
+
           return this;
         }
         /**
@@ -4023,12 +4293,39 @@ public final class ActivityOuterClass {
          * text description of location 
          * </pre>
          *
-         * <code>string location = 9;</code>
+         * <code>.Activity.Location location = 9;</code>
+         */
+        public Builder mergeLocation(ski.crunch.activity.model.ActivityOuterClass.Activity.Location value) {
+          if (locationBuilder_ == null) {
+            if (location_ != null) {
+              location_ =
+                ski.crunch.activity.model.ActivityOuterClass.Activity.Location.newBuilder(location_).mergeFrom(value).buildPartial();
+            } else {
+              location_ = value;
+            }
+            onChanged();
+          } else {
+            locationBuilder_.mergeFrom(value);
+          }
+
+          return this;
+        }
+        /**
+         * <pre>
+         * text description of location 
+         * </pre>
+         *
+         * <code>.Activity.Location location = 9;</code>
          */
         public Builder clearLocation() {
-          
-          location_ = getDefaultInstance().getLocation();
-          onChanged();
+          if (locationBuilder_ == null) {
+            location_ = null;
+            onChanged();
+          } else {
+            location_ = null;
+            locationBuilder_ = null;
+          }
+
           return this;
         }
         /**
@@ -4036,18 +4333,47 @@ public final class ActivityOuterClass {
          * text description of location 
          * </pre>
          *
-         * <code>string location = 9;</code>
+         * <code>.Activity.Location location = 9;</code>
          */
-        public Builder setLocationBytes(
-            com.google.protobuf.ByteString value) {
-          if (value == null) {
-    throw new NullPointerException();
-  }
-  checkByteStringIsUtf8(value);
+        public ski.crunch.activity.model.ActivityOuterClass.Activity.Location.Builder getLocationBuilder() {
           
-          location_ = value;
           onChanged();
-          return this;
+          return getLocationFieldBuilder().getBuilder();
+        }
+        /**
+         * <pre>
+         * text description of location 
+         * </pre>
+         *
+         * <code>.Activity.Location location = 9;</code>
+         */
+        public ski.crunch.activity.model.ActivityOuterClass.Activity.LocationOrBuilder getLocationOrBuilder() {
+          if (locationBuilder_ != null) {
+            return locationBuilder_.getMessageOrBuilder();
+          } else {
+            return location_ == null ?
+                ski.crunch.activity.model.ActivityOuterClass.Activity.Location.getDefaultInstance() : location_;
+          }
+        }
+        /**
+         * <pre>
+         * text description of location 
+         * </pre>
+         *
+         * <code>.Activity.Location location = 9;</code>
+         */
+        private com.google.protobuf.SingleFieldBuilderV3<
+            ski.crunch.activity.model.ActivityOuterClass.Activity.Location, ski.crunch.activity.model.ActivityOuterClass.Activity.Location.Builder, ski.crunch.activity.model.ActivityOuterClass.Activity.LocationOrBuilder> 
+            getLocationFieldBuilder() {
+          if (locationBuilder_ == null) {
+            locationBuilder_ = new com.google.protobuf.SingleFieldBuilderV3<
+                ski.crunch.activity.model.ActivityOuterClass.Activity.Location, ski.crunch.activity.model.ActivityOuterClass.Activity.Location.Builder, ski.crunch.activity.model.ActivityOuterClass.Activity.LocationOrBuilder>(
+                    getLocation(),
+                    getParentForChildren(),
+                    isClean());
+            location_ = null;
+          }
+          return locationBuilder_;
         }
 
         private ski.crunch.activity.model.ActivityOuterClass.Activity.Weather weather_ = null;
@@ -5229,6 +5555,132 @@ public final class ActivityOuterClass {
     public interface WeatherOrBuilder extends
         // @@protoc_insertion_point(interface_extends:Activity.Weather)
         com.google.protobuf.MessageOrBuilder {
+
+      /**
+       * <pre>
+       *celsius
+       * </pre>
+       *
+       * <code>double temperature = 1;</code>
+       */
+      double getTemperature();
+
+      /**
+       * <pre>
+       *celsius
+       * </pre>
+       *
+       * <code>double apparentTemperature = 2;</code>
+       */
+      double getApparentTemperature();
+
+      /**
+       * <pre>
+       * km/h
+       * </pre>
+       *
+       * <code>float windSpeed = 3;</code>
+       */
+      float getWindSpeed();
+
+      /**
+       * <pre>
+       *degrees
+       * </pre>
+       *
+       * <code>int32 windDirection = 4;</code>
+       */
+      int getWindDirection();
+
+      /**
+       * <pre>
+       *ratio 0 - 1
+       * </pre>
+       *
+       * <code>float cloudCover = 5;</code>
+       */
+      float getCloudCover();
+
+      /**
+       * <pre>
+       *hectopascals
+       * </pre>
+       *
+       * <code>float pressure = 6;</code>
+       */
+      float getPressure();
+
+      /**
+       * <code>.Activity.PrecipType precipType = 7;</code>
+       */
+      int getPrecipTypeValue();
+      /**
+       * <code>.Activity.PrecipType precipType = 7;</code>
+       */
+      ski.crunch.activity.model.ActivityOuterClass.Activity.PrecipType getPrecipType();
+
+      /**
+       * <pre>
+       *mm/hour
+       * </pre>
+       *
+       * <code>double precipIntensity = 8;</code>
+       */
+      double getPrecipIntensity();
+
+      /**
+       * <pre>
+       * cm
+       * </pre>
+       *
+       * <code>double precipAccumulation = 9;</code>
+       */
+      double getPrecipAccumulation();
+
+      /**
+       * <pre>
+       * km
+       * </pre>
+       *
+       * <code>float visibility = 10;</code>
+       */
+      float getVisibility();
+
+      /**
+       * <code>.Activity.WeatherIcon icon = 11;</code>
+       */
+      int getIconValue();
+      /**
+       * <code>.Activity.WeatherIcon icon = 11;</code>
+       */
+      ski.crunch.activity.model.ActivityOuterClass.Activity.WeatherIcon getIcon();
+
+      /**
+       * <pre>
+       * ratio  0 1
+       * </pre>
+       *
+       * <code>float humidity = 12;</code>
+       */
+      float getHumidity();
+
+      /**
+       * <pre>
+       *cm
+       * </pre>
+       *
+       * <code>float snowDepth = 13;</code>
+       */
+      float getSnowDepth();
+
+      /**
+       * <pre>
+       *cm
+       * </pre>
+       *
+       * <code>float snowInPast24Hours = 14;</code>
+       */
+      float getSnowInPast24Hours();
     }
     /**
      * Protobuf type {@code Activity.Weather}
@@ -5243,6 +5695,20 @@ public final class ActivityOuterClass {
         super(builder);
       }
       private Weather() {
+        temperature_ = 0D;
+        apparentTemperature_ = 0D;
+        windSpeed_ = 0F;
+        windDirection_ = 0;
+        cloudCover_ = 0F;
+        pressure_ = 0F;
+        precipType_ = 0;
+        precipIntensity_ = 0D;
+        precipAccumulation_ = 0D;
+        visibility_ = 0F;
+        icon_ = 0;
+        humidity_ = 0F;
+        snowDepth_ = 0F;
+        snowInPast24Hours_ = 0F;
       }
 
       @java.lang.Override
@@ -5258,6 +5724,7 @@ public final class ActivityOuterClass {
         if (extensionRegistry == null) {
           throw new java.lang.NullPointerException();
         }
+        int mutable_bitField0_ = 0;
         com.google.protobuf.UnknownFieldSet.Builder unknownFields =
             com.google.protobuf.UnknownFieldSet.newBuilder();
         try {
@@ -5273,6 +5740,78 @@ public final class ActivityOuterClass {
                     input, unknownFields, extensionRegistry, tag)) {
                   done = true;
                 }
+                break;
+              }
+              case 9: {
+
+                temperature_ = input.readDouble();
+                break;
+              }
+              case 17: {
+
+                apparentTemperature_ = input.readDouble();
+                break;
+              }
+              case 29: {
+
+                windSpeed_ = input.readFloat();
+                break;
+              }
+              case 32: {
+
+                windDirection_ = input.readInt32();
+                break;
+              }
+              case 45: {
+
+                cloudCover_ = input.readFloat();
+                break;
+              }
+              case 53: {
+
+                pressure_ = input.readFloat();
+                break;
+              }
+              case 56: {
+                int rawValue = input.readEnum();
+
+                precipType_ = rawValue;
+                break;
+              }
+              case 65: {
+
+                precipIntensity_ = input.readDouble();
+                break;
+              }
+              case 73: {
+
+                precipAccumulation_ = input.readDouble();
+                break;
+              }
+              case 85: {
+
+                visibility_ = input.readFloat();
+                break;
+              }
+              case 88: {
+                int rawValue = input.readEnum();
+
+                icon_ = rawValue;
+                break;
+              }
+              case 101: {
+
+                humidity_ = input.readFloat();
+                break;
+              }
+              case 109: {
+
+                snowDepth_ = input.readFloat();
+                break;
+              }
+              case 117: {
+
+                snowInPast24Hours_ = input.readFloat();
                 break;
               }
             }
@@ -5299,6 +5838,194 @@ public final class ActivityOuterClass {
                 ski.crunch.activity.model.ActivityOuterClass.Activity.Weather.class, ski.crunch.activity.model.ActivityOuterClass.Activity.Weather.Builder.class);
       }
 
+      public static final int TEMPERATURE_FIELD_NUMBER = 1;
+      private double temperature_;
+      /**
+       * <pre>
+       *celsius
+       * </pre>
+       *
+       * <code>double temperature = 1;</code>
+       */
+      public double getTemperature() {
+        return temperature_;
+      }
+
+      public static final int APPARENTTEMPERATURE_FIELD_NUMBER = 2;
+      private double apparentTemperature_;
+      /**
+       * <pre>
+       *celsius
+       * </pre>
+       *
+       * <code>double apparentTemperature = 2;</code>
+       */
+      public double getApparentTemperature() {
+        return apparentTemperature_;
+      }
+
+      public static final int WINDSPEED_FIELD_NUMBER = 3;
+      private float windSpeed_;
+      /**
+       * <pre>
+       * km/h
+       * </pre>
+       *
+       * <code>float windSpeed = 3;</code>
+       */
+      public float getWindSpeed() {
+        return windSpeed_;
+      }
+
+      public static final int WINDDIRECTION_FIELD_NUMBER = 4;
+      private int windDirection_;
+      /**
+       * <pre>
+       *degrees
+       * </pre>
+       *
+       * <code>int32 windDirection = 4;</code>
+       */
+      public int getWindDirection() {
+        return windDirection_;
+      }
+
+      public static final int CLOUDCOVER_FIELD_NUMBER = 5;
+      private float cloudCover_;
+      /**
+       * <pre>
+       *ratio 0 - 1
+       * </pre>
+       *
+       * <code>float cloudCover = 5;</code>
+       */
+      public float getCloudCover() {
+        return cloudCover_;
+      }
+
+      public static final int PRESSURE_FIELD_NUMBER = 6;
+      private float pressure_;
+      /**
+       * <pre>
+       *hectopascals
+       * </pre>
+       *
+       * <code>float pressure = 6;</code>
+       */
+      public float getPressure() {
+        return pressure_;
+      }
+
+      public static final int PRECIPTYPE_FIELD_NUMBER = 7;
+      private int precipType_;
+      /**
+       * <code>.Activity.PrecipType precipType = 7;</code>
+       */
+      public int getPrecipTypeValue() {
+        return precipType_;
+      }
+      /**
+       * <code>.Activity.PrecipType precipType = 7;</code>
+       */
+      public ski.crunch.activity.model.ActivityOuterClass.Activity.PrecipType getPrecipType() {
+        ski.crunch.activity.model.ActivityOuterClass.Activity.PrecipType result = ski.crunch.activity.model.ActivityOuterClass.Activity.PrecipType.valueOf(precipType_);
+        return result == null ? ski.crunch.activity.model.ActivityOuterClass.Activity.PrecipType.UNRECOGNIZED : result;
+      }
+
+      public static final int PRECIPINTENSITY_FIELD_NUMBER = 8;
+      private double precipIntensity_;
+      /**
+       * <pre>
+       *mm/hour
+       * </pre>
+       *
+       * <code>double precipIntensity = 8;</code>
+       */
+      public double getPrecipIntensity() {
+        return precipIntensity_;
+      }
+
+      public static final int PRECIPACCUMULATION_FIELD_NUMBER = 9;
+      private double precipAccumulation_;
+      /**
+       * <pre>
+       * cm
+       * </pre>
+       *
+       * <code>double precipAccumulation = 9;</code>
+       */
+      public double getPrecipAccumulation() {
+        return precipAccumulation_;
+      }
+
+      public static final int VISIBILITY_FIELD_NUMBER = 10;
+      private float visibility_;
+      /**
+       * <pre>
+       * km
+       * </pre>
+       *
+       * <code>float visibility = 10;</code>
+       */
+      public float getVisibility() {
+        return visibility_;
+      }
+
+      public static final int ICON_FIELD_NUMBER = 11;
+      private int icon_;
+      /**
+       * <code>.Activity.WeatherIcon icon = 11;</code>
+       */
+      public int getIconValue() {
+        return icon_;
+      }
+      /**
+       * <code>.Activity.WeatherIcon icon = 11;</code>
+       */
+      public ski.crunch.activity.model.ActivityOuterClass.Activity.WeatherIcon getIcon() {
+        ski.crunch.activity.model.ActivityOuterClass.Activity.WeatherIcon result = ski.crunch.activity.model.ActivityOuterClass.Activity.WeatherIcon.valueOf(icon_);
+        return result == null ? ski.crunch.activity.model.ActivityOuterClass.Activity.WeatherIcon.UNRECOGNIZED : result;
+      }
+
+      public static final int HUMIDITY_FIELD_NUMBER = 12;
+      private float humidity_;
+      /**
+       * <pre>
+       * ratio  0 1
+       * </pre>
+       *
+       * <code>float humidity = 12;</code>
+       */
+      public float getHumidity() {
+        return humidity_;
+      }
+
+      public static final int SNOWDEPTH_FIELD_NUMBER = 13;
+      private float snowDepth_;
+      /**
+       * <pre>
+       *cm
+       * </pre>
+       *
+       * <code>float snowDepth = 13;</code>
+       */
+      public float getSnowDepth() {
+        return snowDepth_;
+      }
+
+      public static final int SNOWINPAST24HOURS_FIELD_NUMBER = 14;
+      private float snowInPast24Hours_;
+      /**
+       * <pre>
+       *cm
+       * </pre>
+       *
+       * <code>float snowInPast24Hours = 14;</code>
+       */
+      public float getSnowInPast24Hours() {
+        return snowInPast24Hours_;
+      }
+
       private byte memoizedIsInitialized = -1;
       public final boolean isInitialized() {
         byte isInitialized = memoizedIsInitialized;
@@ -5311,6 +6038,48 @@ public final class ActivityOuterClass {
 
       public void writeTo(com.google.protobuf.CodedOutputStream output)
                           throws java.io.IOException {
+        if (temperature_ != 0D) {
+          output.writeDouble(1, temperature_);
+        }
+        if (apparentTemperature_ != 0D) {
+          output.writeDouble(2, apparentTemperature_);
+        }
+        if (windSpeed_ != 0F) {
+          output.writeFloat(3, windSpeed_);
+        }
+        if (windDirection_ != 0) {
+          output.writeInt32(4, windDirection_);
+        }
+        if (cloudCover_ != 0F) {
+          output.writeFloat(5, cloudCover_);
+        }
+        if (pressure_ != 0F) {
+          output.writeFloat(6, pressure_);
+        }
+        if (precipType_ != ski.crunch.activity.model.ActivityOuterClass.Activity.PrecipType.RAIN.getNumber()) {
+          output.writeEnum(7, precipType_);
+        }
+        if (precipIntensity_ != 0D) {
+          output.writeDouble(8, precipIntensity_);
+        }
+        if (precipAccumulation_ != 0D) {
+          output.writeDouble(9, precipAccumulation_);
+        }
+        if (visibility_ != 0F) {
+          output.writeFloat(10, visibility_);
+        }
+        if (icon_ != ski.crunch.activity.model.ActivityOuterClass.Activity.WeatherIcon.CLEAR_DAY.getNumber()) {
+          output.writeEnum(11, icon_);
+        }
+        if (humidity_ != 0F) {
+          output.writeFloat(12, humidity_);
+        }
+        if (snowDepth_ != 0F) {
+          output.writeFloat(13, snowDepth_);
+        }
+        if (snowInPast24Hours_ != 0F) {
+          output.writeFloat(14, snowInPast24Hours_);
+        }
         unknownFields.writeTo(output);
       }
 
@@ -5319,6 +6088,62 @@ public final class ActivityOuterClass {
         if (size != -1) return size;
 
         size = 0;
+        if (temperature_ != 0D) {
+          size += com.google.protobuf.CodedOutputStream
+            .computeDoubleSize(1, temperature_);
+        }
+        if (apparentTemperature_ != 0D) {
+          size += com.google.protobuf.CodedOutputStream
+            .computeDoubleSize(2, apparentTemperature_);
+        }
+        if (windSpeed_ != 0F) {
+          size += com.google.protobuf.CodedOutputStream
+            .computeFloatSize(3, windSpeed_);
+        }
+        if (windDirection_ != 0) {
+          size += com.google.protobuf.CodedOutputStream
+            .computeInt32Size(4, windDirection_);
+        }
+        if (cloudCover_ != 0F) {
+          size += com.google.protobuf.CodedOutputStream
+            .computeFloatSize(5, cloudCover_);
+        }
+        if (pressure_ != 0F) {
+          size += com.google.protobuf.CodedOutputStream
+            .computeFloatSize(6, pressure_);
+        }
+        if (precipType_ != ski.crunch.activity.model.ActivityOuterClass.Activity.PrecipType.RAIN.getNumber()) {
+          size += com.google.protobuf.CodedOutputStream
+            .computeEnumSize(7, precipType_);
+        }
+        if (precipIntensity_ != 0D) {
+          size += com.google.protobuf.CodedOutputStream
+            .computeDoubleSize(8, precipIntensity_);
+        }
+        if (precipAccumulation_ != 0D) {
+          size += com.google.protobuf.CodedOutputStream
+            .computeDoubleSize(9, precipAccumulation_);
+        }
+        if (visibility_ != 0F) {
+          size += com.google.protobuf.CodedOutputStream
+            .computeFloatSize(10, visibility_);
+        }
+        if (icon_ != ski.crunch.activity.model.ActivityOuterClass.Activity.WeatherIcon.CLEAR_DAY.getNumber()) {
+          size += com.google.protobuf.CodedOutputStream
+            .computeEnumSize(11, icon_);
+        }
+        if (humidity_ != 0F) {
+          size += com.google.protobuf.CodedOutputStream
+            .computeFloatSize(12, humidity_);
+        }
+        if (snowDepth_ != 0F) {
+          size += com.google.protobuf.CodedOutputStream
+            .computeFloatSize(13, snowDepth_);
+        }
+        if (snowInPast24Hours_ != 0F) {
+          size += com.google.protobuf.CodedOutputStream
+            .computeFloatSize(14, snowInPast24Hours_);
+        }
         size += unknownFields.getSerializedSize();
         memoizedSize = size;
         return size;
@@ -5335,6 +6160,54 @@ public final class ActivityOuterClass {
         ski.crunch.activity.model.ActivityOuterClass.Activity.Weather other = (ski.crunch.activity.model.ActivityOuterClass.Activity.Weather) obj;
 
         boolean result = true;
+        result = result && (
+            java.lang.Double.doubleToLongBits(getTemperature())
+            == java.lang.Double.doubleToLongBits(
+                other.getTemperature()));
+        result = result && (
+            java.lang.Double.doubleToLongBits(getApparentTemperature())
+            == java.lang.Double.doubleToLongBits(
+                other.getApparentTemperature()));
+        result = result && (
+            java.lang.Float.floatToIntBits(getWindSpeed())
+            == java.lang.Float.floatToIntBits(
+                other.getWindSpeed()));
+        result = result && (getWindDirection()
+            == other.getWindDirection());
+        result = result && (
+            java.lang.Float.floatToIntBits(getCloudCover())
+            == java.lang.Float.floatToIntBits(
+                other.getCloudCover()));
+        result = result && (
+            java.lang.Float.floatToIntBits(getPressure())
+            == java.lang.Float.floatToIntBits(
+                other.getPressure()));
+        result = result && precipType_ == other.precipType_;
+        result = result && (
+            java.lang.Double.doubleToLongBits(getPrecipIntensity())
+            == java.lang.Double.doubleToLongBits(
+                other.getPrecipIntensity()));
+        result = result && (
+            java.lang.Double.doubleToLongBits(getPrecipAccumulation())
+            == java.lang.Double.doubleToLongBits(
+                other.getPrecipAccumulation()));
+        result = result && (
+            java.lang.Float.floatToIntBits(getVisibility())
+            == java.lang.Float.floatToIntBits(
+                other.getVisibility()));
+        result = result && icon_ == other.icon_;
+        result = result && (
+            java.lang.Float.floatToIntBits(getHumidity())
+            == java.lang.Float.floatToIntBits(
+                other.getHumidity()));
+        result = result && (
+            java.lang.Float.floatToIntBits(getSnowDepth())
+            == java.lang.Float.floatToIntBits(
+                other.getSnowDepth()));
+        result = result && (
+            java.lang.Float.floatToIntBits(getSnowInPast24Hours())
+            == java.lang.Float.floatToIntBits(
+                other.getSnowInPast24Hours()));
         result = result && unknownFields.equals(other.unknownFields);
         return result;
       }
@@ -5346,6 +6219,45 @@ public final class ActivityOuterClass {
         }
         int hash = 41;
         hash = (19 * hash) + getDescriptor().hashCode();
+        hash = (37 * hash) + TEMPERATURE_FIELD_NUMBER;
+        hash = (53 * hash) + com.google.protobuf.Internal.hashLong(
+            java.lang.Double.doubleToLongBits(getTemperature()));
+        hash = (37 * hash) + APPARENTTEMPERATURE_FIELD_NUMBER;
+        hash = (53 * hash) + com.google.protobuf.Internal.hashLong(
+            java.lang.Double.doubleToLongBits(getApparentTemperature()));
+        hash = (37 * hash) + WINDSPEED_FIELD_NUMBER;
+        hash = (53 * hash) + java.lang.Float.floatToIntBits(
+            getWindSpeed());
+        hash = (37 * hash) + WINDDIRECTION_FIELD_NUMBER;
+        hash = (53 * hash) + getWindDirection();
+        hash = (37 * hash) + CLOUDCOVER_FIELD_NUMBER;
+        hash = (53 * hash) + java.lang.Float.floatToIntBits(
+            getCloudCover());
+        hash = (37 * hash) + PRESSURE_FIELD_NUMBER;
+        hash = (53 * hash) + java.lang.Float.floatToIntBits(
+            getPressure());
+        hash = (37 * hash) + PRECIPTYPE_FIELD_NUMBER;
+        hash = (53 * hash) + precipType_;
+        hash = (37 * hash) + PRECIPINTENSITY_FIELD_NUMBER;
+        hash = (53 * hash) + com.google.protobuf.Internal.hashLong(
+            java.lang.Double.doubleToLongBits(getPrecipIntensity()));
+        hash = (37 * hash) + PRECIPACCUMULATION_FIELD_NUMBER;
+        hash = (53 * hash) + com.google.protobuf.Internal.hashLong(
+            java.lang.Double.doubleToLongBits(getPrecipAccumulation()));
+        hash = (37 * hash) + VISIBILITY_FIELD_NUMBER;
+        hash = (53 * hash) + java.lang.Float.floatToIntBits(
+            getVisibility());
+        hash = (37 * hash) + ICON_FIELD_NUMBER;
+        hash = (53 * hash) + icon_;
+        hash = (37 * hash) + HUMIDITY_FIELD_NUMBER;
+        hash = (53 * hash) + java.lang.Float.floatToIntBits(
+            getHumidity());
+        hash = (37 * hash) + SNOWDEPTH_FIELD_NUMBER;
+        hash = (53 * hash) + java.lang.Float.floatToIntBits(
+            getSnowDepth());
+        hash = (37 * hash) + SNOWINPAST24HOURS_FIELD_NUMBER;
+        hash = (53 * hash) + java.lang.Float.floatToIntBits(
+            getSnowInPast24Hours());
         hash = (29 * hash) + unknownFields.hashCode();
         memoizedHashCode = hash;
         return hash;
@@ -5475,6 +6387,34 @@ public final class ActivityOuterClass {
         }
         public Builder clear() {
           super.clear();
+          temperature_ = 0D;
+
+          apparentTemperature_ = 0D;
+
+          windSpeed_ = 0F;
+
+          windDirection_ = 0;
+
+          cloudCover_ = 0F;
+
+          pressure_ = 0F;
+
+          precipType_ = 0;
+
+          precipIntensity_ = 0D;
+
+          precipAccumulation_ = 0D;
+
+          visibility_ = 0F;
+
+          icon_ = 0;
+
+          humidity_ = 0F;
+
+          snowDepth_ = 0F;
+
+          snowInPast24Hours_ = 0F;
+
           return this;
         }
 
@@ -5497,6 +6437,20 @@ public final class ActivityOuterClass {
 
         public ski.crunch.activity.model.ActivityOuterClass.Activity.Weather buildPartial() {
           ski.crunch.activity.model.ActivityOuterClass.Activity.Weather result = new ski.crunch.activity.model.ActivityOuterClass.Activity.Weather(this);
+          result.temperature_ = temperature_;
+          result.apparentTemperature_ = apparentTemperature_;
+          result.windSpeed_ = windSpeed_;
+          result.windDirection_ = windDirection_;
+          result.cloudCover_ = cloudCover_;
+          result.pressure_ = pressure_;
+          result.precipType_ = precipType_;
+          result.precipIntensity_ = precipIntensity_;
+          result.precipAccumulation_ = precipAccumulation_;
+          result.visibility_ = visibility_;
+          result.icon_ = icon_;
+          result.humidity_ = humidity_;
+          result.snowDepth_ = snowDepth_;
+          result.snowInPast24Hours_ = snowInPast24Hours_;
           onBuilt();
           return result;
         }
@@ -5538,6 +6492,48 @@ public final class ActivityOuterClass {
 
         public Builder mergeFrom(ski.crunch.activity.model.ActivityOuterClass.Activity.Weather other) {
           if (other == ski.crunch.activity.model.ActivityOuterClass.Activity.Weather.getDefaultInstance()) return this;
+          if (other.getTemperature() != 0D) {
+            setTemperature(other.getTemperature());
+          }
+          if (other.getApparentTemperature() != 0D) {
+            setApparentTemperature(other.getApparentTemperature());
+          }
+          if (other.getWindSpeed() != 0F) {
+            setWindSpeed(other.getWindSpeed());
+          }
+          if (other.getWindDirection() != 0) {
+            setWindDirection(other.getWindDirection());
+          }
+          if (other.getCloudCover() != 0F) {
+            setCloudCover(other.getCloudCover());
+          }
+          if (other.getPressure() != 0F) {
+            setPressure(other.getPressure());
+          }
+          if (other.precipType_ != 0) {
+            setPrecipTypeValue(other.getPrecipTypeValue());
+          }
+          if (other.getPrecipIntensity() != 0D) {
+            setPrecipIntensity(other.getPrecipIntensity());
+          }
+          if (other.getPrecipAccumulation() != 0D) {
+            setPrecipAccumulation(other.getPrecipAccumulation());
+          }
+          if (other.getVisibility() != 0F) {
+            setVisibility(other.getVisibility());
+          }
+          if (other.icon_ != 0) {
+            setIconValue(other.getIconValue());
+          }
+          if (other.getHumidity() != 0F) {
+            setHumidity(other.getHumidity());
+          }
+          if (other.getSnowDepth() != 0F) {
+            setSnowDepth(other.getSnowDepth());
+          }
+          if (other.getSnowInPast24Hours() != 0F) {
+            setSnowInPast24Hours(other.getSnowInPast24Hours());
+          }
           this.mergeUnknownFields(other.unknownFields);
           onChanged();
           return this;
@@ -5562,6 +6558,550 @@ public final class ActivityOuterClass {
               mergeFrom(parsedMessage);
             }
           }
+          return this;
+        }
+
+        private double temperature_ ;
+        /**
+         * <pre>
+         *celsius
+         * </pre>
+         *
+         * <code>double temperature = 1;</code>
+         */
+        public double getTemperature() {
+          return temperature_;
+        }
+        /**
+         * <pre>
+         *celsius
+         * </pre>
+         *
+         * <code>double temperature = 1;</code>
+         */
+        public Builder setTemperature(double value) {
+          
+          temperature_ = value;
+          onChanged();
+          return this;
+        }
+        /**
+         * <pre>
+         *celsius
+         * </pre>
+         *
+         * <code>double temperature = 1;</code>
+         */
+        public Builder clearTemperature() {
+          
+          temperature_ = 0D;
+          onChanged();
+          return this;
+        }
+
+        private double apparentTemperature_ ;
+        /**
+         * <pre>
+         *celsius
+         * </pre>
+         *
+         * <code>double apparentTemperature = 2;</code>
+         */
+        public double getApparentTemperature() {
+          return apparentTemperature_;
+        }
+        /**
+         * <pre>
+         *celsius
+         * </pre>
+         *
+         * <code>double apparentTemperature = 2;</code>
+         */
+        public Builder setApparentTemperature(double value) {
+          
+          apparentTemperature_ = value;
+          onChanged();
+          return this;
+        }
+        /**
+         * <pre>
+         *celsius
+         * </pre>
+         *
+         * <code>double apparentTemperature = 2;</code>
+         */
+        public Builder clearApparentTemperature() {
+          
+          apparentTemperature_ = 0D;
+          onChanged();
+          return this;
+        }
+
+        private float windSpeed_ ;
+        /**
+         * <pre>
+         * km/h
+         * </pre>
+         *
+         * <code>float windSpeed = 3;</code>
+         */
+        public float getWindSpeed() {
+          return windSpeed_;
+        }
+        /**
+         * <pre>
+         * km/h
+         * </pre>
+         *
+         * <code>float windSpeed = 3;</code>
+         */
+        public Builder setWindSpeed(float value) {
+          
+          windSpeed_ = value;
+          onChanged();
+          return this;
+        }
+        /**
+         * <pre>
+         * km/h
+         * </pre>
+         *
+         * <code>float windSpeed = 3;</code>
+         */
+        public Builder clearWindSpeed() {
+          
+          windSpeed_ = 0F;
+          onChanged();
+          return this;
+        }
+
+        private int windDirection_ ;
+        /**
+         * <pre>
+         *degrees
+         * </pre>
+         *
+         * <code>int32 windDirection = 4;</code>
+         */
+        public int getWindDirection() {
+          return windDirection_;
+        }
+        /**
+         * <pre>
+         *degrees
+         * </pre>
+         *
+         * <code>int32 windDirection = 4;</code>
+         */
+        public Builder setWindDirection(int value) {
+          
+          windDirection_ = value;
+          onChanged();
+          return this;
+        }
+        /**
+         * <pre>
+         *degrees
+         * </pre>
+         *
+         * <code>int32 windDirection = 4;</code>
+         */
+        public Builder clearWindDirection() {
+          
+          windDirection_ = 0;
+          onChanged();
+          return this;
+        }
+
+        private float cloudCover_ ;
+        /**
+         * <pre>
+         *ratio 0 - 1
+         * </pre>
+         *
+         * <code>float cloudCover = 5;</code>
+         */
+        public float getCloudCover() {
+          return cloudCover_;
+        }
+        /**
+         * <pre>
+         *ratio 0 - 1
+         * </pre>
+         *
+         * <code>float cloudCover = 5;</code>
+         */
+        public Builder setCloudCover(float value) {
+          
+          cloudCover_ = value;
+          onChanged();
+          return this;
+        }
+        /**
+         * <pre>
+         *ratio 0 - 1
+         * </pre>
+         *
+         * <code>float cloudCover = 5;</code>
+         */
+        public Builder clearCloudCover() {
+          
+          cloudCover_ = 0F;
+          onChanged();
+          return this;
+        }
+
+        private float pressure_ ;
+        /**
+         * <pre>
+         *hectopascals
+         * </pre>
+         *
+         * <code>float pressure = 6;</code>
+         */
+        public float getPressure() {
+          return pressure_;
+        }
+        /**
+         * <pre>
+         *hectopascals
+         * </pre>
+         *
+         * <code>float pressure = 6;</code>
+         */
+        public Builder setPressure(float value) {
+          
+          pressure_ = value;
+          onChanged();
+          return this;
+        }
+        /**
+         * <pre>
+         *hectopascals
+         * </pre>
+         *
+         * <code>float pressure = 6;</code>
+         */
+        public Builder clearPressure() {
+          
+          pressure_ = 0F;
+          onChanged();
+          return this;
+        }
+
+        private int precipType_ = 0;
+        /**
+         * <code>.Activity.PrecipType precipType = 7;</code>
+         */
+        public int getPrecipTypeValue() {
+          return precipType_;
+        }
+        /**
+         * <code>.Activity.PrecipType precipType = 7;</code>
+         */
+        public Builder setPrecipTypeValue(int value) {
+          precipType_ = value;
+          onChanged();
+          return this;
+        }
+        /**
+         * <code>.Activity.PrecipType precipType = 7;</code>
+         */
+        public ski.crunch.activity.model.ActivityOuterClass.Activity.PrecipType getPrecipType() {
+          ski.crunch.activity.model.ActivityOuterClass.Activity.PrecipType result = ski.crunch.activity.model.ActivityOuterClass.Activity.PrecipType.valueOf(precipType_);
+          return result == null ? ski.crunch.activity.model.ActivityOuterClass.Activity.PrecipType.UNRECOGNIZED : result;
+        }
+        /**
+         * <code>.Activity.PrecipType precipType = 7;</code>
+         */
+        public Builder setPrecipType(ski.crunch.activity.model.ActivityOuterClass.Activity.PrecipType value) {
+          if (value == null) {
+            throw new NullPointerException();
+          }
+          
+          precipType_ = value.getNumber();
+          onChanged();
+          return this;
+        }
+        /**
+         * <code>.Activity.PrecipType precipType = 7;</code>
+         */
+        public Builder clearPrecipType() {
+          
+          precipType_ = 0;
+          onChanged();
+          return this;
+        }
+
+        private double precipIntensity_ ;
+        /**
+         * <pre>
+         *mm/hour
+         * </pre>
+         *
+         * <code>double precipIntensity = 8;</code>
+         */
+        public double getPrecipIntensity() {
+          return precipIntensity_;
+        }
+        /**
+         * <pre>
+         *mm/hour
+         * </pre>
+         *
+         * <code>double precipIntensity = 8;</code>
+         */
+        public Builder setPrecipIntensity(double value) {
+          
+          precipIntensity_ = value;
+          onChanged();
+          return this;
+        }
+        /**
+         * <pre>
+         *mm/hour
+         * </pre>
+         *
+         * <code>double precipIntensity = 8;</code>
+         */
+        public Builder clearPrecipIntensity() {
+          
+          precipIntensity_ = 0D;
+          onChanged();
+          return this;
+        }
+
+        private double precipAccumulation_ ;
+        /**
+         * <pre>
+         * cm
+         * </pre>
+         *
+         * <code>double precipAccumulation = 9;</code>
+         */
+        public double getPrecipAccumulation() {
+          return precipAccumulation_;
+        }
+        /**
+         * <pre>
+         * cm
+         * </pre>
+         *
+         * <code>double precipAccumulation = 9;</code>
+         */
+        public Builder setPrecipAccumulation(double value) {
+          
+          precipAccumulation_ = value;
+          onChanged();
+          return this;
+        }
+        /**
+         * <pre>
+         * cm
+         * </pre>
+         *
+         * <code>double precipAccumulation = 9;</code>
+         */
+        public Builder clearPrecipAccumulation() {
+          
+          precipAccumulation_ = 0D;
+          onChanged();
+          return this;
+        }
+
+        private float visibility_ ;
+        /**
+         * <pre>
+         * km
+         * </pre>
+         *
+         * <code>float visibility = 10;</code>
+         */
+        public float getVisibility() {
+          return visibility_;
+        }
+        /**
+         * <pre>
+         * km
+         * </pre>
+         *
+         * <code>float visibility = 10;</code>
+         */
+        public Builder setVisibility(float value) {
+          
+          visibility_ = value;
+          onChanged();
+          return this;
+        }
+        /**
+         * <pre>
+         * km
+         * </pre>
+         *
+         * <code>float visibility = 10;</code>
+         */
+        public Builder clearVisibility() {
+          
+          visibility_ = 0F;
+          onChanged();
+          return this;
+        }
+
+        private int icon_ = 0;
+        /**
+         * <code>.Activity.WeatherIcon icon = 11;</code>
+         */
+        public int getIconValue() {
+          return icon_;
+        }
+        /**
+         * <code>.Activity.WeatherIcon icon = 11;</code>
+         */
+        public Builder setIconValue(int value) {
+          icon_ = value;
+          onChanged();
+          return this;
+        }
+        /**
+         * <code>.Activity.WeatherIcon icon = 11;</code>
+         */
+        public ski.crunch.activity.model.ActivityOuterClass.Activity.WeatherIcon getIcon() {
+          ski.crunch.activity.model.ActivityOuterClass.Activity.WeatherIcon result = ski.crunch.activity.model.ActivityOuterClass.Activity.WeatherIcon.valueOf(icon_);
+          return result == null ? ski.crunch.activity.model.ActivityOuterClass.Activity.WeatherIcon.UNRECOGNIZED : result;
+        }
+        /**
+         * <code>.Activity.WeatherIcon icon = 11;</code>
+         */
+        public Builder setIcon(ski.crunch.activity.model.ActivityOuterClass.Activity.WeatherIcon value) {
+          if (value == null) {
+            throw new NullPointerException();
+          }
+          
+          icon_ = value.getNumber();
+          onChanged();
+          return this;
+        }
+        /**
+         * <code>.Activity.WeatherIcon icon = 11;</code>
+         */
+        public Builder clearIcon() {
+          
+          icon_ = 0;
+          onChanged();
+          return this;
+        }
+
+        private float humidity_ ;
+        /**
+         * <pre>
+         * ratio  0 1
+         * </pre>
+         *
+         * <code>float humidity = 12;</code>
+         */
+        public float getHumidity() {
+          return humidity_;
+        }
+        /**
+         * <pre>
+         * ratio  0 1
+         * </pre>
+         *
+         * <code>float humidity = 12;</code>
+         */
+        public Builder setHumidity(float value) {
+          
+          humidity_ = value;
+          onChanged();
+          return this;
+        }
+        /**
+         * <pre>
+         * ratio  0 1
+         * </pre>
+         *
+         * <code>float humidity = 12;</code>
+         */
+        public Builder clearHumidity() {
+          
+          humidity_ = 0F;
+          onChanged();
+          return this;
+        }
+
+        private float snowDepth_ ;
+        /**
+         * <pre>
+         *cm
+         * </pre>
+         *
+         * <code>float snowDepth = 13;</code>
+         */
+        public float getSnowDepth() {
+          return snowDepth_;
+        }
+        /**
+         * <pre>
+         *cm
+         * </pre>
+         *
+         * <code>float snowDepth = 13;</code>
+         */
+        public Builder setSnowDepth(float value) {
+          
+          snowDepth_ = value;
+          onChanged();
+          return this;
+        }
+        /**
+         * <pre>
+         *cm
+         * </pre>
+         *
+         * <code>float snowDepth = 13;</code>
+         */
+        public Builder clearSnowDepth() {
+          
+          snowDepth_ = 0F;
+          onChanged();
+          return this;
+        }
+
+        private float snowInPast24Hours_ ;
+        /**
+         * <pre>
+         *cm
+         * </pre>
+         *
+         * <code>float snowInPast24Hours = 14;</code>
+         */
+        public float getSnowInPast24Hours() {
+          return snowInPast24Hours_;
+        }
+        /**
+         * <pre>
+         *cm
+         * </pre>
+         *
+         * <code>float snowInPast24Hours = 14;</code>
+         */
+        public Builder setSnowInPast24Hours(float value) {
+          
+          snowInPast24Hours_ = value;
+          onChanged();
+          return this;
+        }
+        /**
+         * <pre>
+         *cm
+         * </pre>
+         *
+         * <code>float snowInPast24Hours = 14;</code>
+         */
+        public Builder clearSnowInPast24Hours() {
+          
+          snowInPast24Hours_ = 0F;
+          onChanged();
           return this;
         }
         public final Builder setUnknownFields(
@@ -5608,6 +7148,2537 @@ public final class ActivityOuterClass {
       }
 
       public ski.crunch.activity.model.ActivityOuterClass.Activity.Weather getDefaultInstanceForType() {
+        return DEFAULT_INSTANCE;
+      }
+
+    }
+
+    public interface LocationOrBuilder extends
+        // @@protoc_insertion_point(interface_extends:Activity.Location)
+        com.google.protobuf.MessageOrBuilder {
+
+      /**
+       * <code>double lat = 1;</code>
+       */
+      double getLat();
+
+      /**
+       * <code>double lon = 2;</code>
+       */
+      double getLon();
+
+      /**
+       * <code>.Activity.LocationSource source = 3;</code>
+       */
+      int getSourceValue();
+      /**
+       * <code>.Activity.LocationSource source = 3;</code>
+       */
+      ski.crunch.activity.model.ActivityOuterClass.Activity.LocationSource getSource();
+
+      /**
+       * <code>string address1 = 4;</code>
+       */
+      java.lang.String getAddress1();
+      /**
+       * <code>string address1 = 4;</code>
+       */
+      com.google.protobuf.ByteString
+          getAddress1Bytes();
+
+      /**
+       * <code>string address2 = 5;</code>
+       */
+      java.lang.String getAddress2();
+      /**
+       * <code>string address2 = 5;</code>
+       */
+      com.google.protobuf.ByteString
+          getAddress2Bytes();
+
+      /**
+       * <code>string city = 6;</code>
+       */
+      java.lang.String getCity();
+      /**
+       * <code>string city = 6;</code>
+       */
+      com.google.protobuf.ByteString
+          getCityBytes();
+
+      /**
+       * <code>string county = 7;</code>
+       */
+      java.lang.String getCounty();
+      /**
+       * <code>string county = 7;</code>
+       */
+      com.google.protobuf.ByteString
+          getCountyBytes();
+
+      /**
+       * <code>string prov = 8;</code>
+       */
+      java.lang.String getProv();
+      /**
+       * <code>string prov = 8;</code>
+       */
+      com.google.protobuf.ByteString
+          getProvBytes();
+
+      /**
+       * <code>string country = 9;</code>
+       */
+      java.lang.String getCountry();
+      /**
+       * <code>string country = 9;</code>
+       */
+      com.google.protobuf.ByteString
+          getCountryBytes();
+
+      /**
+       * <code>string zip = 10;</code>
+       */
+      java.lang.String getZip();
+      /**
+       * <code>string zip = 10;</code>
+       */
+      com.google.protobuf.ByteString
+          getZipBytes();
+
+      /**
+       * <code>repeated .Activity.Geofence fences = 11;</code>
+       */
+      java.util.List<ski.crunch.activity.model.ActivityOuterClass.Activity.Geofence> 
+          getFencesList();
+      /**
+       * <code>repeated .Activity.Geofence fences = 11;</code>
+       */
+      ski.crunch.activity.model.ActivityOuterClass.Activity.Geofence getFences(int index);
+      /**
+       * <code>repeated .Activity.Geofence fences = 11;</code>
+       */
+      int getFencesCount();
+      /**
+       * <code>repeated .Activity.Geofence fences = 11;</code>
+       */
+      java.util.List<? extends ski.crunch.activity.model.ActivityOuterClass.Activity.GeofenceOrBuilder> 
+          getFencesOrBuilderList();
+      /**
+       * <code>repeated .Activity.Geofence fences = 11;</code>
+       */
+      ski.crunch.activity.model.ActivityOuterClass.Activity.GeofenceOrBuilder getFencesOrBuilder(
+          int index);
+    }
+    /**
+     * Protobuf type {@code Activity.Location}
+     */
+    public  static final class Location extends
+        com.google.protobuf.GeneratedMessageV3 implements
+        // @@protoc_insertion_point(message_implements:Activity.Location)
+        LocationOrBuilder {
+    private static final long serialVersionUID = 0L;
+      // Use Location.newBuilder() to construct.
+      private Location(com.google.protobuf.GeneratedMessageV3.Builder<?> builder) {
+        super(builder);
+      }
+      private Location() {
+        lat_ = 0D;
+        lon_ = 0D;
+        source_ = 0;
+        address1_ = "";
+        address2_ = "";
+        city_ = "";
+        county_ = "";
+        prov_ = "";
+        country_ = "";
+        zip_ = "";
+        fences_ = java.util.Collections.emptyList();
+      }
+
+      @java.lang.Override
+      public final com.google.protobuf.UnknownFieldSet
+      getUnknownFields() {
+        return this.unknownFields;
+      }
+      private Location(
+          com.google.protobuf.CodedInputStream input,
+          com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+          throws com.google.protobuf.InvalidProtocolBufferException {
+        this();
+        if (extensionRegistry == null) {
+          throw new java.lang.NullPointerException();
+        }
+        int mutable_bitField0_ = 0;
+        com.google.protobuf.UnknownFieldSet.Builder unknownFields =
+            com.google.protobuf.UnknownFieldSet.newBuilder();
+        try {
+          boolean done = false;
+          while (!done) {
+            int tag = input.readTag();
+            switch (tag) {
+              case 0:
+                done = true;
+                break;
+              default: {
+                if (!parseUnknownFieldProto3(
+                    input, unknownFields, extensionRegistry, tag)) {
+                  done = true;
+                }
+                break;
+              }
+              case 9: {
+
+                lat_ = input.readDouble();
+                break;
+              }
+              case 17: {
+
+                lon_ = input.readDouble();
+                break;
+              }
+              case 24: {
+                int rawValue = input.readEnum();
+
+                source_ = rawValue;
+                break;
+              }
+              case 34: {
+                java.lang.String s = input.readStringRequireUtf8();
+
+                address1_ = s;
+                break;
+              }
+              case 42: {
+                java.lang.String s = input.readStringRequireUtf8();
+
+                address2_ = s;
+                break;
+              }
+              case 50: {
+                java.lang.String s = input.readStringRequireUtf8();
+
+                city_ = s;
+                break;
+              }
+              case 58: {
+                java.lang.String s = input.readStringRequireUtf8();
+
+                county_ = s;
+                break;
+              }
+              case 66: {
+                java.lang.String s = input.readStringRequireUtf8();
+
+                prov_ = s;
+                break;
+              }
+              case 74: {
+                java.lang.String s = input.readStringRequireUtf8();
+
+                country_ = s;
+                break;
+              }
+              case 82: {
+                java.lang.String s = input.readStringRequireUtf8();
+
+                zip_ = s;
+                break;
+              }
+              case 90: {
+                if (!((mutable_bitField0_ & 0x00000400) == 0x00000400)) {
+                  fences_ = new java.util.ArrayList<ski.crunch.activity.model.ActivityOuterClass.Activity.Geofence>();
+                  mutable_bitField0_ |= 0x00000400;
+                }
+                fences_.add(
+                    input.readMessage(ski.crunch.activity.model.ActivityOuterClass.Activity.Geofence.parser(), extensionRegistry));
+                break;
+              }
+            }
+          }
+        } catch (com.google.protobuf.InvalidProtocolBufferException e) {
+          throw e.setUnfinishedMessage(this);
+        } catch (java.io.IOException e) {
+          throw new com.google.protobuf.InvalidProtocolBufferException(
+              e).setUnfinishedMessage(this);
+        } finally {
+          if (((mutable_bitField0_ & 0x00000400) == 0x00000400)) {
+            fences_ = java.util.Collections.unmodifiableList(fences_);
+          }
+          this.unknownFields = unknownFields.build();
+          makeExtensionsImmutable();
+        }
+      }
+      public static final com.google.protobuf.Descriptors.Descriptor
+          getDescriptor() {
+        return ski.crunch.activity.model.ActivityOuterClass.internal_static_Activity_Location_descriptor;
+      }
+
+      protected com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
+          internalGetFieldAccessorTable() {
+        return ski.crunch.activity.model.ActivityOuterClass.internal_static_Activity_Location_fieldAccessorTable
+            .ensureFieldAccessorsInitialized(
+                ski.crunch.activity.model.ActivityOuterClass.Activity.Location.class, ski.crunch.activity.model.ActivityOuterClass.Activity.Location.Builder.class);
+      }
+
+      private int bitField0_;
+      public static final int LAT_FIELD_NUMBER = 1;
+      private double lat_;
+      /**
+       * <code>double lat = 1;</code>
+       */
+      public double getLat() {
+        return lat_;
+      }
+
+      public static final int LON_FIELD_NUMBER = 2;
+      private double lon_;
+      /**
+       * <code>double lon = 2;</code>
+       */
+      public double getLon() {
+        return lon_;
+      }
+
+      public static final int SOURCE_FIELD_NUMBER = 3;
+      private int source_;
+      /**
+       * <code>.Activity.LocationSource source = 3;</code>
+       */
+      public int getSourceValue() {
+        return source_;
+      }
+      /**
+       * <code>.Activity.LocationSource source = 3;</code>
+       */
+      public ski.crunch.activity.model.ActivityOuterClass.Activity.LocationSource getSource() {
+        ski.crunch.activity.model.ActivityOuterClass.Activity.LocationSource result = ski.crunch.activity.model.ActivityOuterClass.Activity.LocationSource.valueOf(source_);
+        return result == null ? ski.crunch.activity.model.ActivityOuterClass.Activity.LocationSource.UNRECOGNIZED : result;
+      }
+
+      public static final int ADDRESS1_FIELD_NUMBER = 4;
+      private volatile java.lang.Object address1_;
+      /**
+       * <code>string address1 = 4;</code>
+       */
+      public java.lang.String getAddress1() {
+        java.lang.Object ref = address1_;
+        if (ref instanceof java.lang.String) {
+          return (java.lang.String) ref;
+        } else {
+          com.google.protobuf.ByteString bs = 
+              (com.google.protobuf.ByteString) ref;
+          java.lang.String s = bs.toStringUtf8();
+          address1_ = s;
+          return s;
+        }
+      }
+      /**
+       * <code>string address1 = 4;</code>
+       */
+      public com.google.protobuf.ByteString
+          getAddress1Bytes() {
+        java.lang.Object ref = address1_;
+        if (ref instanceof java.lang.String) {
+          com.google.protobuf.ByteString b = 
+              com.google.protobuf.ByteString.copyFromUtf8(
+                  (java.lang.String) ref);
+          address1_ = b;
+          return b;
+        } else {
+          return (com.google.protobuf.ByteString) ref;
+        }
+      }
+
+      public static final int ADDRESS2_FIELD_NUMBER = 5;
+      private volatile java.lang.Object address2_;
+      /**
+       * <code>string address2 = 5;</code>
+       */
+      public java.lang.String getAddress2() {
+        java.lang.Object ref = address2_;
+        if (ref instanceof java.lang.String) {
+          return (java.lang.String) ref;
+        } else {
+          com.google.protobuf.ByteString bs = 
+              (com.google.protobuf.ByteString) ref;
+          java.lang.String s = bs.toStringUtf8();
+          address2_ = s;
+          return s;
+        }
+      }
+      /**
+       * <code>string address2 = 5;</code>
+       */
+      public com.google.protobuf.ByteString
+          getAddress2Bytes() {
+        java.lang.Object ref = address2_;
+        if (ref instanceof java.lang.String) {
+          com.google.protobuf.ByteString b = 
+              com.google.protobuf.ByteString.copyFromUtf8(
+                  (java.lang.String) ref);
+          address2_ = b;
+          return b;
+        } else {
+          return (com.google.protobuf.ByteString) ref;
+        }
+      }
+
+      public static final int CITY_FIELD_NUMBER = 6;
+      private volatile java.lang.Object city_;
+      /**
+       * <code>string city = 6;</code>
+       */
+      public java.lang.String getCity() {
+        java.lang.Object ref = city_;
+        if (ref instanceof java.lang.String) {
+          return (java.lang.String) ref;
+        } else {
+          com.google.protobuf.ByteString bs = 
+              (com.google.protobuf.ByteString) ref;
+          java.lang.String s = bs.toStringUtf8();
+          city_ = s;
+          return s;
+        }
+      }
+      /**
+       * <code>string city = 6;</code>
+       */
+      public com.google.protobuf.ByteString
+          getCityBytes() {
+        java.lang.Object ref = city_;
+        if (ref instanceof java.lang.String) {
+          com.google.protobuf.ByteString b = 
+              com.google.protobuf.ByteString.copyFromUtf8(
+                  (java.lang.String) ref);
+          city_ = b;
+          return b;
+        } else {
+          return (com.google.protobuf.ByteString) ref;
+        }
+      }
+
+      public static final int COUNTY_FIELD_NUMBER = 7;
+      private volatile java.lang.Object county_;
+      /**
+       * <code>string county = 7;</code>
+       */
+      public java.lang.String getCounty() {
+        java.lang.Object ref = county_;
+        if (ref instanceof java.lang.String) {
+          return (java.lang.String) ref;
+        } else {
+          com.google.protobuf.ByteString bs = 
+              (com.google.protobuf.ByteString) ref;
+          java.lang.String s = bs.toStringUtf8();
+          county_ = s;
+          return s;
+        }
+      }
+      /**
+       * <code>string county = 7;</code>
+       */
+      public com.google.protobuf.ByteString
+          getCountyBytes() {
+        java.lang.Object ref = county_;
+        if (ref instanceof java.lang.String) {
+          com.google.protobuf.ByteString b = 
+              com.google.protobuf.ByteString.copyFromUtf8(
+                  (java.lang.String) ref);
+          county_ = b;
+          return b;
+        } else {
+          return (com.google.protobuf.ByteString) ref;
+        }
+      }
+
+      public static final int PROV_FIELD_NUMBER = 8;
+      private volatile java.lang.Object prov_;
+      /**
+       * <code>string prov = 8;</code>
+       */
+      public java.lang.String getProv() {
+        java.lang.Object ref = prov_;
+        if (ref instanceof java.lang.String) {
+          return (java.lang.String) ref;
+        } else {
+          com.google.protobuf.ByteString bs = 
+              (com.google.protobuf.ByteString) ref;
+          java.lang.String s = bs.toStringUtf8();
+          prov_ = s;
+          return s;
+        }
+      }
+      /**
+       * <code>string prov = 8;</code>
+       */
+      public com.google.protobuf.ByteString
+          getProvBytes() {
+        java.lang.Object ref = prov_;
+        if (ref instanceof java.lang.String) {
+          com.google.protobuf.ByteString b = 
+              com.google.protobuf.ByteString.copyFromUtf8(
+                  (java.lang.String) ref);
+          prov_ = b;
+          return b;
+        } else {
+          return (com.google.protobuf.ByteString) ref;
+        }
+      }
+
+      public static final int COUNTRY_FIELD_NUMBER = 9;
+      private volatile java.lang.Object country_;
+      /**
+       * <code>string country = 9;</code>
+       */
+      public java.lang.String getCountry() {
+        java.lang.Object ref = country_;
+        if (ref instanceof java.lang.String) {
+          return (java.lang.String) ref;
+        } else {
+          com.google.protobuf.ByteString bs = 
+              (com.google.protobuf.ByteString) ref;
+          java.lang.String s = bs.toStringUtf8();
+          country_ = s;
+          return s;
+        }
+      }
+      /**
+       * <code>string country = 9;</code>
+       */
+      public com.google.protobuf.ByteString
+          getCountryBytes() {
+        java.lang.Object ref = country_;
+        if (ref instanceof java.lang.String) {
+          com.google.protobuf.ByteString b = 
+              com.google.protobuf.ByteString.copyFromUtf8(
+                  (java.lang.String) ref);
+          country_ = b;
+          return b;
+        } else {
+          return (com.google.protobuf.ByteString) ref;
+        }
+      }
+
+      public static final int ZIP_FIELD_NUMBER = 10;
+      private volatile java.lang.Object zip_;
+      /**
+       * <code>string zip = 10;</code>
+       */
+      public java.lang.String getZip() {
+        java.lang.Object ref = zip_;
+        if (ref instanceof java.lang.String) {
+          return (java.lang.String) ref;
+        } else {
+          com.google.protobuf.ByteString bs = 
+              (com.google.protobuf.ByteString) ref;
+          java.lang.String s = bs.toStringUtf8();
+          zip_ = s;
+          return s;
+        }
+      }
+      /**
+       * <code>string zip = 10;</code>
+       */
+      public com.google.protobuf.ByteString
+          getZipBytes() {
+        java.lang.Object ref = zip_;
+        if (ref instanceof java.lang.String) {
+          com.google.protobuf.ByteString b = 
+              com.google.protobuf.ByteString.copyFromUtf8(
+                  (java.lang.String) ref);
+          zip_ = b;
+          return b;
+        } else {
+          return (com.google.protobuf.ByteString) ref;
+        }
+      }
+
+      public static final int FENCES_FIELD_NUMBER = 11;
+      private java.util.List<ski.crunch.activity.model.ActivityOuterClass.Activity.Geofence> fences_;
+      /**
+       * <code>repeated .Activity.Geofence fences = 11;</code>
+       */
+      public java.util.List<ski.crunch.activity.model.ActivityOuterClass.Activity.Geofence> getFencesList() {
+        return fences_;
+      }
+      /**
+       * <code>repeated .Activity.Geofence fences = 11;</code>
+       */
+      public java.util.List<? extends ski.crunch.activity.model.ActivityOuterClass.Activity.GeofenceOrBuilder> 
+          getFencesOrBuilderList() {
+        return fences_;
+      }
+      /**
+       * <code>repeated .Activity.Geofence fences = 11;</code>
+       */
+      public int getFencesCount() {
+        return fences_.size();
+      }
+      /**
+       * <code>repeated .Activity.Geofence fences = 11;</code>
+       */
+      public ski.crunch.activity.model.ActivityOuterClass.Activity.Geofence getFences(int index) {
+        return fences_.get(index);
+      }
+      /**
+       * <code>repeated .Activity.Geofence fences = 11;</code>
+       */
+      public ski.crunch.activity.model.ActivityOuterClass.Activity.GeofenceOrBuilder getFencesOrBuilder(
+          int index) {
+        return fences_.get(index);
+      }
+
+      private byte memoizedIsInitialized = -1;
+      public final boolean isInitialized() {
+        byte isInitialized = memoizedIsInitialized;
+        if (isInitialized == 1) return true;
+        if (isInitialized == 0) return false;
+
+        memoizedIsInitialized = 1;
+        return true;
+      }
+
+      public void writeTo(com.google.protobuf.CodedOutputStream output)
+                          throws java.io.IOException {
+        if (lat_ != 0D) {
+          output.writeDouble(1, lat_);
+        }
+        if (lon_ != 0D) {
+          output.writeDouble(2, lon_);
+        }
+        if (source_ != ski.crunch.activity.model.ActivityOuterClass.Activity.LocationSource.GOOGLE.getNumber()) {
+          output.writeEnum(3, source_);
+        }
+        if (!getAddress1Bytes().isEmpty()) {
+          com.google.protobuf.GeneratedMessageV3.writeString(output, 4, address1_);
+        }
+        if (!getAddress2Bytes().isEmpty()) {
+          com.google.protobuf.GeneratedMessageV3.writeString(output, 5, address2_);
+        }
+        if (!getCityBytes().isEmpty()) {
+          com.google.protobuf.GeneratedMessageV3.writeString(output, 6, city_);
+        }
+        if (!getCountyBytes().isEmpty()) {
+          com.google.protobuf.GeneratedMessageV3.writeString(output, 7, county_);
+        }
+        if (!getProvBytes().isEmpty()) {
+          com.google.protobuf.GeneratedMessageV3.writeString(output, 8, prov_);
+        }
+        if (!getCountryBytes().isEmpty()) {
+          com.google.protobuf.GeneratedMessageV3.writeString(output, 9, country_);
+        }
+        if (!getZipBytes().isEmpty()) {
+          com.google.protobuf.GeneratedMessageV3.writeString(output, 10, zip_);
+        }
+        for (int i = 0; i < fences_.size(); i++) {
+          output.writeMessage(11, fences_.get(i));
+        }
+        unknownFields.writeTo(output);
+      }
+
+      public int getSerializedSize() {
+        int size = memoizedSize;
+        if (size != -1) return size;
+
+        size = 0;
+        if (lat_ != 0D) {
+          size += com.google.protobuf.CodedOutputStream
+            .computeDoubleSize(1, lat_);
+        }
+        if (lon_ != 0D) {
+          size += com.google.protobuf.CodedOutputStream
+            .computeDoubleSize(2, lon_);
+        }
+        if (source_ != ski.crunch.activity.model.ActivityOuterClass.Activity.LocationSource.GOOGLE.getNumber()) {
+          size += com.google.protobuf.CodedOutputStream
+            .computeEnumSize(3, source_);
+        }
+        if (!getAddress1Bytes().isEmpty()) {
+          size += com.google.protobuf.GeneratedMessageV3.computeStringSize(4, address1_);
+        }
+        if (!getAddress2Bytes().isEmpty()) {
+          size += com.google.protobuf.GeneratedMessageV3.computeStringSize(5, address2_);
+        }
+        if (!getCityBytes().isEmpty()) {
+          size += com.google.protobuf.GeneratedMessageV3.computeStringSize(6, city_);
+        }
+        if (!getCountyBytes().isEmpty()) {
+          size += com.google.protobuf.GeneratedMessageV3.computeStringSize(7, county_);
+        }
+        if (!getProvBytes().isEmpty()) {
+          size += com.google.protobuf.GeneratedMessageV3.computeStringSize(8, prov_);
+        }
+        if (!getCountryBytes().isEmpty()) {
+          size += com.google.protobuf.GeneratedMessageV3.computeStringSize(9, country_);
+        }
+        if (!getZipBytes().isEmpty()) {
+          size += com.google.protobuf.GeneratedMessageV3.computeStringSize(10, zip_);
+        }
+        for (int i = 0; i < fences_.size(); i++) {
+          size += com.google.protobuf.CodedOutputStream
+            .computeMessageSize(11, fences_.get(i));
+        }
+        size += unknownFields.getSerializedSize();
+        memoizedSize = size;
+        return size;
+      }
+
+      @java.lang.Override
+      public boolean equals(final java.lang.Object obj) {
+        if (obj == this) {
+         return true;
+        }
+        if (!(obj instanceof ski.crunch.activity.model.ActivityOuterClass.Activity.Location)) {
+          return super.equals(obj);
+        }
+        ski.crunch.activity.model.ActivityOuterClass.Activity.Location other = (ski.crunch.activity.model.ActivityOuterClass.Activity.Location) obj;
+
+        boolean result = true;
+        result = result && (
+            java.lang.Double.doubleToLongBits(getLat())
+            == java.lang.Double.doubleToLongBits(
+                other.getLat()));
+        result = result && (
+            java.lang.Double.doubleToLongBits(getLon())
+            == java.lang.Double.doubleToLongBits(
+                other.getLon()));
+        result = result && source_ == other.source_;
+        result = result && getAddress1()
+            .equals(other.getAddress1());
+        result = result && getAddress2()
+            .equals(other.getAddress2());
+        result = result && getCity()
+            .equals(other.getCity());
+        result = result && getCounty()
+            .equals(other.getCounty());
+        result = result && getProv()
+            .equals(other.getProv());
+        result = result && getCountry()
+            .equals(other.getCountry());
+        result = result && getZip()
+            .equals(other.getZip());
+        result = result && getFencesList()
+            .equals(other.getFencesList());
+        result = result && unknownFields.equals(other.unknownFields);
+        return result;
+      }
+
+      @java.lang.Override
+      public int hashCode() {
+        if (memoizedHashCode != 0) {
+          return memoizedHashCode;
+        }
+        int hash = 41;
+        hash = (19 * hash) + getDescriptor().hashCode();
+        hash = (37 * hash) + LAT_FIELD_NUMBER;
+        hash = (53 * hash) + com.google.protobuf.Internal.hashLong(
+            java.lang.Double.doubleToLongBits(getLat()));
+        hash = (37 * hash) + LON_FIELD_NUMBER;
+        hash = (53 * hash) + com.google.protobuf.Internal.hashLong(
+            java.lang.Double.doubleToLongBits(getLon()));
+        hash = (37 * hash) + SOURCE_FIELD_NUMBER;
+        hash = (53 * hash) + source_;
+        hash = (37 * hash) + ADDRESS1_FIELD_NUMBER;
+        hash = (53 * hash) + getAddress1().hashCode();
+        hash = (37 * hash) + ADDRESS2_FIELD_NUMBER;
+        hash = (53 * hash) + getAddress2().hashCode();
+        hash = (37 * hash) + CITY_FIELD_NUMBER;
+        hash = (53 * hash) + getCity().hashCode();
+        hash = (37 * hash) + COUNTY_FIELD_NUMBER;
+        hash = (53 * hash) + getCounty().hashCode();
+        hash = (37 * hash) + PROV_FIELD_NUMBER;
+        hash = (53 * hash) + getProv().hashCode();
+        hash = (37 * hash) + COUNTRY_FIELD_NUMBER;
+        hash = (53 * hash) + getCountry().hashCode();
+        hash = (37 * hash) + ZIP_FIELD_NUMBER;
+        hash = (53 * hash) + getZip().hashCode();
+        if (getFencesCount() > 0) {
+          hash = (37 * hash) + FENCES_FIELD_NUMBER;
+          hash = (53 * hash) + getFencesList().hashCode();
+        }
+        hash = (29 * hash) + unknownFields.hashCode();
+        memoizedHashCode = hash;
+        return hash;
+      }
+
+      public static ski.crunch.activity.model.ActivityOuterClass.Activity.Location parseFrom(
+          java.nio.ByteBuffer data)
+          throws com.google.protobuf.InvalidProtocolBufferException {
+        return PARSER.parseFrom(data);
+      }
+      public static ski.crunch.activity.model.ActivityOuterClass.Activity.Location parseFrom(
+          java.nio.ByteBuffer data,
+          com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+          throws com.google.protobuf.InvalidProtocolBufferException {
+        return PARSER.parseFrom(data, extensionRegistry);
+      }
+      public static ski.crunch.activity.model.ActivityOuterClass.Activity.Location parseFrom(
+          com.google.protobuf.ByteString data)
+          throws com.google.protobuf.InvalidProtocolBufferException {
+        return PARSER.parseFrom(data);
+      }
+      public static ski.crunch.activity.model.ActivityOuterClass.Activity.Location parseFrom(
+          com.google.protobuf.ByteString data,
+          com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+          throws com.google.protobuf.InvalidProtocolBufferException {
+        return PARSER.parseFrom(data, extensionRegistry);
+      }
+      public static ski.crunch.activity.model.ActivityOuterClass.Activity.Location parseFrom(byte[] data)
+          throws com.google.protobuf.InvalidProtocolBufferException {
+        return PARSER.parseFrom(data);
+      }
+      public static ski.crunch.activity.model.ActivityOuterClass.Activity.Location parseFrom(
+          byte[] data,
+          com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+          throws com.google.protobuf.InvalidProtocolBufferException {
+        return PARSER.parseFrom(data, extensionRegistry);
+      }
+      public static ski.crunch.activity.model.ActivityOuterClass.Activity.Location parseFrom(java.io.InputStream input)
+          throws java.io.IOException {
+        return com.google.protobuf.GeneratedMessageV3
+            .parseWithIOException(PARSER, input);
+      }
+      public static ski.crunch.activity.model.ActivityOuterClass.Activity.Location parseFrom(
+          java.io.InputStream input,
+          com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+          throws java.io.IOException {
+        return com.google.protobuf.GeneratedMessageV3
+            .parseWithIOException(PARSER, input, extensionRegistry);
+      }
+      public static ski.crunch.activity.model.ActivityOuterClass.Activity.Location parseDelimitedFrom(java.io.InputStream input)
+          throws java.io.IOException {
+        return com.google.protobuf.GeneratedMessageV3
+            .parseDelimitedWithIOException(PARSER, input);
+      }
+      public static ski.crunch.activity.model.ActivityOuterClass.Activity.Location parseDelimitedFrom(
+          java.io.InputStream input,
+          com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+          throws java.io.IOException {
+        return com.google.protobuf.GeneratedMessageV3
+            .parseDelimitedWithIOException(PARSER, input, extensionRegistry);
+      }
+      public static ski.crunch.activity.model.ActivityOuterClass.Activity.Location parseFrom(
+          com.google.protobuf.CodedInputStream input)
+          throws java.io.IOException {
+        return com.google.protobuf.GeneratedMessageV3
+            .parseWithIOException(PARSER, input);
+      }
+      public static ski.crunch.activity.model.ActivityOuterClass.Activity.Location parseFrom(
+          com.google.protobuf.CodedInputStream input,
+          com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+          throws java.io.IOException {
+        return com.google.protobuf.GeneratedMessageV3
+            .parseWithIOException(PARSER, input, extensionRegistry);
+      }
+
+      public Builder newBuilderForType() { return newBuilder(); }
+      public static Builder newBuilder() {
+        return DEFAULT_INSTANCE.toBuilder();
+      }
+      public static Builder newBuilder(ski.crunch.activity.model.ActivityOuterClass.Activity.Location prototype) {
+        return DEFAULT_INSTANCE.toBuilder().mergeFrom(prototype);
+      }
+      public Builder toBuilder() {
+        return this == DEFAULT_INSTANCE
+            ? new Builder() : new Builder().mergeFrom(this);
+      }
+
+      @java.lang.Override
+      protected Builder newBuilderForType(
+          com.google.protobuf.GeneratedMessageV3.BuilderParent parent) {
+        Builder builder = new Builder(parent);
+        return builder;
+      }
+      /**
+       * Protobuf type {@code Activity.Location}
+       */
+      public static final class Builder extends
+          com.google.protobuf.GeneratedMessageV3.Builder<Builder> implements
+          // @@protoc_insertion_point(builder_implements:Activity.Location)
+          ski.crunch.activity.model.ActivityOuterClass.Activity.LocationOrBuilder {
+        public static final com.google.protobuf.Descriptors.Descriptor
+            getDescriptor() {
+          return ski.crunch.activity.model.ActivityOuterClass.internal_static_Activity_Location_descriptor;
+        }
+
+        protected com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
+            internalGetFieldAccessorTable() {
+          return ski.crunch.activity.model.ActivityOuterClass.internal_static_Activity_Location_fieldAccessorTable
+              .ensureFieldAccessorsInitialized(
+                  ski.crunch.activity.model.ActivityOuterClass.Activity.Location.class, ski.crunch.activity.model.ActivityOuterClass.Activity.Location.Builder.class);
+        }
+
+        // Construct using ski.crunch.activity.model.ActivityOuterClass.Activity.Location.newBuilder()
+        private Builder() {
+          maybeForceBuilderInitialization();
+        }
+
+        private Builder(
+            com.google.protobuf.GeneratedMessageV3.BuilderParent parent) {
+          super(parent);
+          maybeForceBuilderInitialization();
+        }
+        private void maybeForceBuilderInitialization() {
+          if (com.google.protobuf.GeneratedMessageV3
+                  .alwaysUseFieldBuilders) {
+            getFencesFieldBuilder();
+          }
+        }
+        public Builder clear() {
+          super.clear();
+          lat_ = 0D;
+
+          lon_ = 0D;
+
+          source_ = 0;
+
+          address1_ = "";
+
+          address2_ = "";
+
+          city_ = "";
+
+          county_ = "";
+
+          prov_ = "";
+
+          country_ = "";
+
+          zip_ = "";
+
+          if (fencesBuilder_ == null) {
+            fences_ = java.util.Collections.emptyList();
+            bitField0_ = (bitField0_ & ~0x00000400);
+          } else {
+            fencesBuilder_.clear();
+          }
+          return this;
+        }
+
+        public com.google.protobuf.Descriptors.Descriptor
+            getDescriptorForType() {
+          return ski.crunch.activity.model.ActivityOuterClass.internal_static_Activity_Location_descriptor;
+        }
+
+        public ski.crunch.activity.model.ActivityOuterClass.Activity.Location getDefaultInstanceForType() {
+          return ski.crunch.activity.model.ActivityOuterClass.Activity.Location.getDefaultInstance();
+        }
+
+        public ski.crunch.activity.model.ActivityOuterClass.Activity.Location build() {
+          ski.crunch.activity.model.ActivityOuterClass.Activity.Location result = buildPartial();
+          if (!result.isInitialized()) {
+            throw newUninitializedMessageException(result);
+          }
+          return result;
+        }
+
+        public ski.crunch.activity.model.ActivityOuterClass.Activity.Location buildPartial() {
+          ski.crunch.activity.model.ActivityOuterClass.Activity.Location result = new ski.crunch.activity.model.ActivityOuterClass.Activity.Location(this);
+          int from_bitField0_ = bitField0_;
+          int to_bitField0_ = 0;
+          result.lat_ = lat_;
+          result.lon_ = lon_;
+          result.source_ = source_;
+          result.address1_ = address1_;
+          result.address2_ = address2_;
+          result.city_ = city_;
+          result.county_ = county_;
+          result.prov_ = prov_;
+          result.country_ = country_;
+          result.zip_ = zip_;
+          if (fencesBuilder_ == null) {
+            if (((bitField0_ & 0x00000400) == 0x00000400)) {
+              fences_ = java.util.Collections.unmodifiableList(fences_);
+              bitField0_ = (bitField0_ & ~0x00000400);
+            }
+            result.fences_ = fences_;
+          } else {
+            result.fences_ = fencesBuilder_.build();
+          }
+          result.bitField0_ = to_bitField0_;
+          onBuilt();
+          return result;
+        }
+
+        public Builder clone() {
+          return (Builder) super.clone();
+        }
+        public Builder setField(
+            com.google.protobuf.Descriptors.FieldDescriptor field,
+            java.lang.Object value) {
+          return (Builder) super.setField(field, value);
+        }
+        public Builder clearField(
+            com.google.protobuf.Descriptors.FieldDescriptor field) {
+          return (Builder) super.clearField(field);
+        }
+        public Builder clearOneof(
+            com.google.protobuf.Descriptors.OneofDescriptor oneof) {
+          return (Builder) super.clearOneof(oneof);
+        }
+        public Builder setRepeatedField(
+            com.google.protobuf.Descriptors.FieldDescriptor field,
+            int index, java.lang.Object value) {
+          return (Builder) super.setRepeatedField(field, index, value);
+        }
+        public Builder addRepeatedField(
+            com.google.protobuf.Descriptors.FieldDescriptor field,
+            java.lang.Object value) {
+          return (Builder) super.addRepeatedField(field, value);
+        }
+        public Builder mergeFrom(com.google.protobuf.Message other) {
+          if (other instanceof ski.crunch.activity.model.ActivityOuterClass.Activity.Location) {
+            return mergeFrom((ski.crunch.activity.model.ActivityOuterClass.Activity.Location)other);
+          } else {
+            super.mergeFrom(other);
+            return this;
+          }
+        }
+
+        public Builder mergeFrom(ski.crunch.activity.model.ActivityOuterClass.Activity.Location other) {
+          if (other == ski.crunch.activity.model.ActivityOuterClass.Activity.Location.getDefaultInstance()) return this;
+          if (other.getLat() != 0D) {
+            setLat(other.getLat());
+          }
+          if (other.getLon() != 0D) {
+            setLon(other.getLon());
+          }
+          if (other.source_ != 0) {
+            setSourceValue(other.getSourceValue());
+          }
+          if (!other.getAddress1().isEmpty()) {
+            address1_ = other.address1_;
+            onChanged();
+          }
+          if (!other.getAddress2().isEmpty()) {
+            address2_ = other.address2_;
+            onChanged();
+          }
+          if (!other.getCity().isEmpty()) {
+            city_ = other.city_;
+            onChanged();
+          }
+          if (!other.getCounty().isEmpty()) {
+            county_ = other.county_;
+            onChanged();
+          }
+          if (!other.getProv().isEmpty()) {
+            prov_ = other.prov_;
+            onChanged();
+          }
+          if (!other.getCountry().isEmpty()) {
+            country_ = other.country_;
+            onChanged();
+          }
+          if (!other.getZip().isEmpty()) {
+            zip_ = other.zip_;
+            onChanged();
+          }
+          if (fencesBuilder_ == null) {
+            if (!other.fences_.isEmpty()) {
+              if (fences_.isEmpty()) {
+                fences_ = other.fences_;
+                bitField0_ = (bitField0_ & ~0x00000400);
+              } else {
+                ensureFencesIsMutable();
+                fences_.addAll(other.fences_);
+              }
+              onChanged();
+            }
+          } else {
+            if (!other.fences_.isEmpty()) {
+              if (fencesBuilder_.isEmpty()) {
+                fencesBuilder_.dispose();
+                fencesBuilder_ = null;
+                fences_ = other.fences_;
+                bitField0_ = (bitField0_ & ~0x00000400);
+                fencesBuilder_ = 
+                  com.google.protobuf.GeneratedMessageV3.alwaysUseFieldBuilders ?
+                     getFencesFieldBuilder() : null;
+              } else {
+                fencesBuilder_.addAllMessages(other.fences_);
+              }
+            }
+          }
+          this.mergeUnknownFields(other.unknownFields);
+          onChanged();
+          return this;
+        }
+
+        public final boolean isInitialized() {
+          return true;
+        }
+
+        public Builder mergeFrom(
+            com.google.protobuf.CodedInputStream input,
+            com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+            throws java.io.IOException {
+          ski.crunch.activity.model.ActivityOuterClass.Activity.Location parsedMessage = null;
+          try {
+            parsedMessage = PARSER.parsePartialFrom(input, extensionRegistry);
+          } catch (com.google.protobuf.InvalidProtocolBufferException e) {
+            parsedMessage = (ski.crunch.activity.model.ActivityOuterClass.Activity.Location) e.getUnfinishedMessage();
+            throw e.unwrapIOException();
+          } finally {
+            if (parsedMessage != null) {
+              mergeFrom(parsedMessage);
+            }
+          }
+          return this;
+        }
+        private int bitField0_;
+
+        private double lat_ ;
+        /**
+         * <code>double lat = 1;</code>
+         */
+        public double getLat() {
+          return lat_;
+        }
+        /**
+         * <code>double lat = 1;</code>
+         */
+        public Builder setLat(double value) {
+          
+          lat_ = value;
+          onChanged();
+          return this;
+        }
+        /**
+         * <code>double lat = 1;</code>
+         */
+        public Builder clearLat() {
+          
+          lat_ = 0D;
+          onChanged();
+          return this;
+        }
+
+        private double lon_ ;
+        /**
+         * <code>double lon = 2;</code>
+         */
+        public double getLon() {
+          return lon_;
+        }
+        /**
+         * <code>double lon = 2;</code>
+         */
+        public Builder setLon(double value) {
+          
+          lon_ = value;
+          onChanged();
+          return this;
+        }
+        /**
+         * <code>double lon = 2;</code>
+         */
+        public Builder clearLon() {
+          
+          lon_ = 0D;
+          onChanged();
+          return this;
+        }
+
+        private int source_ = 0;
+        /**
+         * <code>.Activity.LocationSource source = 3;</code>
+         */
+        public int getSourceValue() {
+          return source_;
+        }
+        /**
+         * <code>.Activity.LocationSource source = 3;</code>
+         */
+        public Builder setSourceValue(int value) {
+          source_ = value;
+          onChanged();
+          return this;
+        }
+        /**
+         * <code>.Activity.LocationSource source = 3;</code>
+         */
+        public ski.crunch.activity.model.ActivityOuterClass.Activity.LocationSource getSource() {
+          ski.crunch.activity.model.ActivityOuterClass.Activity.LocationSource result = ski.crunch.activity.model.ActivityOuterClass.Activity.LocationSource.valueOf(source_);
+          return result == null ? ski.crunch.activity.model.ActivityOuterClass.Activity.LocationSource.UNRECOGNIZED : result;
+        }
+        /**
+         * <code>.Activity.LocationSource source = 3;</code>
+         */
+        public Builder setSource(ski.crunch.activity.model.ActivityOuterClass.Activity.LocationSource value) {
+          if (value == null) {
+            throw new NullPointerException();
+          }
+          
+          source_ = value.getNumber();
+          onChanged();
+          return this;
+        }
+        /**
+         * <code>.Activity.LocationSource source = 3;</code>
+         */
+        public Builder clearSource() {
+          
+          source_ = 0;
+          onChanged();
+          return this;
+        }
+
+        private java.lang.Object address1_ = "";
+        /**
+         * <code>string address1 = 4;</code>
+         */
+        public java.lang.String getAddress1() {
+          java.lang.Object ref = address1_;
+          if (!(ref instanceof java.lang.String)) {
+            com.google.protobuf.ByteString bs =
+                (com.google.protobuf.ByteString) ref;
+            java.lang.String s = bs.toStringUtf8();
+            address1_ = s;
+            return s;
+          } else {
+            return (java.lang.String) ref;
+          }
+        }
+        /**
+         * <code>string address1 = 4;</code>
+         */
+        public com.google.protobuf.ByteString
+            getAddress1Bytes() {
+          java.lang.Object ref = address1_;
+          if (ref instanceof String) {
+            com.google.protobuf.ByteString b = 
+                com.google.protobuf.ByteString.copyFromUtf8(
+                    (java.lang.String) ref);
+            address1_ = b;
+            return b;
+          } else {
+            return (com.google.protobuf.ByteString) ref;
+          }
+        }
+        /**
+         * <code>string address1 = 4;</code>
+         */
+        public Builder setAddress1(
+            java.lang.String value) {
+          if (value == null) {
+    throw new NullPointerException();
+  }
+  
+          address1_ = value;
+          onChanged();
+          return this;
+        }
+        /**
+         * <code>string address1 = 4;</code>
+         */
+        public Builder clearAddress1() {
+          
+          address1_ = getDefaultInstance().getAddress1();
+          onChanged();
+          return this;
+        }
+        /**
+         * <code>string address1 = 4;</code>
+         */
+        public Builder setAddress1Bytes(
+            com.google.protobuf.ByteString value) {
+          if (value == null) {
+    throw new NullPointerException();
+  }
+  checkByteStringIsUtf8(value);
+          
+          address1_ = value;
+          onChanged();
+          return this;
+        }
+
+        private java.lang.Object address2_ = "";
+        /**
+         * <code>string address2 = 5;</code>
+         */
+        public java.lang.String getAddress2() {
+          java.lang.Object ref = address2_;
+          if (!(ref instanceof java.lang.String)) {
+            com.google.protobuf.ByteString bs =
+                (com.google.protobuf.ByteString) ref;
+            java.lang.String s = bs.toStringUtf8();
+            address2_ = s;
+            return s;
+          } else {
+            return (java.lang.String) ref;
+          }
+        }
+        /**
+         * <code>string address2 = 5;</code>
+         */
+        public com.google.protobuf.ByteString
+            getAddress2Bytes() {
+          java.lang.Object ref = address2_;
+          if (ref instanceof String) {
+            com.google.protobuf.ByteString b = 
+                com.google.protobuf.ByteString.copyFromUtf8(
+                    (java.lang.String) ref);
+            address2_ = b;
+            return b;
+          } else {
+            return (com.google.protobuf.ByteString) ref;
+          }
+        }
+        /**
+         * <code>string address2 = 5;</code>
+         */
+        public Builder setAddress2(
+            java.lang.String value) {
+          if (value == null) {
+    throw new NullPointerException();
+  }
+  
+          address2_ = value;
+          onChanged();
+          return this;
+        }
+        /**
+         * <code>string address2 = 5;</code>
+         */
+        public Builder clearAddress2() {
+          
+          address2_ = getDefaultInstance().getAddress2();
+          onChanged();
+          return this;
+        }
+        /**
+         * <code>string address2 = 5;</code>
+         */
+        public Builder setAddress2Bytes(
+            com.google.protobuf.ByteString value) {
+          if (value == null) {
+    throw new NullPointerException();
+  }
+  checkByteStringIsUtf8(value);
+          
+          address2_ = value;
+          onChanged();
+          return this;
+        }
+
+        private java.lang.Object city_ = "";
+        /**
+         * <code>string city = 6;</code>
+         */
+        public java.lang.String getCity() {
+          java.lang.Object ref = city_;
+          if (!(ref instanceof java.lang.String)) {
+            com.google.protobuf.ByteString bs =
+                (com.google.protobuf.ByteString) ref;
+            java.lang.String s = bs.toStringUtf8();
+            city_ = s;
+            return s;
+          } else {
+            return (java.lang.String) ref;
+          }
+        }
+        /**
+         * <code>string city = 6;</code>
+         */
+        public com.google.protobuf.ByteString
+            getCityBytes() {
+          java.lang.Object ref = city_;
+          if (ref instanceof String) {
+            com.google.protobuf.ByteString b = 
+                com.google.protobuf.ByteString.copyFromUtf8(
+                    (java.lang.String) ref);
+            city_ = b;
+            return b;
+          } else {
+            return (com.google.protobuf.ByteString) ref;
+          }
+        }
+        /**
+         * <code>string city = 6;</code>
+         */
+        public Builder setCity(
+            java.lang.String value) {
+          if (value == null) {
+    throw new NullPointerException();
+  }
+  
+          city_ = value;
+          onChanged();
+          return this;
+        }
+        /**
+         * <code>string city = 6;</code>
+         */
+        public Builder clearCity() {
+          
+          city_ = getDefaultInstance().getCity();
+          onChanged();
+          return this;
+        }
+        /**
+         * <code>string city = 6;</code>
+         */
+        public Builder setCityBytes(
+            com.google.protobuf.ByteString value) {
+          if (value == null) {
+    throw new NullPointerException();
+  }
+  checkByteStringIsUtf8(value);
+          
+          city_ = value;
+          onChanged();
+          return this;
+        }
+
+        private java.lang.Object county_ = "";
+        /**
+         * <code>string county = 7;</code>
+         */
+        public java.lang.String getCounty() {
+          java.lang.Object ref = county_;
+          if (!(ref instanceof java.lang.String)) {
+            com.google.protobuf.ByteString bs =
+                (com.google.protobuf.ByteString) ref;
+            java.lang.String s = bs.toStringUtf8();
+            county_ = s;
+            return s;
+          } else {
+            return (java.lang.String) ref;
+          }
+        }
+        /**
+         * <code>string county = 7;</code>
+         */
+        public com.google.protobuf.ByteString
+            getCountyBytes() {
+          java.lang.Object ref = county_;
+          if (ref instanceof String) {
+            com.google.protobuf.ByteString b = 
+                com.google.protobuf.ByteString.copyFromUtf8(
+                    (java.lang.String) ref);
+            county_ = b;
+            return b;
+          } else {
+            return (com.google.protobuf.ByteString) ref;
+          }
+        }
+        /**
+         * <code>string county = 7;</code>
+         */
+        public Builder setCounty(
+            java.lang.String value) {
+          if (value == null) {
+    throw new NullPointerException();
+  }
+  
+          county_ = value;
+          onChanged();
+          return this;
+        }
+        /**
+         * <code>string county = 7;</code>
+         */
+        public Builder clearCounty() {
+          
+          county_ = getDefaultInstance().getCounty();
+          onChanged();
+          return this;
+        }
+        /**
+         * <code>string county = 7;</code>
+         */
+        public Builder setCountyBytes(
+            com.google.protobuf.ByteString value) {
+          if (value == null) {
+    throw new NullPointerException();
+  }
+  checkByteStringIsUtf8(value);
+          
+          county_ = value;
+          onChanged();
+          return this;
+        }
+
+        private java.lang.Object prov_ = "";
+        /**
+         * <code>string prov = 8;</code>
+         */
+        public java.lang.String getProv() {
+          java.lang.Object ref = prov_;
+          if (!(ref instanceof java.lang.String)) {
+            com.google.protobuf.ByteString bs =
+                (com.google.protobuf.ByteString) ref;
+            java.lang.String s = bs.toStringUtf8();
+            prov_ = s;
+            return s;
+          } else {
+            return (java.lang.String) ref;
+          }
+        }
+        /**
+         * <code>string prov = 8;</code>
+         */
+        public com.google.protobuf.ByteString
+            getProvBytes() {
+          java.lang.Object ref = prov_;
+          if (ref instanceof String) {
+            com.google.protobuf.ByteString b = 
+                com.google.protobuf.ByteString.copyFromUtf8(
+                    (java.lang.String) ref);
+            prov_ = b;
+            return b;
+          } else {
+            return (com.google.protobuf.ByteString) ref;
+          }
+        }
+        /**
+         * <code>string prov = 8;</code>
+         */
+        public Builder setProv(
+            java.lang.String value) {
+          if (value == null) {
+    throw new NullPointerException();
+  }
+  
+          prov_ = value;
+          onChanged();
+          return this;
+        }
+        /**
+         * <code>string prov = 8;</code>
+         */
+        public Builder clearProv() {
+          
+          prov_ = getDefaultInstance().getProv();
+          onChanged();
+          return this;
+        }
+        /**
+         * <code>string prov = 8;</code>
+         */
+        public Builder setProvBytes(
+            com.google.protobuf.ByteString value) {
+          if (value == null) {
+    throw new NullPointerException();
+  }
+  checkByteStringIsUtf8(value);
+          
+          prov_ = value;
+          onChanged();
+          return this;
+        }
+
+        private java.lang.Object country_ = "";
+        /**
+         * <code>string country = 9;</code>
+         */
+        public java.lang.String getCountry() {
+          java.lang.Object ref = country_;
+          if (!(ref instanceof java.lang.String)) {
+            com.google.protobuf.ByteString bs =
+                (com.google.protobuf.ByteString) ref;
+            java.lang.String s = bs.toStringUtf8();
+            country_ = s;
+            return s;
+          } else {
+            return (java.lang.String) ref;
+          }
+        }
+        /**
+         * <code>string country = 9;</code>
+         */
+        public com.google.protobuf.ByteString
+            getCountryBytes() {
+          java.lang.Object ref = country_;
+          if (ref instanceof String) {
+            com.google.protobuf.ByteString b = 
+                com.google.protobuf.ByteString.copyFromUtf8(
+                    (java.lang.String) ref);
+            country_ = b;
+            return b;
+          } else {
+            return (com.google.protobuf.ByteString) ref;
+          }
+        }
+        /**
+         * <code>string country = 9;</code>
+         */
+        public Builder setCountry(
+            java.lang.String value) {
+          if (value == null) {
+    throw new NullPointerException();
+  }
+  
+          country_ = value;
+          onChanged();
+          return this;
+        }
+        /**
+         * <code>string country = 9;</code>
+         */
+        public Builder clearCountry() {
+          
+          country_ = getDefaultInstance().getCountry();
+          onChanged();
+          return this;
+        }
+        /**
+         * <code>string country = 9;</code>
+         */
+        public Builder setCountryBytes(
+            com.google.protobuf.ByteString value) {
+          if (value == null) {
+    throw new NullPointerException();
+  }
+  checkByteStringIsUtf8(value);
+          
+          country_ = value;
+          onChanged();
+          return this;
+        }
+
+        private java.lang.Object zip_ = "";
+        /**
+         * <code>string zip = 10;</code>
+         */
+        public java.lang.String getZip() {
+          java.lang.Object ref = zip_;
+          if (!(ref instanceof java.lang.String)) {
+            com.google.protobuf.ByteString bs =
+                (com.google.protobuf.ByteString) ref;
+            java.lang.String s = bs.toStringUtf8();
+            zip_ = s;
+            return s;
+          } else {
+            return (java.lang.String) ref;
+          }
+        }
+        /**
+         * <code>string zip = 10;</code>
+         */
+        public com.google.protobuf.ByteString
+            getZipBytes() {
+          java.lang.Object ref = zip_;
+          if (ref instanceof String) {
+            com.google.protobuf.ByteString b = 
+                com.google.protobuf.ByteString.copyFromUtf8(
+                    (java.lang.String) ref);
+            zip_ = b;
+            return b;
+          } else {
+            return (com.google.protobuf.ByteString) ref;
+          }
+        }
+        /**
+         * <code>string zip = 10;</code>
+         */
+        public Builder setZip(
+            java.lang.String value) {
+          if (value == null) {
+    throw new NullPointerException();
+  }
+  
+          zip_ = value;
+          onChanged();
+          return this;
+        }
+        /**
+         * <code>string zip = 10;</code>
+         */
+        public Builder clearZip() {
+          
+          zip_ = getDefaultInstance().getZip();
+          onChanged();
+          return this;
+        }
+        /**
+         * <code>string zip = 10;</code>
+         */
+        public Builder setZipBytes(
+            com.google.protobuf.ByteString value) {
+          if (value == null) {
+    throw new NullPointerException();
+  }
+  checkByteStringIsUtf8(value);
+          
+          zip_ = value;
+          onChanged();
+          return this;
+        }
+
+        private java.util.List<ski.crunch.activity.model.ActivityOuterClass.Activity.Geofence> fences_ =
+          java.util.Collections.emptyList();
+        private void ensureFencesIsMutable() {
+          if (!((bitField0_ & 0x00000400) == 0x00000400)) {
+            fences_ = new java.util.ArrayList<ski.crunch.activity.model.ActivityOuterClass.Activity.Geofence>(fences_);
+            bitField0_ |= 0x00000400;
+           }
+        }
+
+        private com.google.protobuf.RepeatedFieldBuilderV3<
+            ski.crunch.activity.model.ActivityOuterClass.Activity.Geofence, ski.crunch.activity.model.ActivityOuterClass.Activity.Geofence.Builder, ski.crunch.activity.model.ActivityOuterClass.Activity.GeofenceOrBuilder> fencesBuilder_;
+
+        /**
+         * <code>repeated .Activity.Geofence fences = 11;</code>
+         */
+        public java.util.List<ski.crunch.activity.model.ActivityOuterClass.Activity.Geofence> getFencesList() {
+          if (fencesBuilder_ == null) {
+            return java.util.Collections.unmodifiableList(fences_);
+          } else {
+            return fencesBuilder_.getMessageList();
+          }
+        }
+        /**
+         * <code>repeated .Activity.Geofence fences = 11;</code>
+         */
+        public int getFencesCount() {
+          if (fencesBuilder_ == null) {
+            return fences_.size();
+          } else {
+            return fencesBuilder_.getCount();
+          }
+        }
+        /**
+         * <code>repeated .Activity.Geofence fences = 11;</code>
+         */
+        public ski.crunch.activity.model.ActivityOuterClass.Activity.Geofence getFences(int index) {
+          if (fencesBuilder_ == null) {
+            return fences_.get(index);
+          } else {
+            return fencesBuilder_.getMessage(index);
+          }
+        }
+        /**
+         * <code>repeated .Activity.Geofence fences = 11;</code>
+         */
+        public Builder setFences(
+            int index, ski.crunch.activity.model.ActivityOuterClass.Activity.Geofence value) {
+          if (fencesBuilder_ == null) {
+            if (value == null) {
+              throw new NullPointerException();
+            }
+            ensureFencesIsMutable();
+            fences_.set(index, value);
+            onChanged();
+          } else {
+            fencesBuilder_.setMessage(index, value);
+          }
+          return this;
+        }
+        /**
+         * <code>repeated .Activity.Geofence fences = 11;</code>
+         */
+        public Builder setFences(
+            int index, ski.crunch.activity.model.ActivityOuterClass.Activity.Geofence.Builder builderForValue) {
+          if (fencesBuilder_ == null) {
+            ensureFencesIsMutable();
+            fences_.set(index, builderForValue.build());
+            onChanged();
+          } else {
+            fencesBuilder_.setMessage(index, builderForValue.build());
+          }
+          return this;
+        }
+        /**
+         * <code>repeated .Activity.Geofence fences = 11;</code>
+         */
+        public Builder addFences(ski.crunch.activity.model.ActivityOuterClass.Activity.Geofence value) {
+          if (fencesBuilder_ == null) {
+            if (value == null) {
+              throw new NullPointerException();
+            }
+            ensureFencesIsMutable();
+            fences_.add(value);
+            onChanged();
+          } else {
+            fencesBuilder_.addMessage(value);
+          }
+          return this;
+        }
+        /**
+         * <code>repeated .Activity.Geofence fences = 11;</code>
+         */
+        public Builder addFences(
+            int index, ski.crunch.activity.model.ActivityOuterClass.Activity.Geofence value) {
+          if (fencesBuilder_ == null) {
+            if (value == null) {
+              throw new NullPointerException();
+            }
+            ensureFencesIsMutable();
+            fences_.add(index, value);
+            onChanged();
+          } else {
+            fencesBuilder_.addMessage(index, value);
+          }
+          return this;
+        }
+        /**
+         * <code>repeated .Activity.Geofence fences = 11;</code>
+         */
+        public Builder addFences(
+            ski.crunch.activity.model.ActivityOuterClass.Activity.Geofence.Builder builderForValue) {
+          if (fencesBuilder_ == null) {
+            ensureFencesIsMutable();
+            fences_.add(builderForValue.build());
+            onChanged();
+          } else {
+            fencesBuilder_.addMessage(builderForValue.build());
+          }
+          return this;
+        }
+        /**
+         * <code>repeated .Activity.Geofence fences = 11;</code>
+         */
+        public Builder addFences(
+            int index, ski.crunch.activity.model.ActivityOuterClass.Activity.Geofence.Builder builderForValue) {
+          if (fencesBuilder_ == null) {
+            ensureFencesIsMutable();
+            fences_.add(index, builderForValue.build());
+            onChanged();
+          } else {
+            fencesBuilder_.addMessage(index, builderForValue.build());
+          }
+          return this;
+        }
+        /**
+         * <code>repeated .Activity.Geofence fences = 11;</code>
+         */
+        public Builder addAllFences(
+            java.lang.Iterable<? extends ski.crunch.activity.model.ActivityOuterClass.Activity.Geofence> values) {
+          if (fencesBuilder_ == null) {
+            ensureFencesIsMutable();
+            com.google.protobuf.AbstractMessageLite.Builder.addAll(
+                values, fences_);
+            onChanged();
+          } else {
+            fencesBuilder_.addAllMessages(values);
+          }
+          return this;
+        }
+        /**
+         * <code>repeated .Activity.Geofence fences = 11;</code>
+         */
+        public Builder clearFences() {
+          if (fencesBuilder_ == null) {
+            fences_ = java.util.Collections.emptyList();
+            bitField0_ = (bitField0_ & ~0x00000400);
+            onChanged();
+          } else {
+            fencesBuilder_.clear();
+          }
+          return this;
+        }
+        /**
+         * <code>repeated .Activity.Geofence fences = 11;</code>
+         */
+        public Builder removeFences(int index) {
+          if (fencesBuilder_ == null) {
+            ensureFencesIsMutable();
+            fences_.remove(index);
+            onChanged();
+          } else {
+            fencesBuilder_.remove(index);
+          }
+          return this;
+        }
+        /**
+         * <code>repeated .Activity.Geofence fences = 11;</code>
+         */
+        public ski.crunch.activity.model.ActivityOuterClass.Activity.Geofence.Builder getFencesBuilder(
+            int index) {
+          return getFencesFieldBuilder().getBuilder(index);
+        }
+        /**
+         * <code>repeated .Activity.Geofence fences = 11;</code>
+         */
+        public ski.crunch.activity.model.ActivityOuterClass.Activity.GeofenceOrBuilder getFencesOrBuilder(
+            int index) {
+          if (fencesBuilder_ == null) {
+            return fences_.get(index);  } else {
+            return fencesBuilder_.getMessageOrBuilder(index);
+          }
+        }
+        /**
+         * <code>repeated .Activity.Geofence fences = 11;</code>
+         */
+        public java.util.List<? extends ski.crunch.activity.model.ActivityOuterClass.Activity.GeofenceOrBuilder> 
+             getFencesOrBuilderList() {
+          if (fencesBuilder_ != null) {
+            return fencesBuilder_.getMessageOrBuilderList();
+          } else {
+            return java.util.Collections.unmodifiableList(fences_);
+          }
+        }
+        /**
+         * <code>repeated .Activity.Geofence fences = 11;</code>
+         */
+        public ski.crunch.activity.model.ActivityOuterClass.Activity.Geofence.Builder addFencesBuilder() {
+          return getFencesFieldBuilder().addBuilder(
+              ski.crunch.activity.model.ActivityOuterClass.Activity.Geofence.getDefaultInstance());
+        }
+        /**
+         * <code>repeated .Activity.Geofence fences = 11;</code>
+         */
+        public ski.crunch.activity.model.ActivityOuterClass.Activity.Geofence.Builder addFencesBuilder(
+            int index) {
+          return getFencesFieldBuilder().addBuilder(
+              index, ski.crunch.activity.model.ActivityOuterClass.Activity.Geofence.getDefaultInstance());
+        }
+        /**
+         * <code>repeated .Activity.Geofence fences = 11;</code>
+         */
+        public java.util.List<ski.crunch.activity.model.ActivityOuterClass.Activity.Geofence.Builder> 
+             getFencesBuilderList() {
+          return getFencesFieldBuilder().getBuilderList();
+        }
+        private com.google.protobuf.RepeatedFieldBuilderV3<
+            ski.crunch.activity.model.ActivityOuterClass.Activity.Geofence, ski.crunch.activity.model.ActivityOuterClass.Activity.Geofence.Builder, ski.crunch.activity.model.ActivityOuterClass.Activity.GeofenceOrBuilder> 
+            getFencesFieldBuilder() {
+          if (fencesBuilder_ == null) {
+            fencesBuilder_ = new com.google.protobuf.RepeatedFieldBuilderV3<
+                ski.crunch.activity.model.ActivityOuterClass.Activity.Geofence, ski.crunch.activity.model.ActivityOuterClass.Activity.Geofence.Builder, ski.crunch.activity.model.ActivityOuterClass.Activity.GeofenceOrBuilder>(
+                    fences_,
+                    ((bitField0_ & 0x00000400) == 0x00000400),
+                    getParentForChildren(),
+                    isClean());
+            fences_ = null;
+          }
+          return fencesBuilder_;
+        }
+        public final Builder setUnknownFields(
+            final com.google.protobuf.UnknownFieldSet unknownFields) {
+          return super.setUnknownFieldsProto3(unknownFields);
+        }
+
+        public final Builder mergeUnknownFields(
+            final com.google.protobuf.UnknownFieldSet unknownFields) {
+          return super.mergeUnknownFields(unknownFields);
+        }
+
+
+        // @@protoc_insertion_point(builder_scope:Activity.Location)
+      }
+
+      // @@protoc_insertion_point(class_scope:Activity.Location)
+      private static final ski.crunch.activity.model.ActivityOuterClass.Activity.Location DEFAULT_INSTANCE;
+      static {
+        DEFAULT_INSTANCE = new ski.crunch.activity.model.ActivityOuterClass.Activity.Location();
+      }
+
+      public static ski.crunch.activity.model.ActivityOuterClass.Activity.Location getDefaultInstance() {
+        return DEFAULT_INSTANCE;
+      }
+
+      private static final com.google.protobuf.Parser<Location>
+          PARSER = new com.google.protobuf.AbstractParser<Location>() {
+        public Location parsePartialFrom(
+            com.google.protobuf.CodedInputStream input,
+            com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+            throws com.google.protobuf.InvalidProtocolBufferException {
+          return new Location(input, extensionRegistry);
+        }
+      };
+
+      public static com.google.protobuf.Parser<Location> parser() {
+        return PARSER;
+      }
+
+      @java.lang.Override
+      public com.google.protobuf.Parser<Location> getParserForType() {
+        return PARSER;
+      }
+
+      public ski.crunch.activity.model.ActivityOuterClass.Activity.Location getDefaultInstanceForType() {
+        return DEFAULT_INSTANCE;
+      }
+
+    }
+
+    public interface GeofenceOrBuilder extends
+        // @@protoc_insertion_point(interface_extends:Activity.Geofence)
+        com.google.protobuf.MessageOrBuilder {
+
+      /**
+       * <code>int32 id = 1;</code>
+       */
+      int getId();
+
+      /**
+       * <code>string name = 2;</code>
+       */
+      java.lang.String getName();
+      /**
+       * <code>string name = 2;</code>
+       */
+      com.google.protobuf.ByteString
+          getNameBytes();
+    }
+    /**
+     * Protobuf type {@code Activity.Geofence}
+     */
+    public  static final class Geofence extends
+        com.google.protobuf.GeneratedMessageV3 implements
+        // @@protoc_insertion_point(message_implements:Activity.Geofence)
+        GeofenceOrBuilder {
+    private static final long serialVersionUID = 0L;
+      // Use Geofence.newBuilder() to construct.
+      private Geofence(com.google.protobuf.GeneratedMessageV3.Builder<?> builder) {
+        super(builder);
+      }
+      private Geofence() {
+        id_ = 0;
+        name_ = "";
+      }
+
+      @java.lang.Override
+      public final com.google.protobuf.UnknownFieldSet
+      getUnknownFields() {
+        return this.unknownFields;
+      }
+      private Geofence(
+          com.google.protobuf.CodedInputStream input,
+          com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+          throws com.google.protobuf.InvalidProtocolBufferException {
+        this();
+        if (extensionRegistry == null) {
+          throw new java.lang.NullPointerException();
+        }
+        int mutable_bitField0_ = 0;
+        com.google.protobuf.UnknownFieldSet.Builder unknownFields =
+            com.google.protobuf.UnknownFieldSet.newBuilder();
+        try {
+          boolean done = false;
+          while (!done) {
+            int tag = input.readTag();
+            switch (tag) {
+              case 0:
+                done = true;
+                break;
+              default: {
+                if (!parseUnknownFieldProto3(
+                    input, unknownFields, extensionRegistry, tag)) {
+                  done = true;
+                }
+                break;
+              }
+              case 8: {
+
+                id_ = input.readInt32();
+                break;
+              }
+              case 18: {
+                java.lang.String s = input.readStringRequireUtf8();
+
+                name_ = s;
+                break;
+              }
+            }
+          }
+        } catch (com.google.protobuf.InvalidProtocolBufferException e) {
+          throw e.setUnfinishedMessage(this);
+        } catch (java.io.IOException e) {
+          throw new com.google.protobuf.InvalidProtocolBufferException(
+              e).setUnfinishedMessage(this);
+        } finally {
+          this.unknownFields = unknownFields.build();
+          makeExtensionsImmutable();
+        }
+      }
+      public static final com.google.protobuf.Descriptors.Descriptor
+          getDescriptor() {
+        return ski.crunch.activity.model.ActivityOuterClass.internal_static_Activity_Geofence_descriptor;
+      }
+
+      protected com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
+          internalGetFieldAccessorTable() {
+        return ski.crunch.activity.model.ActivityOuterClass.internal_static_Activity_Geofence_fieldAccessorTable
+            .ensureFieldAccessorsInitialized(
+                ski.crunch.activity.model.ActivityOuterClass.Activity.Geofence.class, ski.crunch.activity.model.ActivityOuterClass.Activity.Geofence.Builder.class);
+      }
+
+      public static final int ID_FIELD_NUMBER = 1;
+      private int id_;
+      /**
+       * <code>int32 id = 1;</code>
+       */
+      public int getId() {
+        return id_;
+      }
+
+      public static final int NAME_FIELD_NUMBER = 2;
+      private volatile java.lang.Object name_;
+      /**
+       * <code>string name = 2;</code>
+       */
+      public java.lang.String getName() {
+        java.lang.Object ref = name_;
+        if (ref instanceof java.lang.String) {
+          return (java.lang.String) ref;
+        } else {
+          com.google.protobuf.ByteString bs = 
+              (com.google.protobuf.ByteString) ref;
+          java.lang.String s = bs.toStringUtf8();
+          name_ = s;
+          return s;
+        }
+      }
+      /**
+       * <code>string name = 2;</code>
+       */
+      public com.google.protobuf.ByteString
+          getNameBytes() {
+        java.lang.Object ref = name_;
+        if (ref instanceof java.lang.String) {
+          com.google.protobuf.ByteString b = 
+              com.google.protobuf.ByteString.copyFromUtf8(
+                  (java.lang.String) ref);
+          name_ = b;
+          return b;
+        } else {
+          return (com.google.protobuf.ByteString) ref;
+        }
+      }
+
+      private byte memoizedIsInitialized = -1;
+      public final boolean isInitialized() {
+        byte isInitialized = memoizedIsInitialized;
+        if (isInitialized == 1) return true;
+        if (isInitialized == 0) return false;
+
+        memoizedIsInitialized = 1;
+        return true;
+      }
+
+      public void writeTo(com.google.protobuf.CodedOutputStream output)
+                          throws java.io.IOException {
+        if (id_ != 0) {
+          output.writeInt32(1, id_);
+        }
+        if (!getNameBytes().isEmpty()) {
+          com.google.protobuf.GeneratedMessageV3.writeString(output, 2, name_);
+        }
+        unknownFields.writeTo(output);
+      }
+
+      public int getSerializedSize() {
+        int size = memoizedSize;
+        if (size != -1) return size;
+
+        size = 0;
+        if (id_ != 0) {
+          size += com.google.protobuf.CodedOutputStream
+            .computeInt32Size(1, id_);
+        }
+        if (!getNameBytes().isEmpty()) {
+          size += com.google.protobuf.GeneratedMessageV3.computeStringSize(2, name_);
+        }
+        size += unknownFields.getSerializedSize();
+        memoizedSize = size;
+        return size;
+      }
+
+      @java.lang.Override
+      public boolean equals(final java.lang.Object obj) {
+        if (obj == this) {
+         return true;
+        }
+        if (!(obj instanceof ski.crunch.activity.model.ActivityOuterClass.Activity.Geofence)) {
+          return super.equals(obj);
+        }
+        ski.crunch.activity.model.ActivityOuterClass.Activity.Geofence other = (ski.crunch.activity.model.ActivityOuterClass.Activity.Geofence) obj;
+
+        boolean result = true;
+        result = result && (getId()
+            == other.getId());
+        result = result && getName()
+            .equals(other.getName());
+        result = result && unknownFields.equals(other.unknownFields);
+        return result;
+      }
+
+      @java.lang.Override
+      public int hashCode() {
+        if (memoizedHashCode != 0) {
+          return memoizedHashCode;
+        }
+        int hash = 41;
+        hash = (19 * hash) + getDescriptor().hashCode();
+        hash = (37 * hash) + ID_FIELD_NUMBER;
+        hash = (53 * hash) + getId();
+        hash = (37 * hash) + NAME_FIELD_NUMBER;
+        hash = (53 * hash) + getName().hashCode();
+        hash = (29 * hash) + unknownFields.hashCode();
+        memoizedHashCode = hash;
+        return hash;
+      }
+
+      public static ski.crunch.activity.model.ActivityOuterClass.Activity.Geofence parseFrom(
+          java.nio.ByteBuffer data)
+          throws com.google.protobuf.InvalidProtocolBufferException {
+        return PARSER.parseFrom(data);
+      }
+      public static ski.crunch.activity.model.ActivityOuterClass.Activity.Geofence parseFrom(
+          java.nio.ByteBuffer data,
+          com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+          throws com.google.protobuf.InvalidProtocolBufferException {
+        return PARSER.parseFrom(data, extensionRegistry);
+      }
+      public static ski.crunch.activity.model.ActivityOuterClass.Activity.Geofence parseFrom(
+          com.google.protobuf.ByteString data)
+          throws com.google.protobuf.InvalidProtocolBufferException {
+        return PARSER.parseFrom(data);
+      }
+      public static ski.crunch.activity.model.ActivityOuterClass.Activity.Geofence parseFrom(
+          com.google.protobuf.ByteString data,
+          com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+          throws com.google.protobuf.InvalidProtocolBufferException {
+        return PARSER.parseFrom(data, extensionRegistry);
+      }
+      public static ski.crunch.activity.model.ActivityOuterClass.Activity.Geofence parseFrom(byte[] data)
+          throws com.google.protobuf.InvalidProtocolBufferException {
+        return PARSER.parseFrom(data);
+      }
+      public static ski.crunch.activity.model.ActivityOuterClass.Activity.Geofence parseFrom(
+          byte[] data,
+          com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+          throws com.google.protobuf.InvalidProtocolBufferException {
+        return PARSER.parseFrom(data, extensionRegistry);
+      }
+      public static ski.crunch.activity.model.ActivityOuterClass.Activity.Geofence parseFrom(java.io.InputStream input)
+          throws java.io.IOException {
+        return com.google.protobuf.GeneratedMessageV3
+            .parseWithIOException(PARSER, input);
+      }
+      public static ski.crunch.activity.model.ActivityOuterClass.Activity.Geofence parseFrom(
+          java.io.InputStream input,
+          com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+          throws java.io.IOException {
+        return com.google.protobuf.GeneratedMessageV3
+            .parseWithIOException(PARSER, input, extensionRegistry);
+      }
+      public static ski.crunch.activity.model.ActivityOuterClass.Activity.Geofence parseDelimitedFrom(java.io.InputStream input)
+          throws java.io.IOException {
+        return com.google.protobuf.GeneratedMessageV3
+            .parseDelimitedWithIOException(PARSER, input);
+      }
+      public static ski.crunch.activity.model.ActivityOuterClass.Activity.Geofence parseDelimitedFrom(
+          java.io.InputStream input,
+          com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+          throws java.io.IOException {
+        return com.google.protobuf.GeneratedMessageV3
+            .parseDelimitedWithIOException(PARSER, input, extensionRegistry);
+      }
+      public static ski.crunch.activity.model.ActivityOuterClass.Activity.Geofence parseFrom(
+          com.google.protobuf.CodedInputStream input)
+          throws java.io.IOException {
+        return com.google.protobuf.GeneratedMessageV3
+            .parseWithIOException(PARSER, input);
+      }
+      public static ski.crunch.activity.model.ActivityOuterClass.Activity.Geofence parseFrom(
+          com.google.protobuf.CodedInputStream input,
+          com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+          throws java.io.IOException {
+        return com.google.protobuf.GeneratedMessageV3
+            .parseWithIOException(PARSER, input, extensionRegistry);
+      }
+
+      public Builder newBuilderForType() { return newBuilder(); }
+      public static Builder newBuilder() {
+        return DEFAULT_INSTANCE.toBuilder();
+      }
+      public static Builder newBuilder(ski.crunch.activity.model.ActivityOuterClass.Activity.Geofence prototype) {
+        return DEFAULT_INSTANCE.toBuilder().mergeFrom(prototype);
+      }
+      public Builder toBuilder() {
+        return this == DEFAULT_INSTANCE
+            ? new Builder() : new Builder().mergeFrom(this);
+      }
+
+      @java.lang.Override
+      protected Builder newBuilderForType(
+          com.google.protobuf.GeneratedMessageV3.BuilderParent parent) {
+        Builder builder = new Builder(parent);
+        return builder;
+      }
+      /**
+       * Protobuf type {@code Activity.Geofence}
+       */
+      public static final class Builder extends
+          com.google.protobuf.GeneratedMessageV3.Builder<Builder> implements
+          // @@protoc_insertion_point(builder_implements:Activity.Geofence)
+          ski.crunch.activity.model.ActivityOuterClass.Activity.GeofenceOrBuilder {
+        public static final com.google.protobuf.Descriptors.Descriptor
+            getDescriptor() {
+          return ski.crunch.activity.model.ActivityOuterClass.internal_static_Activity_Geofence_descriptor;
+        }
+
+        protected com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
+            internalGetFieldAccessorTable() {
+          return ski.crunch.activity.model.ActivityOuterClass.internal_static_Activity_Geofence_fieldAccessorTable
+              .ensureFieldAccessorsInitialized(
+                  ski.crunch.activity.model.ActivityOuterClass.Activity.Geofence.class, ski.crunch.activity.model.ActivityOuterClass.Activity.Geofence.Builder.class);
+        }
+
+        // Construct using ski.crunch.activity.model.ActivityOuterClass.Activity.Geofence.newBuilder()
+        private Builder() {
+          maybeForceBuilderInitialization();
+        }
+
+        private Builder(
+            com.google.protobuf.GeneratedMessageV3.BuilderParent parent) {
+          super(parent);
+          maybeForceBuilderInitialization();
+        }
+        private void maybeForceBuilderInitialization() {
+          if (com.google.protobuf.GeneratedMessageV3
+                  .alwaysUseFieldBuilders) {
+          }
+        }
+        public Builder clear() {
+          super.clear();
+          id_ = 0;
+
+          name_ = "";
+
+          return this;
+        }
+
+        public com.google.protobuf.Descriptors.Descriptor
+            getDescriptorForType() {
+          return ski.crunch.activity.model.ActivityOuterClass.internal_static_Activity_Geofence_descriptor;
+        }
+
+        public ski.crunch.activity.model.ActivityOuterClass.Activity.Geofence getDefaultInstanceForType() {
+          return ski.crunch.activity.model.ActivityOuterClass.Activity.Geofence.getDefaultInstance();
+        }
+
+        public ski.crunch.activity.model.ActivityOuterClass.Activity.Geofence build() {
+          ski.crunch.activity.model.ActivityOuterClass.Activity.Geofence result = buildPartial();
+          if (!result.isInitialized()) {
+            throw newUninitializedMessageException(result);
+          }
+          return result;
+        }
+
+        public ski.crunch.activity.model.ActivityOuterClass.Activity.Geofence buildPartial() {
+          ski.crunch.activity.model.ActivityOuterClass.Activity.Geofence result = new ski.crunch.activity.model.ActivityOuterClass.Activity.Geofence(this);
+          result.id_ = id_;
+          result.name_ = name_;
+          onBuilt();
+          return result;
+        }
+
+        public Builder clone() {
+          return (Builder) super.clone();
+        }
+        public Builder setField(
+            com.google.protobuf.Descriptors.FieldDescriptor field,
+            java.lang.Object value) {
+          return (Builder) super.setField(field, value);
+        }
+        public Builder clearField(
+            com.google.protobuf.Descriptors.FieldDescriptor field) {
+          return (Builder) super.clearField(field);
+        }
+        public Builder clearOneof(
+            com.google.protobuf.Descriptors.OneofDescriptor oneof) {
+          return (Builder) super.clearOneof(oneof);
+        }
+        public Builder setRepeatedField(
+            com.google.protobuf.Descriptors.FieldDescriptor field,
+            int index, java.lang.Object value) {
+          return (Builder) super.setRepeatedField(field, index, value);
+        }
+        public Builder addRepeatedField(
+            com.google.protobuf.Descriptors.FieldDescriptor field,
+            java.lang.Object value) {
+          return (Builder) super.addRepeatedField(field, value);
+        }
+        public Builder mergeFrom(com.google.protobuf.Message other) {
+          if (other instanceof ski.crunch.activity.model.ActivityOuterClass.Activity.Geofence) {
+            return mergeFrom((ski.crunch.activity.model.ActivityOuterClass.Activity.Geofence)other);
+          } else {
+            super.mergeFrom(other);
+            return this;
+          }
+        }
+
+        public Builder mergeFrom(ski.crunch.activity.model.ActivityOuterClass.Activity.Geofence other) {
+          if (other == ski.crunch.activity.model.ActivityOuterClass.Activity.Geofence.getDefaultInstance()) return this;
+          if (other.getId() != 0) {
+            setId(other.getId());
+          }
+          if (!other.getName().isEmpty()) {
+            name_ = other.name_;
+            onChanged();
+          }
+          this.mergeUnknownFields(other.unknownFields);
+          onChanged();
+          return this;
+        }
+
+        public final boolean isInitialized() {
+          return true;
+        }
+
+        public Builder mergeFrom(
+            com.google.protobuf.CodedInputStream input,
+            com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+            throws java.io.IOException {
+          ski.crunch.activity.model.ActivityOuterClass.Activity.Geofence parsedMessage = null;
+          try {
+            parsedMessage = PARSER.parsePartialFrom(input, extensionRegistry);
+          } catch (com.google.protobuf.InvalidProtocolBufferException e) {
+            parsedMessage = (ski.crunch.activity.model.ActivityOuterClass.Activity.Geofence) e.getUnfinishedMessage();
+            throw e.unwrapIOException();
+          } finally {
+            if (parsedMessage != null) {
+              mergeFrom(parsedMessage);
+            }
+          }
+          return this;
+        }
+
+        private int id_ ;
+        /**
+         * <code>int32 id = 1;</code>
+         */
+        public int getId() {
+          return id_;
+        }
+        /**
+         * <code>int32 id = 1;</code>
+         */
+        public Builder setId(int value) {
+          
+          id_ = value;
+          onChanged();
+          return this;
+        }
+        /**
+         * <code>int32 id = 1;</code>
+         */
+        public Builder clearId() {
+          
+          id_ = 0;
+          onChanged();
+          return this;
+        }
+
+        private java.lang.Object name_ = "";
+        /**
+         * <code>string name = 2;</code>
+         */
+        public java.lang.String getName() {
+          java.lang.Object ref = name_;
+          if (!(ref instanceof java.lang.String)) {
+            com.google.protobuf.ByteString bs =
+                (com.google.protobuf.ByteString) ref;
+            java.lang.String s = bs.toStringUtf8();
+            name_ = s;
+            return s;
+          } else {
+            return (java.lang.String) ref;
+          }
+        }
+        /**
+         * <code>string name = 2;</code>
+         */
+        public com.google.protobuf.ByteString
+            getNameBytes() {
+          java.lang.Object ref = name_;
+          if (ref instanceof String) {
+            com.google.protobuf.ByteString b = 
+                com.google.protobuf.ByteString.copyFromUtf8(
+                    (java.lang.String) ref);
+            name_ = b;
+            return b;
+          } else {
+            return (com.google.protobuf.ByteString) ref;
+          }
+        }
+        /**
+         * <code>string name = 2;</code>
+         */
+        public Builder setName(
+            java.lang.String value) {
+          if (value == null) {
+    throw new NullPointerException();
+  }
+  
+          name_ = value;
+          onChanged();
+          return this;
+        }
+        /**
+         * <code>string name = 2;</code>
+         */
+        public Builder clearName() {
+          
+          name_ = getDefaultInstance().getName();
+          onChanged();
+          return this;
+        }
+        /**
+         * <code>string name = 2;</code>
+         */
+        public Builder setNameBytes(
+            com.google.protobuf.ByteString value) {
+          if (value == null) {
+    throw new NullPointerException();
+  }
+  checkByteStringIsUtf8(value);
+          
+          name_ = value;
+          onChanged();
+          return this;
+        }
+        public final Builder setUnknownFields(
+            final com.google.protobuf.UnknownFieldSet unknownFields) {
+          return super.setUnknownFieldsProto3(unknownFields);
+        }
+
+        public final Builder mergeUnknownFields(
+            final com.google.protobuf.UnknownFieldSet unknownFields) {
+          return super.mergeUnknownFields(unknownFields);
+        }
+
+
+        // @@protoc_insertion_point(builder_scope:Activity.Geofence)
+      }
+
+      // @@protoc_insertion_point(class_scope:Activity.Geofence)
+      private static final ski.crunch.activity.model.ActivityOuterClass.Activity.Geofence DEFAULT_INSTANCE;
+      static {
+        DEFAULT_INSTANCE = new ski.crunch.activity.model.ActivityOuterClass.Activity.Geofence();
+      }
+
+      public static ski.crunch.activity.model.ActivityOuterClass.Activity.Geofence getDefaultInstance() {
+        return DEFAULT_INSTANCE;
+      }
+
+      private static final com.google.protobuf.Parser<Geofence>
+          PARSER = new com.google.protobuf.AbstractParser<Geofence>() {
+        public Geofence parsePartialFrom(
+            com.google.protobuf.CodedInputStream input,
+            com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+            throws com.google.protobuf.InvalidProtocolBufferException {
+          return new Geofence(input, extensionRegistry);
+        }
+      };
+
+      public static com.google.protobuf.Parser<Geofence> parser() {
+        return PARSER;
+      }
+
+      @java.lang.Override
+      public com.google.protobuf.Parser<Geofence> getParserForType() {
+        return PARSER;
+      }
+
+      public ski.crunch.activity.model.ActivityOuterClass.Activity.Geofence getDefaultInstanceForType() {
         return DEFAULT_INSTANCE;
       }
 
@@ -12809,75 +16880,55 @@ public final class ActivityOuterClass {
         com.google.protobuf.MessageOrBuilder {
 
       /**
-       * <code>int32 startIdx = 1;</code>
+       * <code>int32 index = 1;</code>
        */
-      int getStartIdx();
+      int getIndex();
 
       /**
-       * <code>int32 endIdx = 2;</code>
-       */
-      int getEndIdx();
-
-      /**
-       * <code>string ts = 3;</code>
+       * <code>string ts = 2;</code>
        */
       java.lang.String getTs();
       /**
-       * <code>string ts = 3;</code>
+       * <code>string ts = 2;</code>
        */
       com.google.protobuf.ByteString
           getTsBytes();
 
       /**
-       * <code>string startTs = 4;</code>
-       */
-      java.lang.String getStartTs();
-      /**
-       * <code>string startTs = 4;</code>
-       */
-      com.google.protobuf.ByteString
-          getStartTsBytes();
-
-      /**
-       * <code>string event = 5;</code>
+       * <code>string event = 3;</code>
        */
       java.lang.String getEvent();
       /**
-       * <code>string event = 5;</code>
+       * <code>string event = 3;</code>
        */
       com.google.protobuf.ByteString
           getEventBytes();
 
       /**
-       * <code>.Activity.EventType eventType = 6;</code>
+       * <code>.Activity.EventType eventType = 4;</code>
        */
       int getEventTypeValue();
       /**
-       * <code>.Activity.EventType eventType = 6;</code>
+       * <code>.Activity.EventType eventType = 4;</code>
        */
       ski.crunch.activity.model.ActivityOuterClass.Activity.EventType getEventType();
 
       /**
-       * <code>double timerTime = 7;</code>
+       * <code>string info = 5;</code>
        */
-      double getTimerTime();
+      java.lang.String getInfo();
+      /**
+       * <code>string info = 5;</code>
+       */
+      com.google.protobuf.ByteString
+          getInfoBytes();
 
       /**
-       * <code>double elapsedTime = 8;</code>
-       */
-      double getElapsedTime();
-
-      /**
-       * <code>double movingTime = 9;</code>
-       */
-      double getMovingTime();
-
-      /**
-       * <code>string trigger = 10;</code>
+       * <code>string trigger = 6;</code>
        */
       java.lang.String getTrigger();
       /**
-       * <code>string trigger = 10;</code>
+       * <code>string trigger = 6;</code>
        */
       com.google.protobuf.ByteString
           getTriggerBytes();
@@ -12895,15 +16946,11 @@ public final class ActivityOuterClass {
         super(builder);
       }
       private FitEvent() {
-        startIdx_ = 0;
-        endIdx_ = 0;
+        index_ = 0;
         ts_ = "";
-        startTs_ = "";
         event_ = "";
         eventType_ = 0;
-        timerTime_ = 0D;
-        elapsedTime_ = 0D;
-        movingTime_ = 0D;
+        info_ = "";
         trigger_ = "";
       }
 
@@ -12940,54 +16987,34 @@ public final class ActivityOuterClass {
               }
               case 8: {
 
-                startIdx_ = input.readInt32();
+                index_ = input.readInt32();
                 break;
               }
-              case 16: {
-
-                endIdx_ = input.readInt32();
-                break;
-              }
-              case 26: {
+              case 18: {
                 java.lang.String s = input.readStringRequireUtf8();
 
                 ts_ = s;
                 break;
               }
-              case 34: {
-                java.lang.String s = input.readStringRequireUtf8();
-
-                startTs_ = s;
-                break;
-              }
-              case 42: {
+              case 26: {
                 java.lang.String s = input.readStringRequireUtf8();
 
                 event_ = s;
                 break;
               }
-              case 48: {
+              case 32: {
                 int rawValue = input.readEnum();
 
                 eventType_ = rawValue;
                 break;
               }
-              case 57: {
+              case 42: {
+                java.lang.String s = input.readStringRequireUtf8();
 
-                timerTime_ = input.readDouble();
+                info_ = s;
                 break;
               }
-              case 65: {
-
-                elapsedTime_ = input.readDouble();
-                break;
-              }
-              case 73: {
-
-                movingTime_ = input.readDouble();
-                break;
-              }
-              case 82: {
+              case 50: {
                 java.lang.String s = input.readStringRequireUtf8();
 
                 trigger_ = s;
@@ -13017,28 +17044,19 @@ public final class ActivityOuterClass {
                 ski.crunch.activity.model.ActivityOuterClass.Activity.FitEvent.class, ski.crunch.activity.model.ActivityOuterClass.Activity.FitEvent.Builder.class);
       }
 
-      public static final int STARTIDX_FIELD_NUMBER = 1;
-      private int startIdx_;
+      public static final int INDEX_FIELD_NUMBER = 1;
+      private int index_;
       /**
-       * <code>int32 startIdx = 1;</code>
+       * <code>int32 index = 1;</code>
        */
-      public int getStartIdx() {
-        return startIdx_;
+      public int getIndex() {
+        return index_;
       }
 
-      public static final int ENDIDX_FIELD_NUMBER = 2;
-      private int endIdx_;
-      /**
-       * <code>int32 endIdx = 2;</code>
-       */
-      public int getEndIdx() {
-        return endIdx_;
-      }
-
-      public static final int TS_FIELD_NUMBER = 3;
+      public static final int TS_FIELD_NUMBER = 2;
       private volatile java.lang.Object ts_;
       /**
-       * <code>string ts = 3;</code>
+       * <code>string ts = 2;</code>
        */
       public java.lang.String getTs() {
         java.lang.Object ref = ts_;
@@ -13053,7 +17071,7 @@ public final class ActivityOuterClass {
         }
       }
       /**
-       * <code>string ts = 3;</code>
+       * <code>string ts = 2;</code>
        */
       public com.google.protobuf.ByteString
           getTsBytes() {
@@ -13069,44 +17087,10 @@ public final class ActivityOuterClass {
         }
       }
 
-      public static final int STARTTS_FIELD_NUMBER = 4;
-      private volatile java.lang.Object startTs_;
-      /**
-       * <code>string startTs = 4;</code>
-       */
-      public java.lang.String getStartTs() {
-        java.lang.Object ref = startTs_;
-        if (ref instanceof java.lang.String) {
-          return (java.lang.String) ref;
-        } else {
-          com.google.protobuf.ByteString bs = 
-              (com.google.protobuf.ByteString) ref;
-          java.lang.String s = bs.toStringUtf8();
-          startTs_ = s;
-          return s;
-        }
-      }
-      /**
-       * <code>string startTs = 4;</code>
-       */
-      public com.google.protobuf.ByteString
-          getStartTsBytes() {
-        java.lang.Object ref = startTs_;
-        if (ref instanceof java.lang.String) {
-          com.google.protobuf.ByteString b = 
-              com.google.protobuf.ByteString.copyFromUtf8(
-                  (java.lang.String) ref);
-          startTs_ = b;
-          return b;
-        } else {
-          return (com.google.protobuf.ByteString) ref;
-        }
-      }
-
-      public static final int EVENT_FIELD_NUMBER = 5;
+      public static final int EVENT_FIELD_NUMBER = 3;
       private volatile java.lang.Object event_;
       /**
-       * <code>string event = 5;</code>
+       * <code>string event = 3;</code>
        */
       public java.lang.String getEvent() {
         java.lang.Object ref = event_;
@@ -13121,7 +17105,7 @@ public final class ActivityOuterClass {
         }
       }
       /**
-       * <code>string event = 5;</code>
+       * <code>string event = 3;</code>
        */
       public com.google.protobuf.ByteString
           getEventBytes() {
@@ -13137,53 +17121,60 @@ public final class ActivityOuterClass {
         }
       }
 
-      public static final int EVENTTYPE_FIELD_NUMBER = 6;
+      public static final int EVENTTYPE_FIELD_NUMBER = 4;
       private int eventType_;
       /**
-       * <code>.Activity.EventType eventType = 6;</code>
+       * <code>.Activity.EventType eventType = 4;</code>
        */
       public int getEventTypeValue() {
         return eventType_;
       }
       /**
-       * <code>.Activity.EventType eventType = 6;</code>
+       * <code>.Activity.EventType eventType = 4;</code>
        */
       public ski.crunch.activity.model.ActivityOuterClass.Activity.EventType getEventType() {
         ski.crunch.activity.model.ActivityOuterClass.Activity.EventType result = ski.crunch.activity.model.ActivityOuterClass.Activity.EventType.valueOf(eventType_);
         return result == null ? ski.crunch.activity.model.ActivityOuterClass.Activity.EventType.UNRECOGNIZED : result;
       }
 
-      public static final int TIMERTIME_FIELD_NUMBER = 7;
-      private double timerTime_;
+      public static final int INFO_FIELD_NUMBER = 5;
+      private volatile java.lang.Object info_;
       /**
-       * <code>double timerTime = 7;</code>
+       * <code>string info = 5;</code>
        */
-      public double getTimerTime() {
-        return timerTime_;
+      public java.lang.String getInfo() {
+        java.lang.Object ref = info_;
+        if (ref instanceof java.lang.String) {
+          return (java.lang.String) ref;
+        } else {
+          com.google.protobuf.ByteString bs = 
+              (com.google.protobuf.ByteString) ref;
+          java.lang.String s = bs.toStringUtf8();
+          info_ = s;
+          return s;
+        }
+      }
+      /**
+       * <code>string info = 5;</code>
+       */
+      public com.google.protobuf.ByteString
+          getInfoBytes() {
+        java.lang.Object ref = info_;
+        if (ref instanceof java.lang.String) {
+          com.google.protobuf.ByteString b = 
+              com.google.protobuf.ByteString.copyFromUtf8(
+                  (java.lang.String) ref);
+          info_ = b;
+          return b;
+        } else {
+          return (com.google.protobuf.ByteString) ref;
+        }
       }
 
-      public static final int ELAPSEDTIME_FIELD_NUMBER = 8;
-      private double elapsedTime_;
-      /**
-       * <code>double elapsedTime = 8;</code>
-       */
-      public double getElapsedTime() {
-        return elapsedTime_;
-      }
-
-      public static final int MOVINGTIME_FIELD_NUMBER = 9;
-      private double movingTime_;
-      /**
-       * <code>double movingTime = 9;</code>
-       */
-      public double getMovingTime() {
-        return movingTime_;
-      }
-
-      public static final int TRIGGER_FIELD_NUMBER = 10;
+      public static final int TRIGGER_FIELD_NUMBER = 6;
       private volatile java.lang.Object trigger_;
       /**
-       * <code>string trigger = 10;</code>
+       * <code>string trigger = 6;</code>
        */
       public java.lang.String getTrigger() {
         java.lang.Object ref = trigger_;
@@ -13198,7 +17189,7 @@ public final class ActivityOuterClass {
         }
       }
       /**
-       * <code>string trigger = 10;</code>
+       * <code>string trigger = 6;</code>
        */
       public com.google.protobuf.ByteString
           getTriggerBytes() {
@@ -13226,35 +17217,23 @@ public final class ActivityOuterClass {
 
       public void writeTo(com.google.protobuf.CodedOutputStream output)
                           throws java.io.IOException {
-        if (startIdx_ != 0) {
-          output.writeInt32(1, startIdx_);
-        }
-        if (endIdx_ != 0) {
-          output.writeInt32(2, endIdx_);
+        if (index_ != 0) {
+          output.writeInt32(1, index_);
         }
         if (!getTsBytes().isEmpty()) {
-          com.google.protobuf.GeneratedMessageV3.writeString(output, 3, ts_);
-        }
-        if (!getStartTsBytes().isEmpty()) {
-          com.google.protobuf.GeneratedMessageV3.writeString(output, 4, startTs_);
+          com.google.protobuf.GeneratedMessageV3.writeString(output, 2, ts_);
         }
         if (!getEventBytes().isEmpty()) {
-          com.google.protobuf.GeneratedMessageV3.writeString(output, 5, event_);
+          com.google.protobuf.GeneratedMessageV3.writeString(output, 3, event_);
         }
         if (eventType_ != ski.crunch.activity.model.ActivityOuterClass.Activity.EventType.START.getNumber()) {
-          output.writeEnum(6, eventType_);
+          output.writeEnum(4, eventType_);
         }
-        if (timerTime_ != 0D) {
-          output.writeDouble(7, timerTime_);
-        }
-        if (elapsedTime_ != 0D) {
-          output.writeDouble(8, elapsedTime_);
-        }
-        if (movingTime_ != 0D) {
-          output.writeDouble(9, movingTime_);
+        if (!getInfoBytes().isEmpty()) {
+          com.google.protobuf.GeneratedMessageV3.writeString(output, 5, info_);
         }
         if (!getTriggerBytes().isEmpty()) {
-          com.google.protobuf.GeneratedMessageV3.writeString(output, 10, trigger_);
+          com.google.protobuf.GeneratedMessageV3.writeString(output, 6, trigger_);
         }
         unknownFields.writeTo(output);
       }
@@ -13264,41 +17243,25 @@ public final class ActivityOuterClass {
         if (size != -1) return size;
 
         size = 0;
-        if (startIdx_ != 0) {
+        if (index_ != 0) {
           size += com.google.protobuf.CodedOutputStream
-            .computeInt32Size(1, startIdx_);
-        }
-        if (endIdx_ != 0) {
-          size += com.google.protobuf.CodedOutputStream
-            .computeInt32Size(2, endIdx_);
+            .computeInt32Size(1, index_);
         }
         if (!getTsBytes().isEmpty()) {
-          size += com.google.protobuf.GeneratedMessageV3.computeStringSize(3, ts_);
-        }
-        if (!getStartTsBytes().isEmpty()) {
-          size += com.google.protobuf.GeneratedMessageV3.computeStringSize(4, startTs_);
+          size += com.google.protobuf.GeneratedMessageV3.computeStringSize(2, ts_);
         }
         if (!getEventBytes().isEmpty()) {
-          size += com.google.protobuf.GeneratedMessageV3.computeStringSize(5, event_);
+          size += com.google.protobuf.GeneratedMessageV3.computeStringSize(3, event_);
         }
         if (eventType_ != ski.crunch.activity.model.ActivityOuterClass.Activity.EventType.START.getNumber()) {
           size += com.google.protobuf.CodedOutputStream
-            .computeEnumSize(6, eventType_);
+            .computeEnumSize(4, eventType_);
         }
-        if (timerTime_ != 0D) {
-          size += com.google.protobuf.CodedOutputStream
-            .computeDoubleSize(7, timerTime_);
-        }
-        if (elapsedTime_ != 0D) {
-          size += com.google.protobuf.CodedOutputStream
-            .computeDoubleSize(8, elapsedTime_);
-        }
-        if (movingTime_ != 0D) {
-          size += com.google.protobuf.CodedOutputStream
-            .computeDoubleSize(9, movingTime_);
+        if (!getInfoBytes().isEmpty()) {
+          size += com.google.protobuf.GeneratedMessageV3.computeStringSize(5, info_);
         }
         if (!getTriggerBytes().isEmpty()) {
-          size += com.google.protobuf.GeneratedMessageV3.computeStringSize(10, trigger_);
+          size += com.google.protobuf.GeneratedMessageV3.computeStringSize(6, trigger_);
         }
         size += unknownFields.getSerializedSize();
         memoizedSize = size;
@@ -13316,29 +17279,15 @@ public final class ActivityOuterClass {
         ski.crunch.activity.model.ActivityOuterClass.Activity.FitEvent other = (ski.crunch.activity.model.ActivityOuterClass.Activity.FitEvent) obj;
 
         boolean result = true;
-        result = result && (getStartIdx()
-            == other.getStartIdx());
-        result = result && (getEndIdx()
-            == other.getEndIdx());
+        result = result && (getIndex()
+            == other.getIndex());
         result = result && getTs()
             .equals(other.getTs());
-        result = result && getStartTs()
-            .equals(other.getStartTs());
         result = result && getEvent()
             .equals(other.getEvent());
         result = result && eventType_ == other.eventType_;
-        result = result && (
-            java.lang.Double.doubleToLongBits(getTimerTime())
-            == java.lang.Double.doubleToLongBits(
-                other.getTimerTime()));
-        result = result && (
-            java.lang.Double.doubleToLongBits(getElapsedTime())
-            == java.lang.Double.doubleToLongBits(
-                other.getElapsedTime()));
-        result = result && (
-            java.lang.Double.doubleToLongBits(getMovingTime())
-            == java.lang.Double.doubleToLongBits(
-                other.getMovingTime()));
+        result = result && getInfo()
+            .equals(other.getInfo());
         result = result && getTrigger()
             .equals(other.getTrigger());
         result = result && unknownFields.equals(other.unknownFields);
@@ -13352,27 +17301,16 @@ public final class ActivityOuterClass {
         }
         int hash = 41;
         hash = (19 * hash) + getDescriptor().hashCode();
-        hash = (37 * hash) + STARTIDX_FIELD_NUMBER;
-        hash = (53 * hash) + getStartIdx();
-        hash = (37 * hash) + ENDIDX_FIELD_NUMBER;
-        hash = (53 * hash) + getEndIdx();
+        hash = (37 * hash) + INDEX_FIELD_NUMBER;
+        hash = (53 * hash) + getIndex();
         hash = (37 * hash) + TS_FIELD_NUMBER;
         hash = (53 * hash) + getTs().hashCode();
-        hash = (37 * hash) + STARTTS_FIELD_NUMBER;
-        hash = (53 * hash) + getStartTs().hashCode();
         hash = (37 * hash) + EVENT_FIELD_NUMBER;
         hash = (53 * hash) + getEvent().hashCode();
         hash = (37 * hash) + EVENTTYPE_FIELD_NUMBER;
         hash = (53 * hash) + eventType_;
-        hash = (37 * hash) + TIMERTIME_FIELD_NUMBER;
-        hash = (53 * hash) + com.google.protobuf.Internal.hashLong(
-            java.lang.Double.doubleToLongBits(getTimerTime()));
-        hash = (37 * hash) + ELAPSEDTIME_FIELD_NUMBER;
-        hash = (53 * hash) + com.google.protobuf.Internal.hashLong(
-            java.lang.Double.doubleToLongBits(getElapsedTime()));
-        hash = (37 * hash) + MOVINGTIME_FIELD_NUMBER;
-        hash = (53 * hash) + com.google.protobuf.Internal.hashLong(
-            java.lang.Double.doubleToLongBits(getMovingTime()));
+        hash = (37 * hash) + INFO_FIELD_NUMBER;
+        hash = (53 * hash) + getInfo().hashCode();
         hash = (37 * hash) + TRIGGER_FIELD_NUMBER;
         hash = (53 * hash) + getTrigger().hashCode();
         hash = (29 * hash) + unknownFields.hashCode();
@@ -13504,23 +17442,15 @@ public final class ActivityOuterClass {
         }
         public Builder clear() {
           super.clear();
-          startIdx_ = 0;
-
-          endIdx_ = 0;
+          index_ = 0;
 
           ts_ = "";
-
-          startTs_ = "";
 
           event_ = "";
 
           eventType_ = 0;
 
-          timerTime_ = 0D;
-
-          elapsedTime_ = 0D;
-
-          movingTime_ = 0D;
+          info_ = "";
 
           trigger_ = "";
 
@@ -13546,15 +17476,11 @@ public final class ActivityOuterClass {
 
         public ski.crunch.activity.model.ActivityOuterClass.Activity.FitEvent buildPartial() {
           ski.crunch.activity.model.ActivityOuterClass.Activity.FitEvent result = new ski.crunch.activity.model.ActivityOuterClass.Activity.FitEvent(this);
-          result.startIdx_ = startIdx_;
-          result.endIdx_ = endIdx_;
+          result.index_ = index_;
           result.ts_ = ts_;
-          result.startTs_ = startTs_;
           result.event_ = event_;
           result.eventType_ = eventType_;
-          result.timerTime_ = timerTime_;
-          result.elapsedTime_ = elapsedTime_;
-          result.movingTime_ = movingTime_;
+          result.info_ = info_;
           result.trigger_ = trigger_;
           onBuilt();
           return result;
@@ -13597,18 +17523,11 @@ public final class ActivityOuterClass {
 
         public Builder mergeFrom(ski.crunch.activity.model.ActivityOuterClass.Activity.FitEvent other) {
           if (other == ski.crunch.activity.model.ActivityOuterClass.Activity.FitEvent.getDefaultInstance()) return this;
-          if (other.getStartIdx() != 0) {
-            setStartIdx(other.getStartIdx());
-          }
-          if (other.getEndIdx() != 0) {
-            setEndIdx(other.getEndIdx());
+          if (other.getIndex() != 0) {
+            setIndex(other.getIndex());
           }
           if (!other.getTs().isEmpty()) {
             ts_ = other.ts_;
-            onChanged();
-          }
-          if (!other.getStartTs().isEmpty()) {
-            startTs_ = other.startTs_;
             onChanged();
           }
           if (!other.getEvent().isEmpty()) {
@@ -13618,14 +17537,9 @@ public final class ActivityOuterClass {
           if (other.eventType_ != 0) {
             setEventTypeValue(other.getEventTypeValue());
           }
-          if (other.getTimerTime() != 0D) {
-            setTimerTime(other.getTimerTime());
-          }
-          if (other.getElapsedTime() != 0D) {
-            setElapsedTime(other.getElapsedTime());
-          }
-          if (other.getMovingTime() != 0D) {
-            setMovingTime(other.getMovingTime());
+          if (!other.getInfo().isEmpty()) {
+            info_ = other.info_;
+            onChanged();
           }
           if (!other.getTrigger().isEmpty()) {
             trigger_ = other.trigger_;
@@ -13658,61 +17572,35 @@ public final class ActivityOuterClass {
           return this;
         }
 
-        private int startIdx_ ;
+        private int index_ ;
         /**
-         * <code>int32 startIdx = 1;</code>
+         * <code>int32 index = 1;</code>
          */
-        public int getStartIdx() {
-          return startIdx_;
+        public int getIndex() {
+          return index_;
         }
         /**
-         * <code>int32 startIdx = 1;</code>
+         * <code>int32 index = 1;</code>
          */
-        public Builder setStartIdx(int value) {
+        public Builder setIndex(int value) {
           
-          startIdx_ = value;
+          index_ = value;
           onChanged();
           return this;
         }
         /**
-         * <code>int32 startIdx = 1;</code>
+         * <code>int32 index = 1;</code>
          */
-        public Builder clearStartIdx() {
+        public Builder clearIndex() {
           
-          startIdx_ = 0;
-          onChanged();
-          return this;
-        }
-
-        private int endIdx_ ;
-        /**
-         * <code>int32 endIdx = 2;</code>
-         */
-        public int getEndIdx() {
-          return endIdx_;
-        }
-        /**
-         * <code>int32 endIdx = 2;</code>
-         */
-        public Builder setEndIdx(int value) {
-          
-          endIdx_ = value;
-          onChanged();
-          return this;
-        }
-        /**
-         * <code>int32 endIdx = 2;</code>
-         */
-        public Builder clearEndIdx() {
-          
-          endIdx_ = 0;
+          index_ = 0;
           onChanged();
           return this;
         }
 
         private java.lang.Object ts_ = "";
         /**
-         * <code>string ts = 3;</code>
+         * <code>string ts = 2;</code>
          */
         public java.lang.String getTs() {
           java.lang.Object ref = ts_;
@@ -13727,7 +17615,7 @@ public final class ActivityOuterClass {
           }
         }
         /**
-         * <code>string ts = 3;</code>
+         * <code>string ts = 2;</code>
          */
         public com.google.protobuf.ByteString
             getTsBytes() {
@@ -13743,7 +17631,7 @@ public final class ActivityOuterClass {
           }
         }
         /**
-         * <code>string ts = 3;</code>
+         * <code>string ts = 2;</code>
          */
         public Builder setTs(
             java.lang.String value) {
@@ -13756,7 +17644,7 @@ public final class ActivityOuterClass {
           return this;
         }
         /**
-         * <code>string ts = 3;</code>
+         * <code>string ts = 2;</code>
          */
         public Builder clearTs() {
           
@@ -13765,7 +17653,7 @@ public final class ActivityOuterClass {
           return this;
         }
         /**
-         * <code>string ts = 3;</code>
+         * <code>string ts = 2;</code>
          */
         public Builder setTsBytes(
             com.google.protobuf.ByteString value) {
@@ -13779,78 +17667,9 @@ public final class ActivityOuterClass {
           return this;
         }
 
-        private java.lang.Object startTs_ = "";
-        /**
-         * <code>string startTs = 4;</code>
-         */
-        public java.lang.String getStartTs() {
-          java.lang.Object ref = startTs_;
-          if (!(ref instanceof java.lang.String)) {
-            com.google.protobuf.ByteString bs =
-                (com.google.protobuf.ByteString) ref;
-            java.lang.String s = bs.toStringUtf8();
-            startTs_ = s;
-            return s;
-          } else {
-            return (java.lang.String) ref;
-          }
-        }
-        /**
-         * <code>string startTs = 4;</code>
-         */
-        public com.google.protobuf.ByteString
-            getStartTsBytes() {
-          java.lang.Object ref = startTs_;
-          if (ref instanceof String) {
-            com.google.protobuf.ByteString b = 
-                com.google.protobuf.ByteString.copyFromUtf8(
-                    (java.lang.String) ref);
-            startTs_ = b;
-            return b;
-          } else {
-            return (com.google.protobuf.ByteString) ref;
-          }
-        }
-        /**
-         * <code>string startTs = 4;</code>
-         */
-        public Builder setStartTs(
-            java.lang.String value) {
-          if (value == null) {
-    throw new NullPointerException();
-  }
-  
-          startTs_ = value;
-          onChanged();
-          return this;
-        }
-        /**
-         * <code>string startTs = 4;</code>
-         */
-        public Builder clearStartTs() {
-          
-          startTs_ = getDefaultInstance().getStartTs();
-          onChanged();
-          return this;
-        }
-        /**
-         * <code>string startTs = 4;</code>
-         */
-        public Builder setStartTsBytes(
-            com.google.protobuf.ByteString value) {
-          if (value == null) {
-    throw new NullPointerException();
-  }
-  checkByteStringIsUtf8(value);
-          
-          startTs_ = value;
-          onChanged();
-          return this;
-        }
-
         private java.lang.Object event_ = "";
         /**
-         * <code>string event = 5;</code>
+         * <code>string event = 3;</code>
          */
         public java.lang.String getEvent() {
           java.lang.Object ref = event_;
@@ -13865,7 +17684,7 @@ public final class ActivityOuterClass {
           }
         }
         /**
-         * <code>string event = 5;</code>
+         * <code>string event = 3;</code>
          */
         public com.google.protobuf.ByteString
             getEventBytes() {
@@ -13881,7 +17700,7 @@ public final class ActivityOuterClass {
           }
         }
         /**
-         * <code>string event = 5;</code>
+         * <code>string event = 3;</code>
          */
         public Builder setEvent(
             java.lang.String value) {
@@ -13894,7 +17713,7 @@ public final class ActivityOuterClass {
           return this;
         }
         /**
-         * <code>string event = 5;</code>
+         * <code>string event = 3;</code>
          */
         public Builder clearEvent() {
           
@@ -13903,7 +17722,7 @@ public final class ActivityOuterClass {
           return this;
         }
         /**
-         * <code>string event = 5;</code>
+         * <code>string event = 3;</code>
          */
         public Builder setEventBytes(
             com.google.protobuf.ByteString value) {
@@ -13919,13 +17738,13 @@ public final class ActivityOuterClass {
 
         private int eventType_ = 0;
         /**
-         * <code>.Activity.EventType eventType = 6;</code>
+         * <code>.Activity.EventType eventType = 4;</code>
          */
         public int getEventTypeValue() {
           return eventType_;
         }
         /**
-         * <code>.Activity.EventType eventType = 6;</code>
+         * <code>.Activity.EventType eventType = 4;</code>
          */
         public Builder setEventTypeValue(int value) {
           eventType_ = value;
@@ -13933,14 +17752,14 @@ public final class ActivityOuterClass {
           return this;
         }
         /**
-         * <code>.Activity.EventType eventType = 6;</code>
+         * <code>.Activity.EventType eventType = 4;</code>
          */
         public ski.crunch.activity.model.ActivityOuterClass.Activity.EventType getEventType() {
           ski.crunch.activity.model.ActivityOuterClass.Activity.EventType result = ski.crunch.activity.model.ActivityOuterClass.Activity.EventType.valueOf(eventType_);
           return result == null ? ski.crunch.activity.model.ActivityOuterClass.Activity.EventType.UNRECOGNIZED : result;
         }
         /**
-         * <code>.Activity.EventType eventType = 6;</code>
+         * <code>.Activity.EventType eventType = 4;</code>
          */
         public Builder setEventType(ski.crunch.activity.model.ActivityOuterClass.Activity.EventType value) {
           if (value == null) {
@@ -13952,7 +17771,7 @@ public final class ActivityOuterClass {
           return this;
         }
         /**
-         * <code>.Activity.EventType eventType = 6;</code>
+         * <code>.Activity.EventType eventType = 4;</code>
          */
         public Builder clearEventType() {
           
@@ -13961,87 +17780,78 @@ public final class ActivityOuterClass {
           return this;
         }
 
-        private double timerTime_ ;
+        private java.lang.Object info_ = "";
         /**
-         * <code>double timerTime = 7;</code>
+         * <code>string info = 5;</code>
          */
-        public double getTimerTime() {
-          return timerTime_;
+        public java.lang.String getInfo() {
+          java.lang.Object ref = info_;
+          if (!(ref instanceof java.lang.String)) {
+            com.google.protobuf.ByteString bs =
+                (com.google.protobuf.ByteString) ref;
+            java.lang.String s = bs.toStringUtf8();
+            info_ = s;
+            return s;
+          } else {
+            return (java.lang.String) ref;
+          }
         }
         /**
-         * <code>double timerTime = 7;</code>
+         * <code>string info = 5;</code>
          */
-        public Builder setTimerTime(double value) {
-          
-          timerTime_ = value;
+        public com.google.protobuf.ByteString
+            getInfoBytes() {
+          java.lang.Object ref = info_;
+          if (ref instanceof String) {
+            com.google.protobuf.ByteString b = 
+                com.google.protobuf.ByteString.copyFromUtf8(
+                    (java.lang.String) ref);
+            info_ = b;
+            return b;
+          } else {
+            return (com.google.protobuf.ByteString) ref;
+          }
+        }
+        /**
+         * <code>string info = 5;</code>
+         */
+        public Builder setInfo(
+            java.lang.String value) {
+          if (value == null) {
+    throw new NullPointerException();
+  }
+  
+          info_ = value;
           onChanged();
           return this;
         }
         /**
-         * <code>double timerTime = 7;</code>
+         * <code>string info = 5;</code>
          */
-        public Builder clearTimerTime() {
+        public Builder clearInfo() {
           
-          timerTime_ = 0D;
-          onChanged();
-          return this;
-        }
-
-        private double elapsedTime_ ;
-        /**
-         * <code>double elapsedTime = 8;</code>
-         */
-        public double getElapsedTime() {
-          return elapsedTime_;
-        }
-        /**
-         * <code>double elapsedTime = 8;</code>
-         */
-        public Builder setElapsedTime(double value) {
-          
-          elapsedTime_ = value;
+          info_ = getDefaultInstance().getInfo();
           onChanged();
           return this;
         }
         /**
-         * <code>double elapsedTime = 8;</code>
+         * <code>string info = 5;</code>
          */
-        public Builder clearElapsedTime() {
+        public Builder setInfoBytes(
+            com.google.protobuf.ByteString value) {
+          if (value == null) {
+    throw new NullPointerException();
+  }
+  checkByteStringIsUtf8(value);
           
-          elapsedTime_ = 0D;
-          onChanged();
-          return this;
-        }
-
-        private double movingTime_ ;
-        /**
-         * <code>double movingTime = 9;</code>
-         */
-        public double getMovingTime() {
-          return movingTime_;
-        }
-        /**
-         * <code>double movingTime = 9;</code>
-         */
-        public Builder setMovingTime(double value) {
-          
-          movingTime_ = value;
-          onChanged();
-          return this;
-        }
-        /**
-         * <code>double movingTime = 9;</code>
-         */
-        public Builder clearMovingTime() {
-          
-          movingTime_ = 0D;
+          info_ = value;
           onChanged();
           return this;
         }
 
         private java.lang.Object trigger_ = "";
         /**
-         * <code>string trigger = 10;</code>
+         * <code>string trigger = 6;</code>
          */
         public java.lang.String getTrigger() {
           java.lang.Object ref = trigger_;
@@ -14056,7 +17866,7 @@ public final class ActivityOuterClass {
           }
         }
         /**
-         * <code>string trigger = 10;</code>
+         * <code>string trigger = 6;</code>
          */
         public com.google.protobuf.ByteString
             getTriggerBytes() {
@@ -14072,7 +17882,7 @@ public final class ActivityOuterClass {
           }
         }
         /**
-         * <code>string trigger = 10;</code>
+         * <code>string trigger = 6;</code>
          */
         public Builder setTrigger(
             java.lang.String value) {
@@ -14085,7 +17895,7 @@ public final class ActivityOuterClass {
           return this;
         }
         /**
-         * <code>string trigger = 10;</code>
+         * <code>string trigger = 6;</code>
          */
         public Builder clearTrigger() {
           
@@ -14094,7 +17904,7 @@ public final class ActivityOuterClass {
           return this;
         }
         /**
-         * <code>string trigger = 10;</code>
+         * <code>string trigger = 6;</code>
          */
         public Builder setTriggerBytes(
             com.google.protobuf.ByteString value) {
@@ -14199,6 +18009,19 @@ public final class ActivityOuterClass {
        */
       com.google.protobuf.ByteString
           getStopIdxBytes();
+
+      /**
+       * <code>.Activity.Summary summary = 5;</code>
+       */
+      boolean hasSummary();
+      /**
+       * <code>.Activity.Summary summary = 5;</code>
+       */
+      ski.crunch.activity.model.ActivityOuterClass.Activity.Summary getSummary();
+      /**
+       * <code>.Activity.Summary summary = 5;</code>
+       */
+      ski.crunch.activity.model.ActivityOuterClass.Activity.SummaryOrBuilder getSummaryOrBuilder();
     }
     /**
      * Protobuf type {@code Activity.Segment}
@@ -14272,6 +18095,19 @@ public final class ActivityOuterClass {
                 java.lang.String s = input.readStringRequireUtf8();
 
                 stopIdx_ = s;
+                break;
+              }
+              case 42: {
+                ski.crunch.activity.model.ActivityOuterClass.Activity.Summary.Builder subBuilder = null;
+                if (summary_ != null) {
+                  subBuilder = summary_.toBuilder();
+                }
+                summary_ = input.readMessage(ski.crunch.activity.model.ActivityOuterClass.Activity.Summary.parser(), extensionRegistry);
+                if (subBuilder != null) {
+                  subBuilder.mergeFrom(summary_);
+                  summary_ = subBuilder.buildPartial();
+                }
+
                 break;
               }
             }
@@ -14434,6 +18270,27 @@ public final class ActivityOuterClass {
         }
       }
 
+      public static final int SUMMARY_FIELD_NUMBER = 5;
+      private ski.crunch.activity.model.ActivityOuterClass.Activity.Summary summary_;
+      /**
+       * <code>.Activity.Summary summary = 5;</code>
+       */
+      public boolean hasSummary() {
+        return summary_ != null;
+      }
+      /**
+       * <code>.Activity.Summary summary = 5;</code>
+       */
+      public ski.crunch.activity.model.ActivityOuterClass.Activity.Summary getSummary() {
+        return summary_ == null ? ski.crunch.activity.model.ActivityOuterClass.Activity.Summary.getDefaultInstance() : summary_;
+      }
+      /**
+       * <code>.Activity.Summary summary = 5;</code>
+       */
+      public ski.crunch.activity.model.ActivityOuterClass.Activity.SummaryOrBuilder getSummaryOrBuilder() {
+        return getSummary();
+      }
+
       private byte memoizedIsInitialized = -1;
       public final boolean isInitialized() {
         byte isInitialized = memoizedIsInitialized;
@@ -14458,6 +18315,9 @@ public final class ActivityOuterClass {
         if (!getStopIdxBytes().isEmpty()) {
           com.google.protobuf.GeneratedMessageV3.writeString(output, 4, stopIdx_);
         }
+        if (summary_ != null) {
+          output.writeMessage(5, getSummary());
+        }
         unknownFields.writeTo(output);
       }
 
@@ -14477,6 +18337,10 @@ public final class ActivityOuterClass {
         }
         if (!getStopIdxBytes().isEmpty()) {
           size += com.google.protobuf.GeneratedMessageV3.computeStringSize(4, stopIdx_);
+        }
+        if (summary_ != null) {
+          size += com.google.protobuf.CodedOutputStream
+            .computeMessageSize(5, getSummary());
         }
         size += unknownFields.getSerializedSize();
         memoizedSize = size;
@@ -14502,6 +18366,11 @@ public final class ActivityOuterClass {
             .equals(other.getStartIdx());
         result = result && getStopIdx()
             .equals(other.getStopIdx());
+        result = result && (hasSummary() == other.hasSummary());
+        if (hasSummary()) {
+          result = result && getSummary()
+              .equals(other.getSummary());
+        }
         result = result && unknownFields.equals(other.unknownFields);
         return result;
       }
@@ -14521,6 +18390,10 @@ public final class ActivityOuterClass {
         hash = (53 * hash) + getStartIdx().hashCode();
         hash = (37 * hash) + STOPIDX_FIELD_NUMBER;
         hash = (53 * hash) + getStopIdx().hashCode();
+        if (hasSummary()) {
+          hash = (37 * hash) + SUMMARY_FIELD_NUMBER;
+          hash = (53 * hash) + getSummary().hashCode();
+        }
         hash = (29 * hash) + unknownFields.hashCode();
         memoizedHashCode = hash;
         return hash;
@@ -14658,6 +18531,12 @@ public final class ActivityOuterClass {
 
           stopIdx_ = "";
 
+          if (summaryBuilder_ == null) {
+            summary_ = null;
+          } else {
+            summary_ = null;
+            summaryBuilder_ = null;
+          }
           return this;
         }
 
@@ -14684,6 +18563,11 @@ public final class ActivityOuterClass {
           result.stopTs_ = stopTs_;
           result.startIdx_ = startIdx_;
           result.stopIdx_ = stopIdx_;
+          if (summaryBuilder_ == null) {
+            result.summary_ = summary_;
+          } else {
+            result.summary_ = summaryBuilder_.build();
+          }
           onBuilt();
           return result;
         }
@@ -14740,6 +18624,9 @@ public final class ActivityOuterClass {
           if (!other.getStopIdx().isEmpty()) {
             stopIdx_ = other.stopIdx_;
             onChanged();
+          }
+          if (other.hasSummary()) {
+            mergeSummary(other.getSummary());
           }
           this.mergeUnknownFields(other.unknownFields);
           onChanged();
@@ -15042,6 +18929,123 @@ public final class ActivityOuterClass {
           stopIdx_ = value;
           onChanged();
           return this;
+        }
+
+        private ski.crunch.activity.model.ActivityOuterClass.Activity.Summary summary_ = null;
+        private com.google.protobuf.SingleFieldBuilderV3<
+            ski.crunch.activity.model.ActivityOuterClass.Activity.Summary, ski.crunch.activity.model.ActivityOuterClass.Activity.Summary.Builder, ski.crunch.activity.model.ActivityOuterClass.Activity.SummaryOrBuilder> summaryBuilder_;
+        /**
+         * <code>.Activity.Summary summary = 5;</code>
+         */
+        public boolean hasSummary() {
+          return summaryBuilder_ != null || summary_ != null;
+        }
+        /**
+         * <code>.Activity.Summary summary = 5;</code>
+         */
+        public ski.crunch.activity.model.ActivityOuterClass.Activity.Summary getSummary() {
+          if (summaryBuilder_ == null) {
+            return summary_ == null ? ski.crunch.activity.model.ActivityOuterClass.Activity.Summary.getDefaultInstance() : summary_;
+          } else {
+            return summaryBuilder_.getMessage();
+          }
+        }
+        /**
+         * <code>.Activity.Summary summary = 5;</code>
+         */
+        public Builder setSummary(ski.crunch.activity.model.ActivityOuterClass.Activity.Summary value) {
+          if (summaryBuilder_ == null) {
+            if (value == null) {
+              throw new NullPointerException();
+            }
+            summary_ = value;
+            onChanged();
+          } else {
+            summaryBuilder_.setMessage(value);
+          }
+
+          return this;
+        }
+        /**
+         * <code>.Activity.Summary summary = 5;</code>
+         */
+        public Builder setSummary(
+            ski.crunch.activity.model.ActivityOuterClass.Activity.Summary.Builder builderForValue) {
+          if (summaryBuilder_ == null) {
+            summary_ = builderForValue.build();
+            onChanged();
+          } else {
+            summaryBuilder_.setMessage(builderForValue.build());
+          }
+
+          return this;
+        }
+        /**
+         * <code>.Activity.Summary summary = 5;</code>
+         */
+        public Builder mergeSummary(ski.crunch.activity.model.ActivityOuterClass.Activity.Summary value) {
+          if (summaryBuilder_ == null) {
+            if (summary_ != null) {
+              summary_ =
+                ski.crunch.activity.model.ActivityOuterClass.Activity.Summary.newBuilder(summary_).mergeFrom(value).buildPartial();
+            } else {
+              summary_ = value;
+            }
+            onChanged();
+          } else {
+            summaryBuilder_.mergeFrom(value);
+          }
+
+          return this;
+        }
+        /**
+         * <code>.Activity.Summary summary = 5;</code>
+         */
+        public Builder clearSummary() {
+          if (summaryBuilder_ == null) {
+            summary_ = null;
+            onChanged();
+          } else {
+            summary_ = null;
+            summaryBuilder_ = null;
+          }
+
+          return this;
+        }
+        /**
+         * <code>.Activity.Summary summary = 5;</code>
+         */
+        public ski.crunch.activity.model.ActivityOuterClass.Activity.Summary.Builder getSummaryBuilder() {
+          
+          onChanged();
+          return getSummaryFieldBuilder().getBuilder();
+        }
+        /**
+         * <code>.Activity.Summary summary = 5;</code>
+         */
+        public ski.crunch.activity.model.ActivityOuterClass.Activity.SummaryOrBuilder getSummaryOrBuilder() {
+          if (summaryBuilder_ != null) {
+            return summaryBuilder_.getMessageOrBuilder();
+          } else {
+            return summary_ == null ?
+                ski.crunch.activity.model.ActivityOuterClass.Activity.Summary.getDefaultInstance() : summary_;
+          }
+        }
+        /**
+         * <code>.Activity.Summary summary = 5;</code>
+         */
+        private com.google.protobuf.SingleFieldBuilderV3<
+            ski.crunch.activity.model.ActivityOuterClass.Activity.Summary, ski.crunch.activity.model.ActivityOuterClass.Activity.Summary.Builder, ski.crunch.activity.model.ActivityOuterClass.Activity.SummaryOrBuilder> 
+            getSummaryFieldBuilder() {
+          if (summaryBuilder_ == null) {
+            summaryBuilder_ = new com.google.protobuf.SingleFieldBuilderV3<
+                ski.crunch.activity.model.ActivityOuterClass.Activity.Summary, ski.crunch.activity.model.ActivityOuterClass.Activity.Summary.Builder, ski.crunch.activity.model.ActivityOuterClass.Activity.SummaryOrBuilder>(
+                    getSummary(),
+                    getParentForChildren(),
+                    isClean());
+            summary_ = null;
+          }
+          return summaryBuilder_;
         }
         public final Builder setUnknownFields(
             final com.google.protobuf.UnknownFieldSet unknownFields) {
@@ -17922,6 +21926,16 @@ public final class ActivityOuterClass {
     com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
       internal_static_Activity_Weather_fieldAccessorTable;
   private static final com.google.protobuf.Descriptors.Descriptor
+    internal_static_Activity_Location_descriptor;
+  private static final 
+    com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
+      internal_static_Activity_Location_fieldAccessorTable;
+  private static final com.google.protobuf.Descriptors.Descriptor
+    internal_static_Activity_Geofence_descriptor;
+  private static final 
+    com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
+      internal_static_Activity_Geofence_fieldAccessorTable;
+  private static final com.google.protobuf.Descriptors.Descriptor
     internal_static_Activity_Summary_descriptor;
   private static final 
     com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
@@ -17970,7 +21984,7 @@ public final class ActivityOuterClass {
       descriptor;
   static {
     java.lang.String[] descriptorData = {
-      "\n\016Activity.proto\"\233*\n\010Activity\022\034\n\004meta\030\001 " +
+      "\n\016Activity.proto\"\2021\n\010Activity\022\034\n\004meta\030\001 " +
       "\001(\0132\016.Activity.Meta\022$\n\010userData\030\002 \001(\0132\022." +
       "Activity.UserData\022\"\n\007summary\030\003 \001(\0132\021.Act" +
       "ivity.Summary\022 \n\006values\030\004 \001(\0132\020.Activity" +
@@ -17978,135 +21992,157 @@ public final class ActivityOuterClass {
       "ent\022\n\n\002id\030\006 \001(\t\022#\n\010sessions\030\007 \003(\0132\021.Acti" +
       "vity.Session\022!\n\006pauses\030\010 \003(\0132\021.Activity." +
       "Segment\022\037\n\004laps\030\t \003(\0132\021.Activity.Segment" +
-      "\022 \n\005stops\030\n \003(\0132\021.Activity.Segment\032\212\002\n\004M" +
+      "\022 \n\005stops\030\n \003(\0132\021.Activity.Segment\032\330\001\n\004M" +
       "eta\022\021\n\tcreatedTs\030\001 \001(\t\022/\n\014manufacturer\030\002" +
       " \001(\0162\031.Activity.FitManufacturer\022\017\n\007produ" +
       "ct\030\003 \001(\005\022\017\n\007version\030\004 \001(\001\022\016\n\006source\030\005 \001(" +
-      "\t\022\020\n\010uploadTs\030\006 \001(\t\022\036\n\005sport\030\007 \001(\0162\017.Act" +
-      "ivity.Sport\022$\n\010subSport\030\010 \001(\0162\022.Activity" +
-      ".SubSport\022\020\n\010location\030\t \001(\t\022\"\n\007weather\030\n" +
-      " \001(\0132\021.Activity.Weather\032M\n\010UserData\022\017\n\007f" +
-      "eeling\030\001 \001(\005\022\r\n\005notes\030\002 \001(\t\022\014\n\004tags\030\003 \003(" +
-      "\t\022\023\n\013userWeather\030\004 \001(\t\032\t\n\007Weather\032\343\006\n\007Su" +
-      "mmary\022?\n\017hasAttributeMap\030\001 \003(\0132&.Activit" +
-      "y.Summary.HasAttributeMapEntry\022\017\n\007startT" +
-      "s\030\002 \001(\t\022\r\n\005endTs\030\003 \001(\t\022\024\n\014totalElapsed\030\004" +
-      " \001(\001\022\022\n\ntotalTimer\030\005 \001(\001\022\023\n\013totalMoving\030" +
-      "\006 \001(\001\022\024\n\014totalStopped\030\007 \001(\001\022\023\n\013totalPaus" +
-      "ed\030\010 \001(\001\022\023\n\013totalAscent\030\t \001(\001\022\024\n\014totalDe" +
-      "scent\030\n \001(\001\022\025\n\rtotalDistance\030\013 \001(\001\022\025\n\rto" +
-      "talCalories\030\014 \001(\001\022\r\n\005avgHr\030\r \001(\005\022\r\n\005maxH" +
-      "r\030\016 \001(\005\022\r\n\005minHr\030\017 \001(\005\022\022\n\navgCadence\030\020 \001" +
-      "(\005\022\022\n\nmaxCadence\030\021 \001(\005\022\022\n\nminCadence\030\022 \001" +
-      "(\005\022\017\n\007avgTemp\030\023 \001(\005\022\017\n\007maxTemp\030\024 \001(\005\022\017\n\007" +
-      "minTemp\030\025 \001(\005\022\020\n\010avgSpeed\030\026 \001(\001\022\020\n\010maxSp" +
-      "eed\030\027 \001(\001\022\023\n\013minGradient\030\030 \001(\005\022\023\n\013maxGra" +
-      "dient\030\031 \001(\005\022\023\n\013avgGradient\030\032 \001(\005\022\r\n\005nLap" +
-      "s\030\033 \001(\005\022)\n\004hrvs\030\034 \003(\0132\033.Activity.Summary" +
-      ".HrvsEntry\022\024\n\014totalAscTime\030\035 \001(\001\022\025\n\rtota" +
-      "lDescTime\030\036 \001(\001\022\024\n\014totalAscDist\030\037 \001(\001\022\025\n" +
-      "\rtotalDescDist\030  \001(\001\022\025\n\rpauseDistance\030! " +
-      "\001(\001\022\021\n\tstopCount\030\" \001(\005\022\022\n\npauseCount\030# \001" +
-      "(\005\0326\n\024HasAttributeMapEntry\022\013\n\003key\030\001 \001(\t\022" +
-      "\r\n\005value\030\002 \001(\010:\0028\001\032+\n\tHrvsEntry\022\013\n\003key\030\001" +
-      " \001(\t\022\r\n\005value\030\002 \001(\001:\0028\001\032\227\001\n\007Session\022\036\n\005s" +
-      "port\030\001 \001(\0162\017.Activity.Sport\022$\n\010subSport\030" +
-      "\002 \001(\0162\022.Activity.SubSport\022\"\n\007segment\030\003 \001" +
-      "(\0132\021.Activity.Segment\022\"\n\007summary\030\004 \001(\0132\021" +
-      ".Activity.Summary\032\256\002\n\006Values\022\n\n\002ts\030\001 \003(\t" +
-      "\022\n\n\002hr\030\002 \003(\005\022\013\n\003lat\030\003 \003(\001\022\013\n\003lon\030\004 \003(\001\022\r" +
-      "\n\005speed\030\005 \003(\001\022\020\n\010altitude\030\006 \003(\001\022\r\n\005grade" +
-      "\030\007 \003(\001\022\020\n\010distance\030\010 \003(\001\022\023\n\013temperature\030" +
-      "\t \003(\001\022\016\n\006moving\030\n \003(\010\022\017\n\007cadence\030\013 \003(\005\022(" +
-      "\n\004hrvs\030\014 \003(\0132\032.Activity.Values.HrvsEntry" +
-      "\022\013\n\003hrv\030\r \003(\001\022\026\n\016vertical_speed\030\016 \003(\001\032+\n" +
-      "\tHrvsEntry\022\013\n\003key\030\001 \001(\t\022\r\n\005value\030\002 \001(\001:\002" +
-      "8\001\032\315\001\n\010FitEvent\022\020\n\010startIdx\030\001 \001(\005\022\016\n\006end" +
-      "Idx\030\002 \001(\005\022\n\n\002ts\030\003 \001(\t\022\017\n\007startTs\030\004 \001(\t\022\r" +
-      "\n\005event\030\005 \001(\t\022&\n\teventType\030\006 \001(\0162\023.Activ" +
-      "ity.EventType\022\021\n\ttimerTime\030\007 \001(\001\022\023\n\013elap" +
-      "sedTime\030\010 \001(\001\022\022\n\nmovingTime\030\t \001(\001\022\017\n\007tri" +
-      "gger\030\n \001(\t\032M\n\007Segment\022\017\n\007startTs\030\001 \001(\t\022\016" +
-      "\n\006stopTs\030\002 \001(\t\022\020\n\010startIdx\030\003 \001(\t\022\017\n\007stop" +
-      "Idx\030\004 \001(\t\"\337\017\n\017FitManufacturer\022\013\n\007UNKNOWN" +
-      "\020\000\022\n\n\006GARMIN\020\001\022\026\n\022GARMIN_FR405_ANTFS\020\002\022\n" +
-      "\n\006ZEPHYR\020\003\022\n\n\006DAYTON\020\004\022\007\n\003IDT\020\005\022\007\n\003SRM\020\006" +
-      "\022\t\n\005QUARQ\020\007\022\t\n\005IBIKE\020\010\022\t\n\005SARIS\020\t\022\014\n\010SPA" +
-      "RK_HK\020\n\022\n\n\006TANITA\020\013\022\014\n\010ECHOWELL\020\014\022\022\n\016DYN" +
-      "ASTREAM_OEM\020\r\022\014\n\010NAUTILUS\020\016\022\016\n\nDYNASTREA" +
-      "M\020\017\022\t\n\005TIMEX\020\020\022\r\n\tMETRIGEAR\020\021\022\t\n\005XELIC\020\022" +
-      "\022\n\n\006BEURER\020\023\022\017\n\013CARDIOSPORT\020\024\022\013\n\007A_AND_D" +
-      "\020\025\022\007\n\003HMM\020\026\022\n\n\006SUUNTO\020\027\022\024\n\020THITA_ELEKTRO" +
-      "NIK\020\030\022\n\n\006GPULSE\020\031\022\020\n\014CLEAN_MOBILE\020\032\022\017\n\013P" +
-      "EDAL_BRAIN\020\033\022\r\n\tPEAKSWARE\020\034\022\013\n\007SAXONAR\020\035" +
-      "\022\022\n\016LEMOND_FITNESS\020\036\022\n\n\006DEXCOM\020\037\022\021\n\rWAHO" +
-      "O_FITNESS\020 \022\022\n\016OCTANE_FITNESS\020!\022\020\n\014ARCHI" +
-      "NOETICS\020\"\022\020\n\014THE_HURT_BOX\020#\022\023\n\017CITIZEN_S" +
-      "YSTEMS\020$\022\014\n\010MAGELLAN\020%\022\n\n\006OSYNCE\020&\022\t\n\005HO" +
-      "LUX\020\'\022\014\n\010CONCEPT2\020(\022\022\n\016ONE_GIANT_LEAP\020*\022" +
-      "\016\n\nACE_SENSOR\020+\022\021\n\rBRIM_BROTHERS\020,\022\n\n\006XP" +
-      "LOVA\020-\022\026\n\022PERCEPTION_DIGITAL\020.\022\016\n\nBF1SYS" +
-      "TEMS\020/\022\013\n\007PIONEER\0200\022\013\n\007SPANTEC\0201\022\016\n\nMETA" +
-      "LOGICS\0202\022\013\n\007I4IIIIS\0203\022\017\n\013SEIKO_EPSON\0204\022\023" +
-      "\n\017SEIKO_EPSON_OEM\0205\022\017\n\013IFOR_POWELL\0206\022\022\n\016" +
-      "MAXWELL_GUIDER\0207\022\r\n\tSTAR_TRAC\0208\022\r\n\tBREAK" +
-      "AWAY\0209\022\032\n\026ALATECH_TECHNOLOGY_LTD\020:\022\031\n\025MI" +
-      "O_TECHNOLOGY_EUROPE\020;\022\t\n\005ROTOR\020<\022\014\n\010GEON" +
-      "AUTE\020=\022\013\n\007ID_BIKE\020>\022\017\n\013SPECIALIZED\020?\022\010\n\004" +
-      "WTEK\020@\022\030\n\024PHYSICAL_ENTERPRISES\020A\022\032\n\026NORT" +
-      "H_POLE_ENGINEERING\020B\022\t\n\005BKOOL\020C\022\n\n\006CATEY" +
-      "E\020D\022\022\n\016STAGES_CYCLING\020E\022\016\n\nSIGMASPORT\020F\022" +
-      "\n\n\006TOMTOM\020G\022\r\n\tPERIPEDAL\020H\022\014\n\010WATTBIKE\020I" +
-      "\022\010\n\004MOXY\020L\022\016\n\nCICLOSPORT\020M\022\r\n\tPOWERBAHN\020" +
-      "N\022\026\n\022ACORN_PROJECTS_APS\020O\022\014\n\010LIFEBEAM\020P\022" +
-      "\r\n\tBONTRAGER\020Q\022\n\n\006WELLGO\020R\022\013\n\007SCOSCHE\020S\022" +
-      "\n\n\006MAGURA\020T\022\013\n\007WOODWAY\020U\022\t\n\005ELITE\020V\022\025\n\021N" +
-      "IELSEN_KELLERMAN\020W\022\013\n\007DK_CITY\020X\022\010\n\004TACX\020" +
-      "Y\022\030\n\024DIRECTION_TECHNOLOGY\020Z\022\014\n\010MAGTONIC\020" +
-      "[\022\021\n\rONEPARTCARBON\020\\\022\034\n\030INSIDE_RIDE_TECH" +
-      "NOLOGIES\020]\022\023\n\017SOUND_OF_MOTION\020^\022\t\n\005STRYD" +
-      "\020_\022\007\n\003ICG\020`\022\013\n\007MIPULSE\020a\022\021\n\rBSX_ATHLETIC" +
-      "S\020b\022\010\n\004LOOK\020c\022\022\n\016CAMPAGNOLO_SRL\020d\022\023\n\017BOD" +
-      "Y_BIKE_SMART\020e\022\017\n\013PRAXISWORKS\020f\022\025\n\021LIMIT" +
-      "S_TECHNOLOGY\020g\022\030\n\024TOPACTION_TECHNOLOGY\020h" +
-      "\022\014\n\010COSINUSS\020i\022\013\n\007FITCARE\020j\022\n\n\006MAGENE\020k\022" +
-      "\032\n\026GIANT_MANUFACTURING_CO\020l\022\016\n\nTIGRASPOR" +
-      "T\020m\022\020\n\013DEVELOPMENT\020\377\001\022\022\n\rHEALTHANDLIFE\020\201" +
-      "\002\022\013\n\006LEZYNE\020\202\002\022\020\n\013SCRIBE_LABS\020\203\002\022\n\n\005ZWIF" +
-      "T\020\204\002\022\014\n\007WATTEAM\020\205\002\022\n\n\005RECON\020\206\002\022\027\n\022FAVERO" +
-      "_ELECTRONICS\020\207\002\022\r\n\010DYNOVELO\020\210\002\022\013\n\006STRAVA" +
-      "\020\211\002\022\013\n\006PRECOR\020\212\002\022\013\n\006BRYTON\020\213\002\022\t\n\004SRAM\020\214\002" +
-      "\022\013\n\006NAVMAN\020\215\002\022\t\n\004COBI\020\216\002\022\n\n\005SPIVI\020\217\002\022\021\n\014" +
-      "MIO_MAGELLAN\020\220\002\022\016\n\tEVESPORTS\020\221\002\022\025\n\020SENSI" +
-      "TIVUS_GAUGE\020\222\002\022\013\n\006PODOON\020\223\002\"\316\001\n\tEventTyp" +
-      "e\022\t\n\005START\020\000\022\010\n\004STOP\020\001\022\033\n\027CONSECUTIVE_DE" +
-      "PRECIATED\020\002\022\n\n\006MARKER\020\003\022\014\n\010STOP_ALL\020\004\022\025\n" +
-      "\021BEGIN_DEPRECIATED\020\005\022\023\n\017END_DEPRECIATED\020" +
-      "\006\022\027\n\023END_ALL_DEPRECIATED\020\007\022\020\n\014STOP_DISAB" +
-      "LE\020\010\022\024\n\020STOP_DISABLE_ALL\020\t\022\010\n\004NULL\020\n\"\336\002\n" +
-      "\005Sport\022\013\n\007GENERIC\020\000\022\013\n\007RUNNING\020\001\022\013\n\007CYCL" +
-      "ING\020\002\022\016\n\nTRANSITION\020\003\022\025\n\021FITNESS_EQUIPME" +
-      "NT\020\004\022\014\n\010SWIMMING\020\005\022\016\n\nBASKETBALL\020\006\022\n\n\006SO" +
-      "CCER\020\007\022\n\n\006TENNIS\020\010\022\025\n\021AMERICAN_FOOTBALL\020" +
-      "\t\022\014\n\010TRAINING\020\n\022\013\n\007WALKING\020\013\022\030\n\024CROSS_CO" +
-      "UNTRY_SKIING\020\014\022\021\n\rALPINE_SKIING\020\r\022\020\n\014SNO" +
-      "WBOARDING\020\016\022\n\n\006ROWING\020\017\022\022\n\016MOUNTAINEERIN" +
-      "G\020\020\022\n\n\006HIKING\020\021\022\016\n\nMULTISPORT\020\022\022\014\n\010PADDL" +
-      "ING\020\023\022\010\n\003ALL\020\376\001\022\014\n\007INVALID\020\377\001\"\376\003\n\010SubSpo" +
-      "rt\022\024\n\020GENERIC_SUBSPORT\020\000\022\r\n\tTREADMILL\020\001\022" +
-      "\n\n\006STREET\020\002\022\t\n\005TRAIL\020\003\022\t\n\005TRACK\020\004\022\010\n\004SPI" +
-      "N\020\005\022\022\n\016INDOOR_CYCLING\020\006\022\010\n\004ROAD\020\007\022\014\n\010MOU" +
-      "NTAIN\020\010\022\014\n\010DOWNHILL\020\t\022\r\n\tRECUMBENT\020\n\022\016\n\n" +
-      "CYCLOCROSS\020\013\022\020\n\014HAND_CYCLING\020\014\022\021\n\rTRACK_" +
-      "CYCLING\020\r\022\021\n\rINDOOR_ROWING\020\016\022\016\n\nELLIPTIC" +
-      "AL\020\017\022\022\n\016STAIR_CLIMBING\020\020\022\020\n\014LAP_SWIMMING" +
-      "\020\021\022\016\n\nOPEN_WATER\020\022\022\030\n\024FLEXIBILITY_TRAINI" +
-      "NG\020\023\022\025\n\021STRENGTH_TRAINING\020\024\022\013\n\007WARM_UP\020\025" +
-      "\022\t\n\005MATCH\020\026\022\014\n\010EXERCISE\020\027\022\r\n\tCHALLENGE\020\030" +
-      "\022\021\n\rINDOOR_SKIING\020\031\022\023\n\017CARDIO_TRAINING\020\032" +
-      "\022\022\n\016INDOOR_WALKING\020\033\022\021\n\014ALL_SUBSPORT\020\376\001\022" +
-      "\025\n\020INVALID_SUBSPORT\020\377\001B\033\n\031ski.crunch.act" +
-      "ivity.modelb\006proto3"
+      "\t\022\020\n\010uploadTs\030\006 \001(\t\022$\n\010location\030\t \001(\0132\022." +
+      "Activity.Location\022\"\n\007weather\030\n \001(\0132\021.Act" +
+      "ivity.Weather\032M\n\010UserData\022\017\n\007feeling\030\001 \001" +
+      "(\005\022\r\n\005notes\030\002 \001(\t\022\014\n\004tags\030\003 \003(\t\022\023\n\013userW" +
+      "eather\030\004 \001(\t\032\343\002\n\007Weather\022\023\n\013temperature\030" +
+      "\001 \001(\001\022\033\n\023apparentTemperature\030\002 \001(\001\022\021\n\twi" +
+      "ndSpeed\030\003 \001(\002\022\025\n\rwindDirection\030\004 \001(\005\022\022\n\n" +
+      "cloudCover\030\005 \001(\002\022\020\n\010pressure\030\006 \001(\002\022(\n\npr" +
+      "ecipType\030\007 \001(\0162\024.Activity.PrecipType\022\027\n\017" +
+      "precipIntensity\030\010 \001(\001\022\032\n\022precipAccumulat" +
+      "ion\030\t \001(\001\022\022\n\nvisibility\030\n \001(\002\022#\n\004icon\030\013 " +
+      "\001(\0162\025.Activity.WeatherIcon\022\020\n\010humidity\030\014" +
+      " \001(\002\022\021\n\tsnowDepth\030\r \001(\002\022\031\n\021snowInPast24H" +
+      "ours\030\016 \001(\002\032\340\001\n\010Location\022\013\n\003lat\030\001 \001(\001\022\013\n\003" +
+      "lon\030\002 \001(\001\022(\n\006source\030\003 \001(\0162\030.Activity.Loc" +
+      "ationSource\022\020\n\010address1\030\004 \001(\t\022\020\n\010address" +
+      "2\030\005 \001(\t\022\014\n\004city\030\006 \001(\t\022\016\n\006county\030\007 \001(\t\022\014\n" +
+      "\004prov\030\010 \001(\t\022\017\n\007country\030\t \001(\t\022\013\n\003zip\030\n \001(" +
+      "\t\022\"\n\006fences\030\013 \003(\0132\022.Activity.Geofence\032$\n" +
+      "\010Geofence\022\n\n\002id\030\001 \001(\005\022\014\n\004name\030\002 \001(\t\032\343\006\n\007" +
+      "Summary\022?\n\017hasAttributeMap\030\001 \003(\0132&.Activ" +
+      "ity.Summary.HasAttributeMapEntry\022\017\n\007star" +
+      "tTs\030\002 \001(\t\022\r\n\005endTs\030\003 \001(\t\022\024\n\014totalElapsed" +
+      "\030\004 \001(\001\022\022\n\ntotalTimer\030\005 \001(\001\022\023\n\013totalMovin" +
+      "g\030\006 \001(\001\022\024\n\014totalStopped\030\007 \001(\001\022\023\n\013totalPa" +
+      "used\030\010 \001(\001\022\023\n\013totalAscent\030\t \001(\001\022\024\n\014total" +
+      "Descent\030\n \001(\001\022\025\n\rtotalDistance\030\013 \001(\001\022\025\n\r" +
+      "totalCalories\030\014 \001(\001\022\r\n\005avgHr\030\r \001(\005\022\r\n\005ma" +
+      "xHr\030\016 \001(\005\022\r\n\005minHr\030\017 \001(\005\022\022\n\navgCadence\030\020" +
+      " \001(\005\022\022\n\nmaxCadence\030\021 \001(\005\022\022\n\nminCadence\030\022" +
+      " \001(\005\022\017\n\007avgTemp\030\023 \001(\005\022\017\n\007maxTemp\030\024 \001(\005\022\017" +
+      "\n\007minTemp\030\025 \001(\005\022\020\n\010avgSpeed\030\026 \001(\001\022\020\n\010max" +
+      "Speed\030\027 \001(\001\022\023\n\013minGradient\030\030 \001(\005\022\023\n\013maxG" +
+      "radient\030\031 \001(\005\022\023\n\013avgGradient\030\032 \001(\005\022\r\n\005nL" +
+      "aps\030\033 \001(\005\022)\n\004hrvs\030\034 \003(\0132\033.Activity.Summa" +
+      "ry.HrvsEntry\022\024\n\014totalAscTime\030\035 \001(\001\022\025\n\rto" +
+      "talDescTime\030\036 \001(\001\022\024\n\014totalAscDist\030\037 \001(\001\022" +
+      "\025\n\rtotalDescDist\030  \001(\001\022\025\n\rpauseDistance\030" +
+      "! \001(\001\022\021\n\tstopCount\030\" \001(\005\022\022\n\npauseCount\030#" +
+      " \001(\005\0326\n\024HasAttributeMapEntry\022\013\n\003key\030\001 \001(" +
+      "\t\022\r\n\005value\030\002 \001(\010:\0028\001\032+\n\tHrvsEntry\022\013\n\003key" +
+      "\030\001 \001(\t\022\r\n\005value\030\002 \001(\001:\0028\001\032\227\001\n\007Session\022\036\n" +
+      "\005sport\030\001 \001(\0162\017.Activity.Sport\022$\n\010subSpor" +
+      "t\030\002 \001(\0162\022.Activity.SubSport\022\"\n\007segment\030\003" +
+      " \001(\0132\021.Activity.Segment\022\"\n\007summary\030\004 \001(\013" +
+      "2\021.Activity.Summary\032\256\002\n\006Values\022\n\n\002ts\030\001 \003" +
+      "(\t\022\n\n\002hr\030\002 \003(\005\022\013\n\003lat\030\003 \003(\001\022\013\n\003lon\030\004 \003(\001" +
+      "\022\r\n\005speed\030\005 \003(\001\022\020\n\010altitude\030\006 \003(\001\022\r\n\005gra" +
+      "de\030\007 \003(\001\022\020\n\010distance\030\010 \003(\001\022\023\n\013temperatur" +
+      "e\030\t \003(\001\022\016\n\006moving\030\n \003(\010\022\017\n\007cadence\030\013 \003(\005" +
+      "\022(\n\004hrvs\030\014 \003(\0132\032.Activity.Values.HrvsEnt" +
+      "ry\022\013\n\003hrv\030\r \003(\001\022\026\n\016vertical_speed\030\016 \003(\001\032" +
+      "+\n\tHrvsEntry\022\013\n\003key\030\001 \001(\t\022\r\n\005value\030\002 \001(\001" +
+      ":\0028\001\032{\n\010FitEvent\022\r\n\005index\030\001 \001(\005\022\n\n\002ts\030\002 " +
+      "\001(\t\022\r\n\005event\030\003 \001(\t\022&\n\teventType\030\004 \001(\0162\023." +
+      "Activity.EventType\022\014\n\004info\030\005 \001(\t\022\017\n\007trig" +
+      "ger\030\006 \001(\t\032q\n\007Segment\022\017\n\007startTs\030\001 \001(\t\022\016\n" +
+      "\006stopTs\030\002 \001(\t\022\020\n\010startIdx\030\003 \001(\t\022\017\n\007stopI" +
+      "dx\030\004 \001(\t\022\"\n\007summary\030\005 \001(\0132\021.Activity.Sum" +
+      "mary\"+\n\nPrecipType\022\010\n\004RAIN\020\000\022\t\n\005SLEET\020\001\022" +
+      "\010\n\004SNOW\020\002\"\252\001\n\013WeatherIcon\022\r\n\tCLEAR_DAY\020\000" +
+      "\022\017\n\013CLEAR_NIGHT\020\001\022\r\n\tRAIN_ICON\020\002\022\r\n\tSNOW" +
+      "_ICON\020\003\022\016\n\nSLEET_ICON\020\004\022\010\n\004WIND\020\005\022\007\n\003FOG" +
+      "\020\006\022\n\n\006CLOUDY\020\007\022\025\n\021PARTLY_CLOUDY_DAY\020\010\022\027\n" +
+      "\023PARTLY_CLOUDY_NIGHT\020\t\"&\n\016LocationSource" +
+      "\022\n\n\006GOOGLE\020\000\022\010\n\004HERE\020\002\"\337\017\n\017FitManufactur" +
+      "er\022\013\n\007UNKNOWN\020\000\022\n\n\006GARMIN\020\001\022\026\n\022GARMIN_FR" +
+      "405_ANTFS\020\002\022\n\n\006ZEPHYR\020\003\022\n\n\006DAYTON\020\004\022\007\n\003I" +
+      "DT\020\005\022\007\n\003SRM\020\006\022\t\n\005QUARQ\020\007\022\t\n\005IBIKE\020\010\022\t\n\005S" +
+      "ARIS\020\t\022\014\n\010SPARK_HK\020\n\022\n\n\006TANITA\020\013\022\014\n\010ECHO" +
+      "WELL\020\014\022\022\n\016DYNASTREAM_OEM\020\r\022\014\n\010NAUTILUS\020\016" +
+      "\022\016\n\nDYNASTREAM\020\017\022\t\n\005TIMEX\020\020\022\r\n\tMETRIGEAR" +
+      "\020\021\022\t\n\005XELIC\020\022\022\n\n\006BEURER\020\023\022\017\n\013CARDIOSPORT" +
+      "\020\024\022\013\n\007A_AND_D\020\025\022\007\n\003HMM\020\026\022\n\n\006SUUNTO\020\027\022\024\n\020" +
+      "THITA_ELEKTRONIK\020\030\022\n\n\006GPULSE\020\031\022\020\n\014CLEAN_" +
+      "MOBILE\020\032\022\017\n\013PEDAL_BRAIN\020\033\022\r\n\tPEAKSWARE\020\034" +
+      "\022\013\n\007SAXONAR\020\035\022\022\n\016LEMOND_FITNESS\020\036\022\n\n\006DEX" +
+      "COM\020\037\022\021\n\rWAHOO_FITNESS\020 \022\022\n\016OCTANE_FITNE" +
+      "SS\020!\022\020\n\014ARCHINOETICS\020\"\022\020\n\014THE_HURT_BOX\020#" +
+      "\022\023\n\017CITIZEN_SYSTEMS\020$\022\014\n\010MAGELLAN\020%\022\n\n\006O" +
+      "SYNCE\020&\022\t\n\005HOLUX\020\'\022\014\n\010CONCEPT2\020(\022\022\n\016ONE_" +
+      "GIANT_LEAP\020*\022\016\n\nACE_SENSOR\020+\022\021\n\rBRIM_BRO" +
+      "THERS\020,\022\n\n\006XPLOVA\020-\022\026\n\022PERCEPTION_DIGITA" +
+      "L\020.\022\016\n\nBF1SYSTEMS\020/\022\013\n\007PIONEER\0200\022\013\n\007SPAN" +
+      "TEC\0201\022\016\n\nMETALOGICS\0202\022\013\n\007I4IIIIS\0203\022\017\n\013SE" +
+      "IKO_EPSON\0204\022\023\n\017SEIKO_EPSON_OEM\0205\022\017\n\013IFOR" +
+      "_POWELL\0206\022\022\n\016MAXWELL_GUIDER\0207\022\r\n\tSTAR_TR" +
+      "AC\0208\022\r\n\tBREAKAWAY\0209\022\032\n\026ALATECH_TECHNOLOG" +
+      "Y_LTD\020:\022\031\n\025MIO_TECHNOLOGY_EUROPE\020;\022\t\n\005RO" +
+      "TOR\020<\022\014\n\010GEONAUTE\020=\022\013\n\007ID_BIKE\020>\022\017\n\013SPEC" +
+      "IALIZED\020?\022\010\n\004WTEK\020@\022\030\n\024PHYSICAL_ENTERPRI" +
+      "SES\020A\022\032\n\026NORTH_POLE_ENGINEERING\020B\022\t\n\005BKO" +
+      "OL\020C\022\n\n\006CATEYE\020D\022\022\n\016STAGES_CYCLING\020E\022\016\n\n" +
+      "SIGMASPORT\020F\022\n\n\006TOMTOM\020G\022\r\n\tPERIPEDAL\020H\022" +
+      "\014\n\010WATTBIKE\020I\022\010\n\004MOXY\020L\022\016\n\nCICLOSPORT\020M\022" +
+      "\r\n\tPOWERBAHN\020N\022\026\n\022ACORN_PROJECTS_APS\020O\022\014" +
+      "\n\010LIFEBEAM\020P\022\r\n\tBONTRAGER\020Q\022\n\n\006WELLGO\020R\022" +
+      "\013\n\007SCOSCHE\020S\022\n\n\006MAGURA\020T\022\013\n\007WOODWAY\020U\022\t\n" +
+      "\005ELITE\020V\022\025\n\021NIELSEN_KELLERMAN\020W\022\013\n\007DK_CI" +
+      "TY\020X\022\010\n\004TACX\020Y\022\030\n\024DIRECTION_TECHNOLOGY\020Z" +
+      "\022\014\n\010MAGTONIC\020[\022\021\n\rONEPARTCARBON\020\\\022\034\n\030INS" +
+      "IDE_RIDE_TECHNOLOGIES\020]\022\023\n\017SOUND_OF_MOTI" +
+      "ON\020^\022\t\n\005STRYD\020_\022\007\n\003ICG\020`\022\013\n\007MIPULSE\020a\022\021\n" +
+      "\rBSX_ATHLETICS\020b\022\010\n\004LOOK\020c\022\022\n\016CAMPAGNOLO" +
+      "_SRL\020d\022\023\n\017BODY_BIKE_SMART\020e\022\017\n\013PRAXISWOR" +
+      "KS\020f\022\025\n\021LIMITS_TECHNOLOGY\020g\022\030\n\024TOPACTION" +
+      "_TECHNOLOGY\020h\022\014\n\010COSINUSS\020i\022\013\n\007FITCARE\020j" +
+      "\022\n\n\006MAGENE\020k\022\032\n\026GIANT_MANUFACTURING_CO\020l" +
+      "\022\016\n\nTIGRASPORT\020m\022\020\n\013DEVELOPMENT\020\377\001\022\022\n\rHE" +
+      "ALTHANDLIFE\020\201\002\022\013\n\006LEZYNE\020\202\002\022\020\n\013SCRIBE_LA" +
+      "BS\020\203\002\022\n\n\005ZWIFT\020\204\002\022\014\n\007WATTEAM\020\205\002\022\n\n\005RECON" +
+      "\020\206\002\022\027\n\022FAVERO_ELECTRONICS\020\207\002\022\r\n\010DYNOVELO" +
+      "\020\210\002\022\013\n\006STRAVA\020\211\002\022\013\n\006PRECOR\020\212\002\022\013\n\006BRYTON\020" +
+      "\213\002\022\t\n\004SRAM\020\214\002\022\013\n\006NAVMAN\020\215\002\022\t\n\004COBI\020\216\002\022\n\n" +
+      "\005SPIVI\020\217\002\022\021\n\014MIO_MAGELLAN\020\220\002\022\016\n\tEVESPORT" +
+      "S\020\221\002\022\025\n\020SENSITIVUS_GAUGE\020\222\002\022\013\n\006PODOON\020\223\002" +
+      "\"\316\001\n\tEventType\022\t\n\005START\020\000\022\010\n\004STOP\020\001\022\033\n\027C" +
+      "ONSECUTIVE_DEPRECIATED\020\002\022\n\n\006MARKER\020\003\022\014\n\010" +
+      "STOP_ALL\020\004\022\025\n\021BEGIN_DEPRECIATED\020\005\022\023\n\017END" +
+      "_DEPRECIATED\020\006\022\027\n\023END_ALL_DEPRECIATED\020\007\022" +
+      "\020\n\014STOP_DISABLE\020\010\022\024\n\020STOP_DISABLE_ALL\020\t\022" +
+      "\010\n\004NULL\020\n\"\336\002\n\005Sport\022\013\n\007GENERIC\020\000\022\013\n\007RUNN" +
+      "ING\020\001\022\013\n\007CYCLING\020\002\022\016\n\nTRANSITION\020\003\022\025\n\021FI" +
+      "TNESS_EQUIPMENT\020\004\022\014\n\010SWIMMING\020\005\022\016\n\nBASKE" +
+      "TBALL\020\006\022\n\n\006SOCCER\020\007\022\n\n\006TENNIS\020\010\022\025\n\021AMERI" +
+      "CAN_FOOTBALL\020\t\022\014\n\010TRAINING\020\n\022\013\n\007WALKING\020" +
+      "\013\022\030\n\024CROSS_COUNTRY_SKIING\020\014\022\021\n\rALPINE_SK" +
+      "IING\020\r\022\020\n\014SNOWBOARDING\020\016\022\n\n\006ROWING\020\017\022\022\n\016" +
+      "MOUNTAINEERING\020\020\022\n\n\006HIKING\020\021\022\016\n\nMULTISPO" +
+      "RT\020\022\022\014\n\010PADDLING\020\023\022\010\n\003ALL\020\376\001\022\014\n\007INVALID\020" +
+      "\377\001\"\340\004\n\010SubSport\022\024\n\020GENERIC_SUBSPORT\020\000\022\r\n" +
+      "\tTREADMILL\020\001\022\n\n\006STREET\020\002\022\t\n\005TRAIL\020\003\022\t\n\005T" +
+      "RACK\020\004\022\010\n\004SPIN\020\005\022\022\n\016INDOOR_CYCLING\020\006\022\010\n\004" +
+      "ROAD\020\007\022\014\n\010MOUNTAIN\020\010\022\014\n\010DOWNHILL\020\t\022\r\n\tRE" +
+      "CUMBENT\020\n\022\016\n\nCYCLOCROSS\020\013\022\020\n\014HAND_CYCLIN" +
+      "G\020\014\022\021\n\rTRACK_CYCLING\020\r\022\021\n\rINDOOR_ROWING\020" +
+      "\016\022\016\n\nELLIPTICAL\020\017\022\022\n\016STAIR_CLIMBING\020\020\022\020\n" +
+      "\014LAP_SWIMMING\020\021\022\016\n\nOPEN_WATER\020\022\022\030\n\024FLEXI" +
+      "BILITY_TRAINING\020\023\022\025\n\021STRENGTH_TRAINING\020\024" +
+      "\022\013\n\007WARM_UP\020\025\022\t\n\005MATCH\020\026\022\014\n\010EXERCISE\020\027\022\r" +
+      "\n\tCHALLENGE\020\030\022\021\n\rINDOOR_SKIING\020\031\022\023\n\017CARD" +
+      "IO_TRAINING\020\032\022\022\n\016INDOOR_WALKING\020\033\022\016\n\nCLA" +
+      "SSIC_XC\020\034\022\014\n\010SKATE_XC\020\035\022\017\n\013TELEMARK_XC\020\036" +
+      "\022\022\n\016BACKCOUNTRY_XC\020\037\022\022\n\016ALPINE_TOURING\020 " +
+      "\022\t\n\005SKIMO\020!\022\021\n\014ALL_SUBSPORT\020\376\001\022\025\n\020INVALI" +
+      "D_SUBSPORT\020\377\001B\033\n\031ski.crunch.activity.mod" +
+      "elb\006proto3"
     };
     com.google.protobuf.Descriptors.FileDescriptor.InternalDescriptorAssigner assigner =
         new com.google.protobuf.Descriptors.FileDescriptor.    InternalDescriptorAssigner() {
@@ -18131,7 +22167,7 @@ public final class ActivityOuterClass {
     internal_static_Activity_Meta_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
         internal_static_Activity_Meta_descriptor,
-        new java.lang.String[] { "CreatedTs", "Manufacturer", "Product", "Version", "Source", "UploadTs", "Sport", "SubSport", "Location", "Weather", });
+        new java.lang.String[] { "CreatedTs", "Manufacturer", "Product", "Version", "Source", "UploadTs", "Location", "Weather", });
     internal_static_Activity_UserData_descriptor =
       internal_static_Activity_descriptor.getNestedTypes().get(1);
     internal_static_Activity_UserData_fieldAccessorTable = new
@@ -18143,9 +22179,21 @@ public final class ActivityOuterClass {
     internal_static_Activity_Weather_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
         internal_static_Activity_Weather_descriptor,
-        new java.lang.String[] { });
-    internal_static_Activity_Summary_descriptor =
+        new java.lang.String[] { "Temperature", "ApparentTemperature", "WindSpeed", "WindDirection", "CloudCover", "Pressure", "PrecipType", "PrecipIntensity", "PrecipAccumulation", "Visibility", "Icon", "Humidity", "SnowDepth", "SnowInPast24Hours", });
+    internal_static_Activity_Location_descriptor =
       internal_static_Activity_descriptor.getNestedTypes().get(3);
+    internal_static_Activity_Location_fieldAccessorTable = new
+      com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
+        internal_static_Activity_Location_descriptor,
+        new java.lang.String[] { "Lat", "Lon", "Source", "Address1", "Address2", "City", "County", "Prov", "Country", "Zip", "Fences", });
+    internal_static_Activity_Geofence_descriptor =
+      internal_static_Activity_descriptor.getNestedTypes().get(4);
+    internal_static_Activity_Geofence_fieldAccessorTable = new
+      com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
+        internal_static_Activity_Geofence_descriptor,
+        new java.lang.String[] { "Id", "Name", });
+    internal_static_Activity_Summary_descriptor =
+      internal_static_Activity_descriptor.getNestedTypes().get(5);
     internal_static_Activity_Summary_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
         internal_static_Activity_Summary_descriptor,
@@ -18163,13 +22211,13 @@ public final class ActivityOuterClass {
         internal_static_Activity_Summary_HrvsEntry_descriptor,
         new java.lang.String[] { "Key", "Value", });
     internal_static_Activity_Session_descriptor =
-      internal_static_Activity_descriptor.getNestedTypes().get(4);
+      internal_static_Activity_descriptor.getNestedTypes().get(6);
     internal_static_Activity_Session_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
         internal_static_Activity_Session_descriptor,
         new java.lang.String[] { "Sport", "SubSport", "Segment", "Summary", });
     internal_static_Activity_Values_descriptor =
-      internal_static_Activity_descriptor.getNestedTypes().get(5);
+      internal_static_Activity_descriptor.getNestedTypes().get(7);
     internal_static_Activity_Values_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
         internal_static_Activity_Values_descriptor,
@@ -18181,17 +22229,17 @@ public final class ActivityOuterClass {
         internal_static_Activity_Values_HrvsEntry_descriptor,
         new java.lang.String[] { "Key", "Value", });
     internal_static_Activity_FitEvent_descriptor =
-      internal_static_Activity_descriptor.getNestedTypes().get(6);
+      internal_static_Activity_descriptor.getNestedTypes().get(8);
     internal_static_Activity_FitEvent_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
         internal_static_Activity_FitEvent_descriptor,
-        new java.lang.String[] { "StartIdx", "EndIdx", "Ts", "StartTs", "Event", "EventType", "TimerTime", "ElapsedTime", "MovingTime", "Trigger", });
+        new java.lang.String[] { "Index", "Ts", "Event", "EventType", "Info", "Trigger", });
     internal_static_Activity_Segment_descriptor =
-      internal_static_Activity_descriptor.getNestedTypes().get(7);
+      internal_static_Activity_descriptor.getNestedTypes().get(9);
     internal_static_Activity_Segment_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
         internal_static_Activity_Segment_descriptor,
-        new java.lang.String[] { "StartTs", "StopTs", "StartIdx", "StopIdx", });
+        new java.lang.String[] { "StartTs", "StopTs", "StartIdx", "StopIdx", "Summary", });
   }
 
   // @@protoc_insertion_point(outer_class_scope)
