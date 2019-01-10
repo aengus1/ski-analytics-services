@@ -58,18 +58,18 @@ public class LapMessageListener extends AbstractMesgListener implements LapMesgL
                 if (field.getName().equals("total_elapsed_time")) {
                     logger.debug("elapsed time:" + (double) field.getValue());
                     double elapsed = (double) field.getValue();
-                    event.setInfo(event.getInfo() + ",elapsed:" + elapsed);
+                    event.setInfo(event.getInfo() + ",elapsed:" + elapsed +",");
                 }
                 if (field.getName().equals("total_timer_time")) {
-                    logger.debug("timer time: " + (double) field.getValue());
+                    logger.debug("timer_time: " + (double) field.getValue());
                     double timer = (double) field.getValue();
-                    event.setInfo(event.getInfo() + ",timer:" + timer);
+                    event.setInfo(event.getInfo() + ",timer:" + timer + ",");
 
                 }
                 if (field.getName().equals("total_moving_time")) {
                     double moving = (double) field.getValue();
                     logger.debug("moving time: " + (double) field.getValue());
-                    event.setInfo(event.getInfo() + ",moving:" + moving);
+                    event.setInfo(event.getInfo() + ",moving:" + moving +",");
                 }
             }
 

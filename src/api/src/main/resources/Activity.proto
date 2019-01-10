@@ -13,6 +13,7 @@ repeated Session sessions = 7;
 repeated Segment pauses = 8;
 repeated Segment laps = 9;
 repeated Segment stops = 10;
+Segment activitySegment = 11;
 
 
 message Meta {
@@ -311,8 +312,8 @@ message FitEvent {
 message Segment {
     string startTs = 1;
     string stopTs = 2;
-    string startIdx = 3;
-    string stopIdx = 4;
+    int32 startIdx = 3;
+    int32 stopIdx = 4;
     Summary summary =5;
 }
 

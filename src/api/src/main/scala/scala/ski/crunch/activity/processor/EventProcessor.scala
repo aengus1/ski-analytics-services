@@ -158,4 +158,37 @@ class EventProcessor(holder: ActivityHolder) {
 
     return new EventProcessor(holder)
   }
+
+  def detectMotionStops(): EventProcessor = {
+    val records = holder.getRecords.toList
+    val events = holder.getEvents.toList
+    val recordProcessor = new RecordProcessor(records)
+    val index = recordProcessor.buildTsIndex()
+
+      val st = records.sliding(2).filter(x => x.head.moving==true && x.tail.head.moving ==false).map(x => x.tail.head).toList
+      val en = records.sliding(2).filter(x => x.head.moving == false && x.tail.head.moving==true).map(x => x.tail.head).toList
+
+      def doMap(tuple: List[(ActivityRecord, ActivityRecord)]): List[ActivityEvent] = {
+        tuple.map(r => new ActivityEvent(index.get(r._1.ts).get, if( index.get(r._1.ts).get  > index.get(r._2.ts).get ) EventType.MOTION_STOP else EventType.MOTION_START, r._1.ts, "") ::
+          new ActivityEvent(index.get(r._2.ts).get, if( index.get(r._1.ts).get  > index.get(r._2.ts).get ) EventType.MOTION_START else EventType.MOTION_STOP,r._2.ts,""):: Nil).flatten
+      }
+
+    // +=
+    //         new ActivityEvent(index.get(r._2.ts).get, EventType.MOTION_START,r._2.ts,"")
+
+      // handle the cases where the activity starts or finishes with a motion stop
+     val evts =  (st.size - en.size) match {
+       case 0 => doMap(st zip en)
+       case -1 => doMap(records.head :: st zip en)
+       case 1 => doMap(st zip en :+ records.reverse.head)
+       case _ => {
+         println("Unexpected state.  Number of motion start/stop events differ by more than one")
+         events
+       }
+     }
+          val res: java.util.ArrayList[ActivityEvent] = new java.util.ArrayList[ActivityEvent](events ++ evts.reverse.asJava)
+          holder.setEvents(res)
+          new EventProcessor(holder)
+    }
+
 }

@@ -62,7 +62,7 @@ public class ActivityMessageListener extends AbstractMesgListener implements Act
 //                    if(nSessions > 1){
 //                        logger.warn("multiple sessions detected.  Currently unsupported");
 //                    }
-                    event.setInfo(event.getInfo() + ", nSessions: " + nSessions);
+                    event.setInfo(event.getInfo() + ", nSessions: " + nSessions +",");
                 }
 
                 if (field.getName().equals("timestamp")) {

@@ -6,7 +6,7 @@ import ski.crunch.activity.model.processor.ActivityHolder;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 
-public class SortByTsHandler implements Handler<ActivityHolder> {
+public class SortRecordsByTsHandler implements Handler<ActivityHolder> {
 
 
     @Override

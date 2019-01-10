@@ -78,7 +78,7 @@ public class ActivityPipelineTest {
 
 
         Handler createHrvRecords = new CreateHrvRecordHandler();
-        Handler sortByTsHandler = new SortByTsHandler();
+        Handler sortByTsHandler = new SortRecordsByTsHandler();
         manager.clear();
         manager.addHandler(sortByTsHandler);
         manager.addHandler(createHrvRecords);
@@ -272,7 +272,7 @@ public class ActivityPipelineTest {
         ActivityHolder holder = setupActivity(pauseTest);
         PipelineManager localManager = new PipelineManager<ActivityHolder>();
         localManager.addHandler(new CloseSegmentsHandler());
-        localManager.addHandler(new SortByTsHandler());
+        localManager.addHandler(new SortRecordsByTsHandler());
         localManager.addHandler(new SetEventIndexHandler());
 
         localManager.doPipeline(holder);

@@ -64,7 +64,7 @@ public class EventMessageListener extends AbstractMesgListener implements EventM
                 }
                 if(field.getName().equals("event_group")){
                     logger.debug("event_group  = " + field.getShortValue());
-                    event.setInfo(event.getInfo()+",event_group:" + field.getShortValue());
+                    event.setInfo(event.getInfo()+",event_group:" + field.getShortValue() +",");
                 }
                 if (field.getName().equals("timestamp")) {
                     Date d = new Date(((long) field.getValue() * 1000) + offset);

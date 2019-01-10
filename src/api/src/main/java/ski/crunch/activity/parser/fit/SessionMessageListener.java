@@ -57,16 +57,16 @@ public class SessionMessageListener extends AbstractMesgListener implements Sess
                 if (field.getName().equals("sport")) {
                     logger.debug("sport: " + Sport.getByValue((short) field.getValue()).name());
                     sessionStart.setInfo(sessionStart.getInfo()
-                            + ",sport:" + Sport.getByValue((short) field.getValue()).name());
+                            + ",sport:" + Sport.getByValue((short) field.getValue()).name() + ",");
                     sessionEnd.setInfo(sessionEnd.getInfo()
-                            + ",sport: " + Sport.getByValue((short) field.getValue()).name());
+                            + ",sport: " + Sport.getByValue((short) field.getValue()).name()+ ",");
                 }
                 if (field.getName().equals("sub_sport")) {
                     logger.debug("sub sport: " + SubSport.getByValue((short) field.getValue()).name());
                     sessionStart.setInfo(sessionStart.getInfo()
-                            + ", subsport:" + SubSport.getByValue((short) field.getValue()).name());
+                            + ", subsport:" + SubSport.getByValue((short) field.getValue()).name()+ ",");
                     sessionEnd.setInfo(sessionStart.getInfo()
-                            + ", subsport:" + SubSport.getByValue((short) field.getValue()).name());
+                            + ", subsport:" + SubSport.getByValue((short) field.getValue()).name()+ ",");
 
                 }
                 if (field.getName().equals("total_elapsed_time")) {

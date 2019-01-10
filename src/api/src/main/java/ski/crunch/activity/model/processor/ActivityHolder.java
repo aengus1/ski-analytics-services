@@ -95,4 +95,8 @@ public class ActivityHolder {
     public void setSummaries(List<ActivitySummary> summaries) {
         this.summaries = summaries;
     }
+
+    public  static String parseActivityEventInfoField(ActivityEvent event, String fieldName) {
+        return event.getInfo().split(fieldName+":")[1].split("")[1].split(",")[0];
+    }
 }
