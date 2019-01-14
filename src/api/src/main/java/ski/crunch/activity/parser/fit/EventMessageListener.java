@@ -1,14 +1,12 @@
 package ski.crunch.activity.parser.fit;
 
 import com.garmin.fit.*;
-import org.apache.log4j.Logger;
 
-import java.text.SimpleDateFormat;
 import java.util.Collection;
 import java.util.Date;
-import ski.crunch.activity.model.*;
-import ski.crunch.activity.model.processor.ActivityEvent;
-import ski.crunch.activity.model.processor.ActivityHolder;
+
+import ski.crunch.activity.processor.model.ActivityEvent;
+import ski.crunch.activity.processor.model.ActivityHolder;
 
 
 /**
@@ -80,12 +78,12 @@ public class EventMessageListener extends AbstractMesgListener implements EventM
             }
 
             if(evt.equals("TIMER") && evtType.equals("START")){
-                event.setEventType(ski.crunch.activity.model.processor.EventType.TIMER_START);
+                event.setEventType(ski.crunch.activity.processor.model.EventType.TIMER_START);
             } else if(evt.equals("TIMER") && (evtType.equals("STOP") || (evtType.equals("STOP_ALL")))){
-                event.setEventType(ski.crunch.activity.model.processor.EventType.TIMER_STOP);
+                event.setEventType(ski.crunch.activity.processor.model.EventType.TIMER_STOP);
             } else {
                 logger.warn("unexpected event type: " + evt + " " + evtType);
-                event.setEventType(ski.crunch.activity.model.processor.EventType.UNKNOWN);
+                event.setEventType(ski.crunch.activity.processor.model.EventType.UNKNOWN);
             }
             activityHolder.getEvents().add(event);
 

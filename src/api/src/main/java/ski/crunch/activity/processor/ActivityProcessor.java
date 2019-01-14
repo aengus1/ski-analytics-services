@@ -1,6 +1,6 @@
 package ski.crunch.activity.processor;
 
-import ski.crunch.activity.model.processor.ActivityHolder;
+import ski.crunch.activity.processor.model.ActivityHolder;
 
 public class ActivityProcessor {
 
@@ -23,7 +23,6 @@ public class ActivityProcessor {
         Handler sortEventsByTsHandler = new SortEventsByTsHandler();
 
         // detect detect lap events
-        // detect motion stops
         // summarize
 
 

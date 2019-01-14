@@ -1,13 +1,13 @@
-package ski.crunch.activity;
+package ski.crunch.activity.parser;
 
 import org.apache.log4j.Level;
 import org.apache.log4j.Logger;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestInstance;
-import ski.crunch.activity.model.processor.ActivityEvent;
-import ski.crunch.activity.model.processor.ActivityHolder;
-import ski.crunch.activity.model.processor.EventType;
+import ski.crunch.activity.processor.model.ActivityEvent;
+import ski.crunch.activity.processor.model.ActivityHolder;
+import ski.crunch.activity.processor.model.EventType;
 import ski.crunch.activity.parser.ActivityHolderAdapter;
 import ski.crunch.activity.parser.fit.FitActivityHolderAdapter;
 

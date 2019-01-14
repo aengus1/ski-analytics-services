@@ -2,7 +2,7 @@ package ski.crunch.activity.processor;
 
 import org.apache.log4j.Logger;
 import scala.ski.crunch.activity.processor.model.ActivityRecord;
-import ski.crunch.activity.model.processor.ActivityHolder;
+import ski.crunch.activity.processor.model.ActivityHolder;
 
 import java.util.*;
 

@@ -4,7 +4,7 @@ import com.garmin.fit.Field;
 import com.garmin.fit.RecordMesg;
 import com.garmin.fit.RecordMesgListener;
 import scala.ski.crunch.activity.processor.model.ActivityRecord;
-import ski.crunch.activity.model.processor.ActivityHolder;
+import ski.crunch.activity.processor.model.ActivityHolder;
 import java.util.Collection;
 import java.util.Date;
 

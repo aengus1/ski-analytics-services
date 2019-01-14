@@ -1,25 +1,45 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="e0bdc5bc-f164-460e-911b-964805426644" name="Default" comment="SKAPI-18 - update the protobuf structure">
-      <change afterPath="$PROJECT_DIR$/src/api/src/main/java/ski/crunch/activity/ActivityWriter.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/api/src/main/java/ski/crunch/activity/ActivityWriterImpl.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/api/src/main/java/ski/crunch/activity/processor/DetectMotionHandler.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/api/src/main/java/ski/crunch/activity/processor/SortEventsByTsHandler.java" afterDir="false" />
+    <list default="true" id="e0bdc5bc-f164-460e-911b-964805426644" name="Default" comment="SKAPI-24 - initial commit on protobuf writer.  Add new processor to detect motion events.  Add new processor to sort events by timestamp.">
+      <change afterPath="$PROJECT_DIR$/src/api/src/main/java/ski/crunch/activity/processor/ActivitySummarizer.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/api/src/test/java/ski/crunch/activity/processor/ActivitySummarizerTest.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/modules/src/api/ski-analytics-services-src_api_test.iml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/modules/src/api/ski-analytics-services-src_api_test.iml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/modules/src/api/src_api_main.iml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/modules/src/api/src_api_main.iml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/api/src/main/java/ski/crunch/activity/model/ActivityOuterClass.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/api/src/main/java/ski/crunch/activity/model/ActivityOuterClass.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/api/src/main/java/ski/crunch/activity/model/processor/ActivityHolder.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/api/src/main/java/ski/crunch/activity/model/processor/ActivityHolder.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/api/src/main/java/ski/crunch/activity/ActivityWriter.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/api/src/main/java/ski/crunch/activity/ActivityWriter.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/api/src/main/java/ski/crunch/activity/ActivityWriterImpl.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/api/src/main/java/ski/crunch/activity/ActivityWriterImpl.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/api/src/main/java/ski/crunch/activity/model/processor/ActivityEvent.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/api/src/main/java/ski/crunch/activity/processor/model/ActivityEvent.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/api/src/main/java/ski/crunch/activity/model/processor/ActivityHolder.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/api/src/main/java/ski/crunch/activity/processor/model/ActivityHolder.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/api/src/main/java/ski/crunch/activity/model/processor/EventType.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/api/src/main/java/ski/crunch/activity/processor/model/EventType.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/api/src/main/java/ski/crunch/activity/parser/ActivityHolderAdapter.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/api/src/main/java/ski/crunch/activity/parser/ActivityHolderAdapter.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/api/src/main/java/ski/crunch/activity/parser/fit/AbstractMesgListener.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/api/src/main/java/ski/crunch/activity/parser/fit/AbstractMesgListener.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/api/src/main/java/ski/crunch/activity/parser/fit/ActivityMessageListener.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/api/src/main/java/ski/crunch/activity/parser/fit/ActivityMessageListener.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/api/src/main/java/ski/crunch/activity/parser/fit/EventMessageListener.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/api/src/main/java/ski/crunch/activity/parser/fit/EventMessageListener.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/api/src/main/java/ski/crunch/activity/parser/fit/FileIdMessageListener.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/api/src/main/java/ski/crunch/activity/parser/fit/FileIdMessageListener.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/api/src/main/java/ski/crunch/activity/parser/fit/FitActivityHolderAdapter.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/api/src/main/java/ski/crunch/activity/parser/fit/FitActivityHolderAdapter.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/api/src/main/java/ski/crunch/activity/parser/fit/HrvMessageListener.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/api/src/main/java/ski/crunch/activity/parser/fit/HrvMessageListener.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/api/src/main/java/ski/crunch/activity/parser/fit/LapMessageListener.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/api/src/main/java/ski/crunch/activity/parser/fit/LapMessageListener.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/api/src/main/java/ski/crunch/activity/parser/fit/RecordMessageListener.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/api/src/main/java/ski/crunch/activity/parser/fit/RecordMessageListener.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/api/src/main/java/ski/crunch/activity/parser/fit/SessionMessageListener.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/api/src/main/java/ski/crunch/activity/parser/fit/SessionMessageListener.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/api/src/main/java/ski/crunch/activity/processor/ActivityProcessor.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/api/src/main/java/ski/crunch/activity/processor/ActivityProcessor.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/api/src/main/java/ski/crunch/activity/processor/CalcGradeHandler.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/api/src/main/java/ski/crunch/activity/processor/CalcGradeHandler.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/api/src/main/java/ski/crunch/activity/processor/CalcMovingHandler.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/api/src/main/java/ski/crunch/activity/processor/CalcMovingHandler.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/api/src/main/java/ski/crunch/activity/processor/CloseSegmentsHandler.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/api/src/main/java/ski/crunch/activity/processor/CloseSegmentsHandler.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/api/src/main/java/ski/crunch/activity/processor/SortByTsHandler.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/api/src/main/java/ski/crunch/activity/processor/SortRecordsByTsHandler.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/api/src/main/resources/Activity.proto" beforeDir="false" afterPath="$PROJECT_DIR$/src/api/src/main/resources/Activity.proto" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/api/src/main/java/ski/crunch/activity/processor/CreateHrvRecordHandler.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/api/src/main/java/ski/crunch/activity/processor/CreateHrvRecordHandler.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/api/src/main/java/ski/crunch/activity/processor/DetectLapHandler.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/api/src/main/java/ski/crunch/activity/processor/DetectLapHandler.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/api/src/main/java/ski/crunch/activity/processor/DetectMotionHandler.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/api/src/main/java/ski/crunch/activity/processor/DetectMotionHandler.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/api/src/main/java/ski/crunch/activity/processor/DetectPauseHandler.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/api/src/main/java/ski/crunch/activity/processor/DetectPauseHandler.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/api/src/main/java/ski/crunch/activity/processor/MergeDuplicateRecordHandler.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/api/src/main/java/ski/crunch/activity/processor/MergeDuplicateRecordHandler.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/api/src/main/java/ski/crunch/activity/processor/NullReplaceHandler.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/api/src/main/java/ski/crunch/activity/processor/NullReplaceHandler.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/api/src/main/java/ski/crunch/activity/processor/RemoveSpikesHandler.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/api/src/main/java/ski/crunch/activity/processor/RemoveSpikesHandler.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/api/src/main/java/ski/crunch/activity/processor/SetEventIndexHandler.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/api/src/main/java/ski/crunch/activity/processor/SetEventIndexHandler.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/api/src/main/java/ski/crunch/activity/processor/SortEventsByTsHandler.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/api/src/main/java/ski/crunch/activity/processor/SortEventsByTsHandler.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/api/src/main/java/ski/crunch/activity/processor/SortRecordsByTsHandler.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/api/src/main/java/ski/crunch/activity/processor/SortRecordsByTsHandler.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/api/src/main/scala/scala/ski/crunch/activity/processor/EventProcessor.scala" beforeDir="false" afterPath="$PROJECT_DIR$/src/api/src/main/scala/scala/ski/crunch/activity/processor/EventProcessor.scala" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/api/src/test/java/ski/crunch/activity/ActivityPipelineTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/api/src/test/java/ski/crunch/activity/ActivityPipelineTest.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/api/src/main/scala/scala/ski/crunch/activity/processor/model/ActivitySummary.scala" beforeDir="false" afterPath="$PROJECT_DIR$/src/api/src/main/scala/scala/ski/crunch/activity/processor/model/ActivitySummary.scala" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/api/src/test/java/ski/crunch/activity/ActivityPipelineTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/api/src/test/java/ski/crunch/activity/processor/ActivityPipelineTest.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/api/src/test/java/ski/crunch/activity/FitActivityHolderAdapterTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/api/src/test/java/ski/crunch/activity/parser/FitActivityHolderAdapterTest.java" afterDir="false" />
     </list>
     <ignored path="$PROJECT_DIR$/.gradle/" />
     <ignored path="$PROJECT_DIR$/build/" />
@@ -134,37 +154,21 @@
     <session id="496859650">
       <usages-collector id="statistics.lifecycle.project">
         <counts>
-          <entry key="project.closed" value="4" />
-          <entry key="project.open.time.10" value="1" />
-          <entry key="project.open.time.16" value="2" />
-          <entry key="project.open.time.17" value="1" />
-          <entry key="project.open.time.23" value="1" />
-          <entry key="project.opened" value="5" />
+          <entry key="project.open.time.25" value="1" />
+          <entry key="project.opened" value="1" />
         </counts>
       </usages-collector>
       <usages-collector id="statistics.file.types.open">
         <counts>
-          <entry key="Groovy" value="8" />
-          <entry key="JAVA" value="114" />
-          <entry key="PLAIN_TEXT" value="2" />
-          <entry key="PROTO" value="2" />
-          <entry key="Properties" value="4" />
-          <entry key="Scala" value="32" />
+          <entry key="JAVA" value="11" />
+          <entry key="Scala" value="3" />
         </counts>
       </usages-collector>
       <usages-collector id="statistics.file.types.edit">
         <counts>
-          <entry key="Groovy" value="65" />
-          <entry key="JAVA" value="12710" />
-          <entry key="PLAIN_TEXT" value="224" />
-          <entry key="PROTO" value="1424" />
-          <entry key="Properties" value="19" />
-          <entry key="Scala" value="6733" />
-        </counts>
-      </usages-collector>
-      <usages-collector id="statistics.vcs.git.usages">
-        <counts>
-          <entry key="git.branch.checkout.remote" value="2" />
+          <entry key="JAVA" value="6949" />
+          <entry key="PLAIN_TEXT" value="1" />
+          <entry key="Scala" value="338" />
         </counts>
       </usages-collector>
     </session>
@@ -174,11 +178,50 @@
   </component>
   <component name="FileEditorManager">
     <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/api/src/main/java/ski/crunch/activity/processor/model/ActivityHolder.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="132">
+              <caret line="11" column="13" selection-start-line="11" selection-start-column="13" selection-end-line="11" selection-end-column="13" />
+              <folding>
+                <element signature="imports" expanded="true" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
       <file pinned="false" current-in-tab="true">
-        <entry file="file://$PROJECT_DIR$/src/api/src/main/java/ski/crunch/activity/ActivityWriterImpl.java">
+        <entry file="file://$PROJECT_DIR$/src/api/src/main/java/ski/crunch/activity/processor/ActivitySummarizer.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="285">
-              <caret line="52" column="41" selection-start-line="52" selection-start-column="41" selection-end-line="52" selection-end-column="41" />
+            <state relative-caret-position="272">
+              <caret line="214" column="47" lean-forward="true" selection-start-line="214" selection-start-column="47" selection-end-line="214" selection-end-column="47" />
+              <folding>
+                <element signature="imports" expanded="true" />
+                <element signature="e#660#667#0" expanded="true" />
+                <element signature="e#2016#4872#0" />
+                <element signature="e#7957#7958#0" expanded="true" />
+                <element signature="e#8020#8021#0" expanded="true" />
+                <element signature="e#8068#8069#0" expanded="true" />
+                <element signature="e#8141#8142#0" expanded="true" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="jar:///Library/Java/JavaVirtualMachines/jdk1.8.0_31.jdk/Contents/Home/src.zip!/java/util/stream/Stream.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="107">
+              <caret line="197" column="14" selection-start-line="197" selection-start-column="14" selection-end-line="197" selection-end-column="14" />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/api/src/test/java/ski/crunch/activity/processor/ActivitySummarizerTest.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="1228">
+              <caret line="101" column="22" selection-start-line="101" selection-start-column="22" selection-end-line="101" selection-end-column="22" />
               <folding>
                 <element signature="imports" expanded="true" />
               </folding>
@@ -187,35 +230,19 @@
         </entry>
       </file>
       <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/api/src/main/java/ski/crunch/activity/model/processor/ActivityHolder.java">
+        <entry file="file://$PROJECT_DIR$/src/api/src/main/scala/scala/ski/crunch/activity/processor/model/ActivityRecord.scala">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="319">
-              <caret line="98" column="53" selection-start-line="98" selection-start-column="26" selection-end-line="98" selection-end-column="53" />
-              <folding>
-                <element signature="imports" expanded="true" />
-                <element signature="e#1465#1466#0" expanded="true" />
-                <element signature="e#1495#1496#0" expanded="true" />
-                <element signature="e#2102#2103#0" expanded="true" />
-                <element signature="e#2137#2138#0" expanded="true" />
-              </folding>
+            <state relative-caret-position="121">
+              <caret line="53" column="6" selection-start-line="53" selection-start-column="6" selection-end-line="53" selection-end-column="6" />
             </state>
           </provider>
         </entry>
       </file>
       <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/api/src/main/java/ski/crunch/activity/parser/fit/SessionMessageListener.java">
+        <entry file="file://$PROJECT_DIR$/src/api/src/main/java/ski/crunch/activity/processor/model/ActivityEvent.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="103">
-              <caret line="59" column="46" selection-start-line="59" selection-start-column="46" selection-end-line="59" selection-end-column="46" />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/api/src/main/java/ski/crunch/activity/model/processor/ActivityEvent.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="363">
-              <caret line="66" column="20" selection-start-line="66" selection-start-column="16" selection-end-line="66" selection-end-column="23" />
+            <state relative-caret-position="41">
+              <caret line="21" column="4" selection-start-line="21" selection-start-column="4" selection-end-line="21" selection-end-column="88" />
               <folding>
                 <element signature="e#1614#1615#0" expanded="true" />
                 <element signature="e#1646#1647#0" expanded="true" />
@@ -225,847 +252,37 @@
         </entry>
       </file>
       <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/api/src/main/java/ski/crunch/activity/parser/fit/ActivityMessageListener.java">
+        <entry file="file://$PROJECT_DIR$/src/api/src/main/java/ski/crunch/activity/parser/fit/FitActivityHolderAdapter.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="150">
-              <caret line="64" column="83" selection-start-line="64" selection-start-column="83" selection-end-line="64" selection-end-column="83" />
+            <state relative-caret-position="281">
+              <caret line="29" column="19" selection-start-line="29" selection-start-column="19" selection-end-line="29" selection-end-column="19" />
             </state>
           </provider>
         </entry>
       </file>
       <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/api/src/main/java/ski/crunch/activity/model/ActivityOuterClass.java">
+        <entry file="file://$PROJECT_DIR$/src/api/src/main/java/ski/crunch/activity/parser/fit/AbstractMesgListener.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="233">
-              <caret line="13586" column="23" selection-start-line="13586" selection-start-column="23" selection-end-line="13586" selection-end-column="23" />
-              <folding>
-                <element signature="e#7713#7714#0" expanded="true" />
-                <element signature="e#7741#7742#0" expanded="true" />
-                <element signature="e#8145#8146#0" expanded="true" />
-                <element signature="e#8184#8185#0" expanded="true" />
-                <element signature="e#15605#15606#0" expanded="true" />
-                <element signature="e#15706#15707#0" expanded="true" />
-                <element signature="e#17199#17200#0" expanded="true" />
-                <element signature="e#17240#17241#0" expanded="true" />
-                <element signature="e#17572#17573#0" expanded="true" />
-                <element signature="e#17613#17614#0" expanded="true" />
-                <element signature="e#18049#18050#0" expanded="true" />
-                <element signature="e#18116#18117#0" expanded="true" />
-                <element signature="e#18217#18218#0" expanded="true" />
-                <element signature="e#18257#18258#0" expanded="true" />
-                <element signature="e#19015#19016#0" expanded="true" />
-                <element signature="e#19051#19052#0" expanded="true" />
-                <element signature="e#21587#21588#0" expanded="true" />
-                <element signature="e#21628#21629#0" expanded="true" />
-                <element signature="e#22235#22236#0" expanded="true" />
-                <element signature="e#22276#22277#0" expanded="true" />
-                <element signature="e#22716#22717#0" expanded="true" />
-                <element signature="e#22783#22784#0" expanded="true" />
-                <element signature="e#22884#22885#0" expanded="true" />
-                <element signature="e#22924#22925#0" expanded="true" />
-                <element signature="e#23685#23686#0" expanded="true" />
-                <element signature="e#23721#23722#0" expanded="true" />
-                <element signature="e#24727#24728#0" expanded="true" />
-                <element signature="e#24768#24769#0" expanded="true" />
-                <element signature="e#25078#25079#0" expanded="true" />
-                <element signature="e#25119#25120#0" expanded="true" />
-                <element signature="e#25571#25572#0" expanded="true" />
-                <element signature="e#25638#25639#0" expanded="true" />
-                <element signature="e#25739#25740#0" expanded="true" />
-                <element signature="e#25779#25780#0" expanded="true" />
-                <element signature="e#26549#26550#0" expanded="true" />
-                <element signature="e#26585#26586#0" expanded="true" />
-                <element signature="e#51634#51635#0" expanded="true" />
-                <element signature="e#51675#51676#0" expanded="true" />
-                <element signature="e#56715#56716#0" expanded="true" />
-                <element signature="e#56756#56757#0" expanded="true" />
-                <element signature="e#57212#57213#0" expanded="true" />
-                <element signature="e#57279#57280#0" expanded="true" />
-                <element signature="e#57380#57381#0" expanded="true" />
-                <element signature="e#57420#57421#0" expanded="true" />
-                <element signature="e#58193#58194#0" expanded="true" />
-                <element signature="e#58229#58230#0" expanded="true" />
-                <element signature="e#61045#61046#0" expanded="true" />
-                <element signature="e#61086#61087#0" expanded="true" />
-                <element signature="e#61749#61750#0" expanded="true" />
-                <element signature="e#61790#61791#0" expanded="true" />
-                <element signature="e#62222#62223#0" expanded="true" />
-                <element signature="e#62289#62290#0" expanded="true" />
-                <element signature="e#62390#62391#0" expanded="true" />
-                <element signature="e#62430#62431#0" expanded="true" />
-                <element signature="e#63185#63186#0" expanded="true" />
-                <element signature="e#63221#63222#0" expanded="true" />
-                <element signature="e#68030#68031#0" expanded="true" />
-                <element signature="e#68071#68072#0" expanded="true" />
-                <element signature="e#69116#69117#0" expanded="true" />
-                <element signature="e#69157#69158#0" expanded="true" />
-                <element signature="e#69573#69574#0" expanded="true" />
-                <element signature="e#69640#69641#0" expanded="true" />
-                <element signature="e#69741#69742#0" expanded="true" />
-                <element signature="e#69781#69782#0" expanded="true" />
-                <element signature="e#70524#70525#0" expanded="true" />
-                <element signature="e#70560#70561#0" expanded="true" />
-                <element signature="e#78200#78201#0" expanded="true" />
-                <element signature="e#78241#78242#0" expanded="true" />
-                <element signature="e#79855#79856#0" expanded="true" />
-                <element signature="e#79896#79897#0" expanded="true" />
-                <element signature="e#80324#80325#0" expanded="true" />
-                <element signature="e#80391#80392#0" expanded="true" />
-                <element signature="e#80492#80493#0" expanded="true" />
-                <element signature="e#80532#80533#0" expanded="true" />
-                <element signature="e#81284#81285#0" expanded="true" />
-                <element signature="e#81320#81321#0" expanded="true" />
-                <element signature="e#85349#85350#0" expanded="true" />
-                <element signature="e#85381#85382#0" expanded="true" />
-                <element signature="e#85664#85665#0" expanded="true" />
-                <element signature="e#85707#85708#0" expanded="true" />
-                <element signature="e#91333#91334#0" expanded="true" />
-                <element signature="e#91371#91372#0" expanded="true" />
-                <element signature="e#92185#92186#0" expanded="true" />
-                <element signature="e#92218#92219#0" expanded="true" />
-                <element signature="e#92473#92474#0" expanded="true" />
-                <element signature="e#92506#92507#0" expanded="true" />
-                <element signature="e#95329#95330#0" expanded="true" />
-                <element signature="e#95371#95372#0" expanded="true" />
-                <element signature="e#96414#96415#0" expanded="true" />
-                <element signature="e#96455#96456#0" expanded="true" />
-                <element signature="e#106719#106720#0" expanded="true" />
-                <element signature="e#106772#106773#0" expanded="true" />
-                <element signature="e#108459#108460#0" expanded="true" />
-                <element signature="e#108514#108515#0" expanded="true" />
-                <element signature="e#111121#111122#0" expanded="true" />
-                <element signature="e#111173#111174#0" expanded="true" />
-                <element signature="e#113790#113791#0" expanded="true" />
-                <element signature="e#113823#113824#0" expanded="true" />
-                <element signature="e#117329#117330#0" expanded="true" />
-                <element signature="e#117371#117372#0" expanded="true" />
-                <element signature="e#119286#119287#0" expanded="true" />
-                <element signature="e#119323#119324#0" expanded="true" />
-                <element signature="e#120090#120091#0" expanded="true" />
-                <element signature="e#120127#120128#0" expanded="true" />
-                <element signature="e#126138#126139#0" expanded="true" />
-                <element signature="e#126212#126213#0" expanded="true" />
-                <element signature="e#131635#131636#0" expanded="true" />
-                <element signature="e#131707#131708#0" expanded="true" />
-                <element signature="e#138014#138015#0" expanded="true" />
-                <element signature="e#138045#138046#0" expanded="true" />
-                <element signature="e#138139#138140#0" expanded="true" />
-                <element signature="e#138170#138171#0" expanded="true" />
-                <element signature="e#140212#140213#0" expanded="true" />
-                <element signature="e#140244#140245#0" expanded="true" />
-                <element signature="e#140521#140522#0" expanded="true" />
-                <element signature="e#140564#140565#0" expanded="true" />
-                <element signature="e#143834#143835#0" expanded="true" />
-                <element signature="e#143867#143868#0" expanded="true" />
-                <element signature="e#145180#145181#0" expanded="true" />
-                <element signature="e#145210#145211#0" expanded="true" />
-                <element signature="e#145312#145313#0" expanded="true" />
-                <element signature="e#145349#145350#0" expanded="true" />
-                <element signature="e#145468#145469#0" expanded="true" />
-                <element signature="e#145509#145510#0" expanded="true" />
-                <element signature="e#145657#145658#0" expanded="true" />
-                <element signature="e#145708#145709#0" expanded="true" />
-                <element signature="e#154427#154428#0" expanded="true" />
-                <element signature="e#154480#154481#0" expanded="true" />
-                <element signature="e#156203#156204#0" expanded="true" />
-                <element signature="e#156258#156259#0" expanded="true" />
-                <element signature="e#158459#158460#0" expanded="true" />
-                <element signature="e#158511#158512#0" expanded="true" />
-                <element signature="e#160929#160930#0" expanded="true" />
-                <element signature="e#160962#160963#0" expanded="true" />
-                <element signature="e#162003#162004#0" expanded="true" />
-                <element signature="e#162040#162041#0" expanded="true" />
-                <element signature="e#165043#165044#0" expanded="true" />
-                <element signature="e#165099#165100#0" expanded="true" />
-                <element signature="e#165209#165210#0" expanded="true" />
-                <element signature="e#165250#165251#0" expanded="true" />
-                <element signature="e#165377#165378#0" expanded="true" />
-                <element signature="e#165422#165423#0" expanded="true" />
-                <element signature="e#165580#165581#0" expanded="true" />
-                <element signature="e#165635#165636#0" expanded="true" />
-                <element signature="e#171222#171223#0" expanded="true" />
-                <element signature="e#171253#171254#0" expanded="true" />
-                <element signature="e#171351#171352#0" expanded="true" />
-                <element signature="e#171382#171383#0" expanded="true" />
-                <element signature="e#174556#174557#0" expanded="true" />
-                <element signature="e#174588#174589#0" expanded="true" />
-                <element signature="e#175113#175114#0" expanded="true" />
-                <element signature="e#175156#175157#0" expanded="true" />
-                <element signature="e#179152#179153#0" expanded="true" />
-                <element signature="e#179189#179190#0" expanded="true" />
-                <element signature="e#179478#179479#0" expanded="true" />
-                <element signature="e#179523#179524#0" expanded="true" />
-                <element signature="e#179767#179768#0" expanded="true" />
-                <element signature="e#179802#179803#0" expanded="true" />
-                <element signature="e#180060#180061#0" expanded="true" />
-                <element signature="e#180099#180100#0" expanded="true" />
-                <element signature="e#180353#180354#0" expanded="true" />
-                <element signature="e#180389#180390#0" expanded="true" />
-                <element signature="e#180636#180637#0" expanded="true" />
-                <element signature="e#180670#180671#0" expanded="true" />
-                <element signature="e#180880#180881#0" expanded="true" />
-                <element signature="e#180916#180917#0" expanded="true" />
-                <element signature="e#181661#181662#0" expanded="true" />
-                <element signature="e#181702#181703#0" expanded="true" />
-                <element signature="e#181983#181984#0" expanded="true" />
-                <element signature="e#182027#182028#0" expanded="true" />
-                <element signature="e#182275#182276#0" expanded="true" />
-                <element signature="e#182311#182312#0" expanded="true" />
-                <element signature="e#182500#182501#0" expanded="true" />
-                <element signature="e#182530#182531#0" expanded="true" />
-                <element signature="e#183238#183239#0" expanded="true" />
-                <element signature="e#183272#183273#0" expanded="true" />
-                <element signature="e#183515#183516#0" expanded="true" />
-                <element signature="e#183550#183551#0" expanded="true" />
-                <element signature="e#183825#183826#0" expanded="true" />
-                <element signature="e#183868#183869#0" expanded="true" />
-                <element signature="e#197344#197345#0" expanded="true" />
-                <element signature="e#197397#197398#0" expanded="true" />
-                <element signature="e#199111#199112#0" expanded="true" />
-                <element signature="e#199166#199167#0" expanded="true" />
-                <element signature="e#201801#201802#0" expanded="true" />
-                <element signature="e#201853#201854#0" expanded="true" />
-                <element signature="e#205173#205174#0" expanded="true" />
-                <element signature="e#205206#205207#0" expanded="true" />
-                <element signature="e#206212#206213#0" expanded="true" />
-                <element signature="e#206253#206254#0" expanded="true" />
-                <element signature="e#207058#207059#0" expanded="true" />
-                <element signature="e#207107#207108#0" expanded="true" />
-                <element signature="e#207925#207926#0" expanded="true" />
-                <element signature="e#207964#207965#0" expanded="true" />
-                <element signature="e#208725#208726#0" expanded="true" />
-                <element signature="e#208768#208769#0" expanded="true" />
-                <element signature="e#209553#209554#0" expanded="true" />
-                <element signature="e#209593#209594#0" expanded="true" />
-                <element signature="e#210366#210367#0" expanded="true" />
-                <element signature="e#210404#210405#0" expanded="true" />
-                <element signature="e#211123#211124#0" expanded="true" />
-                <element signature="e#211163#211164#0" expanded="true" />
-                <element signature="e#212721#212722#0" expanded="true" />
-                <element signature="e#212766#212767#0" expanded="true" />
-                <element signature="e#213588#213589#0" expanded="true" />
-                <element signature="e#213636#213637#0" expanded="true" />
-                <element signature="e#214442#214443#0" expanded="true" />
-                <element signature="e#214482#214483#0" expanded="true" />
-                <element signature="e#215181#215182#0" expanded="true" />
-                <element signature="e#215215#215216#0" expanded="true" />
-                <element signature="e#216695#216696#0" expanded="true" />
-                <element signature="e#216733#216734#0" expanded="true" />
-                <element signature="e#217490#217491#0" expanded="true" />
-                <element signature="e#217529#217530#0" expanded="true" />
-                <element signature="e#218298#218299#0" expanded="true" />
-                <element signature="e#218345#218346#0" expanded="true" />
-                <element signature="e#220350#220351#0" expanded="true" />
-                <element signature="e#220381#220382#0" expanded="true" />
-                <element signature="e#220478#220479#0" expanded="true" />
-                <element signature="e#220509#220510#0" expanded="true" />
-                <element signature="e#224204#224205#0" expanded="true" />
-                <element signature="e#224236#224237#0" expanded="true" />
-                <element signature="e#224644#224645#0" expanded="true" />
-                <element signature="e#224687#224688#0" expanded="true" />
-                <element signature="e#229062#229063#0" expanded="true" />
-                <element signature="e#229091#229092#0" expanded="true" />
-                <element signature="e#229260#229261#0" expanded="true" />
-                <element signature="e#229289#229290#0" expanded="true" />
-                <element signature="e#229487#229488#0" expanded="true" />
-                <element signature="e#229519#229520#0" expanded="true" />
-                <element signature="e#238067#238068#0" expanded="true" />
-                <element signature="e#238099#238100#0" expanded="true" />
-                <element signature="e#238218#238219#0" expanded="true" />
-                <element signature="e#238257#238258#0" expanded="true" />
-                <element signature="e#249557#249558#0" expanded="true" />
-                <element signature="e#249610#249611#0" expanded="true" />
-                <element signature="e#251333#251334#0" expanded="true" />
-                <element signature="e#251388#251389#0" expanded="true" />
-                <element signature="e#254275#254276#0" expanded="true" />
-                <element signature="e#254327#254328#0" expanded="true" />
-                <element signature="e#258160#258161#0" expanded="true" />
-                <element signature="e#258193#258194#0" expanded="true" />
-                <element signature="e#259145#259146#0" expanded="true" />
-                <element signature="e#259178#259179#0" expanded="true" />
-                <element signature="e#259695#259696#0" expanded="true" />
-                <element signature="e#259728#259729#0" expanded="true" />
-                <element signature="e#260274#260275#0" expanded="true" />
-                <element signature="e#260310#260311#0" expanded="true" />
-                <element signature="e#283705#283706#0" expanded="true" />
-                <element signature="e#283774#283775#0" expanded="true" />
-                <element signature="e#286113#286114#0" expanded="true" />
-                <element signature="e#286144#286145#0" expanded="true" />
-                <element signature="e#286242#286243#0" expanded="true" />
-                <element signature="e#286273#286274#0" expanded="true" />
-                <element signature="e#287351#287352#0" expanded="true" />
-                <element signature="e#287383#287384#0" expanded="true" />
-                <element signature="e#287564#287565#0" expanded="true" />
-                <element signature="e#287607#287608#0" expanded="true" />
-                <element signature="e#290071#290072#0" expanded="true" />
-                <element signature="e#290099#290100#0" expanded="true" />
-                <element signature="e#297415#297416#0" expanded="true" />
-                <element signature="e#297468#297469#0" expanded="true" />
-                <element signature="e#299191#299192#0" expanded="true" />
-                <element signature="e#299246#299247#0" expanded="true" />
-                <element signature="e#300910#300911#0" expanded="true" />
-                <element signature="e#300962#300963#0" expanded="true" />
-                <element signature="e#302912#302913#0" expanded="true" />
-                <element signature="e#302945#302946#0" expanded="true" />
-                <element signature="e#303855#303856#0" expanded="true" />
-                <element signature="e#303887#303888#0" expanded="true" />
-                <element signature="e#307597#307598#0" expanded="true" />
-                <element signature="e#307628#307629#0" expanded="true" />
-                <element signature="e#307726#307727#0" expanded="true" />
-                <element signature="e#307757#307758#0" expanded="true" />
-                <element signature="e#313806#313807#0" expanded="true" />
-                <element signature="e#313838#313839#0" expanded="true" />
-                <element signature="e#314813#314814#0" expanded="true" />
-                <element signature="e#314856#314857#0" expanded="true" />
-                <element signature="e#322998#323035#0" expanded="true" />
-                <element signature="e#323868#323869#0" expanded="true" />
-                <element signature="e#323937#323938#0" expanded="true" />
-                <element signature="e#324447#324448#0" expanded="true" />
-                <element signature="e#324495#324496#0" expanded="true" />
-                <element signature="e#328043#328044#0" expanded="true" />
-                <element signature="e#328081#328082#0" expanded="true" />
-                <element signature="e#328278#328279#0" expanded="true" />
-                <element signature="e#328314#328315#0" expanded="true" />
-                <element signature="e#328515#328516#0" expanded="true" />
-                <element signature="e#328552#328553#0" expanded="true" />
-                <element signature="e#328757#328758#0" expanded="true" />
-                <element signature="e#328795#328796#0" expanded="true" />
-                <element signature="e#328996#328997#0" expanded="true" />
-                <element signature="e#329033#329034#0" expanded="true" />
-                <element signature="e#329234#329235#0" expanded="true" />
-                <element signature="e#329271#329272#0" expanded="true" />
-                <element signature="e#329478#329479#0" expanded="true" />
-                <element signature="e#329516#329517#0" expanded="true" />
-                <element signature="e#329727#329728#0" expanded="true" />
-                <element signature="e#329766#329767#0" expanded="true" />
-                <element signature="e#329977#329978#0" expanded="true" />
-                <element signature="e#330016#330017#0" expanded="true" />
-                <element signature="e#330188#330189#0" expanded="true" />
-                <element signature="e#330219#330220#0" expanded="true" />
-                <element signature="e#330391#330392#0" expanded="true" />
-                <element signature="e#330422#330423#0" expanded="true" />
-                <element signature="e#330594#330595#0" expanded="true" />
-                <element signature="e#330625#330626#0" expanded="true" />
-                <element signature="e#330817#330818#0" expanded="true" />
-                <element signature="e#330853#330854#0" expanded="true" />
-                <element signature="e#331045#331046#0" expanded="true" />
-                <element signature="e#331081#331082#0" expanded="true" />
-                <element signature="e#331273#331274#0" expanded="true" />
-                <element signature="e#331309#331310#0" expanded="true" />
-                <element signature="e#331489#331490#0" expanded="true" />
-                <element signature="e#331522#331523#0" expanded="true" />
-                <element signature="e#331702#331703#0" expanded="true" />
-                <element signature="e#331735#331736#0" expanded="true" />
-                <element signature="e#331915#331916#0" expanded="true" />
-                <element signature="e#331948#331949#0" expanded="true" />
-                <element signature="e#332139#332140#0" expanded="true" />
-                <element signature="e#332173#332174#0" expanded="true" />
-                <element signature="e#332364#332365#0" expanded="true" />
-                <element signature="e#332398#332399#0" expanded="true" />
-                <element signature="e#332594#332595#0" expanded="true" />
-                <element signature="e#332631#332632#0" expanded="true" />
-                <element signature="e#332827#332828#0" expanded="true" />
-                <element signature="e#332864#332865#0" expanded="true" />
-                <element signature="e#333060#333061#0" expanded="true" />
-                <element signature="e#333097#333098#0" expanded="true" />
-                <element signature="e#333269#333270#0" expanded="true" />
-                <element signature="e#333300#333301#0" expanded="true" />
-                <element signature="e#333591#333627#0" expanded="true" />
-                <element signature="e#334380#334381#0" expanded="true" />
-                <element signature="e#334438#334439#0" expanded="true" />
-                <element signature="e#334895#334896#0" expanded="true" />
-                <element signature="e#334932#334933#0" expanded="true" />
-                <element signature="e#335090#335091#0" expanded="true" />
-                <element signature="e#335141#335142#0" expanded="true" />
-                <element signature="e#336252#336253#0" expanded="true" />
-                <element signature="e#336290#336291#0" expanded="true" />
-                <element signature="e#336501#336502#0" expanded="true" />
-                <element signature="e#336540#336541#0" expanded="true" />
-                <element signature="e#336747#336748#0" expanded="true" />
-                <element signature="e#336785#336786#0" expanded="true" />
-                <element signature="e#336996#336997#0" expanded="true" />
-                <element signature="e#337035#337036#0" expanded="true" />
-                <element signature="e#337246#337247#0" expanded="true" />
-                <element signature="e#337285#337286#0" expanded="true" />
-                <element signature="e#337473#337474#0" expanded="true" />
-                <element signature="e#337508#337509#0" expanded="true" />
-                <element signature="e#337700#337701#0" expanded="true" />
-                <element signature="e#337736#337737#0" expanded="true" />
-                <element signature="e#362101#362102#0" expanded="true" />
-                <element signature="e#362154#362155#0" expanded="true" />
-                <element signature="e#364763#364764#0" expanded="true" />
-                <element signature="e#364818#364819#0" expanded="true" />
-                <element signature="e#369276#369277#0" expanded="true" />
-                <element signature="e#369328#369329#0" expanded="true" />
-                <element signature="e#374805#374806#0" expanded="true" />
-                <element signature="e#374838#374839#0" expanded="true" />
-                <element signature="e#376706#376707#0" expanded="true" />
-                <element signature="e#376779#376780#0" expanded="true" />
-                <element signature="e#379389#379390#0" expanded="true" />
-                <element signature="e#379469#379470#0" expanded="true" />
-                <element signature="e#384267#384268#0" expanded="true" />
-                <element signature="e#384309#384310#0" expanded="true" />
-                <element signature="e#384901#384902#0" expanded="true" />
-                <element signature="e#384941#384942#0" expanded="true" />
-                <element signature="e#385524#385525#0" expanded="true" />
-                <element signature="e#385565#385566#0" expanded="true" />
-                <element signature="e#386157#386158#0" expanded="true" />
-                <element signature="e#386199#386200#0" expanded="true" />
-                <element signature="e#386794#386795#0" expanded="true" />
-                <element signature="e#386835#386836#0" expanded="true" />
-                <element signature="e#387424#387425#0" expanded="true" />
-                <element signature="e#387465#387466#0" expanded="true" />
-                <element signature="e#388058#388059#0" expanded="true" />
-                <element signature="e#388100#388101#0" expanded="true" />
-                <element signature="e#388704#388705#0" expanded="true" />
-                <element signature="e#388747#388748#0" expanded="true" />
-                <element signature="e#389357#389358#0" expanded="true" />
-                <element signature="e#389400#389401#0" expanded="true" />
-                <element signature="e#389979#389980#0" expanded="true" />
-                <element signature="e#390014#390015#0" expanded="true" />
-                <element signature="e#390539#390540#0" expanded="true" />
-                <element signature="e#390574#390575#0" expanded="true" />
-                <element signature="e#391099#391100#0" expanded="true" />
-                <element signature="e#391134#391135#0" expanded="true" />
-                <element signature="e#391674#391675#0" expanded="true" />
-                <element signature="e#391714#391715#0" expanded="true" />
-                <element signature="e#392284#392285#0" expanded="true" />
-                <element signature="e#392324#392325#0" expanded="true" />
-                <element signature="e#392894#392895#0" expanded="true" />
-                <element signature="e#392934#392935#0" expanded="true" />
-                <element signature="e#393495#393496#0" expanded="true" />
-                <element signature="e#393532#393533#0" expanded="true" />
-                <element signature="e#394075#394076#0" expanded="true" />
-                <element signature="e#394112#394113#0" expanded="true" />
-                <element signature="e#394655#394656#0" expanded="true" />
-                <element signature="e#394692#394693#0" expanded="true" />
-                <element signature="e#395245#395246#0" expanded="true" />
-                <element signature="e#395283#395284#0" expanded="true" />
-                <element signature="e#395848#395849#0" expanded="true" />
-                <element signature="e#395886#395887#0" expanded="true" />
-                <element signature="e#396453#396454#0" expanded="true" />
-                <element signature="e#396494#396495#0" expanded="true" />
-                <element signature="e#397073#397074#0" expanded="true" />
-                <element signature="e#397114#397115#0" expanded="true" />
-                <element signature="e#397693#397694#0" expanded="true" />
-                <element signature="e#397734#397735#0" expanded="true" />
-                <element signature="e#398295#398296#0" expanded="true" />
-                <element signature="e#398330#398331#0" expanded="true" />
-                <element signature="e#399584#399585#0" expanded="true" />
-                <element signature="e#399646#399647#0" expanded="true" />
-                <element signature="e#400129#400130#0" expanded="true" />
-                <element signature="e#400170#400171#0" expanded="true" />
-                <element signature="e#400336#400337#0" expanded="true" />
-                <element signature="e#400391#400392#0" expanded="true" />
-                <element signature="e#402032#402033#0" expanded="true" />
-                <element signature="e#402101#402102#0" expanded="true" />
-                <element signature="e#402946#402947#0" expanded="true" />
-                <element signature="e#402988#402989#0" expanded="true" />
-                <element signature="e#403592#403593#0" expanded="true" />
-                <element signature="e#403635#403636#0" expanded="true" />
-                <element signature="e#404242#404243#0" expanded="true" />
-                <element signature="e#404284#404285#0" expanded="true" />
-                <element signature="e#404888#404889#0" expanded="true" />
-                <element signature="e#404931#404932#0" expanded="true" />
-                <element signature="e#405541#405542#0" expanded="true" />
-                <element signature="e#405584#405585#0" expanded="true" />
-                <element signature="e#406175#406176#0" expanded="true" />
-                <element signature="e#406214#406215#0" expanded="true" />
-                <element signature="e#406778#406779#0" expanded="true" />
-                <element signature="e#406818#406819#0" expanded="true" />
-                <element signature="e#408660#408661#0" expanded="true" />
-                <element signature="e#408691#408692#0" expanded="true" />
-                <element signature="e#408788#408789#0" expanded="true" />
-                <element signature="e#408819#408820#0" expanded="true" />
-                <element signature="e#410965#410966#0" expanded="true" />
-                <element signature="e#410997#410998#0" expanded="true" />
-                <element signature="e#411183#411184#0" expanded="true" />
-                <element signature="e#411226#411227#0" expanded="true" />
-                <element signature="e#414915#414916#0" expanded="true" />
-                <element signature="e#414946#414947#0" expanded="true" />
-                <element signature="e#415578#415579#0" expanded="true" />
-                <element signature="e#415612#415613#0" expanded="true" />
-                <element signature="e#416320#416321#0" expanded="true" />
-                <element signature="e#416361#416362#0" expanded="true" />
-                <element signature="e#417131#417132#0" expanded="true" />
-                <element signature="e#417172#417173#0" expanded="true" />
-                <element signature="e#425351#425352#0" expanded="true" />
-                <element signature="e#425404#425405#0" expanded="true" />
-                <element signature="e#427118#427119#0" expanded="true" />
-                <element signature="e#427173#427174#0" expanded="true" />
-                <element signature="e#429515#429516#0" expanded="true" />
-                <element signature="e#429567#429568#0" expanded="true" />
-                <element signature="e#431708#431709#0" expanded="true" />
-                <element signature="e#431741#431742#0" expanded="true" />
-                <element signature="e#432676#432677#0" expanded="true" />
-                <element signature="e#432711#432712#0" expanded="true" />
-                <element signature="e#434093#434094#0" expanded="true" />
-                <element signature="e#434131#434132#0" expanded="true" />
-                <element signature="e#435925#435926#0" expanded="true" />
-                <element signature="e#435997#435998#0" expanded="true" />
-                <element signature="e#440545#440546#0" expanded="true" />
-                <element signature="e#440617#440618#0" expanded="true" />
-                <element signature="e#446074#446075#0" expanded="true" />
-                <element signature="e#446105#446106#0" expanded="true" />
-                <element signature="e#446202#446203#0" expanded="true" />
-                <element signature="e#446233#446234#0" expanded="true" />
-                <element signature="e#452615#452616#0" expanded="true" />
-                <element signature="e#452647#452648#0" expanded="true" />
-                <element signature="e#453488#453489#0" expanded="true" />
-                <element signature="e#453531#453532#0" expanded="true" />
-                <element signature="e#470128#470129#0" expanded="true" />
-                <element signature="e#470156#470157#0" expanded="true" />
-                <element signature="e#470254#470255#0" expanded="true" />
-                <element signature="e#470289#470290#0" expanded="true" />
-                <element signature="e#470404#470405#0" expanded="true" />
-                <element signature="e#470443#470444#0" expanded="true" />
-                <element signature="e#470587#470588#0" expanded="true" />
-                <element signature="e#470636#470637#0" expanded="true" />
-                <element signature="e#470877#470878#0" expanded="true" />
-                <element signature="e#470905#470906#0" expanded="true" />
-                <element signature="e#471002#471003#0" expanded="true" />
-                <element signature="e#471037#471038#0" expanded="true" />
-                <element signature="e#471138#471139#0" expanded="true" />
-                <element signature="e#471177#471178#0" expanded="true" />
-                <element signature="e#471470#471471#0" expanded="true" />
-                <element signature="e#471499#471500#0" expanded="true" />
-                <element signature="e#471599#471600#0" expanded="true" />
-                <element signature="e#471635#471636#0" expanded="true" />
-                <element signature="e#471742#471743#0" expanded="true" />
-                <element signature="e#471782#471783#0" expanded="true" />
-                <element signature="e#472076#472077#0" expanded="true" />
-                <element signature="e#472105#472106#0" expanded="true" />
-                <element signature="e#472205#472206#0" expanded="true" />
-                <element signature="e#472241#472242#0" expanded="true" />
-                <element signature="e#472348#472349#0" expanded="true" />
-                <element signature="e#472388#472389#0" expanded="true" />
-                <element signature="e#472690#472691#0" expanded="true" />
-                <element signature="e#472721#472722#0" expanded="true" />
-                <element signature="e#472825#472826#0" expanded="true" />
-                <element signature="e#472863#472864#0" expanded="true" />
-                <element signature="e#472974#472975#0" expanded="true" />
-                <element signature="e#473016#473017#0" expanded="true" />
-                <element signature="e#473332#473333#0" expanded="true" />
-                <element signature="e#473366#473367#0" expanded="true" />
-                <element signature="e#473476#473477#0" expanded="true" />
-                <element signature="e#473517#473518#0" expanded="true" />
-                <element signature="e#473634#473635#0" expanded="true" />
-                <element signature="e#473679#473680#0" expanded="true" />
-                <element signature="e#473986#473987#0" expanded="true" />
-                <element signature="e#474017#474018#0" expanded="true" />
-                <element signature="e#474121#474122#0" expanded="true" />
-                <element signature="e#474159#474160#0" expanded="true" />
-                <element signature="e#474270#474271#0" expanded="true" />
-                <element signature="e#474312#474313#0" expanded="true" />
-                <element signature="e#474628#474629#0" expanded="true" />
-                <element signature="e#474662#474663#0" expanded="true" />
-                <element signature="e#474772#474773#0" expanded="true" />
-                <element signature="e#474813#474814#0" expanded="true" />
-                <element signature="e#474930#474931#0" expanded="true" />
-                <element signature="e#474975#474976#0" expanded="true" />
-                <element signature="e#475306#475307#0" expanded="true" />
-                <element signature="e#475343#475344#0" expanded="true" />
-                <element signature="e#475459#475460#0" expanded="true" />
-                <element signature="e#475503#475504#0" expanded="true" />
-                <element signature="e#475626#475627#0" expanded="true" />
-                <element signature="e#475674#475675#0" expanded="true" />
-                <element signature="e#475990#475991#0" expanded="true" />
-                <element signature="e#476022#476023#0" expanded="true" />
-                <element signature="e#476127#476128#0" expanded="true" />
-                <element signature="e#476166#476167#0" expanded="true" />
-                <element signature="e#476279#476280#0" expanded="true" />
-                <element signature="e#476322#476323#0" expanded="true" />
-                <element signature="e#476638#476639#0" expanded="true" />
-                <element signature="e#476671#476672#0" expanded="true" />
-                <element signature="e#476779#476780#0" expanded="true" />
-                <element signature="e#476819#476820#0" expanded="true" />
-                <element signature="e#476931#476932#0" expanded="true" />
-                <element signature="e#476975#476976#0" expanded="true" />
-                <element signature="e#477320#477356#0" expanded="true" />
-                <element signature="e#478108#478109#0" expanded="true" />
-                <element signature="e#478166#478167#0" expanded="true" />
-                <element signature="e#478682#478683#0" expanded="true" />
-                <element signature="e#478719#478720#0" expanded="true" />
-                <element signature="e#478936#478937#0" expanded="true" />
-                <element signature="e#478987#478988#0" expanded="true" />
-                <element signature="e#480255#480256#0" expanded="true" />
-                <element signature="e#480284#480285#0" expanded="true" />
-                <element signature="e#480385#480386#0" expanded="true" />
-                <element signature="e#480421#480422#0" expanded="true" />
-                <element signature="e#480529#480530#0" expanded="true" />
-                <element signature="e#480569#480570#0" expanded="true" />
-                <element signature="e#480907#480908#0" expanded="true" />
-                <element signature="e#480946#480947#0" expanded="true" />
-                <element signature="e#481068#481069#0" expanded="true" />
-                <element signature="e#481114#481115#0" expanded="true" />
-                <element signature="e#481243#481244#0" expanded="true" />
-                <element signature="e#481293#481294#0" expanded="true" />
-                <element signature="e#499183#499184#0" expanded="true" />
-                <element signature="e#499236#499237#0" expanded="true" />
-                <element signature="e#501687#501688#0" expanded="true" />
-                <element signature="e#501742#501743#0" expanded="true" />
-                <element signature="e#507824#507825#0" expanded="true" />
-                <element signature="e#507876#507877#0" expanded="true" />
-                <element signature="e#513971#513972#0" expanded="true" />
-                <element signature="e#514004#514005#0" expanded="true" />
-                <element signature="e#515313#515314#0" expanded="true" />
-                <element signature="e#515367#515368#0" expanded="true" />
-                <element signature="e#515473#515474#0" expanded="true" />
-                <element signature="e#515512#515513#0" expanded="true" />
-                <element signature="e#515635#515636#0" expanded="true" />
-                <element signature="e#515678#515679#0" expanded="true" />
-                <element signature="e#515832#515833#0" expanded="true" />
-                <element signature="e#515885#515886#0" expanded="true" />
-                <element signature="e#518007#518008#0" expanded="true" />
-                <element signature="e#518079#518080#0" expanded="true" />
-                <element signature="e#518184#518185#0" expanded="true" />
-                <element signature="e#518223#518224#0" expanded="true" />
-                <element signature="e#518332#518333#0" expanded="true" />
-                <element signature="e#518375#518376#0" expanded="true" />
-                <element signature="e#519950#519951#0" expanded="true" />
-                <element signature="e#520023#520024#0" expanded="true" />
-                <element signature="e#520131#520132#0" expanded="true" />
-                <element signature="e#520171#520172#0" expanded="true" />
-                <element signature="e#520286#520287#0" expanded="true" />
-                <element signature="e#520330#520331#0" expanded="true" />
-                <element signature="e#521929#521930#0" expanded="true" />
-                <element signature="e#522002#522003#0" expanded="true" />
-                <element signature="e#522110#522111#0" expanded="true" />
-                <element signature="e#522150#522151#0" expanded="true" />
-                <element signature="e#522265#522266#0" expanded="true" />
-                <element signature="e#522309#522310#0" expanded="true" />
-                <element signature="e#523920#523921#0" expanded="true" />
-                <element signature="e#523995#523996#0" expanded="true" />
-                <element signature="e#524107#524108#0" expanded="true" />
-                <element signature="e#524149#524150#0" expanded="true" />
-                <element signature="e#524268#524269#0" expanded="true" />
-                <element signature="e#524314#524315#0" expanded="true" />
-                <element signature="e#525973#525974#0" expanded="true" />
-                <element signature="e#526051#526052#0" expanded="true" />
-                <element signature="e#526169#526170#0" expanded="true" />
-                <element signature="e#526214#526215#0" expanded="true" />
-                <element signature="e#526339#526340#0" expanded="true" />
-                <element signature="e#526388#526389#0" expanded="true" />
-                <element signature="e#528074#528075#0" expanded="true" />
-                <element signature="e#528149#528150#0" expanded="true" />
-                <element signature="e#528261#528262#0" expanded="true" />
-                <element signature="e#528303#528304#0" expanded="true" />
-                <element signature="e#528422#528423#0" expanded="true" />
-                <element signature="e#528468#528469#0" expanded="true" />
-                <element signature="e#530127#530128#0" expanded="true" />
-                <element signature="e#530205#530206#0" expanded="true" />
-                <element signature="e#530323#530324#0" expanded="true" />
-                <element signature="e#530368#530369#0" expanded="true" />
-                <element signature="e#530493#530494#0" expanded="true" />
-                <element signature="e#530542#530543#0" expanded="true" />
-                <element signature="e#532264#532265#0" expanded="true" />
-                <element signature="e#532345#532346#0" expanded="true" />
-                <element signature="e#532469#532470#0" expanded="true" />
-                <element signature="e#532517#532518#0" expanded="true" />
-                <element signature="e#532648#532649#0" expanded="true" />
-                <element signature="e#532700#532701#0" expanded="true" />
-                <element signature="e#534439#534440#0" expanded="true" />
-                <element signature="e#534515#534516#0" expanded="true" />
-                <element signature="e#534628#534629#0" expanded="true" />
-                <element signature="e#534671#534672#0" expanded="true" />
-                <element signature="e#534792#534793#0" expanded="true" />
-                <element signature="e#534839#534840#0" expanded="true" />
-                <element signature="e#536509#536510#0" expanded="true" />
-                <element signature="e#536586#536587#0" expanded="true" />
-                <element signature="e#536702#536703#0" expanded="true" />
-                <element signature="e#536746#536747#0" expanded="true" />
-                <element signature="e#536866#536867#0" expanded="true" />
-                <element signature="e#536914#536915#0" expanded="true" />
-                <element signature="e#538952#538953#0" expanded="true" />
-                <element signature="e#539014#539015#0" expanded="true" />
-                <element signature="e#539564#539565#0" expanded="true" />
-                <element signature="e#539605#539606#0" expanded="true" />
-                <element signature="e#539838#539839#0" expanded="true" />
-                <element signature="e#539893#539894#0" expanded="true" />
-                <element signature="e#541735#541736#0" expanded="true" />
-                <element signature="e#541804#541805#0" expanded="true" />
-                <element signature="e#543101#543102#0" expanded="true" />
-                <element signature="e#543174#543175#0" expanded="true" />
-                <element signature="e#543283#543284#0" expanded="true" />
-                <element signature="e#543323#543324#0" expanded="true" />
-                <element signature="e#543439#543440#0" expanded="true" />
-                <element signature="e#543483#543484#0" expanded="true" />
-                <element signature="e#545148#545149#0" expanded="true" />
-                <element signature="e#545231#545232#0" expanded="true" />
-                <element signature="e#545361#545362#0" expanded="true" />
-                <element signature="e#545411#545412#0" expanded="true" />
-                <element signature="e#545548#545549#0" expanded="true" />
-                <element signature="e#545602#545603#0" expanded="true" />
-                <element signature="e#548291#548292#0" expanded="true" />
-                <element signature="e#548322#548323#0" expanded="true" />
-                <element signature="e#548418#548419#0" expanded="true" />
-                <element signature="e#548449#548450#0" expanded="true" />
-                <element signature="e#550459#550460#0" expanded="true" />
-                <element signature="e#550491#550492#0" expanded="true" />
-                <element signature="e#550761#550762#0" expanded="true" />
-                <element signature="e#550804#550805#0" expanded="true" />
-                <element signature="e#553918#553919#0" expanded="true" />
-                <element signature="e#553949#553950#0" expanded="true" />
-                <element signature="e#556238#556239#0" expanded="true" />
-                <element signature="e#556273#556274#0" expanded="true" />
-                <element signature="e#567035#567036#0" expanded="true" />
-                <element signature="e#567088#567089#0" expanded="true" />
-                <element signature="e#568811#568812#0" expanded="true" />
-                <element signature="e#568866#568867#0" expanded="true" />
-                <element signature="e#570779#570780#0" expanded="true" />
-                <element signature="e#570831#570832#0" expanded="true" />
-                <element signature="e#573247#573248#0" expanded="true" />
-                <element signature="e#573280#573281#0" expanded="true" />
-                <element signature="e#574199#574200#0" expanded="true" />
-                <element signature="e#574234#574235#0" expanded="true" />
-                <element signature="e#578587#578588#0" expanded="true" />
-                <element signature="e#578626#578627#0" expanded="true" />
-                <element signature="e#585233#585234#0" expanded="true" />
-                <element signature="e#585264#585265#0" expanded="true" />
-                <element signature="e#585362#585363#0" expanded="true" />
-                <element signature="e#585393#585394#0" expanded="true" />
-                <element signature="e#587227#587228#0" expanded="true" />
-                <element signature="e#587259#587260#0" expanded="true" />
-                <element signature="e#587492#587493#0" expanded="true" />
-                <element signature="e#587535#587536#0" expanded="true" />
-                <element signature="e#593029#593030#0" expanded="true" />
-                <element signature="e#593063#593064#0" expanded="true" />
-                <element signature="e#593241#593242#0" expanded="true" />
-                <element signature="e#593274#593275#0" expanded="true" />
-                <element signature="e#593526#593527#0" expanded="true" />
-                <element signature="e#593567#593568#0" expanded="true" />
-                <element signature="e#601833#601834#0" expanded="true" />
-                <element signature="e#601886#601887#0" expanded="true" />
-                <element signature="e#603600#603601#0" expanded="true" />
-                <element signature="e#603655#603656#0" expanded="true" />
-                <element signature="e#605795#605796#0" expanded="true" />
-                <element signature="e#605847#605848#0" expanded="true" />
-                <element signature="e#608131#608132#0" expanded="true" />
-                <element signature="e#608164#608165#0" expanded="true" />
-                <element signature="e#613001#613002#0" expanded="true" />
-                <element signature="e#613039#613040#0" expanded="true" />
-                <element signature="e#613585#613586#0" expanded="true" />
-                <element signature="e#613622#613623#0" expanded="true" />
-                <element signature="e#614535#614536#0" expanded="true" />
-                <element signature="e#614607#614608#0" expanded="true" />
-                <element signature="e#620064#620065#0" expanded="true" />
-                <element signature="e#620095#620096#0" expanded="true" />
-                <element signature="e#620192#620193#0" expanded="true" />
-                <element signature="e#620223#620224#0" expanded="true" />
-                <element signature="e#620627#620628#0" expanded="true" />
-                <element signature="e#620661#620662#0" expanded="true" />
-                <element signature="e#621089#621090#0" expanded="true" />
-                <element signature="e#621119#621120#0" expanded="true" />
-                <element signature="e#621416#621417#0" expanded="true" />
-                <element signature="e#621454#621455#0" expanded="true" />
-                <element signature="e#622302#622303#0" expanded="true" />
-                <element signature="e#622339#622340#0" expanded="true" />
-                <element signature="e#623067#623068#0" expanded="true" />
-                <element signature="e#623103#623104#0" expanded="true" />
-                <element signature="e#624172#624173#0" expanded="true" />
-                <element signature="e#624200#624201#0" expanded="true" />
-                <element signature="e#624310#624311#0" expanded="true" />
-                <element signature="e#624345#624346#0" expanded="true" />
-                <element signature="e#626353#626354#0" expanded="true" />
-                <element signature="e#626383#626384#0" expanded="true" />
-                <element signature="e#626496#626497#0" expanded="true" />
-                <element signature="e#626533#626534#0" expanded="true" />
-                <element signature="e#627574#627575#0" expanded="true" />
-                <element signature="e#627602#627603#0" expanded="true" />
-                <element signature="e#627711#627712#0" expanded="true" />
-                <element signature="e#627746#627747#0" expanded="true" />
-                <element signature="e#628520#628521#0" expanded="true" />
-                <element signature="e#628546#628547#0" expanded="true" />
-                <element signature="e#628761#628762#0" expanded="true" />
-                <element signature="e#628787#628788#0" expanded="true" />
-                <element signature="e#628892#628893#0" expanded="true" />
-                <element signature="e#628925#628926#0" expanded="true" />
-                <element signature="e#629092#629093#0" expanded="true" />
-                <element signature="e#629129#629130#0" expanded="true" />
-                <element signature="e#629938#629939#0" expanded="true" />
-                <element signature="e#629965#629966#0" expanded="true" />
-                <element signature="e#630073#630074#0" expanded="true" />
-                <element signature="e#630107#630108#0" expanded="true" />
-                <element signature="e#630824#630825#0" expanded="true" />
-                <element signature="e#630869#630870#0" expanded="true" />
-                <element signature="e#642188#642189#0" expanded="true" />
-                <element signature="e#642237#642238#0" expanded="true" />
-                <element signature="e#643167#643168#0" expanded="true" />
-                <element signature="e#643272#643273#0" expanded="true" />
-                <element signature="e#643815#643816#0" expanded="true" />
-                <element signature="e#643866#643867#0" expanded="true" />
-                <element signature="e#649972#649973#0" expanded="true" />
-                <element signature="e#650020#650021#0" expanded="true" />
-                <element signature="e#656804#656805#0" expanded="true" />
-                <element signature="e#656833#656834#0" expanded="true" />
-                <element signature="e#658068#658069#0" expanded="true" />
-                <element signature="e#658130#658131#0" expanded="true" />
-                <element signature="e#662319#662320#0" expanded="true" />
-                <element signature="e#662389#662390#0" expanded="true" />
-                <element signature="e#667258#667259#0" expanded="true" />
-                <element signature="e#667326#667327#0" expanded="true" />
-                <element signature="e#671645#671646#0" expanded="true" />
-                <element signature="e#671711#671712#0" expanded="true" />
-                <element signature="e#683506#683507#0" expanded="true" />
-                <element signature="e#683571#683572#0" expanded="true" />
-                <element signature="e#694379#694380#0" expanded="true" />
-                <element signature="e#694446#694447#0" expanded="true" />
-                <element signature="e#703326#703327#0" expanded="true" />
-                <element signature="e#703391#703392#0" expanded="true" />
-                <element signature="e#712071#712072#0" expanded="true" />
-                <element signature="e#712134#712135#0" expanded="true" />
-                <element signature="e#720914#720915#0" expanded="true" />
-                <element signature="e#720978#720979#0" expanded="true" />
-                <element signature="e#722377#722378#0" expanded="true" />
-                <element signature="e#722461#722462#0" expanded="true" />
-                <element signature="e#727997#727998#0" expanded="true" />
-                <element signature="e#728024#728025#0" expanded="true" />
-                <element signature="e#728118#728119#0" expanded="true" />
-                <element signature="e#728145#728146#0" expanded="true" />
-                <element signature="e#732076#732077#0" expanded="true" />
-                <element signature="e#732103#732104#0" expanded="true" />
-              </folding>
+            <state relative-caret-position="195">
+              <caret line="20" column="8" selection-start-line="20" selection-start-column="8" selection-end-line="20" selection-end-column="74" />
             </state>
           </provider>
         </entry>
       </file>
       <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/api/src/main/resources/Activity.proto">
+        <entry file="file://$PROJECT_DIR$/src/api/src/main/scala/scala/ski/crunch/activity/processor/model/ActivitySummary.scala">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="-2177">
-              <caret line="155" column="33" lean-forward="true" selection-start-line="155" selection-start-column="33" selection-end-line="155" selection-end-column="33" />
+            <state relative-caret-position="104">
+              <caret line="8" column="74" selection-start-line="8" selection-start-column="74" selection-end-line="8" selection-end-column="74" />
             </state>
           </provider>
         </entry>
       </file>
       <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/api/src/main/java/ski/crunch/activity/parser/fit/EventMessageListener.java">
+        <entry file="file://$PROJECT_DIR$/src/api/src/main/scala/scala/ski/crunch/activity/processor/EventProcessor.scala">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="143">
-              <caret line="66" column="26" selection-start-line="66" selection-start-column="26" selection-end-line="66" selection-end-column="26" />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/api/src/main/java/ski/crunch/activity/parser/fit/LapMessageListener.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="169">
-              <caret line="71" column="75" selection-start-line="71" selection-start-column="75" selection-end-line="71" selection-end-column="75" />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/api/src/main/java/ski/crunch/activity/processor/CloseSegmentsHandler.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="183">
-              <caret line="96" column="40" selection-start-line="96" selection-start-column="40" selection-end-line="96" selection-end-column="40" />
-              <folding>
-                <element signature="imports" expanded="true" />
-                <element signature="e#378#379#0" expanded="true" />
-                <element signature="e#446#447#0" expanded="true" />
-              </folding>
+            <state relative-caret-position="-96">
+              <caret line="5" lean-forward="true" selection-start-line="5" selection-end-line="5" />
             </state>
           </provider>
         </entry>
@@ -1085,7 +302,6 @@
   </component>
   <component name="FindInProjectRecents">
     <findStrings>
-      <find>ParseFitActivityLambda</find>
       <find>ParseFitActivityLambdaLambdaFunction</find>
       <find>S3RawBucketForActivity</find>
       <find>activityTable</find>
@@ -1115,6 +331,7 @@
       <find>pauseTestGarmin</find>
       <find>targetf</find>
       <find>sport</find>
+      <find>totalAsc</find>
     </findStrings>
     <replaceStrings>
       <replace />
@@ -1690,11 +907,6 @@
   <component name="IdeDocumentHistory">
     <option name="CHANGED_PATHS">
       <list>
-        <option value="$PROJECT_DIR$/src/api/src/main/scala/scala/ski/crunch/activity/processor/model/ActivitySummary.scala" />
-        <option value="$PROJECT_DIR$/src/api/src/main/java/ski/crunch/activity/parser/fit/FitActivityHolderAdapter.java" />
-        <option value="$PROJECT_DIR$/src/api/src/main/java/ski/crunch/activity/parser/fit/FileIdMessageListener.java" />
-        <option value="$PROJECT_DIR$/src/api/src/main/java/ski/crunch/activity/parser/fit/HrvMessageListener.java" />
-        <option value="$PROJECT_DIR$/src/api/src/main/java/ski/crunch/activity/parser/fit/RecordMessageListener.java" />
         <option value="$PROJECT_DIR$/src/api/src/main/scala/scala/ski/crunch/activity/processor/ActivityProcessor.scala" />
         <option value="$PROJECT_DIR$/src/api/src/main/scala/scala/ski/crunch/activity/processor/model/Event.scala" />
         <option value="$PROJECT_DIR$/src/api/src/main/java/ski/crunch/activity/processor/SortByTsHandler.java" />
@@ -1730,17 +942,22 @@
         <option value="$PROJECT_DIR$/src/api/src/main/java/ski/crunch/activity/processor/SortEventsTsHandler.java" />
         <option value="$PROJECT_DIR$/src/api/src/main/java/ski/crunch/activity/processor/SortEventsByTsHandler.java" />
         <option value="$PROJECT_DIR$/src/api/src/main/resources/Activity.proto" />
-        <option value="$PROJECT_DIR$/src/api/src/main/scala/scala/ski/crunch/activity/processor/EventProcessor.scala" />
         <option value="$PROJECT_DIR$/src/api/src/main/java/ski/crunch/activity/processor/DetectMotionHandler.java" />
-        <option value="$PROJECT_DIR$/src/api/src/main/java/ski/crunch/activity/processor/ActivityProcessor.java" />
         <option value="$PROJECT_DIR$/src/api/src/main/java/ski/crunch/activity/ActivityWriter.java" />
-        <option value="$PROJECT_DIR$/src/api/src/main/java/ski/crunch/activity/parser/fit/SessionMessageListener.java" />
         <option value="$PROJECT_DIR$/src/api/src/main/java/ski/crunch/activity/parser/fit/ActivityMessageListener.java" />
         <option value="$PROJECT_DIR$/src/api/src/main/java/ski/crunch/activity/parser/fit/EventMessageListener.java" />
         <option value="$PROJECT_DIR$/src/api/src/main/java/ski/crunch/activity/parser/fit/LapMessageListener.java" />
         <option value="$PROJECT_DIR$/src/api/src/main/java/ski/crunch/activity/processor/CloseSegmentsHandler.java" />
         <option value="$PROJECT_DIR$/src/api/src/main/java/ski/crunch/activity/model/processor/ActivityHolder.java" />
+        <option value="$PROJECT_DIR$/src/api/src/main/java/ski/crunch/activity/processor/ActivityProcessor.java" />
         <option value="$PROJECT_DIR$/src/api/src/main/java/ski/crunch/activity/ActivityWriterImpl.java" />
+        <option value="$PROJECT_DIR$/src/api/src/main/java/ski/crunch/activity/processor/model/ActivityHolder.java" />
+        <option value="$PROJECT_DIR$/src/api/src/test/java/ski/crunch/activity/processor/ActiitySummarizerTest.java" />
+        <option value="$PROJECT_DIR$/src/api/src/main/scala/scala/ski/crunch/activity/processor/EventProcessor.scala" />
+        <option value="$PROJECT_DIR$/src/api/src/main/java/ski/crunch/activity/parser/fit/SessionMessageListener.java" />
+        <option value="$PROJECT_DIR$/src/api/src/test/java/ski/crunch/activity/processor/ActivitySummarizerTest.java" />
+        <option value="$PROJECT_DIR$/src/api/src/main/scala/scala/ski/crunch/activity/processor/model/ActivitySummary.scala" />
+        <option value="$PROJECT_DIR$/src/api/src/main/java/ski/crunch/activity/processor/ActivitySummarizer.java" />
       </list>
     </option>
   </component>
@@ -1756,6 +973,7 @@
     </packageJsonPaths>
   </component>
   <component name="ProjectFrameBounds">
+    <option name="x" value="9" />
     <option name="y" value="23" />
     <option name="width" value="1401" />
     <option name="height" value="824" />
@@ -1786,7 +1004,6 @@
       <foldersAlwaysOnTop value="true" />
     </navigator>
     <panes>
-      <pane id="Scope" />
       <pane id="ProjectPane">
         <subPane>
           <expand>
@@ -1872,19 +1089,6 @@
               <item name="java" type="462c0819:PsiDirectoryNode" />
               <item name="crunch" type="462c0819:PsiDirectoryNode" />
               <item name="activity" type="462c0819:PsiDirectoryNode" />
-              <item name="model" type="462c0819:PsiDirectoryNode" />
-              <item name="processor" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="ski-analytics-services" type="b2602c69:ProjectViewProjectNode" />
-              <item name="ski-analytics-services" type="8a07ba80:GradleTreeStructureProvider$GradleModuleDirectoryNode" />
-              <item name="src" type="462c0819:PsiDirectoryNode" />
-              <item name="api" type="8a07ba80:GradleTreeStructureProvider$GradleModuleDirectoryNode" />
-              <item name="src" type="462c0819:PsiDirectoryNode" />
-              <item name="main" type="8a07ba80:GradleTreeStructureProvider$GradleModuleDirectoryNode" />
-              <item name="java" type="462c0819:PsiDirectoryNode" />
-              <item name="crunch" type="462c0819:PsiDirectoryNode" />
-              <item name="activity" type="462c0819:PsiDirectoryNode" />
               <item name="parser" type="462c0819:PsiDirectoryNode" />
             </path>
             <path>
@@ -1922,7 +1126,8 @@
               <item name="java" type="462c0819:PsiDirectoryNode" />
               <item name="crunch" type="462c0819:PsiDirectoryNode" />
               <item name="activity" type="462c0819:PsiDirectoryNode" />
-              <item name="service" type="462c0819:PsiDirectoryNode" />
+              <item name="processor" type="462c0819:PsiDirectoryNode" />
+              <item name="model" type="462c0819:PsiDirectoryNode" />
             </path>
             <path>
               <item name="ski-analytics-services" type="b2602c69:ProjectViewProjectNode" />
@@ -1969,6 +1174,18 @@
               <item name="src" type="462c0819:PsiDirectoryNode" />
               <item name="api" type="8a07ba80:GradleTreeStructureProvider$GradleModuleDirectoryNode" />
               <item name="src" type="462c0819:PsiDirectoryNode" />
+              <item name="main" type="8a07ba80:GradleTreeStructureProvider$GradleModuleDirectoryNode" />
+              <item name="scala" type="462c0819:PsiDirectoryNode" />
+              <item name="activity" type="462c0819:PsiDirectoryNode" />
+              <item name="processor" type="462c0819:PsiDirectoryNode" />
+              <item name="model" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="ski-analytics-services" type="b2602c69:ProjectViewProjectNode" />
+              <item name="ski-analytics-services" type="8a07ba80:GradleTreeStructureProvider$GradleModuleDirectoryNode" />
+              <item name="src" type="462c0819:PsiDirectoryNode" />
+              <item name="api" type="8a07ba80:GradleTreeStructureProvider$GradleModuleDirectoryNode" />
+              <item name="src" type="462c0819:PsiDirectoryNode" />
               <item name="test" type="8a07ba80:GradleTreeStructureProvider$GradleModuleDirectoryNode" />
             </path>
             <path>
@@ -1997,12 +1214,26 @@
               <item name="api" type="8a07ba80:GradleTreeStructureProvider$GradleModuleDirectoryNode" />
               <item name="src" type="462c0819:PsiDirectoryNode" />
               <item name="test" type="8a07ba80:GradleTreeStructureProvider$GradleModuleDirectoryNode" />
-              <item name="resources" type="462c0819:PsiDirectoryNode" />
+              <item name="java" type="462c0819:PsiDirectoryNode" />
+              <item name="activity" type="462c0819:PsiDirectoryNode" />
+              <item name="parser" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="ski-analytics-services" type="b2602c69:ProjectViewProjectNode" />
+              <item name="ski-analytics-services" type="8a07ba80:GradleTreeStructureProvider$GradleModuleDirectoryNode" />
+              <item name="src" type="462c0819:PsiDirectoryNode" />
+              <item name="api" type="8a07ba80:GradleTreeStructureProvider$GradleModuleDirectoryNode" />
+              <item name="src" type="462c0819:PsiDirectoryNode" />
+              <item name="test" type="8a07ba80:GradleTreeStructureProvider$GradleModuleDirectoryNode" />
+              <item name="java" type="462c0819:PsiDirectoryNode" />
+              <item name="activity" type="462c0819:PsiDirectoryNode" />
+              <item name="processor" type="462c0819:PsiDirectoryNode" />
             </path>
           </expand>
           <select />
         </subPane>
       </pane>
+      <pane id="Scope" />
       <pane id="PackagesPane" />
     </panes>
   </component>
@@ -2010,7 +1241,7 @@
     <property name="Git.Branch.Popup.ShowAllRemotes" value="true" />
     <property name="WebServerToolWindowFactoryState" value="false" />
     <property name="aspect.path.notification.shown" value="true" />
-    <property name="com.android.tools.idea.instantapp.provision.ProvisionBeforeRunTaskProvider.myTimeStamp" value="1546227817357" />
+    <property name="com.android.tools.idea.instantapp.provision.ProvisionBeforeRunTaskProvider.myTimeStamp" value="1547186132416" />
     <property name="com.intellij.ide.scratch.LRUPopupBuilder$2/Languages" value="JSON" />
     <property name="extract.method.default.visibility" value="private" />
     <property name="last_opened_file_path" value="$PROJECT_DIR$" />
@@ -2058,7 +1289,7 @@
       </list>
     </option>
   </component>
-  <component name="RunManager" selected="Groovy.build (1)">
+  <component name="RunManager" selected="JUnit.ActivitySummarizerTest">
     <configuration default="true" type="AndroidTestRunConfigurationType" factoryName="Android Tests">
       <module name="" />
       <option name="TESTING_TYPE" value="0" />
@@ -2142,31 +1373,31 @@
       <setting name="debug" value="false" />
       <method v="2" />
     </configuration>
-    <configuration name="ActivityPipelineTest (1)" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
+    <configuration name="ActivityPipelineTest" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
       <module name="ski-analytics-services-src_api_test" />
       <extension name="coverage">
         <pattern>
-          <option name="PATTERN" value="ski.crunch.activity.*" />
+          <option name="PATTERN" value="ski.crunch.activity.processor.*" />
           <option name="ENABLED" value="true" />
         </pattern>
       </extension>
-      <option name="PACKAGE_NAME" value="ski.crunch.activity" />
-      <option name="MAIN_CLASS_NAME" value="ski.crunch.activity.ActivityPipelineTest" />
+      <option name="PACKAGE_NAME" value="ski.crunch.activity.processor" />
+      <option name="MAIN_CLASS_NAME" value="ski.crunch.activity.processor.ActivityPipelineTest" />
       <option name="WORKING_DIRECTORY" value="$MODULE_DIR$" />
       <method v="2">
         <option name="Make" enabled="true" />
       </method>
     </configuration>
-    <configuration name="ActivityPipelineTest.calcPauseGarminTest (1)" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
+    <configuration name="ActivityPipelineTest.calcPauseGarminTest" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
       <module name="ski-analytics-services-src_api_test" />
       <extension name="coverage">
         <pattern>
-          <option name="PATTERN" value="ski.crunch.activity.*" />
+          <option name="PATTERN" value="ski.crunch.activity.processor.*" />
           <option name="ENABLED" value="true" />
         </pattern>
       </extension>
-      <option name="PACKAGE_NAME" value="ski.crunch.activity" />
-      <option name="MAIN_CLASS_NAME" value="ski.crunch.activity.ActivityPipelineTest" />
+      <option name="PACKAGE_NAME" value="ski.crunch.activity.processor" />
+      <option name="MAIN_CLASS_NAME" value="ski.crunch.activity.processor.ActivityPipelineTest" />
       <option name="METHOD_NAME" value="calcPauseGarminTest" />
       <option name="TEST_OBJECT" value="method" />
       <option name="WORKING_DIRECTORY" value="$MODULE_DIR$" />
@@ -2178,30 +1409,13 @@
       <module name="ski-analytics-services-src_api_test" />
       <extension name="coverage">
         <pattern>
-          <option name="PATTERN" value="ski.crunch.activity.*" />
+          <option name="PATTERN" value="ski.crunch.activity.processor.*" />
           <option name="ENABLED" value="true" />
         </pattern>
       </extension>
-      <option name="PACKAGE_NAME" value="ski.crunch.activity" />
-      <option name="MAIN_CLASS_NAME" value="ski.crunch.activity.ActivityPipelineTest" />
+      <option name="PACKAGE_NAME" value="ski.crunch.activity.processor" />
+      <option name="MAIN_CLASS_NAME" value="ski.crunch.activity.processor.ActivityPipelineTest" />
       <option name="METHOD_NAME" value="setEventIndexTest" />
-      <option name="TEST_OBJECT" value="method" />
-      <option name="WORKING_DIRECTORY" value="$MODULE_DIR$" />
-      <method v="2">
-        <option name="Make" enabled="true" />
-      </method>
-    </configuration>
-    <configuration name="ActivityPipelineTest.testCloseSegmentsHandler (1)" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
-      <module name="ski-analytics-services-src_api_test" />
-      <extension name="coverage">
-        <pattern>
-          <option name="PATTERN" value="ski.crunch.activity.*" />
-          <option name="ENABLED" value="true" />
-        </pattern>
-      </extension>
-      <option name="PACKAGE_NAME" value="ski.crunch.activity" />
-      <option name="MAIN_CLASS_NAME" value="ski.crunch.activity.ActivityPipelineTest" />
-      <option name="METHOD_NAME" value="testCloseSegmentsHandler" />
       <option name="TEST_OBJECT" value="method" />
       <option name="WORKING_DIRECTORY" value="$MODULE_DIR$" />
       <method v="2">
@@ -2212,14 +1426,29 @@
       <module name="ski-analytics-services-src_api_test" />
       <extension name="coverage">
         <pattern>
-          <option name="PATTERN" value="ski.crunch.activity.*" />
+          <option name="PATTERN" value="ski.crunch.activity.processor.*" />
           <option name="ENABLED" value="true" />
         </pattern>
       </extension>
-      <option name="PACKAGE_NAME" value="ski.crunch.activity" />
-      <option name="MAIN_CLASS_NAME" value="ski.crunch.activity.ActivityPipelineTest" />
+      <option name="PACKAGE_NAME" value="ski.crunch.activity.processor" />
+      <option name="MAIN_CLASS_NAME" value="ski.crunch.activity.processor.ActivityPipelineTest" />
       <option name="METHOD_NAME" value="testLapDetectGarmin" />
       <option name="TEST_OBJECT" value="method" />
+      <option name="WORKING_DIRECTORY" value="$MODULE_DIR$" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="ActivitySummarizerTest" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
+      <module name="ski-analytics-services-src_api_test" />
+      <extension name="coverage">
+        <pattern>
+          <option name="PATTERN" value="ski.crunch.activity.processor.*" />
+          <option name="ENABLED" value="true" />
+        </pattern>
+      </extension>
+      <option name="PACKAGE_NAME" value="ski.crunch.activity.processor" />
+      <option name="MAIN_CLASS_NAME" value="ski.crunch.activity.processor.ActivitySummarizerTest" />
       <option name="WORKING_DIRECTORY" value="$MODULE_DIR$" />
       <method v="2">
         <option name="Make" enabled="true" />
@@ -2294,18 +1523,18 @@
     <list>
       <item itemvalue="Groovy.build (1)" />
       <item itemvalue="JUnit.ActivityPipelineTest (1)" />
-      <item itemvalue="JUnit.ActivityPipelineTest.testCloseSegmentsHandler (1)" />
       <item itemvalue="JUnit.ActivityPipelineTest.calcPauseGarminTest (1)" />
       <item itemvalue="JUnit.ActivityPipelineTest.testLapDetectGarmin" />
       <item itemvalue="JUnit.ActivityPipelineTest.setEventIndexTest" />
+      <item itemvalue="JUnit.ActivitySummarizerTest" />
     </list>
     <recent_temporary>
       <list>
+        <item itemvalue="JUnit.ActivitySummarizerTest" />
         <item itemvalue="JUnit.ActivityPipelineTest.setEventIndexTest" />
         <item itemvalue="JUnit.ActivityPipelineTest.testLapDetectGarmin" />
         <item itemvalue="JUnit.ActivityPipelineTest (1)" />
         <item itemvalue="JUnit.ActivityPipelineTest.calcPauseGarminTest (1)" />
-        <item itemvalue="JUnit.ActivityPipelineTest.testCloseSegmentsHandler (1)" />
       </list>
     </recent_temporary>
   </component>
@@ -2356,6 +1585,8 @@
       <workItem from="1546228320345" duration="2266000" />
       <workItem from="1546230621793" duration="27296000" />
       <workItem from="1546489617333" duration="11424000" />
+      <workItem from="1547185622655" duration="565000" />
+      <workItem from="1547186488184" duration="19470000" />
     </task>
     <task id="LOCAL-00001" summary="CF template for domain">
       <created>1533077361072</created>
@@ -2476,43 +1707,50 @@
       <option name="project" value="LOCAL" />
       <updated>1547012738336</updated>
     </task>
-    <option name="localTasksCounter" value="18" />
+    <task id="LOCAL-00018" summary="SKAPI-24 - initial commit on protobuf writer.  Add new processor to detect motion events.  Add new processor to sort events by timestamp.">
+      <created>1547106482654</created>
+      <option name="number" value="00018" />
+      <option name="presentableId" value="LOCAL-00018" />
+      <option name="project" value="LOCAL" />
+      <updated>1547106482654</updated>
+    </task>
+    <option name="localTasksCounter" value="19" />
     <servers />
   </component>
   <component name="TestHistory">
-    <history-entry file="ActivityPipelineTest_setEventIndexTest - 2019.01.03 at 20h 05m 51s.xml">
-      <configuration name="ActivityPipelineTest.setEventIndexTest" configurationId="JUnit" />
+    <history-entry file="ActivitySummarizerTest - 2019.01.13 at 21h 43m 57s.xml">
+      <configuration name="ActivitySummarizerTest" configurationId="JUnit" />
     </history-entry>
-    <history-entry file="ActivityPipelineTest_setEventIndexTest - 2019.01.03 at 20h 06m 58s.xml">
-      <configuration name="ActivityPipelineTest.setEventIndexTest" configurationId="JUnit" />
+    <history-entry file="ActivitySummarizerTest - 2019.01.13 at 21h 44m 16s.xml">
+      <configuration name="ActivitySummarizerTest" configurationId="JUnit" />
     </history-entry>
-    <history-entry file="ActivityPipelineTest_setEventIndexTest - 2019.01.03 at 20h 07m 22s.xml">
-      <configuration name="ActivityPipelineTest.setEventIndexTest" configurationId="JUnit" />
+    <history-entry file="ActivitySummarizerTest - 2019.01.13 at 21h 44m 36s.xml">
+      <configuration name="ActivitySummarizerTest" configurationId="JUnit" />
     </history-entry>
-    <history-entry file="ActivityPipelineTest_setEventIndexTest - 2019.01.03 at 20h 16m 02s.xml">
-      <configuration name="ActivityPipelineTest.setEventIndexTest" configurationId="JUnit" />
+    <history-entry file="ActivitySummarizerTest - 2019.01.13 at 21h 47m 47s.xml">
+      <configuration name="ActivitySummarizerTest" configurationId="JUnit" />
     </history-entry>
-    <history-entry file="ActivityPipelineTest_setEventIndexTest - 2019.01.03 at 20h 16m 22s.xml">
-      <configuration name="ActivityPipelineTest.setEventIndexTest" configurationId="JUnit" />
+    <history-entry file="ActivitySummarizerTest - 2019.01.13 at 21h 48m 19s.xml">
+      <configuration name="ActivitySummarizerTest" configurationId="JUnit" />
     </history-entry>
-    <history-entry file="ActivityPipelineTest_setEventIndexTest - 2019.01.03 at 20h 21m 51s.xml">
-      <configuration name="ActivityPipelineTest.setEventIndexTest" configurationId="JUnit" />
+    <history-entry file="ActivitySummarizerTest - 2019.01.13 at 21h 50m 30s.xml">
+      <configuration name="ActivitySummarizerTest" configurationId="JUnit" />
     </history-entry>
-    <history-entry file="ActivityPipelineTest_setEventIndexTest - 2019.01.03 at 20h 22m 51s.xml">
-      <configuration name="ActivityPipelineTest.setEventIndexTest" configurationId="JUnit" />
+    <history-entry file="ActivitySummarizerTest - 2019.01.13 at 21h 51m 04s.xml">
+      <configuration name="ActivitySummarizerTest" configurationId="JUnit" />
     </history-entry>
-    <history-entry file="ActivityPipelineTest_setEventIndexTest - 2019.01.03 at 20h 22m 58s.xml">
-      <configuration name="ActivityPipelineTest.setEventIndexTest" configurationId="JUnit" />
+    <history-entry file="ActivitySummarizerTest - 2019.01.13 at 21h 52m 16s.xml">
+      <configuration name="ActivitySummarizerTest" configurationId="JUnit" />
     </history-entry>
-    <history-entry file="ActivityPipelineTest_setEventIndexTest - 2019.01.03 at 20h 45m 52s.xml">
-      <configuration name="ActivityPipelineTest.setEventIndexTest" configurationId="JUnit" />
+    <history-entry file="ActivitySummarizerTest - 2019.01.13 at 21h 53m 10s.xml">
+      <configuration name="ActivitySummarizerTest" configurationId="JUnit" />
     </history-entry>
-    <history-entry file="ActivityPipelineTest_setEventIndexTest - 2019.01.03 at 20h 55m 14s.xml">
-      <configuration name="ActivityPipelineTest.setEventIndexTest" configurationId="JUnit" />
+    <history-entry file="ActivitySummarizerTest - 2019.01.13 at 21h 54m 05s.xml">
+      <configuration name="ActivitySummarizerTest" configurationId="JUnit" />
     </history-entry>
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="412430000" />
+    <option name="totallyTimeSpent" value="434181000" />
   </component>
   <component name="TodoView">
     <todo-panel id="selected-file">
@@ -2524,10 +1762,10 @@
     </todo-panel>
   </component>
   <component name="ToolWindowManager">
-    <frame x="0" y="23" width="1401" height="824" extended-state="0" />
+    <frame x="9" y="23" width="1401" height="824" extended-state="0" />
     <editor active="true" />
     <layout>
-      <window_info active="true" content_ui="combo" id="Project" order="0" visible="true" weight="0.17439294" />
+      <window_info active="true" content_ui="combo" id="Project" order="0" visible="true" weight="0.26857984" />
       <window_info id="Structure" order="1" weight="0.2531273" />
       <window_info id="Designer" order="2" />
       <window_info id="Image Layers" order="3" />
@@ -2537,7 +1775,7 @@
       <window_info id="Nl-Palette" order="7" />
       <window_info anchor="bottom" id="Message" order="0" />
       <window_info anchor="bottom" id="Find" order="1" sideWeight="0.49742457" visible="true" weight="0.32863188" />
-      <window_info anchor="bottom" id="Run" order="2" sideWeight="0.69389254" weight="0.42172074" />
+      <window_info anchor="bottom" id="Run" order="2" sideWeight="0.69389254" visible="true" weight="0.42172074" />
       <window_info anchor="bottom" id="Debug" order="3" sideWeight="0.72921264" weight="0.39915374" />
       <window_info anchor="bottom" id="Cvs" order="4" weight="0.25" />
       <window_info anchor="bottom" id="Inspection" order="5" weight="0.4" />
@@ -2551,6 +1789,7 @@
       <window_info anchor="bottom" id="Build" order="13" sideWeight="0.7880086" weight="0.31917807" />
       <window_info anchor="bottom" id="Database Changes" order="14" show_stripe_button="false" />
       <window_info anchor="bottom" id="Docker" order="15" show_stripe_button="false" />
+      <window_info active="true" anchor="bottom" id="Duplicate detector" order="16" visible="true" weight="0.32876712" />
       <window_info anchor="right" id="Commander" order="0" weight="0.4" />
       <window_info anchor="right" id="Ant Build" order="1" weight="0.25" />
       <window_info anchor="right" content_ui="combo" id="Hierarchy" order="2" weight="0.25" />
@@ -2627,7 +1866,8 @@
     <MESSAGE value="SKAPI-14 Activity Parsing and Processing" />
     <MESSAGE value="SKAPI-14 - Event processing.  Lap detection, closing off segments and setting indices for events" />
     <MESSAGE value="SKAPI-18 - update the protobuf structure" />
-    <option name="LAST_COMMIT_MESSAGE" value="SKAPI-18 - update the protobuf structure" />
+    <MESSAGE value="SKAPI-24 - initial commit on protobuf writer.  Add new processor to detect motion events.  Add new processor to sort events by timestamp." />
+    <option name="LAST_COMMIT_MESSAGE" value="SKAPI-24 - initial commit on protobuf writer.  Add new processor to detect motion events.  Add new processor to sort events by timestamp." />
   </component>
   <component name="WindowStateProjectService">
     <state width="704" height="524" key="Git.Branch.Popup" />
@@ -2641,7 +1881,7 @@
       <breakpoints>
         <line-breakpoint enabled="true" type="scala-line">
           <url>file://$PROJECT_DIR$/src/api/src/main/scala/scala/ski/crunch/activity/processor/RecordProcessor.scala</url>
-          <line>133</line>
+          <line>220</line>
           <properties />
           <option name="timeStamp" value="3" />
         </line-breakpoint>
@@ -2653,27 +1893,29 @@
         </line-breakpoint>
         <line-breakpoint enabled="true" type="java-line">
           <url>file://$PROJECT_DIR$/src/api/src/main/java/ski/crunch/activity/processor/DetectPauseHandler.java</url>
-          <line>19</line>
+          <line>13</line>
           <properties />
           <option name="timeStamp" value="17" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="java-line">
           <url>file://$PROJECT_DIR$/src/api/src/main/java/ski/crunch/activity/processor/SetEventIndexHandler.java</url>
-          <line>36</line>
+          <line>34</line>
           <properties />
           <option name="timeStamp" value="24" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="java-line">
           <url>file://$PROJECT_DIR$/src/api/src/main/java/ski/crunch/activity/processor/SetEventIndexHandler.java</url>
-          <line>56</line>
+          <line>54</line>
           <properties />
           <option name="timeStamp" value="25" />
         </line-breakpoint>
-        <line-breakpoint enabled="true" type="java-line">
-          <url>file://$PROJECT_DIR$/src/api/src/test/java/ski/crunch/activity/ActivityPipelineTest.java</url>
-          <line>291</line>
-          <properties />
-          <option name="timeStamp" value="26" />
+        <line-breakpoint enabled="true" type="java-method">
+          <url>file://$PROJECT_DIR$/src/api/src/main/java/ski/crunch/activity/processor/ActivitySummarizer.java</url>
+          <line>239</line>
+          <properties class="ski.crunch.activity.processor.ActivitySummarizer" method="calcTotalTimer">
+            <option name="EMULATED" value="true" />
+          </properties>
+          <option name="timeStamp" value="29" />
         </line-breakpoint>
       </breakpoints>
     </breakpoint-manager>
@@ -2683,45 +1925,6 @@
     <option name="FILTER_TARGETS" value="false" />
   </component>
   <component name="editorHistoryManager">
-    <entry file="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/org.scala-lang/scala-library/2.11.12/66a32abd59b3f9bb690bba2efc7d7ef680157bcd/scala-library-2.11.12-sources.jar!/scala/collection/IterableLike.scala">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="133">
-          <caret line="189" column="43" selection-start-line="189" selection-start-column="43" selection-end-line="189" selection-end-column="43" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/org.scala-lang/scala-library/2.11.12/66a32abd59b3f9bb690bba2efc7d7ef680157bcd/scala-library-2.11.12-sources.jar!/scala/collection/Iterator.scala">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="126">
-          <caret line="890" column="30" selection-start-line="890" selection-start-column="30" selection-end-line="890" selection-end-column="30" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/api/src/main/scala/scala/ski/crunch/activity/processor/model/ActivityRecord.scala">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="393">
-          <caret line="102" column="9" selection-start-line="102" selection-start-column="9" selection-end-line="102" selection-end-column="9" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/api/src/test/scala/SuuntoDetectLapEventSpec.scala" />
-    <entry file="file://$PROJECT_DIR$/src/api/src/test/scala/GarminDetectLapEventSpec.scala" />
-    <entry file="file://$PROJECT_DIR$/src/api/src/test/scala/DetectTimerEventSpec.scala" />
-    <entry file="file://$PROJECT_DIR$/src/api/src/test/scala/DetectMotionStopSpec.scala" />
-    <entry file="file://$PROJECT_DIR$/src/api/src/main/java/ski/crunch/activity/parser/fit/FitActivityHolderAdapter.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="273">
-          <caret line="29" column="19" selection-start-line="29" selection-start-column="19" selection-end-line="29" selection-end-column="19" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/api/src/main/java/ski/crunch/activity/model/PutActivityResponse.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="65">
-          <caret line="5" column="13" selection-start-line="5" selection-start-column="13" selection-end-line="5" selection-end-column="13" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/src/api/src/main/java/ski/crunch/activity/model/ActivityItem.java">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="117">
@@ -2761,34 +1964,11 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="260">
           <caret line="20" column="9" selection-start-line="20" selection-start-column="9" selection-end-line="20" selection-end-column="9" />
-          <folding>
-            <element signature="n#!!doc" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/api/src/test/java/ski/crunch/activity/ActivityTests.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="122">
-          <caret line="12" column="51" selection-start-line="12" selection-start-column="51" selection-end-line="12" selection-end-column="51" />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/settings.gradle">
-      <provider selected="true" editor-type-id="text-editor">
-        <state>
-          <folding>
-            <element signature="n#!!doc" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/api/src/main/java/ski/crunch/activity/model/processor/EventType.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="26">
-          <caret line="2" column="12" selection-start-line="2" selection-start-column="12" selection-end-line="2" selection-end-column="12" />
-        </state>
-      </provider>
+      <provider selected="true" editor-type-id="text-editor" />
     </entry>
     <entry file="file://$PROJECT_DIR$/src/api/src/test/resources/garmin_1.fit">
       <provider selected="true" editor-type-id="text-editor" />
@@ -2825,10 +2005,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="199">
           <caret line="1250" column="22" selection-start-line="1250" selection-start-column="22" selection-end-line="1250" selection-end-column="22" />
-          <folding>
-            <element signature="e#47101#47102#0" expanded="true" />
-            <element signature="e#47157#47158#0" expanded="true" />
-          </folding>
         </state>
       </provider>
     </entry>
@@ -2836,16 +2012,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="481">
           <caret line="37" column="8" selection-start-line="37" selection-start-column="8" selection-end-line="37" selection-end-column="8" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/api/src/test/java/ski/crunch/activity/ActivityPipelineTest.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="126">
-          <caret line="296" selection-start-line="296" selection-end-line="296" />
-          <folding>
-            <element signature="imports" expanded="true" />
-          </folding>
         </state>
       </provider>
     </entry>
@@ -2857,20 +2023,6 @@
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/src/api/src/main/java/ski/crunch/activity/ski/crunch/activity/writer/ActivityWriter.java" />
-    <entry file="file://$PROJECT_DIR$/src/api/src/main/java/ski/crunch/activity/processor/SortRecordsByTsHandler.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="117">
-          <caret line="13" column="86" selection-start-line="13" selection-start-column="8" selection-end-line="13" selection-end-column="86" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/api/src/main/java/ski/crunch/activity/processor/SortEventsByTsHandler.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="169">
-          <caret line="16" column="98" selection-start-line="16" selection-start-column="98" selection-end-line="16" selection-end-column="98" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/src/api/src/main/java/ski/crunch/activity/processor/SetEventIndexHandler.java">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="178">
@@ -2880,13 +2032,6 @@
             <element signature="e#641#642#0" expanded="true" />
             <element signature="e#709#710#0" expanded="true" />
           </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/api/src/main/java/ski/crunch/activity/processor/CreateHrvRecordHandler.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-190">
-          <caret line="14" column="13" selection-start-line="14" selection-start-column="13" selection-end-line="14" selection-end-column="13" />
         </state>
       </provider>
     </entry>
@@ -2906,18 +2051,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="221">
           <caret line="17" column="43" selection-start-line="17" selection-start-column="43" selection-end-line="17" selection-end-column="43" />
-          <folding>
-            <element signature="imports" expanded="true" />
-            <element signature="e#317#318#0" expanded="true" />
-            <element signature="e#385#386#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/api/src/main/java/ski/crunch/activity/processor/ActivityProcessor.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="143">
-          <caret line="18" column="35" selection-start-line="18" selection-start-column="35" selection-end-line="18" selection-end-column="35" />
         </state>
       </provider>
     </entry>
@@ -2925,9 +2058,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="91">
           <caret line="7" column="38" selection-start-line="7" selection-start-column="38" selection-end-line="7" selection-end-column="38" />
-          <folding>
-            <element signature="imports" expanded="true" />
-          </folding>
         </state>
       </provider>
     </entry>
@@ -2938,33 +2068,12 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/api/src/main/scala/scala/ski/crunch/activity/processor/EventProcessor.scala">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="88">
-          <caret line="161" column="6" selection-start-line="161" selection-start-column="6" selection-end-line="161" selection-end-column="6" />
-          <folding>
-            <element signature="e#45#61#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/src/api/src/main/scala/scala/ski/crunch/activity/processor/RecordProcessor.scala">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="-1323">
           <caret line="91" column="6" selection-start-line="91" selection-start-column="6" selection-end-line="91" selection-end-column="6" />
           <folding>
             <element signature="e#45#78#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/api/src/main/java/ski/crunch/activity/model/processor/ActivityEvent.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="363">
-          <caret line="66" column="20" selection-start-line="66" selection-start-column="16" selection-end-line="66" selection-end-column="23" />
-          <folding>
-            <element signature="e#1614#1615#0" expanded="true" />
-            <element signature="e#1646#1647#0" expanded="true" />
           </folding>
         </state>
       </provider>
@@ -2994,10 +2103,36 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="183">
           <caret line="96" column="40" selection-start-line="96" selection-start-column="40" selection-end-line="96" selection-end-column="40" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/api/src/main/java/com/garmin/fit/Sport.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="-438">
+          <caret line="20" column="12" selection-start-line="20" selection-start-column="12" selection-end-line="20" selection-end-column="12" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/api/src/main/java/ski/crunch/activity/processor/SortRecordsByTsHandler.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="117">
+          <caret line="13" column="86" selection-start-line="13" selection-start-column="8" selection-end-line="13" selection-end-column="86" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/api/src/main/java/ski/crunch/activity/processor/SortEventsByTsHandler.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="169">
+          <caret line="16" column="98" selection-start-line="16" selection-start-column="98" selection-end-line="16" selection-end-column="98" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/api/src/test/java/ski/crunch/activity/ActivityTests.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="19">
+          <caret line="36" column="6" selection-start-line="36" selection-start-column="6" selection-end-line="36" selection-end-column="6" />
           <folding>
             <element signature="imports" expanded="true" />
-            <element signature="e#378#379#0" expanded="true" />
-            <element signature="e#446#447#0" expanded="true" />
           </folding>
         </state>
       </provider>
@@ -3005,7 +2140,7 @@
     <entry file="file://$PROJECT_DIR$/src/api/src/main/java/ski/crunch/activity/model/ActivityOuterClass.java">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="233">
-          <caret line="13586" column="23" selection-start-line="13586" selection-start-column="23" selection-end-line="13586" selection-end-column="23" />
+          <caret line="13586" column="23" selection-start-line="13586" selection-start-column="23" selection-end-line="13586" selection-end-column="31" />
           <folding>
             <element signature="e#7713#7714#0" expanded="true" />
             <element signature="e#7741#7742#0" expanded="true" />
@@ -3796,47 +2931,160 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/api/src/main/java/com/garmin/fit/Sport.java">
+    <entry file="file://$PROJECT_DIR$/src/api/src/main/java/ski/crunch/activity/processor/CreateHrvRecordHandler.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-438">
-          <caret line="20" column="12" selection-start-line="20" selection-start-column="12" selection-end-line="20" selection-end-column="12" />
+        <state relative-caret-position="234">
+          <caret line="24" column="37" selection-start-line="24" selection-start-column="37" selection-end-line="24" selection-end-column="37" />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/api/src/main/java/ski/crunch/activity/parser/fit/SessionMessageListener.java">
+    <entry file="file://$PROJECT_DIR$/src/api/src/main/java/ski/crunch/activity/processor/model/EventType.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="103">
-          <caret line="59" column="46" selection-start-line="59" selection-start-column="46" selection-end-line="59" selection-end-column="46" />
+        <state relative-caret-position="169">
+          <caret line="13" selection-start-line="13" selection-end-line="13" />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/src/api/src/main/resources/Activity.proto">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-2177">
-          <caret line="155" column="33" lean-forward="true" selection-start-line="155" selection-start-column="33" selection-end-line="155" selection-end-column="33" />
+        <state relative-caret-position="2028">
+          <caret line="156" column="8" selection-start-line="156" selection-start-column="8" selection-end-line="156" selection-end-column="8" />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/api/src/main/java/ski/crunch/activity/model/processor/ActivityHolder.java">
+    <entry file="file://$PROJECT_DIR$/src/api/src/main/java/ski/crunch/activity/processor/ActivityProcessor.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="319">
-          <caret line="98" column="53" selection-start-line="98" selection-start-column="26" selection-end-line="98" selection-end-column="53" />
-          <folding>
-            <element signature="imports" expanded="true" />
-            <element signature="e#1465#1466#0" expanded="true" />
-            <element signature="e#1495#1496#0" expanded="true" />
-            <element signature="e#2102#2103#0" expanded="true" />
-            <element signature="e#2137#2138#0" expanded="true" />
-          </folding>
+        <state relative-caret-position="78">
+          <caret line="6" column="38" lean-forward="true" selection-start-line="6" selection-start-column="38" selection-end-line="6" selection-end-column="38" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/api/src/main/java/ski/crunch/activity/processor/CalcMovingHandler.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="52">
+          <caret line="11" column="13" selection-start-line="11" selection-start-column="13" selection-end-line="11" selection-end-column="13" />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/src/api/src/main/java/ski/crunch/activity/ActivityWriterImpl.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="285">
-          <caret line="52" column="41" selection-start-line="52" selection-start-column="41" selection-end-line="52" selection-end-column="41" />
+        <state relative-caret-position="348">
+          <caret line="124" column="31" selection-start-line="124" selection-start-column="31" selection-end-line="124" selection-end-column="31" />
           <folding>
             <element signature="imports" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/api/src/main/java/ski/crunch/activity/parser/fit/FitActivityHolderAdapter.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="281">
+          <caret line="29" column="19" selection-start-line="29" selection-start-column="19" selection-end-line="29" selection-end-column="19" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/api/src/main/java/ski/crunch/activity/parser/fit/AbstractMesgListener.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="195">
+          <caret line="20" column="8" selection-start-line="20" selection-start-column="8" selection-end-line="20" selection-end-column="74" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/api/src/test/java/ski/crunch/activity/processor/ActivityPipelineTest.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="364">
+          <caret line="28" column="13" selection-start-line="28" selection-start-column="13" selection-end-line="28" selection-end-column="13" />
+          <folding>
+            <element signature="imports" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/api/src/test/java/ski/crunch/activity/parser/FitActivityHolderAdapterTest.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="182">
+          <caret line="30" column="18" lean-forward="true" selection-start-line="29" selection-end-line="30" selection-end-column="18" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/api/src/main/java/ski/crunch/activity/processor/model/ActivityEvent.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="41">
+          <caret line="21" column="4" selection-start-line="21" selection-start-column="4" selection-end-line="21" selection-end-column="88" />
+          <folding>
+            <element signature="e#1614#1615#0" expanded="true" />
+            <element signature="e#1646#1647#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/api/src/main/java/ski/crunch/activity/processor/model/ActivityHolder.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="132">
+          <caret line="11" column="13" selection-start-line="11" selection-start-column="13" selection-end-line="11" selection-end-column="13" />
+          <folding>
+            <element signature="imports" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/api/src/main/scala/scala/ski/crunch/activity/processor/EventProcessor.scala">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="-96">
+          <caret line="5" lean-forward="true" selection-start-line="5" selection-end-line="5" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/api/src/main/java/ski/crunch/activity/parser/fit/SessionMessageListener.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="121">
+          <caret line="138" column="24" selection-start-line="138" selection-start-column="24" selection-end-line="138" selection-end-column="24" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/api/src/main/scala/scala/ski/crunch/activity/processor/model/ActivityRecord.scala">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="121">
+          <caret line="53" column="6" selection-start-line="53" selection-start-column="6" selection-end-line="53" selection-end-column="6" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="jar:///Library/Java/JavaVirtualMachines/jdk1.8.0_31.jdk/Contents/Home/src.zip!/java/util/stream/Stream.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="107">
+          <caret line="197" column="14" selection-start-line="197" selection-start-column="14" selection-end-line="197" selection-end-column="14" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/api/src/main/scala/scala/ski/crunch/activity/processor/model/ActivitySummary.scala">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="104">
+          <caret line="8" column="74" selection-start-line="8" selection-start-column="74" selection-end-line="8" selection-end-column="74" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/api/src/test/java/ski/crunch/activity/processor/ActivitySummarizerTest.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="1228">
+          <caret line="101" column="22" selection-start-line="101" selection-start-column="22" selection-end-line="101" selection-end-column="22" />
+          <folding>
+            <element signature="imports" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/api/src/main/java/ski/crunch/activity/processor/ActivitySummarizer.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="272">
+          <caret line="214" column="47" lean-forward="true" selection-start-line="214" selection-start-column="47" selection-end-line="214" selection-end-column="47" />
+          <folding>
+            <element signature="imports" expanded="true" />
+            <element signature="e#660#667#0" expanded="true" />
+            <element signature="e#2016#4872#0" />
+            <element signature="e#7957#7958#0" expanded="true" />
+            <element signature="e#8020#8021#0" expanded="true" />
+            <element signature="e#8068#8069#0" expanded="true" />
+            <element signature="e#8141#8142#0" expanded="true" />
           </folding>
         </state>
       </provider>

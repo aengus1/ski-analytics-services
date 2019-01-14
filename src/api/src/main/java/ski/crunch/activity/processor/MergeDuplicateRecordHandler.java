@@ -5,12 +5,7 @@ import scala.collection.JavaConversions;
 import scala.collection.immutable.List;
 import scala.ski.crunch.activity.processor.RecordProcessor;
 import scala.ski.crunch.activity.processor.model.ActivityRecord;
-import ski.crunch.activity.model.processor.ActivityHolder;
-
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.Comparator;
+import ski.crunch.activity.processor.model.ActivityHolder;
 
 
 public class MergeDuplicateRecordHandler implements  Handler<ActivityHolder> {

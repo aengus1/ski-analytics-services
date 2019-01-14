@@ -1,9 +1,9 @@
 package ski.crunch.activity.processor;
 
 import org.apache.log4j.Logger;
-import ski.crunch.activity.model.processor.ActivityEvent;
-import ski.crunch.activity.model.processor.ActivityHolder;
-import ski.crunch.activity.model.processor.EventType;
+import ski.crunch.activity.processor.model.ActivityEvent;
+import ski.crunch.activity.processor.model.ActivityHolder;
+import ski.crunch.activity.processor.model.EventType;
 
 public class CloseSegmentsHandler implements Handler<ActivityHolder> {
 

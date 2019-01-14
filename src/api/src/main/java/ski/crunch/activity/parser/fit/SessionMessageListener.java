@@ -2,9 +2,9 @@ package ski.crunch.activity.parser.fit;
 
 import com.garmin.fit.*;
 import scala.ski.crunch.activity.processor.model.ActivitySummary;
-import ski.crunch.activity.model.processor.ActivityEvent;
-import ski.crunch.activity.model.processor.ActivityHolder;
-import ski.crunch.activity.model.processor.EventType;
+import ski.crunch.activity.processor.model.ActivityEvent;
+import ski.crunch.activity.processor.model.ActivityHolder;
+import ski.crunch.activity.processor.model.EventType;
 
 import java.util.Collection;
 import java.util.Date;
@@ -136,9 +136,9 @@ public class SessionMessageListener extends AbstractMesgListener implements Sess
                     maxSpeed = (double) field.getValue();
                 }
             }
-            summary = new ActivitySummary(startTs, endTs, totalElapsed, totalTimer, totalMoving, totalStopped,
-                    totalPaused, totalAscent, totalDescent, totalDistance, totalCalories, avgHr, maxHr, avgCadence,
-                    maxCadence, avgTemp, maxTemp, avgSpeed, maxSpeed, nLaps);
+//            summary = new ActivitySummary(startTs, endTs, totalElapsed, totalTimer, totalMoving, totalStopped,
+//                    totalPaused, totalAscent, totalDescent, totalDistance, totalCalories, avgHr, maxHr, avgCadence,
+//                    maxCadence, avgTemp, maxTemp, avgSpeed, maxSpeed, nLaps);
             activityHolder.getSummaries().add(summary);
             activityHolder.getEvents().add(sessionStart);
             activityHolder.getEvents().add(sessionEnd);

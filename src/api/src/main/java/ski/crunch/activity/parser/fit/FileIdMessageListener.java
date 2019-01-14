@@ -4,7 +4,7 @@ import com.garmin.fit.Field;
 import com.garmin.fit.FileIdMesg;
 import com.garmin.fit.FileIdMesgListener;
 import ski.crunch.activity.model.ActivityOuterClass;
-import ski.crunch.activity.model.processor.ActivityHolder;
+import ski.crunch.activity.processor.model.ActivityHolder;
 
 import java.util.Date;
 

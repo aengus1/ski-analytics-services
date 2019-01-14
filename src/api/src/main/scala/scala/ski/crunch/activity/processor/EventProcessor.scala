@@ -2,8 +2,7 @@ package scala.ski.crunch.activity.processor
 
 import java.util
 
-import com.garmin.fit.Manufacturer
-import ski.crunch.activity.model.processor.{ActivityEvent, ActivityHolder, EventType}
+import ski.crunch.activity.processor.model.{ActivityEvent, ActivityHolder, EventType}
 
 import scala.annotation.tailrec
 import scala.collection.JavaConversions._

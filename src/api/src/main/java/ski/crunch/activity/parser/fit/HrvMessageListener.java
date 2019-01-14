@@ -3,14 +3,7 @@ package ski.crunch.activity.parser.fit;
 import com.garmin.fit.Field;
 import com.garmin.fit.HrvMesg;
 import com.garmin.fit.HrvMesgListener;
-import org.apache.log4j.Logger;
-import scala.ski.crunch.activity.processor.model.ActivityRecord;
-import ski.crunch.activity.model.processor.ActivityHolder;
-
-
-import java.text.SimpleDateFormat;
-import java.util.Map;
-import java.util.logging.Level;
+import ski.crunch.activity.processor.model.ActivityHolder;
 
 
 /**

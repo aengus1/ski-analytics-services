@@ -1,13 +1,13 @@
 package ski.crunch.activity;
 
-import scala.ski.crunch.activity.processor.model.Event;
 import ski.crunch.activity.model.ActivityOuterClass;
-import ski.crunch.activity.model.processor.ActivityEvent;
-import ski.crunch.activity.model.processor.ActivityHolder;
-import ski.crunch.activity.model.processor.EventType;
+import ski.crunch.activity.processor.model.ActivityEvent;
+import ski.crunch.activity.processor.model.ActivityHolder;
+import ski.crunch.activity.processor.model.EventType;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 //TODO -> Summary (at session, activity, and segment level)
 //todo -> ID
@@ -100,7 +100,9 @@ public class ActivityWriterImpl implements ActivityWriter {
                 evt -> {
                     segmentBuilder.setStartIdx(evt.getIndex());
                     segmentBuilder.setStartTs(evt.getTs());
-                    ActivityEvent evtEnd = this.holder.getEvents().stream().filter(e -> e.getEventType().equals(stopEventType)).findFirst().get();
+                    ActivityEvent evtEnd = this.holder.getEvents().stream().filter(e -> e.getEventType().equals(stopEventType)
+                    && !segments.stream().map(seg -> seg.getStartIdx()).collect(Collectors.toList()).contains(e.getIndex()))
+                            .findFirst().get();
                     segmentBuilder.setStopIdx(evtEnd.getIndex());
                     segmentBuilder.setStopTs(evtEnd.getTs());
                     segments.add(segmentBuilder.build());
@@ -118,7 +120,9 @@ public class ActivityWriterImpl implements ActivityWriter {
         sessionBuilder.setSubSport(ActivityOuterClass.Activity.SubSport.valueOf(ActivityHolder.parseActivityEventInfoField(session,"subsport")));
         segmentBuilder.clear();
 
-            ActivityEvent sessionEnd = this.holder.getEvents().stream().filter(e -> e.getEventType().equals(EventType.SESSION_STOP)).findFirst().get();
+            ActivityEvent sessionEnd = this.holder.getEvents().stream().filter(e -> e.getEventType().equals(EventType.SESSION_STOP)
+                    && !sessions.stream().map(ses -> ses.getSegment().getStartIdx()).collect(Collectors.toList()).contains(e.getIndex()))
+            .findFirst().get();
             segmentBuilder.setStartIdx(session.getIndex())
                     .setStartTs(session.getTs())
                     .setStopIdx(sessionEnd.getIndex())

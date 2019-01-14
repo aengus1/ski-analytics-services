@@ -4,9 +4,9 @@ import com.garmin.fit.ActivityMesg;
 import com.garmin.fit.ActivityMesgListener;
 import com.garmin.fit.Field;
 import com.garmin.fit.Event;
-import ski.crunch.activity.model.processor.ActivityEvent;
-import ski.crunch.activity.model.processor.ActivityHolder;
-import ski.crunch.activity.model.processor.EventType;
+import ski.crunch.activity.processor.model.ActivityEvent;
+import ski.crunch.activity.processor.model.ActivityHolder;
+import ski.crunch.activity.processor.model.EventType;
 import java.util.Collection;
 import java.util.Date;
 

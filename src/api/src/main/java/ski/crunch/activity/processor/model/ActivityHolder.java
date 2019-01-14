@@ -1,9 +1,9 @@
-package ski.crunch.activity.model.processor;
+package ski.crunch.activity.processor.model;
 
 import scala.ski.crunch.activity.processor.model.ActivityRecord;
 import scala.ski.crunch.activity.processor.model.ActivitySummary;
-import ski.crunch.activity.model.ActivityOuterClass;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -11,6 +11,7 @@ import java.util.Map;
 
 public class ActivityHolder {
 
+    public static final SimpleDateFormat TARGET_FORMAT = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss");
     private List<ActivityRecord> records;
     private Map<String, Double[]> hrvs;
     private List<ActivityEvent> events;

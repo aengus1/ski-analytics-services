@@ -2,10 +2,7 @@ package ski.crunch.activity.processor;
 
 import org.apache.log4j.Logger;
 import scala.ski.crunch.activity.processor.EventProcessor;
-import ski.crunch.activity.model.processor.ActivityEvent;
-import ski.crunch.activity.model.processor.ActivityHolder;
-
-import java.util.List;
+import ski.crunch.activity.processor.model.ActivityHolder;
 
 public class DetectPauseHandler implements Handler<ActivityHolder> {
     private Logger logger;
