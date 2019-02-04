@@ -3,6 +3,7 @@ package ski.crunch.activity.processor;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestInstance;
+import org.junit.jupiter.api.TestTemplate;
 import scala.ski.crunch.activity.processor.model.ActivityRecord;
 import ski.crunch.activity.processor.model.ActivityEvent;
 import ski.crunch.activity.processor.model.ActivityHolder;
@@ -53,18 +54,36 @@ public class ActivitySummarizerTest {
         };
         holder.setRecords(Arrays.asList(records));
 
+        // 0 - 3 | pause |
+        // 0 1 2 3 4 5   6 7 8 9 10 11 12
+        //   | lap       |
+        //       | pause |
+
         List<ActivityEvent> events = new ArrayList<>();
-        ActivityEvent pauseStart = new ActivityEvent(4, EventType.PAUSE_START, "2019-01-01T09:00:03", "");
+        ActivityEvent pauseStart = new ActivityEvent(3, EventType.PAUSE_START, "2019-01-01T09:00:03", "");
         ActivityEvent pauseEnd = new ActivityEvent(6, EventType.PAUSE_STOP, "2019-01-01T09:00:06", "");
+
+        ActivityEvent overlappingLapStart = new ActivityEvent(1, EventType.LAP_START, "2019-01-01T09:00:01", "");
+        ActivityEvent overlappingLapEnd = new ActivityEvent(6, EventType.LAP_STOP, "2019-01-01T09:00:06", "");
+
+//        ActivityEvent lapStart = new ActivityEvent(4, EventType.PAUSE_START, "2019-01-01T09:00:03", "");
+//        ActivityEvent lapStop = new ActivityEvent(6, EventType.PAUSE_STOP, "2019-01-01T09:00:06", "");
+
         events.add(pauseStart);
         events.add(pauseEnd);
+        events.add(overlappingLapStart);
+        events.add(overlappingLapEnd);
+//        events.add(lapStart);
+//        events.add(lapStop);
 
         holder.setEvents(events);
 
         this.holder = holder;
         this.summarizer = new ActivitySummarizer(holder);
+        // pause is summary 0, lap is summary 1
 
     }
+
 
     @Test
     public void testCalcElapsed() {
@@ -100,6 +119,78 @@ public class ActivitySummarizerTest {
         }
 
         assertEquals(0,this.holder.getSummaries().get(0).totalTimer());
-
     }
+
+    @Test
+    public void testCalcTotalTimerWithOverlap() {
+        try {
+            summarizer.summarize(holder);
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+        assertEquals(2, this.holder.getSummaries().get(1).totalTimer());
+    }
+
+    @Test
+    public void testCalcTotalTimerWithOutOverlap() {
+        try {
+            summarizer.summarize(holder);
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+        assertEquals(2, this.holder.getSummaries().get(1).totalTimer());
+    }
+
+    @Test
+    public void testCalcTotalAscent() {
+        try {
+            summarizer.summarize(holder);
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+
+        //test the pause case
+        //pause (3 to 6) == 4m +
+        //0 to 3 -> 6 m
+        // 6 to 11 -> 0m
+        assertEquals(4, this.holder.getSummaries().get(0).totalAscent());
+
+        //test the lap case
+        //1 to 3 -> 2 m
+        // 3 to 6 -> paused - don't count
+        assertEquals(2, this.holder.getSummaries().get(1).totalAscent());
+    }
+
+
+    @Test
+    public void testCalcTotalDescent() {
+        try {
+            summarizer.summarize(holder);
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+        //pause case
+        assertEquals(4, this.holder.getSummaries().get(0).totalDescent());
+
+        // lap case
+        assertEquals(0, this.holder.getSummaries().get(1).totalDescent());
+    }
+
+
+    @Test
+    public void testCalcTotalDistance() {
+        try {
+            summarizer.summarize(holder);
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+        //pause case
+        assertEquals(13, this.holder.getSummaries().get(0).totalDistance());
+
+        // lap case
+        assertEquals(12, this.holder.getSummaries().get(1).totalDistance());
+    }
+
+
+
 }
