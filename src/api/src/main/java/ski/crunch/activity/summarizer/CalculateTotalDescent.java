@@ -1,10 +1,11 @@
-package ski.crunch.activity.processor;
+package ski.crunch.activity.summarizer;
 
 import ski.crunch.activity.processor.model.ActivityHolder;
 
-public class CalculateTotalDescent implements CalculateTotal {
+public class CalculateTotalDescent implements StatisticFunc<Double> {
+
     @Override
-    public double calculate(ActivityHolder holder, int startIdx, int endIdx) {
+    public Double calculate( int startIdx, int endIdx, ActivityHolder holder, GetActivityRecordAttributeFunction attribute) {
         double totalDesc= 0;
         for (int i = startIdx; i < endIdx && i < holder.getRecords().size(); i++) {
             totalDesc += holder.getRecords().get(i).altDiff(holder.getRecords().get(i + 1)) < 0

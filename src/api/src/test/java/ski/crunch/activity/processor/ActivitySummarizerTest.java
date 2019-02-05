@@ -3,11 +3,11 @@ package ski.crunch.activity.processor;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestInstance;
-import org.junit.jupiter.api.TestTemplate;
 import scala.ski.crunch.activity.processor.model.ActivityRecord;
 import ski.crunch.activity.processor.model.ActivityEvent;
 import ski.crunch.activity.processor.model.ActivityHolder;
 import ski.crunch.activity.processor.model.EventType;
+import ski.crunch.activity.summarizer.ActivitySummarizer;
 
 import java.text.ParseException;
 import java.util.ArrayList;
@@ -189,6 +189,38 @@ public class ActivitySummarizerTest {
 
         // lap case
         assertEquals(12, this.holder.getSummaries().get(1).totalDistance());
+    }
+
+
+    @Test
+    public void testCalcAvgHr() {
+        try {
+            summarizer.summarize(holder);
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+        //pause case
+        double avg = (141 + 142 + 153) / 3;
+        assertEquals(avg, this.holder.getSummaries().get(0).avgHr());
+
+        // lap case
+        double avgL = (135 + 140) / 2;
+        assertEquals(avgL, this.holder.getSummaries().get(1).avgHr());
+    }
+
+
+    @Test
+    public void testCalcMaxHr() {
+        try {
+            summarizer.summarize(holder);
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+        //pause case
+        assertEquals(153, this.holder.getSummaries().get(0).maxHr());
+
+        // lap case
+        assertEquals(140, this.holder.getSummaries().get(1).maxHr());
     }
 
 

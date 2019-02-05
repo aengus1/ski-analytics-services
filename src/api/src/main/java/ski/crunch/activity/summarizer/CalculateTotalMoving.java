@@ -1,4 +1,4 @@
-package ski.crunch.activity.processor;
+package ski.crunch.activity.summarizer;
 
 import org.apache.log4j.Logger;
 import ski.crunch.activity.processor.model.ActivityHolder;
@@ -8,7 +8,7 @@ import java.text.ParseException;
 import static ski.crunch.activity.processor.model.ActivityHolder.TARGET_FORMAT;
 
 
-public class CalculateTotalMoving implements CalculateTotal {
+public class CalculateTotalMoving implements StatisticFunc<Double> {
 
     private Logger logger = Logger.getLogger(getClass().getName());
 
@@ -20,7 +20,7 @@ public class CalculateTotalMoving implements CalculateTotal {
      * @return
      */
     @Override
-    public double calculate(ActivityHolder holder, int startIdx, int endIdx) {
+    public Double calculate(int startIdx, int endIdx, ActivityHolder holder, GetActivityRecordAttributeFunction attribute) {
         double total = 0;
         for(int i = startIdx; i < endIdx && i < holder.getRecords().size(); i ++) {
             if(holder.getRecords().get(i).moving()) {
