@@ -109,35 +109,33 @@ message Summary {
     double totalAscent = 9;
     double totalDescent = 10;
     double totalDistance = 11;
-    double totalCalories = 12;
-    int32 avgHr = 13;
-    int32 maxHr = 14;
-    int32 minHr = 15;
-    int32 avgCadence = 16;
-    int32 maxCadence = 17;
-    int32 minCadence = 18;
-    int32 avgTemp = 19;
-    int32 maxTemp = 20;
-    int32 minTemp = 21;
+    int32 avgHr = 12;
+    int32 maxHr = 13;
+    int32 minHr = 14;
+    int32 avgCadence = 15;
+    int32 maxCadence = 16;
+    int32 avgTemp = 17;
+    int32 maxTemp = 18;
 
-    double avgSpeed = 22;
-    double maxSpeed = 23;
+    double avgSpeed = 19;
+    double maxSpeed = 20;
 
-    int32 minGradient = 24;
-    int32 maxGradient = 25;
-    int32 avgGradient = 26;
-    int32 nLaps = 27;
+    int32 maxPositiveGradient = 21;
+    int32 maxNegativeGradient = 22;
+    int32 avgPositiveGradient = 23;
+    int32 avgNegativeGradient = 24;
 
-    map<string, double> hrvs = 28;
+    double totalAscTime = 25;
+    double totalDescTime = 26;
+    double totalAscDist = 27;
+    double totalDescDist = 28;
 
-    double totalAscTime = 29;
-    double totalDescTime = 30;
-    double totalAscDist = 31;
-    double totalDescDist = 32;
+    SegmentType segmentType = 29;
 
-    double pauseDistance = 33;
-    int32 stopCount = 34;
-    int32 pauseCount = 35;
+    int32 maxPositiveVerticalSpeed = 30;
+    int32 maxNegativeVerticalSpeed = 31;
+    int32 avgPositiveVerticalSpeed = 32;
+    int32 avgNegativeVerticalSpeed = 33;
 }
 
 message Session{
@@ -145,6 +143,13 @@ message Session{
     SubSport subSport = 2;
     Segment segment = 3;
     Summary summary = 4;
+}
+
+enum SegmentType {
+    ACTIVITY = 0;
+    SESSION = 1;
+    LAP = 2;
+    PAUSE = 3;
 }
 
 message Values {

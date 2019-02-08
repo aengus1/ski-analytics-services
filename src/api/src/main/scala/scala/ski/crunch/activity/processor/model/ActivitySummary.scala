@@ -3,7 +3,7 @@ package scala.ski.crunch.activity.processor.model
 /**
   * Created by aengusmccullough on 2017-02-26.
   */
-class ActivitySummary(val startTs: String, val endTs: String,
+class ActivitySummary(val segmentType: String, val startTs: String, val endTs: String,
                       val totalElapsed: Double, val totalTimer: Double, val totalMoving: Double,
                       val totalStopped: Double, val totalPaused: Double, val totalAscent: Double,
                       val totalDescent: Double, val totalDistance :Double,

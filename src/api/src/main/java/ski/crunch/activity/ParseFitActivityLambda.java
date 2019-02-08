@@ -7,6 +7,7 @@ import ski.crunch.activity.model.ActivityOuterClass;
 import ski.crunch.activity.model.ApiGatewayResponse;
 import ski.crunch.activity.parser.ActivityHolderAdapter;
 import ski.crunch.activity.parser.fit.FitActivityHolderAdapter;
+import ski.crunch.activity.processor.model.ActivityHolder;
 import ski.crunch.activity.service.S3Service;
 import ski.crunch.utils.ConvertibleOutputStream;
 
@@ -64,8 +65,10 @@ public class ParseFitActivityLambda implements RequestHandler<Map<String, Object
         assert (key != null);
 
         String newKey = "";
+        String id = "";
         if (key != null && key.length() > 1 && key.contains(".fit")) {
-            newKey = key.substring(0, key.indexOf(".fit") - 1) + ".pbf";
+            id = key.substring(0, key.indexOf(".fit") - 1);
+            newKey = id + ".pbf";
             LOG.debug("new key name: " + newKey);
         } else {
             // throw new ParseException("invalid key name for activity " + key);
@@ -75,18 +78,26 @@ public class ParseFitActivityLambda implements RequestHandler<Map<String, Object
         // records/s3/object -> filename
         S3Service s3Service = new S3Service(region);
         InputStream is = null;
-        ActivityOuterClass.Activity activity = null;
+        ActivityHolder activity = null;
+        ActivityOuterClass.Activity result = null;
         try {
             LOG.info("attempting to read " + key + " from " + bucket);
             is = s3Service.getObjectAsInputStream(bucket, key);
             ActivityHolderAdapter fitParser = new FitActivityHolderAdapter();
-//            activity = fitParser.convert(is);
+
+            try {
+                activity = fitParser.convert(is);
+                ActivityWriter writer = new ActivityWriterImpl();
+                 result = writer.writeToActivity(activity, id);
+            } catch (ParseException e) {
+                e.printStackTrace();
+            }
             //TODO -> add calculated fields
             //TODO -> add API driven fields
 
 
             ConvertibleOutputStream cos = new ConvertibleOutputStream();
-            activity.writeTo(cos);
+            result.writeTo(cos);
             s3Service.putObject(bucket, newKey, cos.toInputStream());
 
             //TODO -> update activity table

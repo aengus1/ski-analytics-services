@@ -5,6 +5,6 @@ import ski.crunch.activity.processor.model.ActivityHolder;
 
 public interface ActivityWriter {
 
-    public ActivityOuterClass.Activity writeToActivity(ActivityHolder holder);
+    public ActivityOuterClass.Activity writeToActivity(ActivityHolder holder, String id);
 
 }

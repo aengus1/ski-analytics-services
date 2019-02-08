@@ -1,18 +1,24 @@
 package ski.crunch.activity;
 
+import scala.ski.crunch.activity.processor.model.ActivitySummary;
 import ski.crunch.activity.model.ActivityOuterClass;
 import ski.crunch.activity.processor.model.ActivityEvent;
 import ski.crunch.activity.processor.model.ActivityHolder;
 import ski.crunch.activity.processor.model.EventType;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.stream.Collectors;
+
 
 //TODO -> Summary (at session, activity, and segment level)
 //todo -> ID
 //todo -> META FIELDS (SEE BELOW)
 public class ActivityWriterImpl implements ActivityWriter {
+    public static final int PROTO_VERSION = 1;
+    public static final SimpleDateFormat targetFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss");
 
     private ActivityOuterClass.ActivityOrBuilder activityOrBuilder = null;
     private ActivityOuterClass.Activity.Builder activityBuilder = null;
@@ -34,7 +40,7 @@ public class ActivityWriterImpl implements ActivityWriter {
     }
 
     @Override
-    public ActivityOuterClass.Activity writeToActivity(ActivityHolder holder) {
+    public ActivityOuterClass.Activity writeToActivity(ActivityHolder holder, String id) {
         this.holder = holder;
         clearBuilders();
         ActivityOuterClass.Activity.Meta meta = writeMeta();
@@ -44,6 +50,9 @@ public class ActivityWriterImpl implements ActivityWriter {
         List<ActivityOuterClass.Activity.Segment> lapSegments = writeSegments(EventType.LAP_START, EventType.LAP_STOP);
         List<ActivityOuterClass.Activity.Segment> stopSegments = writeSegments(EventType.MOTION_STOP, EventType.MOTION_START);
         List<ActivityOuterClass.Activity.Session> sessions = writeSessions();
+        ActivityOuterClass.Activity.Summary summary = writeSummary(holder.getSummaries().stream()
+                .filter(f -> f.segmentType().equals(ActivityOuterClass.Activity.SegmentType.ACTIVITY)).findFirst().get());
+
 
 
         return activityBuilder
@@ -54,6 +63,7 @@ public class ActivityWriterImpl implements ActivityWriter {
                 .addAllLaps(lapSegments)
                 .addAllStops(stopSegments)
                 .addAllSessions(sessions)
+                .setSummary(summary)
 
                 .build();
 
@@ -65,11 +75,10 @@ public class ActivityWriterImpl implements ActivityWriter {
         this.metaBuilder.setProduct(holder.getProduct());
         this.metaBuilder.setManufacturer(ActivityOuterClass.Activity.FitManufacturer.valueOf(this.holder.getManufacturer()));
         this.metaBuilder.setProduct(holder.getProduct());
-        //TODO -> these fields
-//        this.metaBuilder.setUploadTs("null");
-//        this.metaBuilder.setWeather(null);
-//        this.metaBuilder.setVersion();
+        this.metaBuilder.setUploadTs(targetFormat.format(new Date(System.currentTimeMillis())));
+        this.metaBuilder.setVersion(PROTO_VERSION);
 //        this.metaBuilder.setLocation();
+        //        this.metaBuilder.setWeather(null);
         return this.metaBuilder.build();
 
     }
@@ -105,6 +114,9 @@ public class ActivityWriterImpl implements ActivityWriter {
                             .findFirst().get();
                     segmentBuilder.setStopIdx(evtEnd.getIndex());
                     segmentBuilder.setStopTs(evtEnd.getTs());
+                    ActivityOuterClass.Activity.Summary summary =
+                            writeSummary(holder.getSummaries().stream().filter(x -> x.startTs().equals(evt.getTs())).findFirst().get());
+                    segmentBuilder.setSummary(summary);
                     segments.add(segmentBuilder.build());
                     segmentBuilder.clear();
                 });
@@ -128,6 +140,9 @@ public class ActivityWriterImpl implements ActivityWriter {
                     .setStopIdx(sessionEnd.getIndex())
                     .setStopTs(sessionEnd.getTs());
             sessionBuilder.setSegment(segmentBuilder.build());
+            ActivityOuterClass.Activity.Summary summary =
+                    writeSummary(holder.getSummaries().stream().filter(x -> x.startTs().equals(session.getTs())).findFirst().get());
+            segmentBuilder.setSummary(summary);
                 sessions.add(sessionBuilder.build());
         });
         return sessions;
@@ -144,6 +159,8 @@ public class ActivityWriterImpl implements ActivityWriter {
         return segmentBuilder.build();
     }
 
+
+
     private void clearBuilders() {
         this.activityBuilder.clear();
         this.valueBuilder.clear();
@@ -152,4 +169,57 @@ public class ActivityWriterImpl implements ActivityWriter {
         this.segmentBuilder.clear();
         this.sessionBuilder.clear();
     }
+
+
+    ActivityOuterClass.Activity.Summary writeSummary(ActivitySummary holderSummary) {
+        ActivityOuterClass.Activity.Summary.Builder summaryBuilder = ActivityOuterClass.Activity.Summary.newBuilder();
+
+        summaryBuilder.setAvgCadence(holderSummary.avgCadence());
+        summaryBuilder.setMaxCadence(holderSummary.maxCadence());
+
+        summaryBuilder.setAvgPositiveGradient((int)holderSummary.avPositiveGrade());
+        summaryBuilder.setAvgNegativeGradient((int)holderSummary.avNegativeGrade());
+        summaryBuilder.setMaxPositiveGradient((int)holderSummary.maxPositiveGrade());
+        summaryBuilder.setMaxNegativeGradient((int)holderSummary.maxNegativeGrade());
+
+
+        summaryBuilder.setAvgHr(holderSummary.avgHr());
+        summaryBuilder.setMaxHr(holderSummary.maxHr());
+
+        summaryBuilder.setAvgSpeed(holderSummary.avgSpeed());
+        summaryBuilder.setMaxSpeed(holderSummary.maxSpeed());
+
+        summaryBuilder.setAvgTemp((int)holderSummary.avgTemp());
+        summaryBuilder.setMaxTemp((int) holderSummary.maxTemp());
+
+        summaryBuilder.setEndTs(holderSummary.endTs());
+        summaryBuilder.setStartTs(holderSummary.startTs());
+
+        summaryBuilder.setTotalElapsed(holderSummary.totalElapsed());
+        summaryBuilder.setTotalTimer(holderSummary.totalTimer());
+        summaryBuilder.setTotalMoving(holderSummary.totalMoving());
+        summaryBuilder.setTotalStopped(holderSummary.totalStopped());
+        summaryBuilder.setTotalPaused(holderSummary.totalPaused());
+        summaryBuilder.setTotalDistance(holderSummary.totalDistance());
+
+
+        summaryBuilder.setTotalAscent(holderSummary.totalAscent());
+        summaryBuilder.setTotalDescent(holderSummary.totalDescent());
+
+        summaryBuilder.setAvgPositiveVerticalSpeed((int)holderSummary.avPositiveVerticalSpeed());
+        summaryBuilder.setAvgNegativeVerticalSpeed((int) holderSummary.avNegativeVerticalSpeed());
+        summaryBuilder.setMaxPositiveVerticalSpeed((int) holderSummary.maxPositiveVerticalSpeed());
+        summaryBuilder.setMaxNegativeVerticalSpeed((int) holderSummary.maxNegativeVerticalSpeed());
+
+
+        summaryBuilder.setSegmentType(ActivityOuterClass.Activity.SegmentType.valueOf(holderSummary.segmentType()));
+
+
+        return summaryBuilder.build();
+
+    }
+
+
+
+
 }

@@ -15,7 +15,7 @@ import java.util.Date;
  */
 public class SessionMessageListener extends AbstractMesgListener implements SessionMesgListener {
 
-    
+
     public SessionMessageListener(ActivityHolder holder) {
         super(holder);
     }
@@ -59,14 +59,14 @@ public class SessionMessageListener extends AbstractMesgListener implements Sess
                     sessionStart.setInfo(sessionStart.getInfo()
                             + ",sport:" + Sport.getByValue((short) field.getValue()).name() + ",");
                     sessionEnd.setInfo(sessionEnd.getInfo()
-                            + ",sport: " + Sport.getByValue((short) field.getValue()).name()+ ",");
+                            + ",sport: " + Sport.getByValue((short) field.getValue()).name() + ",");
                 }
                 if (field.getName().equals("sub_sport")) {
                     logger.debug("sub sport: " + SubSport.getByValue((short) field.getValue()).name());
                     sessionStart.setInfo(sessionStart.getInfo()
-                            + ", subsport:" + SubSport.getByValue((short) field.getValue()).name()+ ",");
+                            + ", subsport:" + SubSport.getByValue((short) field.getValue()).name() + ",");
                     sessionEnd.setInfo(sessionStart.getInfo()
-                            + ", subsport:" + SubSport.getByValue((short) field.getValue()).name()+ ",");
+                            + ", subsport:" + SubSport.getByValue((short) field.getValue()).name() + ",");
 
                 }
                 if (field.getName().equals("total_elapsed_time")) {
@@ -85,7 +85,7 @@ public class SessionMessageListener extends AbstractMesgListener implements Sess
                 }
                 if (field.getName().equals("total_timer_time")) {
                     logger.debug("total timer time: " + (double) field.getValue());
-                    totalTimer =  (double) field.getValue();
+                    totalTimer = (double) field.getValue();
                 }
                 if (field.getName().equals("total_moving_time")) {
                     logger.debug("total moving time: " + (double) field.getValue());
@@ -101,31 +101,31 @@ public class SessionMessageListener extends AbstractMesgListener implements Sess
                 }
                 if (field.getName().equals("num_laps")) {
                     logger.debug("n_laps: " + (int) field.getValue());
-                    nLaps =  (int) field.getValue();
+                    nLaps = (int) field.getValue();
                 }
                 if (field.getName().equals("avg_heart_rate")) {
                     logger.debug("avg_heart_rate: " + (short) field.getValue());
-                    avgHr =  (short) field.getValue();
+                    avgHr = (short) field.getValue();
                 }
                 if (field.getName().equals("max_heart_rate")) {
                     logger.debug("max_heart_rate: " + (short) field.getValue());
-                    maxHr =  (short) field.getValue();
+                    maxHr = (short) field.getValue();
                 }
                 if (field.getName().equals("avg_cadence")) {
                     logger.debug("avg_cadence: " + (short) field.getValue());
-                    avgCadence =  (short) field.getValue();
+                    avgCadence = (short) field.getValue();
                 }
                 if (field.getName().equals("max_cadence")) {
                     logger.debug("max_cadence: " + (short) field.getValue());
-                    maxCadence =  (short) field.getValue();
+                    maxCadence = (short) field.getValue();
                 }
                 if (field.getName().equals("avg_temperature")) {
                     logger.debug("avg_temperature: " + (short) field.getValue());
-                    avgTemp =  (short) field.getValue();
+                    avgTemp = (short) field.getValue();
                 }
                 if (field.getName().equals("max_temperature")) {
                     logger.debug("max_temperature: " + (short) field.getValue());
-                    maxTemp  =  (short) field.getValue();
+                    maxTemp = (short) field.getValue();
                 }
                 if (field.getName().equals("avg_speed")) {
                     logger.debug("avg_speed: " + (double) field.getValue());
@@ -136,9 +136,11 @@ public class SessionMessageListener extends AbstractMesgListener implements Sess
                     maxSpeed = (double) field.getValue();
                 }
             }
-//            summary = new ActivitySummary(startTs, endTs, totalElapsed, totalTimer, totalMoving, totalStopped,
-//                    totalPaused, totalAscent, totalDescent, totalDistance, totalCalories, avgHr, maxHr, avgCadence,
-//                    maxCadence, avgTemp, maxTemp, avgSpeed, maxSpeed, nLaps);
+            summary = new ActivitySummary(startTs, endTs, totalElapsed, totalTimer, totalMoving, totalStopped,
+                    totalPaused, totalAscent, totalDescent, totalDistance, avgHr, maxHr, avgCadence,
+                    maxCadence, avgTemp, maxTemp, avgSpeed, maxSpeed, nLaps, -999, -999,
+                    -999, -999
+                    ,-999, -999, -999);
             activityHolder.getSummaries().add(summary);
             activityHolder.getEvents().add(sessionStart);
             activityHolder.getEvents().add(sessionEnd);
