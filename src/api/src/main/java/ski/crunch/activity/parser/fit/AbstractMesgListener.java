@@ -1,8 +1,7 @@
 package ski.crunch.activity.parser.fit;
 
-import com.garmin.fit.ActivityMesgListener;
 import org.apache.log4j.Logger;
-import ski.crunch.activity.model.processor.ActivityHolder;
+import ski.crunch.activity.processor.model.ActivityHolder;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;

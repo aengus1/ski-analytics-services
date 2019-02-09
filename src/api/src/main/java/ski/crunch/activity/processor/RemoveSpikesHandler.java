@@ -3,10 +3,9 @@ package ski.crunch.activity.processor;
 import org.apache.log4j.Logger;
 import scala.collection.JavaConversions;
 import scala.collection.immutable.List;
-import scala.collection.script.Remove;
 import scala.ski.crunch.activity.processor.RecordProcessor;
 import scala.ski.crunch.activity.processor.model.ActivityRecord;
-import ski.crunch.activity.model.processor.ActivityHolder;
+import ski.crunch.activity.processor.model.ActivityHolder;
 
 public class RemoveSpikesHandler implements Handler<ActivityHolder> {
 

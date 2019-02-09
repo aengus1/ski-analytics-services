@@ -1,9 +1,9 @@
 package ski.crunch.activity.processor;
 
 import org.apache.log4j.Logger;
-import ski.crunch.activity.model.processor.ActivityEvent;
-import ski.crunch.activity.model.processor.ActivityHolder;
-import ski.crunch.activity.model.processor.EventType;
+import ski.crunch.activity.processor.model.ActivityEvent;
+import ski.crunch.activity.processor.model.ActivityHolder;
+import ski.crunch.activity.processor.model.EventType;
 
 public class CloseSegmentsHandler implements Handler<ActivityHolder> {
 
@@ -58,7 +58,7 @@ public class CloseSegmentsHandler implements Handler<ActivityHolder> {
             ActivityEvent event = new ActivityEvent();
             event.setEventType(EventType.ACTIVITY_START);
             event.setIndex(0);
-            event.setInfo("manually added");
+            event.setInfo("manually_added");
             event.setTs(!holder.getRecords().isEmpty() ? holder.getRecords().get(0).ts() : null);
             holder.getEvents().add(event);
         }
@@ -66,7 +66,7 @@ public class CloseSegmentsHandler implements Handler<ActivityHolder> {
             ActivityEvent event = new ActivityEvent();
             event.setEventType(EventType.ACTIVITY_STOP);
             event.setIndex(holder.getRecords().size() - 1);
-            event.setInfo("manually added");
+            event.setInfo("manually_added");
             event.setTs(!holder.getRecords().isEmpty() ? holder.getRecords().get(holder.getRecords().size() - 1).ts() : null);
             holder.getEvents().add(event);
         }
@@ -75,14 +75,14 @@ public class CloseSegmentsHandler implements Handler<ActivityHolder> {
                 ActivityEvent event = new ActivityEvent();
                 event.setEventType(EventType.SESSION_STOP);
                 event.setIndex(holder.getRecords().size() - 1);
-                event.setInfo("manually added");
+                event.setInfo("manually_added");
                 event.setTs(!holder.getRecords().isEmpty() ? holder.getRecords().get(holder.getRecords().size() - 1).ts() : null);
                 holder.getEvents().add(event);
             } else if (sessionStopCount > sessionStartCount && sessionStartCount ==0 ){
                 ActivityEvent event = new ActivityEvent();
                 event.setEventType(EventType.SESSION_START);
                 event.setIndex(0);
-                event.setInfo("manually added");
+                event.setInfo("manually_added");
                 event.setTs(!holder.getRecords().isEmpty() ? holder.getRecords().get(0).ts() : null);
                 holder.getEvents().add(event);
             }else {
@@ -94,7 +94,7 @@ public class CloseSegmentsHandler implements Handler<ActivityHolder> {
                 ActivityEvent event = new ActivityEvent();
                 event.setEventType(EventType.LAP_STOP);
                 event.setIndex(holder.getRecords().size() - 1);
-                event.setInfo("manually added");
+                event.setInfo("manually_added");
                 event.setTs(!holder.getRecords().isEmpty() ? holder.getRecords().get(holder.getRecords().size() - 1).ts() : null);
                 holder.getEvents().add(event);
             } else {

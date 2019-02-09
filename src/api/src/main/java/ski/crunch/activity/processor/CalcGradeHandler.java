@@ -5,7 +5,8 @@ import scala.collection.JavaConversions;
 import scala.collection.immutable.List;
 import scala.ski.crunch.activity.processor.RecordProcessor;
 import scala.ski.crunch.activity.processor.model.ActivityRecord;
-import ski.crunch.activity.model.processor.ActivityHolder;
+import ski.crunch.activity.processor.Handler;
+import ski.crunch.activity.processor.model.ActivityHolder;
 
 import java.util.ArrayList;
 

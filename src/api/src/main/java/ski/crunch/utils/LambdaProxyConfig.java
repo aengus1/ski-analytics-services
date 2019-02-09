@@ -22,10 +22,18 @@ public class LambdaProxyConfig {
             Map<String, Object> claims = (Map<String, Object>) authorizer.get("claims");
             Map<String, String> pathParams = (Map<String, String>) input.get("pathParameters");
             Map<String, String> headers = (Map<String, String>) input.get("headers");
+            Map<String, Object> s3 = null;
+//TODO -> FIGURE OUT WHAT S3 PARAMS LOOK LIKE HERE
+            try{
+                s3 = (Map<String, Object>) input.get("s3");
+            }catch(NullPointerException ex) {
+                //only available from s3 triggered lambda
+            }
 
             this.getHeaders().setContentType(headers.get("Content-Type"));
             this.getHeaders().setAccept(headers.get("Accept"));
             this.setBody((String) input.get("body"));
+            this.setS3Parameters(s3);
             this.requestContext.getIdentity().setSourceIp((String) identity.get("sourceIp"));
             this.requestContext.getIdentity().setUserAgent((String) identity.get("userAgent"));
             this.requestContext.getIdentity().setSourceIp((String) identity.get("user"));
@@ -41,6 +49,7 @@ public class LambdaProxyConfig {
     String httpMethod;
     Map<String, String> queryStringParameters;
     Map<String,String> pathParameters;
+    private Map<String,Object> s3Parameters;
     String stageVariables;
     String body;
     boolean isBase64Encoded;
@@ -127,8 +136,16 @@ public class LambdaProxyConfig {
         this.requestContext = requestContext;
     }
 
+    public Map<String, Object> getS3Parameters() {
+        return s3Parameters;
+    }
 
-   public  class Headers {
+    public void setS3Parameters(Map<String, Object> s3Parameters) {
+        this.s3Parameters = s3Parameters;
+    }
+
+
+    public  class Headers {
         String accept;
         String acceptEncoding;
 

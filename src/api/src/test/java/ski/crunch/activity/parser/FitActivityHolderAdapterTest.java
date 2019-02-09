@@ -1,20 +1,19 @@
-package ski.crunch.activity;
+package ski.crunch.activity.parser;
 
 import org.apache.log4j.Level;
 import org.apache.log4j.Logger;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestInstance;
-import ski.crunch.activity.model.processor.ActivityEvent;
-import ski.crunch.activity.model.processor.ActivityHolder;
-import ski.crunch.activity.model.processor.EventType;
-import ski.crunch.activity.parser.ActivityHolderAdapter;
+import ski.crunch.activity.processor.model.ActivityEvent;
+import ski.crunch.activity.processor.model.ActivityHolder;
+import ski.crunch.activity.processor.model.EventType;
 import ski.crunch.activity.parser.fit.FitActivityHolderAdapter;
 
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
-import java.text.ParseException;
+import ski.crunch.utils.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
@@ -70,7 +69,7 @@ public class FitActivityHolderAdapterTest {
         try{
             int num = Integer.parseInt(nSessions);
             // assert that the number of sessions captured in the activity message equals the number of session messages
-            assert(num == activity.getSummaries().size());
+            assert(num == activity.getSessionSummaries().size());
         }catch(NumberFormatException ex){
             System.err.println("number of sessions not recorded " + nSessions);
             // assert that the number of sessions has been captured
@@ -131,7 +130,7 @@ public class FitActivityHolderAdapterTest {
             Date s = targetFormat.parse(lapStart1.getTs());
             Date e = targetFormat.parse(lapStop1.getTs());
             assert(Math.ceil((e.getTime() - s.getTime()) / 1000) == Math.ceil(elapsed));
-        }catch(ParseException ex) {
+        }catch(java.text.ParseException ex) {
             System.err.println("error parsing start or end time");
             assert(false);
         }
@@ -158,7 +157,7 @@ public class FitActivityHolderAdapterTest {
         assert(sessionStop !=null);
         assert(sessionStart.getInfo().contains("sport"));
 
-        assert(!activity.getSummaries().isEmpty());
+        assert(!activity.getSessionSummaries().isEmpty());
 
     }
 

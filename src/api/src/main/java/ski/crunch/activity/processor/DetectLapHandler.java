@@ -2,7 +2,7 @@ package ski.crunch.activity.processor;
 
 import org.apache.log4j.Logger;
 import scala.ski.crunch.activity.processor.EventProcessor;
-import ski.crunch.activity.model.processor.ActivityHolder;
+import ski.crunch.activity.processor.model.ActivityHolder;
 
 public class DetectLapHandler implements Handler<ActivityHolder> {
 

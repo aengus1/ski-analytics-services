@@ -5,6 +5,9 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import org.apache.log4j.Logger;
 import ski.crunch.activity.service.ActivityService;
 
+import java.io.PrintWriter;
+import java.io.StringWriter;
+
 public class ErrorResponse {
 
     private int status;
@@ -60,5 +63,11 @@ public class ErrorResponse {
             LOG.error("JSON exception serializing error response");
             return "";
         }
+    }
+
+    public static String getStackTrace(Throwable t) {
+        StringWriter sw = new StringWriter();
+        t.printStackTrace(new PrintWriter(sw));
+        return sw.toString();
     }
 }

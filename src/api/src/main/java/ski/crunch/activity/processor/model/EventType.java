@@ -1,4 +1,4 @@
-package ski.crunch.activity.model.processor;
+package ski.crunch.activity.processor.model;
 
 public enum EventType {
     ACTIVITY_START, ACTIVITY_STOP,

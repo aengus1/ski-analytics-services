@@ -1,9 +1,9 @@
 package ski.crunch.activity.parser.fit;
 
 import com.garmin.fit.*;
-import ski.crunch.activity.model.processor.ActivityEvent;
-import ski.crunch.activity.model.processor.ActivityHolder;
-import ski.crunch.activity.model.processor.EventType;
+import ski.crunch.activity.processor.model.ActivityEvent;
+import ski.crunch.activity.processor.model.ActivityHolder;
+import ski.crunch.activity.processor.model.EventType;
 
 import java.util.Collection;
 import java.util.Date;
@@ -58,18 +58,18 @@ public class LapMessageListener extends AbstractMesgListener implements LapMesgL
                 if (field.getName().equals("total_elapsed_time")) {
                     logger.debug("elapsed time:" + (double) field.getValue());
                     double elapsed = (double) field.getValue();
-                    event.setInfo(event.getInfo() + ",elapsed:" + elapsed);
+                    event.setInfo(event.getInfo() + ",elapsed:" + elapsed +",");
                 }
                 if (field.getName().equals("total_timer_time")) {
-                    logger.debug("timer time: " + (double) field.getValue());
+                    logger.debug("timer_time: " + (double) field.getValue());
                     double timer = (double) field.getValue();
-                    event.setInfo(event.getInfo() + ",timer:" + timer);
+                    event.setInfo(event.getInfo() + ",timer:" + timer + ",");
 
                 }
                 if (field.getName().equals("total_moving_time")) {
                     double moving = (double) field.getValue();
                     logger.debug("moving time: " + (double) field.getValue());
-                    event.setInfo(event.getInfo() + ",moving:" + moving);
+                    event.setInfo(event.getInfo() + ",moving:" + moving +",");
                 }
             }
 

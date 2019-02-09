@@ -1,9 +1,9 @@
-package ski.crunch.activity.model.processor;
+package ski.crunch.activity.processor.model;
 
 import scala.ski.crunch.activity.processor.model.ActivityRecord;
 import scala.ski.crunch.activity.processor.model.ActivitySummary;
-import ski.crunch.activity.model.ActivityOuterClass;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -11,10 +11,14 @@ import java.util.Map;
 
 public class ActivityHolder {
 
+    public static final SimpleDateFormat TARGET_FORMAT = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss");
     private List<ActivityRecord> records;
     private Map<String, Double[]> hrvs;
     private List<ActivityEvent> events;
-    private List<ActivitySummary> summaries;  //ordered by session index
+    private ActivitySummary activitySummary;
+    private List<ActivitySummary> lapSummaries;
+    private List<ActivitySummary> pauseSummaries;
+    private List<ActivitySummary> sessionSummaries;
     private String createdTs;
     private int product;
     private String manufacturer;
@@ -24,7 +28,10 @@ public class ActivityHolder {
         this.records = new ArrayList<ActivityRecord>();
         this.events = new ArrayList<ActivityEvent>();
         this.hrvs = new HashMap<String, Double[]>();
-        this.summaries = new ArrayList<ActivitySummary>();
+        this.setActivitySummary(null);
+        this.setLapSummaries(new ArrayList<>());
+        this.setPauseSummaries(new ArrayList<>());
+        this.setSessionSummaries(new ArrayList<>());
         this.createdTs = "";
         this.product = -1;
         this.manufacturer = "";
@@ -34,7 +41,10 @@ public class ActivityHolder {
         this.records = new ArrayList<>(copy.getRecords());
         this.events = new ArrayList<>(copy.getEvents());
         this.hrvs = new HashMap<>(copy.getHrvs());
-        this.summaries = new ArrayList<>(copy.getSummaries());
+        this.setActivitySummary(copy.getActivitySummary());
+        this.setSessionSummaries(copy.getSessionSummaries());
+        this.setPauseSummaries(copy.getPauseSummaries());
+        this.setLapSummaries(copy.getLapSummaries());
         this.createdTs = copy.getCreatedTs();
         this.product = copy.getProduct();
         this.manufacturer = copy.getManufacturer();
@@ -88,11 +98,41 @@ public class ActivityHolder {
         this.hrvs = hrvs;
     }
 
-    public List<ActivitySummary> getSummaries() {
-        return summaries;
+
+
+    public  static String parseActivityEventInfoField(ActivityEvent event, String fieldName) {
+        return event.getInfo().split(fieldName+":")[1].split("")[1].split(",")[0];
     }
 
-    public void setSummaries(List<ActivitySummary> summaries) {
-        this.summaries = summaries;
+    public ActivitySummary getActivitySummary() {
+        return activitySummary;
+    }
+
+    public void setActivitySummary(ActivitySummary activitySummary) {
+        this.activitySummary = activitySummary;
+    }
+
+    public List<ActivitySummary> getLapSummaries() {
+        return lapSummaries;
+    }
+
+    public void setLapSummaries(List<ActivitySummary> lapSummaries) {
+        this.lapSummaries = lapSummaries;
+    }
+
+    public List<ActivitySummary> getPauseSummaries() {
+        return pauseSummaries;
+    }
+
+    public void setPauseSummaries(List<ActivitySummary> pauseSummaries) {
+        this.pauseSummaries = pauseSummaries;
+    }
+
+    public List<ActivitySummary> getSessionSummaries() {
+        return sessionSummaries;
+    }
+
+    public void setSessionSummaries(List<ActivitySummary> sessionSummaries) {
+        this.sessionSummaries = sessionSummaries;
     }
 }

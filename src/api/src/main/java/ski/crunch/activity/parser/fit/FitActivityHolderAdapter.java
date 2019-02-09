@@ -2,13 +2,12 @@ package ski.crunch.activity.parser.fit;
 
 import com.garmin.fit.*;
 import org.apache.log4j.Logger;
-import ski.crunch.activity.model.processor.ActivityHolder;
+import ski.crunch.activity.processor.model.ActivityHolder;
 import ski.crunch.activity.parser.ActivityHolderAdapter;
 
 import java.io.IOException;
 import java.io.InputStream;
 import java.text.ParseException;
-import java.util.Collection;
 
 
 /**
@@ -23,7 +22,7 @@ public class FitActivityHolderAdapter implements ActivityHolderAdapter {
 
 
     @Override
-    public ActivityHolder convert(InputStream is) throws ParseException, IOException {
+    public ActivityHolder convert(InputStream is) throws IOException {
 
         FileIdMessageListener fileIdMessageListener = new FileIdMessageListener(holder);
         ActivityMessageListener activityMessageListener = new ActivityMessageListener(holder);

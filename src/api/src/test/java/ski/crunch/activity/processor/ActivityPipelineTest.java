@@ -1,4 +1,4 @@
-package ski.crunch.activity;
+package ski.crunch.activity.processor;
 
 import org.apache.log4j.Level;
 import org.apache.log4j.Logger;
@@ -6,12 +6,11 @@ import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestInstance;
 import scala.ski.crunch.activity.processor.model.ActivityRecord;
-import ski.crunch.activity.model.processor.ActivityEvent;
-import ski.crunch.activity.model.processor.ActivityHolder;
-import ski.crunch.activity.model.processor.EventType;
+import ski.crunch.activity.processor.model.ActivityEvent;
+import ski.crunch.activity.processor.model.ActivityHolder;
+import ski.crunch.activity.processor.model.EventType;
 import ski.crunch.activity.parser.ActivityHolderAdapter;
 import ski.crunch.activity.parser.fit.FitActivityHolderAdapter;
-import ski.crunch.activity.processor.*;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
@@ -19,7 +18,7 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
-import java.text.ParseException;
+import ski.crunch.utils.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.List;
@@ -56,7 +55,7 @@ public class ActivityPipelineTest {
                                 < targetFormat.parse(activity.getRecords().get(i + 1).ts()).getTime()
                 );
             }
-        } catch (ParseException ex) {
+        } catch (java.text.ParseException ex) {
             ex.printStackTrace();
             assert (false);
         }
@@ -78,7 +77,7 @@ public class ActivityPipelineTest {
 
 
         Handler createHrvRecords = new CreateHrvRecordHandler();
-        Handler sortByTsHandler = new SortByTsHandler();
+        Handler sortByTsHandler = new SortRecordsByTsHandler();
         manager.clear();
         manager.addHandler(sortByTsHandler);
         manager.addHandler(createHrvRecords);
@@ -272,7 +271,7 @@ public class ActivityPipelineTest {
         ActivityHolder holder = setupActivity(pauseTest);
         PipelineManager localManager = new PipelineManager<ActivityHolder>();
         localManager.addHandler(new CloseSegmentsHandler());
-        localManager.addHandler(new SortByTsHandler());
+        localManager.addHandler(new SortRecordsByTsHandler());
         localManager.addHandler(new SetEventIndexHandler());
 
         localManager.doPipeline(holder);

@@ -211,6 +211,19 @@ public final class ActivityOuterClass {
      */
     ski.crunch.activity.model.ActivityOuterClass.Activity.SegmentOrBuilder getStopsOrBuilder(
         int index);
+
+    /**
+     * <code>.Activity.Segment activitySegment = 11;</code>
+     */
+    boolean hasActivitySegment();
+    /**
+     * <code>.Activity.Segment activitySegment = 11;</code>
+     */
+    ski.crunch.activity.model.ActivityOuterClass.Activity.Segment getActivitySegment();
+    /**
+     * <code>.Activity.Segment activitySegment = 11;</code>
+     */
+    ski.crunch.activity.model.ActivityOuterClass.Activity.SegmentOrBuilder getActivitySegmentOrBuilder();
   }
   /**
    * Protobuf type {@code Activity}
@@ -365,6 +378,19 @@ public final class ActivityOuterClass {
               }
               stops_.add(
                   input.readMessage(ski.crunch.activity.model.ActivityOuterClass.Activity.Segment.parser(), extensionRegistry));
+              break;
+            }
+            case 90: {
+              ski.crunch.activity.model.ActivityOuterClass.Activity.Segment.Builder subBuilder = null;
+              if (activitySegment_ != null) {
+                subBuilder = activitySegment_.toBuilder();
+              }
+              activitySegment_ = input.readMessage(ski.crunch.activity.model.ActivityOuterClass.Activity.Segment.parser(), extensionRegistry);
+              if (subBuilder != null) {
+                subBuilder.mergeFrom(activitySegment_);
+                activitySegment_ = subBuilder.buildPartial();
+              }
+
               break;
             }
           }
@@ -779,6 +805,122 @@ public final class ActivityOuterClass {
       }
 
       // @@protoc_insertion_point(enum_scope:Activity.LocationSource)
+    }
+
+    /**
+     * Protobuf enum {@code Activity.SegmentType}
+     */
+    public enum SegmentType
+        implements com.google.protobuf.ProtocolMessageEnum {
+      /**
+       * <code>ACTIVITY = 0;</code>
+       */
+      ACTIVITY(0),
+      /**
+       * <code>SESSION = 1;</code>
+       */
+      SESSION(1),
+      /**
+       * <code>LAP = 2;</code>
+       */
+      LAP(2),
+      /**
+       * <code>PAUSE = 3;</code>
+       */
+      PAUSE(3),
+      UNRECOGNIZED(-1),
+      ;
+
+      /**
+       * <code>ACTIVITY = 0;</code>
+       */
+      public static final int ACTIVITY_VALUE = 0;
+      /**
+       * <code>SESSION = 1;</code>
+       */
+      public static final int SESSION_VALUE = 1;
+      /**
+       * <code>LAP = 2;</code>
+       */
+      public static final int LAP_VALUE = 2;
+      /**
+       * <code>PAUSE = 3;</code>
+       */
+      public static final int PAUSE_VALUE = 3;
+
+
+      public final int getNumber() {
+        if (this == UNRECOGNIZED) {
+          throw new java.lang.IllegalArgumentException(
+              "Can't get the number of an unknown enum value.");
+        }
+        return value;
+      }
+
+      /**
+       * @deprecated Use {@link #forNumber(int)} instead.
+       */
+      @java.lang.Deprecated
+      public static SegmentType valueOf(int value) {
+        return forNumber(value);
+      }
+
+      public static SegmentType forNumber(int value) {
+        switch (value) {
+          case 0: return ACTIVITY;
+          case 1: return SESSION;
+          case 2: return LAP;
+          case 3: return PAUSE;
+          default: return null;
+        }
+      }
+
+      public static com.google.protobuf.Internal.EnumLiteMap<SegmentType>
+          internalGetValueMap() {
+        return internalValueMap;
+      }
+      private static final com.google.protobuf.Internal.EnumLiteMap<
+          SegmentType> internalValueMap =
+            new com.google.protobuf.Internal.EnumLiteMap<SegmentType>() {
+              public SegmentType findValueByNumber(int number) {
+                return SegmentType.forNumber(number);
+              }
+            };
+
+      public final com.google.protobuf.Descriptors.EnumValueDescriptor
+          getValueDescriptor() {
+        return getDescriptor().getValues().get(ordinal());
+      }
+      public final com.google.protobuf.Descriptors.EnumDescriptor
+          getDescriptorForType() {
+        return getDescriptor();
+      }
+      public static final com.google.protobuf.Descriptors.EnumDescriptor
+          getDescriptor() {
+        return ski.crunch.activity.model.ActivityOuterClass.Activity.getDescriptor().getEnumTypes().get(3);
+      }
+
+      private static final SegmentType[] VALUES = values();
+
+      public static SegmentType valueOf(
+          com.google.protobuf.Descriptors.EnumValueDescriptor desc) {
+        if (desc.getType() != getDescriptor()) {
+          throw new java.lang.IllegalArgumentException(
+            "EnumValueDescriptor is not for this type.");
+        }
+        if (desc.getIndex() == -1) {
+          return UNRECOGNIZED;
+        }
+        return VALUES[desc.getIndex()];
+      }
+
+      private final int value;
+
+      private SegmentType(int value) {
+        this.value = value;
+      }
+
+      // @@protoc_insertion_point(enum_scope:Activity.SegmentType)
     }
 
     /**
@@ -1978,7 +2120,7 @@ public final class ActivityOuterClass {
       }
       public static final com.google.protobuf.Descriptors.EnumDescriptor
           getDescriptor() {
-        return ski.crunch.activity.model.ActivityOuterClass.Activity.getDescriptor().getEnumTypes().get(3);
+        return ski.crunch.activity.model.ActivityOuterClass.Activity.getDescriptor().getEnumTypes().get(4);
       }
 
       private static final FitManufacturer[] VALUES = values();
@@ -2157,7 +2299,7 @@ public final class ActivityOuterClass {
       }
       public static final com.google.protobuf.Descriptors.EnumDescriptor
           getDescriptor() {
-        return ski.crunch.activity.model.ActivityOuterClass.Activity.getDescriptor().getEnumTypes().get(4);
+        return ski.crunch.activity.model.ActivityOuterClass.Activity.getDescriptor().getEnumTypes().get(5);
       }
 
       private static final EventType[] VALUES = values();
@@ -2435,7 +2577,7 @@ public final class ActivityOuterClass {
       }
       public static final com.google.protobuf.Descriptors.EnumDescriptor
           getDescriptor() {
-        return ski.crunch.activity.model.ActivityOuterClass.Activity.getDescriptor().getEnumTypes().get(5);
+        return ski.crunch.activity.model.ActivityOuterClass.Activity.getDescriptor().getEnumTypes().get(6);
       }
 
       private static final Sport[] VALUES = values();
@@ -2839,7 +2981,7 @@ public final class ActivityOuterClass {
       }
       public static final com.google.protobuf.Descriptors.EnumDescriptor
           getDescriptor() {
-        return ski.crunch.activity.model.ActivityOuterClass.Activity.getDescriptor().getEnumTypes().get(6);
+        return ski.crunch.activity.model.ActivityOuterClass.Activity.getDescriptor().getEnumTypes().get(7);
       }
 
       private static final SubSport[] VALUES = values();
@@ -9783,153 +9925,118 @@ public final class ActivityOuterClass {
       double getTotalDistance();
 
       /**
-       * <code>double totalCalories = 12;</code>
-       */
-      double getTotalCalories();
-
-      /**
-       * <code>int32 avgHr = 13;</code>
+       * <code>int32 avgHr = 12;</code>
        */
       int getAvgHr();
 
       /**
-       * <code>int32 maxHr = 14;</code>
+       * <code>int32 maxHr = 13;</code>
        */
       int getMaxHr();
 
       /**
-       * <code>int32 minHr = 15;</code>
+       * <code>int32 minHr = 14;</code>
        */
       int getMinHr();
 
       /**
-       * <code>int32 avgCadence = 16;</code>
+       * <code>int32 avgCadence = 15;</code>
        */
       int getAvgCadence();
 
       /**
-       * <code>int32 maxCadence = 17;</code>
+       * <code>int32 maxCadence = 16;</code>
        */
       int getMaxCadence();
 
       /**
-       * <code>int32 minCadence = 18;</code>
-       */
-      int getMinCadence();
-
-      /**
-       * <code>int32 avgTemp = 19;</code>
+       * <code>int32 avgTemp = 17;</code>
        */
       int getAvgTemp();
 
       /**
-       * <code>int32 maxTemp = 20;</code>
+       * <code>int32 maxTemp = 18;</code>
        */
       int getMaxTemp();
 
       /**
-       * <code>int32 minTemp = 21;</code>
-       */
-      int getMinTemp();
-
-      /**
-       * <code>double avgSpeed = 22;</code>
+       * <code>double avgSpeed = 19;</code>
        */
       double getAvgSpeed();
 
       /**
-       * <code>double maxSpeed = 23;</code>
+       * <code>double maxSpeed = 20;</code>
        */
       double getMaxSpeed();
 
       /**
-       * <code>int32 minGradient = 24;</code>
+       * <code>int32 maxPositiveGradient = 21;</code>
        */
-      int getMinGradient();
+      int getMaxPositiveGradient();
 
       /**
-       * <code>int32 maxGradient = 25;</code>
+       * <code>int32 maxNegativeGradient = 22;</code>
        */
-      int getMaxGradient();
+      int getMaxNegativeGradient();
 
       /**
-       * <code>int32 avgGradient = 26;</code>
+       * <code>int32 avgPositiveGradient = 23;</code>
        */
-      int getAvgGradient();
+      int getAvgPositiveGradient();
 
       /**
-       * <code>int32 nLaps = 27;</code>
+       * <code>int32 avgNegativeGradient = 24;</code>
        */
-      int getNLaps();
+      int getAvgNegativeGradient();
 
       /**
-       * <code>map&lt;string, double&gt; hrvs = 28;</code>
-       */
-      int getHrvsCount();
-      /**
-       * <code>map&lt;string, double&gt; hrvs = 28;</code>
-       */
-      boolean containsHrvs(
-          java.lang.String key);
-      /**
-       * Use {@link #getHrvsMap()} instead.
-       */
-      @java.lang.Deprecated
-      java.util.Map<java.lang.String, java.lang.Double>
-      getHrvs();
-      /**
-       * <code>map&lt;string, double&gt; hrvs = 28;</code>
-       */
-      java.util.Map<java.lang.String, java.lang.Double>
-      getHrvsMap();
-      /**
-       * <code>map&lt;string, double&gt; hrvs = 28;</code>
-       */
-
-      double getHrvsOrDefault(
-          java.lang.String key,
-          double defaultValue);
-      /**
-       * <code>map&lt;string, double&gt; hrvs = 28;</code>
-       */
-
-      double getHrvsOrThrow(
-          java.lang.String key);
-
-      /**
-       * <code>double totalAscTime = 29;</code>
+       * <code>double totalAscTime = 25;</code>
        */
       double getTotalAscTime();
 
       /**
-       * <code>double totalDescTime = 30;</code>
+       * <code>double totalDescTime = 26;</code>
        */
       double getTotalDescTime();
 
       /**
-       * <code>double totalAscDist = 31;</code>
+       * <code>double totalAscDist = 27;</code>
        */
       double getTotalAscDist();
 
       /**
-       * <code>double totalDescDist = 32;</code>
+       * <code>double totalDescDist = 28;</code>
        */
       double getTotalDescDist();
 
       /**
-       * <code>double pauseDistance = 33;</code>
+       * <code>.Activity.SegmentType segmentType = 29;</code>
        */
-      double getPauseDistance();
+      int getSegmentTypeValue();
+      /**
+       * <code>.Activity.SegmentType segmentType = 29;</code>
+       */
+      ski.crunch.activity.model.ActivityOuterClass.Activity.SegmentType getSegmentType();
 
       /**
-       * <code>int32 stopCount = 34;</code>
+       * <code>int32 maxPositiveVerticalSpeed = 30;</code>
        */
-      int getStopCount();
+      int getMaxPositiveVerticalSpeed();
 
       /**
-       * <code>int32 pauseCount = 35;</code>
+       * <code>int32 maxNegativeVerticalSpeed = 31;</code>
        */
-      int getPauseCount();
+      int getMaxNegativeVerticalSpeed();
+
+      /**
+       * <code>int32 avgPositiveVerticalSpeed = 32;</code>
+       */
+      int getAvgPositiveVerticalSpeed();
+
+      /**
+       * <code>int32 avgNegativeVerticalSpeed = 33;</code>
+       */
+      int getAvgNegativeVerticalSpeed();
     }
     /**
      * Protobuf type {@code Activity.Summary}
@@ -9954,29 +10061,28 @@ public final class ActivityOuterClass {
         totalAscent_ = 0D;
         totalDescent_ = 0D;
         totalDistance_ = 0D;
-        totalCalories_ = 0D;
         avgHr_ = 0;
         maxHr_ = 0;
         minHr_ = 0;
         avgCadence_ = 0;
         maxCadence_ = 0;
-        minCadence_ = 0;
         avgTemp_ = 0;
         maxTemp_ = 0;
-        minTemp_ = 0;
         avgSpeed_ = 0D;
         maxSpeed_ = 0D;
-        minGradient_ = 0;
-        maxGradient_ = 0;
-        avgGradient_ = 0;
-        nLaps_ = 0;
+        maxPositiveGradient_ = 0;
+        maxNegativeGradient_ = 0;
+        avgPositiveGradient_ = 0;
+        avgNegativeGradient_ = 0;
         totalAscTime_ = 0D;
         totalDescTime_ = 0D;
         totalAscDist_ = 0D;
         totalDescDist_ = 0D;
-        pauseDistance_ = 0D;
-        stopCount_ = 0;
-        pauseCount_ = 0;
+        segmentType_ = 0;
+        maxPositiveVerticalSpeed_ = 0;
+        maxNegativeVerticalSpeed_ = 0;
+        avgPositiveVerticalSpeed_ = 0;
+        avgNegativeVerticalSpeed_ = 0;
       }
 
       @java.lang.Override
@@ -10076,132 +10182,115 @@ public final class ActivityOuterClass {
                 totalDistance_ = input.readDouble();
                 break;
               }
-              case 97: {
-
-                totalCalories_ = input.readDouble();
-                break;
-              }
-              case 104: {
+              case 96: {
 
                 avgHr_ = input.readInt32();
                 break;
               }
-              case 112: {
+              case 104: {
 
                 maxHr_ = input.readInt32();
                 break;
               }
-              case 120: {
+              case 112: {
 
                 minHr_ = input.readInt32();
                 break;
               }
-              case 128: {
+              case 120: {
 
                 avgCadence_ = input.readInt32();
                 break;
               }
-              case 136: {
+              case 128: {
 
                 maxCadence_ = input.readInt32();
                 break;
               }
-              case 144: {
-
-                minCadence_ = input.readInt32();
-                break;
-              }
-              case 152: {
+              case 136: {
 
                 avgTemp_ = input.readInt32();
                 break;
               }
-              case 160: {
+              case 144: {
 
                 maxTemp_ = input.readInt32();
                 break;
               }
-              case 168: {
-
-                minTemp_ = input.readInt32();
-                break;
-              }
-              case 177: {
+              case 153: {
 
                 avgSpeed_ = input.readDouble();
                 break;
               }
-              case 185: {
+              case 161: {
 
                 maxSpeed_ = input.readDouble();
                 break;
               }
+              case 168: {
+
+                maxPositiveGradient_ = input.readInt32();
+                break;
+              }
+              case 176: {
+
+                maxNegativeGradient_ = input.readInt32();
+                break;
+              }
+              case 184: {
+
+                avgPositiveGradient_ = input.readInt32();
+                break;
+              }
               case 192: {
 
-                minGradient_ = input.readInt32();
+                avgNegativeGradient_ = input.readInt32();
                 break;
               }
-              case 200: {
-
-                maxGradient_ = input.readInt32();
-                break;
-              }
-              case 208: {
-
-                avgGradient_ = input.readInt32();
-                break;
-              }
-              case 216: {
-
-                nLaps_ = input.readInt32();
-                break;
-              }
-              case 226: {
-                if (!((mutable_bitField0_ & 0x08000000) == 0x08000000)) {
-                  hrvs_ = com.google.protobuf.MapField.newMapField(
-                      HrvsDefaultEntryHolder.defaultEntry);
-                  mutable_bitField0_ |= 0x08000000;
-                }
-                com.google.protobuf.MapEntry<java.lang.String, java.lang.Double>
-                hrvs__ = input.readMessage(
-                    HrvsDefaultEntryHolder.defaultEntry.getParserForType(), extensionRegistry);
-                hrvs_.getMutableMap().put(
-                    hrvs__.getKey(), hrvs__.getValue());
-                break;
-              }
-              case 233: {
+              case 201: {
 
                 totalAscTime_ = input.readDouble();
                 break;
               }
-              case 241: {
+              case 209: {
 
                 totalDescTime_ = input.readDouble();
                 break;
               }
-              case 249: {
+              case 217: {
 
                 totalAscDist_ = input.readDouble();
                 break;
               }
-              case 257: {
+              case 225: {
 
                 totalDescDist_ = input.readDouble();
                 break;
               }
-              case 265: {
+              case 232: {
+                int rawValue = input.readEnum();
 
-                pauseDistance_ = input.readDouble();
+                segmentType_ = rawValue;
                 break;
               }
-              case 272: {
+              case 240: {
 
-                stopCount_ = input.readInt32();
+                maxPositiveVerticalSpeed_ = input.readInt32();
                 break;
               }
-              case 280: {
+              case 248: {
 
-                pauseCount_ = input.readInt32();
+                maxNegativeVerticalSpeed_ = input.readInt32();
+                break;
+              }
+              case 256: {
+
+                avgPositiveVerticalSpeed_ = input.readInt32();
+                break;
+              }
+              case 264: {
+
+                avgNegativeVerticalSpeed_ = input.readInt32();
                 break;
               }
             }
@@ -10227,8 +10316,6 @@ public final class ActivityOuterClass {
         switch (number) {
           case 1:
             return internalGetHasAttributeMap();
-          case 28:
-            return internalGetHrvs();
           default:
             throw new RuntimeException(
                 "Invalid map field number: " + number);
@@ -10242,7 +10329,6 @@ public final class ActivityOuterClass {
       }
 
       private int bitField0_;
-      private int bitField1_;
       public static final int HASATTRIBUTEMAP_FIELD_NUMBER = 1;
       private static final class HasAttributeMapDefaultEntryHolder {
         static final com.google.protobuf.MapEntry<
@@ -10459,287 +10545,209 @@ public final class ActivityOuterClass {
         return totalDistance_;
       }
 
-      public static final int TOTALCALORIES_FIELD_NUMBER = 12;
-      private double totalCalories_;
-      /**
-       * <code>double totalCalories = 12;</code>
-       */
-      public double getTotalCalories() {
-        return totalCalories_;
-      }
-
-      public static final int AVGHR_FIELD_NUMBER = 13;
+      public static final int AVGHR_FIELD_NUMBER = 12;
       private int avgHr_;
       /**
-       * <code>int32 avgHr = 13;</code>
+       * <code>int32 avgHr = 12;</code>
        */
       public int getAvgHr() {
         return avgHr_;
       }
 
-      public static final int MAXHR_FIELD_NUMBER = 14;
+      public static final int MAXHR_FIELD_NUMBER = 13;
       private int maxHr_;
       /**
-       * <code>int32 maxHr = 14;</code>
+       * <code>int32 maxHr = 13;</code>
        */
       public int getMaxHr() {
         return maxHr_;
       }
 
-      public static final int MINHR_FIELD_NUMBER = 15;
+      public static final int MINHR_FIELD_NUMBER = 14;
       private int minHr_;
       /**
-       * <code>int32 minHr = 15;</code>
+       * <code>int32 minHr = 14;</code>
        */
       public int getMinHr() {
         return minHr_;
       }
 
-      public static final int AVGCADENCE_FIELD_NUMBER = 16;
+      public static final int AVGCADENCE_FIELD_NUMBER = 15;
       private int avgCadence_;
       /**
-       * <code>int32 avgCadence = 16;</code>
+       * <code>int32 avgCadence = 15;</code>
        */
       public int getAvgCadence() {
         return avgCadence_;
       }
 
-      public static final int MAXCADENCE_FIELD_NUMBER = 17;
+      public static final int MAXCADENCE_FIELD_NUMBER = 16;
       private int maxCadence_;
       /**
-       * <code>int32 maxCadence = 17;</code>
+       * <code>int32 maxCadence = 16;</code>
        */
       public int getMaxCadence() {
         return maxCadence_;
       }
 
-      public static final int MINCADENCE_FIELD_NUMBER = 18;
-      private int minCadence_;
-      /**
-       * <code>int32 minCadence = 18;</code>
-       */
-      public int getMinCadence() {
-        return minCadence_;
-      }
-
-      public static final int AVGTEMP_FIELD_NUMBER = 19;
+      public static final int AVGTEMP_FIELD_NUMBER = 17;
       private int avgTemp_;
       /**
-       * <code>int32 avgTemp = 19;</code>
+       * <code>int32 avgTemp = 17;</code>
        */
       public int getAvgTemp() {
         return avgTemp_;
       }
 
-      public static final int MAXTEMP_FIELD_NUMBER = 20;
+      public static final int MAXTEMP_FIELD_NUMBER = 18;
       private int maxTemp_;
       /**
-       * <code>int32 maxTemp = 20;</code>
+       * <code>int32 maxTemp = 18;</code>
        */
       public int getMaxTemp() {
         return maxTemp_;
       }
 
-      public static final int MINTEMP_FIELD_NUMBER = 21;
-      private int minTemp_;
-      /**
-       * <code>int32 minTemp = 21;</code>
-       */
-      public int getMinTemp() {
-        return minTemp_;
-      }
-
-      public static final int AVGSPEED_FIELD_NUMBER = 22;
+      public static final int AVGSPEED_FIELD_NUMBER = 19;
       private double avgSpeed_;
       /**
-       * <code>double avgSpeed = 22;</code>
+       * <code>double avgSpeed = 19;</code>
        */
       public double getAvgSpeed() {
         return avgSpeed_;
       }
 
-      public static final int MAXSPEED_FIELD_NUMBER = 23;
+      public static final int MAXSPEED_FIELD_NUMBER = 20;
       private double maxSpeed_;
       /**
-       * <code>double maxSpeed = 23;</code>
+       * <code>double maxSpeed = 20;</code>
        */
       public double getMaxSpeed() {
         return maxSpeed_;
       }
 
-      public static final int MINGRADIENT_FIELD_NUMBER = 24;
-      private int minGradient_;
+      public static final int MAXPOSITIVEGRADIENT_FIELD_NUMBER = 21;
+      private int maxPositiveGradient_;
       /**
-       * <code>int32 minGradient = 24;</code>
+       * <code>int32 maxPositiveGradient = 21;</code>
        */
-      public int getMinGradient() {
-        return minGradient_;
+      public int getMaxPositiveGradient() {
+        return maxPositiveGradient_;
       }
 
-      public static final int MAXGRADIENT_FIELD_NUMBER = 25;
-      private int maxGradient_;
+      public static final int MAXNEGATIVEGRADIENT_FIELD_NUMBER = 22;
+      private int maxNegativeGradient_;
       /**
-       * <code>int32 maxGradient = 25;</code>
+       * <code>int32 maxNegativeGradient = 22;</code>
        */
-      public int getMaxGradient() {
-        return maxGradient_;
+      public int getMaxNegativeGradient() {
+        return maxNegativeGradient_;
       }
 
-      public static final int AVGGRADIENT_FIELD_NUMBER = 26;
-      private int avgGradient_;
+      public static final int AVGPOSITIVEGRADIENT_FIELD_NUMBER = 23;
+      private int avgPositiveGradient_;
       /**
-       * <code>int32 avgGradient = 26;</code>
+       * <code>int32 avgPositiveGradient = 23;</code>
        */
-      public int getAvgGradient() {
-        return avgGradient_;
+      public int getAvgPositiveGradient() {
+        return avgPositiveGradient_;
       }
 
-      public static final int NLAPS_FIELD_NUMBER = 27;
-      private int nLaps_;
+      public static final int AVGNEGATIVEGRADIENT_FIELD_NUMBER = 24;
+      private int avgNegativeGradient_;
       /**
-       * <code>int32 nLaps = 27;</code>
+       * <code>int32 avgNegativeGradient = 24;</code>
        */
-      public int getNLaps() {
-        return nLaps_;
+      public int getAvgNegativeGradient() {
+        return avgNegativeGradient_;
       }
 
-      public static final int HRVS_FIELD_NUMBER = 28;
-      private static final class HrvsDefaultEntryHolder {
-        static final com.google.protobuf.MapEntry<
-            java.lang.String, java.lang.Double> defaultEntry =
-                com.google.protobuf.MapEntry
-                .<java.lang.String, java.lang.Double>newDefaultInstance(
-                    ski.crunch.activity.model.ActivityOuterClass.internal_static_Activity_Summary_HrvsEntry_descriptor, 
-                    com.google.protobuf.WireFormat.FieldType.STRING,
-                    "",
-                    com.google.protobuf.WireFormat.FieldType.DOUBLE,
-                    0D);
-      }
-      private com.google.protobuf.MapField<
-          java.lang.String, java.lang.Double> hrvs_;
-      private com.google.protobuf.MapField<java.lang.String, java.lang.Double>
-      internalGetHrvs() {
-        if (hrvs_ == null) {
-          return com.google.protobuf.MapField.emptyMapField(
-              HrvsDefaultEntryHolder.defaultEntry);
-        }
-        return hrvs_;
-      }
-
-      public int getHrvsCount() {
-        return internalGetHrvs().getMap().size();
-      }
-      /**
-       * <code>map&lt;string, double&gt; hrvs = 28;</code>
-       */
-
-      public boolean containsHrvs(
-          java.lang.String key) {
-        if (key == null) { throw new java.lang.NullPointerException(); }
-        return internalGetHrvs().getMap().containsKey(key);
-      }
-      /**
-       * Use {@link #getHrvsMap()} instead.
-       */
-      @java.lang.Deprecated
-      public java.util.Map<java.lang.String, java.lang.Double> getHrvs() {
-        return getHrvsMap();
-      }
-      /**
-       * <code>map&lt;string, double&gt; hrvs = 28;</code>
-       */
-
-      public java.util.Map<java.lang.String, java.lang.Double> getHrvsMap() {
-        return internalGetHrvs().getMap();
-      }
-      /**
-       * <code>map&lt;string, double&gt; hrvs = 28;</code>
-       */
-
-      public double getHrvsOrDefault(
-          java.lang.String key,
-          double defaultValue) {
-        if (key == null) { throw new java.lang.NullPointerException(); }
-        java.util.Map<java.lang.String, java.lang.Double> map =
-            internalGetHrvs().getMap();
-        return map.containsKey(key) ? map.get(key) : defaultValue;
-      }
-      /**
-       * <code>map&lt;string, double&gt; hrvs = 28;</code>
-       */
-
-      public double getHrvsOrThrow(
-          java.lang.String key) {
-        if (key == null) { throw new java.lang.NullPointerException(); }
-        java.util.Map<java.lang.String, java.lang.Double> map =
-            internalGetHrvs().getMap();
-        if (!map.containsKey(key)) {
-          throw new java.lang.IllegalArgumentException();
-        }
-        return map.get(key);
-      }
-
-      public static final int TOTALASCTIME_FIELD_NUMBER = 29;
+      public static final int TOTALASCTIME_FIELD_NUMBER = 25;
       private double totalAscTime_;
       /**
-       * <code>double totalAscTime = 29;</code>
+       * <code>double totalAscTime = 25;</code>
        */
       public double getTotalAscTime() {
         return totalAscTime_;
       }
 
-      public static final int TOTALDESCTIME_FIELD_NUMBER = 30;
+      public static final int TOTALDESCTIME_FIELD_NUMBER = 26;
       private double totalDescTime_;
       /**
-       * <code>double totalDescTime = 30;</code>
+       * <code>double totalDescTime = 26;</code>
        */
       public double getTotalDescTime() {
         return totalDescTime_;
       }
 
-      public static final int TOTALASCDIST_FIELD_NUMBER = 31;
+      public static final int TOTALASCDIST_FIELD_NUMBER = 27;
       private double totalAscDist_;
       /**
-       * <code>double totalAscDist = 31;</code>
+       * <code>double totalAscDist = 27;</code>
        */
       public double getTotalAscDist() {
         return totalAscDist_;
       }
 
-      public static final int TOTALDESCDIST_FIELD_NUMBER = 32;
+      public static final int TOTALDESCDIST_FIELD_NUMBER = 28;
       private double totalDescDist_;
       /**
-       * <code>double totalDescDist = 32;</code>
+       * <code>double totalDescDist = 28;</code>
        */
       public double getTotalDescDist() {
         return totalDescDist_;
       }
 
-      public static final int PAUSEDISTANCE_FIELD_NUMBER = 33;
-      private double pauseDistance_;
+      public static final int SEGMENTTYPE_FIELD_NUMBER = 29;
+      private int segmentType_;
       /**
-       * <code>double pauseDistance = 33;</code>
+       * <code>.Activity.SegmentType segmentType = 29;</code>
        */
-      public double getPauseDistance() {
-        return pauseDistance_;
+      public int getSegmentTypeValue() {
+        return segmentType_;
+      }
+      /**
+       * <code>.Activity.SegmentType segmentType = 29;</code>
+       */
+      public ski.crunch.activity.model.ActivityOuterClass.Activity.SegmentType getSegmentType() {
+        ski.crunch.activity.model.ActivityOuterClass.Activity.SegmentType result = ski.crunch.activity.model.ActivityOuterClass.Activity.SegmentType.valueOf(segmentType_);
+        return result == null ? ski.crunch.activity.model.ActivityOuterClass.Activity.SegmentType.UNRECOGNIZED : result;
       }
 
-      public static final int STOPCOUNT_FIELD_NUMBER = 34;
-      private int stopCount_;
+      public static final int MAXPOSITIVEVERTICALSPEED_FIELD_NUMBER = 30;
+      private int maxPositiveVerticalSpeed_;
       /**
-       * <code>int32 stopCount = 34;</code>
+       * <code>int32 maxPositiveVerticalSpeed = 30;</code>
        */
-      public int getStopCount() {
-        return stopCount_;
+      public int getMaxPositiveVerticalSpeed() {
+        return maxPositiveVerticalSpeed_;
       }
 
-      public static final int PAUSECOUNT_FIELD_NUMBER = 35;
-      private int pauseCount_;
+      public static final int MAXNEGATIVEVERTICALSPEED_FIELD_NUMBER = 31;
+      private int maxNegativeVerticalSpeed_;
       /**
-       * <code>int32 pauseCount = 35;</code>
+       * <code>int32 maxNegativeVerticalSpeed = 31;</code>
        */
-      public int getPauseCount() {
-        return pauseCount_;
+      public int getMaxNegativeVerticalSpeed() {
+        return maxNegativeVerticalSpeed_;
+      }
+
+      public static final int AVGPOSITIVEVERTICALSPEED_FIELD_NUMBER = 32;
+      private int avgPositiveVerticalSpeed_;
+      /**
+       * <code>int32 avgPositiveVerticalSpeed = 32;</code>
+       */
+      public int getAvgPositiveVerticalSpeed() {
+        return avgPositiveVerticalSpeed_;
+      }
+
+      public static final int AVGNEGATIVEVERTICALSPEED_FIELD_NUMBER = 33;
+      private int avgNegativeVerticalSpeed_;
+      /**
+       * <code>int32 avgNegativeVerticalSpeed = 33;</code>
+       */
+      public int getAvgNegativeVerticalSpeed() {
+        return avgNegativeVerticalSpeed_;
       }
 
       private byte memoizedIsInitialized = -1;
@@ -10790,80 +10798,71 @@ public final class ActivityOuterClass {
         if (totalDistance_ != 0D) {
           output.writeDouble(11, totalDistance_);
         }
-        if (totalCalories_ != 0D) {
-          output.writeDouble(12, totalCalories_);
-        }
         if (avgHr_ != 0) {
-          output.writeInt32(13, avgHr_);
+          output.writeInt32(12, avgHr_);
         }
         if (maxHr_ != 0) {
-          output.writeInt32(14, maxHr_);
+          output.writeInt32(13, maxHr_);
         }
         if (minHr_ != 0) {
-          output.writeInt32(15, minHr_);
+          output.writeInt32(14, minHr_);
         }
         if (avgCadence_ != 0) {
-          output.writeInt32(16, avgCadence_);
+          output.writeInt32(15, avgCadence_);
         }
         if (maxCadence_ != 0) {
-          output.writeInt32(17, maxCadence_);
-        }
-        if (minCadence_ != 0) {
-          output.writeInt32(18, minCadence_);
+          output.writeInt32(16, maxCadence_);
         }
         if (avgTemp_ != 0) {
-          output.writeInt32(19, avgTemp_);
+          output.writeInt32(17, avgTemp_);
         }
         if (maxTemp_ != 0) {
-          output.writeInt32(20, maxTemp_);
-        }
-        if (minTemp_ != 0) {
-          output.writeInt32(21, minTemp_);
+          output.writeInt32(18, maxTemp_);
         }
         if (avgSpeed_ != 0D) {
-          output.writeDouble(22, avgSpeed_);
+          output.writeDouble(19, avgSpeed_);
         }
         if (maxSpeed_ != 0D) {
-          output.writeDouble(23, maxSpeed_);
+          output.writeDouble(20, maxSpeed_);
         }
-        if (minGradient_ != 0) {
-          output.writeInt32(24, minGradient_);
+        if (maxPositiveGradient_ != 0) {
+          output.writeInt32(21, maxPositiveGradient_);
         }
-        if (maxGradient_ != 0) {
-          output.writeInt32(25, maxGradient_);
+        if (maxNegativeGradient_ != 0) {
+          output.writeInt32(22, maxNegativeGradient_);
         }
-        if (avgGradient_ != 0) {
-          output.writeInt32(26, avgGradient_);
+        if (avgPositiveGradient_ != 0) {
+          output.writeInt32(23, avgPositiveGradient_);
         }
-        if (nLaps_ != 0) {
-          output.writeInt32(27, nLaps_);
+        if (avgNegativeGradient_ != 0) {
+          output.writeInt32(24, avgNegativeGradient_);
         }
-        com.google.protobuf.GeneratedMessageV3
-          .serializeStringMapTo(
-            output,
-            internalGetHrvs(),
-            HrvsDefaultEntryHolder.defaultEntry,
-            28);
         if (totalAscTime_ != 0D) {
-          output.writeDouble(29, totalAscTime_);
+          output.writeDouble(25, totalAscTime_);
         }
         if (totalDescTime_ != 0D) {
-          output.writeDouble(30, totalDescTime_);
+          output.writeDouble(26, totalDescTime_);
         }
         if (totalAscDist_ != 0D) {
-          output.writeDouble(31, totalAscDist_);
+          output.writeDouble(27, totalAscDist_);
         }
         if (totalDescDist_ != 0D) {
-          output.writeDouble(32, totalDescDist_);
+          output.writeDouble(28, totalDescDist_);
         }
-        if (pauseDistance_ != 0D) {
-          output.writeDouble(33, pauseDistance_);
+        if (segmentType_ != ski.crunch.activity.model.ActivityOuterClass.Activity.SegmentType.ACTIVITY.getNumber()) {
+          output.writeEnum(29, segmentType_);
         }
-        if (stopCount_ != 0) {
-          output.writeInt32(34, stopCount_);
+        if (maxPositiveVerticalSpeed_ != 0) {
+          output.writeInt32(30, maxPositiveVerticalSpeed_);
         }
-        if (pauseCount_ != 0) {
-          output.writeInt32(35, pauseCount_);
+        if (maxNegativeVerticalSpeed_ != 0) {
+          output.writeInt32(31, maxNegativeVerticalSpeed_);
+        }
+        if (avgPositiveVerticalSpeed_ != 0) {
+          output.writeInt32(32, avgPositiveVerticalSpeed_);
+        }
+        if (avgNegativeVerticalSpeed_ != 0) {
+          output.writeInt32(33, avgNegativeVerticalSpeed_);
         }
         unknownFields.writeTo(output);
       }
@@ -10921,107 +10920,93 @@ public final class ActivityOuterClass {
           size += com.google.protobuf.CodedOutputStream
             .computeDoubleSize(11, totalDistance_);
         }
-        if (totalCalories_ != 0D) {
-          size += com.google.protobuf.CodedOutputStream
-            .computeDoubleSize(12, totalCalories_);
-        }
         if (avgHr_ != 0) {
           size += com.google.protobuf.CodedOutputStream
-            .computeInt32Size(13, avgHr_);
+            .computeInt32Size(12, avgHr_);
         }
         if (maxHr_ != 0) {
           size += com.google.protobuf.CodedOutputStream
-            .computeInt32Size(14, maxHr_);
+            .computeInt32Size(13, maxHr_);
         }
         if (minHr_ != 0) {
           size += com.google.protobuf.CodedOutputStream
-            .computeInt32Size(15, minHr_);
+            .computeInt32Size(14, minHr_);
         }
         if (avgCadence_ != 0) {
           size += com.google.protobuf.CodedOutputStream
-            .computeInt32Size(16, avgCadence_);
+            .computeInt32Size(15, avgCadence_);
         }
         if (maxCadence_ != 0) {
           size += com.google.protobuf.CodedOutputStream
-            .computeInt32Size(17, maxCadence_);
-        }
-        if (minCadence_ != 0) {
-          size += com.google.protobuf.CodedOutputStream
-            .computeInt32Size(18, minCadence_);
+            .computeInt32Size(16, maxCadence_);
         }
         if (avgTemp_ != 0) {
           size += com.google.protobuf.CodedOutputStream
-            .computeInt32Size(19, avgTemp_);
+            .computeInt32Size(17, avgTemp_);
         }
         if (maxTemp_ != 0) {
           size += com.google.protobuf.CodedOutputStream
-            .computeInt32Size(20, maxTemp_);
-        }
-        if (minTemp_ != 0) {
-          size += com.google.protobuf.CodedOutputStream
-            .computeInt32Size(21, minTemp_);
+            .computeInt32Size(18, maxTemp_);
         }
         if (avgSpeed_ != 0D) {
           size += com.google.protobuf.CodedOutputStream
-            .computeDoubleSize(22, avgSpeed_);
+            .computeDoubleSize(19, avgSpeed_);
         }
         if (maxSpeed_ != 0D) {
           size += com.google.protobuf.CodedOutputStream
-            .computeDoubleSize(23, maxSpeed_);
+            .computeDoubleSize(20, maxSpeed_);
         }
-        if (minGradient_ != 0) {
+        if (maxPositiveGradient_ != 0) {
           size += com.google.protobuf.CodedOutputStream
-            .computeInt32Size(24, minGradient_);
+            .computeInt32Size(21, maxPositiveGradient_);
         }
-        if (maxGradient_ != 0) {
+        if (maxNegativeGradient_ != 0) {
           size += com.google.protobuf.CodedOutputStream
-            .computeInt32Size(25, maxGradient_);
+            .computeInt32Size(22, maxNegativeGradient_);
         }
-        if (avgGradient_ != 0) {
+        if (avgPositiveGradient_ != 0) {
           size += com.google.protobuf.CodedOutputStream
-            .computeInt32Size(26, avgGradient_);
+            .computeInt32Size(23, avgPositiveGradient_);
         }
-        if (nLaps_ != 0) {
+        if (avgNegativeGradient_ != 0) {
           size += com.google.protobuf.CodedOutputStream
-            .computeInt32Size(27, nLaps_);
-        }
-        for (java.util.Map.Entry<java.lang.String, java.lang.Double> entry
-             : internalGetHrvs().getMap().entrySet()) {
-          com.google.protobuf.MapEntry<java.lang.String, java.lang.Double>
-          hrvs__ = HrvsDefaultEntryHolder.defaultEntry.newBuilderForType()
-              .setKey(entry.getKey())
-              .setValue(entry.getValue())
-              .build();
-          size += com.google.protobuf.CodedOutputStream
-              .computeMessageSize(28, hrvs__);
+            .computeInt32Size(24, avgNegativeGradient_);
         }
         if (totalAscTime_ != 0D) {
           size += com.google.protobuf.CodedOutputStream
-            .computeDoubleSize(29, totalAscTime_);
+            .computeDoubleSize(25, totalAscTime_);
         }
         if (totalDescTime_ != 0D) {
           size += com.google.protobuf.CodedOutputStream
-            .computeDoubleSize(30, totalDescTime_);
+            .computeDoubleSize(26, totalDescTime_);
         }
         if (totalAscDist_ != 0D) {
           size += com.google.protobuf.CodedOutputStream
-            .computeDoubleSize(31, totalAscDist_);
+            .computeDoubleSize(27, totalAscDist_);
         }
         if (totalDescDist_ != 0D) {
           size += com.google.protobuf.CodedOutputStream
-            .computeDoubleSize(32, totalDescDist_);
+            .computeDoubleSize(28, totalDescDist_);
         }
-        if (pauseDistance_ != 0D) {
+        if (segmentType_ != ski.crunch.activity.model.ActivityOuterClass.Activity.SegmentType.ACTIVITY.getNumber()) {
           size += com.google.protobuf.CodedOutputStream
-            .computeDoubleSize(33, pauseDistance_);
+            .computeEnumSize(29, segmentType_);
         }
-        if (stopCount_ != 0) {
+        if (maxPositiveVerticalSpeed_ != 0) {
           size += com.google.protobuf.CodedOutputStream
-            .computeInt32Size(34, stopCount_);
+            .computeInt32Size(30, maxPositiveVerticalSpeed_);
         }
-        if (pauseCount_ != 0) {
+        if (maxNegativeVerticalSpeed_ != 0) {
           size += com.google.protobuf.CodedOutputStream
-            .computeInt32Size(35, pauseCount_);
+            .computeInt32Size(31, maxNegativeVerticalSpeed_);
+        }
+        if (avgPositiveVerticalSpeed_ != 0) {
+          size += com.google.protobuf.CodedOutputStream
+            .computeInt32Size(32, avgPositiveVerticalSpeed_);
+        }
+        if (avgNegativeVerticalSpeed_ != 0) {
+          size += com.google.protobuf.CodedOutputStream
+            .computeInt32Size(33, avgNegativeVerticalSpeed_);
         }
         size += unknownFields.getSerializedSize();
         memoizedSize = size;
@@ -11077,10 +11062,6 @@ public final class ActivityOuterClass {
             java.lang.Double.doubleToLongBits(getTotalDistance())
             == java.lang.Double.doubleToLongBits(
                 other.getTotalDistance()));
-        result = result && (
-            java.lang.Double.doubleToLongBits(getTotalCalories())
-            == java.lang.Double.doubleToLongBits(
-                other.getTotalCalories()));
         result = result && (getAvgHr()
             == other.getAvgHr());
         result = result && (getMaxHr()
@@ -11091,14 +11072,10 @@ public final class ActivityOuterClass {
             == other.getAvgCadence());
         result = result && (getMaxCadence()
             == other.getMaxCadence());
-        result = result && (getMinCadence()
-            == other.getMinCadence());
         result = result && (getAvgTemp()
             == other.getAvgTemp());
         result = result && (getMaxTemp()
             == other.getMaxTemp());
-        result = result && (getMinTemp()
-            == other.getMinTemp());
         result = result && (
             java.lang.Double.doubleToLongBits(getAvgSpeed())
             == java.lang.Double.doubleToLongBits(
@@ -11107,16 +11084,14 @@ public final class ActivityOuterClass {
             java.lang.Double.doubleToLongBits(getMaxSpeed())
             == java.lang.Double.doubleToLongBits(
                 other.getMaxSpeed()));
-        result = result && (getMinGradient()
-            == other.getMinGradient());
-        result = result && (getMaxGradient()
-            == other.getMaxGradient());
-        result = result && (getAvgGradient()
-            == other.getAvgGradient());
-        result = result && (getNLaps()
-            == other.getNLaps());
-        result = result && internalGetHrvs().equals(
-            other.internalGetHrvs());
+        result = result && (getMaxPositiveGradient()
+            == other.getMaxPositiveGradient());
+        result = result && (getMaxNegativeGradient()
+            == other.getMaxNegativeGradient());
+        result = result && (getAvgPositiveGradient()
+            == other.getAvgPositiveGradient());
+        result = result && (getAvgNegativeGradient()
+            == other.getAvgNegativeGradient());
         result = result && (
             java.lang.Double.doubleToLongBits(getTotalAscTime())
             == java.lang.Double.doubleToLongBits(
@@ -11133,14 +11108,15 @@ public final class ActivityOuterClass {
             java.lang.Double.doubleToLongBits(getTotalDescDist())
             == java.lang.Double.doubleToLongBits(
                 other.getTotalDescDist()));
-        result = result && (
-            java.lang.Double.doubleToLongBits(getPauseDistance())
-            == java.lang.Double.doubleToLongBits(
-                other.getPauseDistance()));
-        result = result && (getStopCount()
-            == other.getStopCount());
-        result = result && (getPauseCount()
-            == other.getPauseCount());
+        result = result && segmentType_ == other.segmentType_;
+        result = result && (getMaxPositiveVerticalSpeed()
+            == other.getMaxPositiveVerticalSpeed());
+        result = result && (getMaxNegativeVerticalSpeed()
+            == other.getMaxNegativeVerticalSpeed());
+        result = result && (getAvgPositiveVerticalSpeed()
+            == other.getAvgPositiveVerticalSpeed());
+        result = result && (getAvgNegativeVerticalSpeed()
+            == other.getAvgNegativeVerticalSpeed());
         result = result && unknownFields.equals(other.unknownFields);
         return result;
       }
@@ -11184,9 +11160,6 @@ public final class ActivityOuterClass {
         hash = (37 * hash) + TOTALDISTANCE_FIELD_NUMBER;
         hash = (53 * hash) + com.google.protobuf.Internal.hashLong(
             java.lang.Double.doubleToLongBits(getTotalDistance()));
-        hash = (37 * hash) + TOTALCALORIES_FIELD_NUMBER;
-        hash = (53 * hash) + com.google.protobuf.Internal.hashLong(
-            java.lang.Double.doubleToLongBits(getTotalCalories()));
         hash = (37 * hash) + AVGHR_FIELD_NUMBER;
         hash = (53 * hash) + getAvgHr();
         hash = (37 * hash) + MAXHR_FIELD_NUMBER;
@@ -11197,32 +11170,24 @@ public final class ActivityOuterClass {
         hash = (53 * hash) + getAvgCadence();
         hash = (37 * hash) + MAXCADENCE_FIELD_NUMBER;
         hash = (53 * hash) + getMaxCadence();
-        hash = (37 * hash) + MINCADENCE_FIELD_NUMBER;
-        hash = (53 * hash) + getMinCadence();
         hash = (37 * hash) + AVGTEMP_FIELD_NUMBER;
         hash = (53 * hash) + getAvgTemp();
         hash = (37 * hash) + MAXTEMP_FIELD_NUMBER;
         hash = (53 * hash) + getMaxTemp();
-        hash = (37 * hash) + MINTEMP_FIELD_NUMBER;
-        hash = (53 * hash) + getMinTemp();
         hash = (37 * hash) + AVGSPEED_FIELD_NUMBER;
         hash = (53 * hash) + com.google.protobuf.Internal.hashLong(
             java.lang.Double.doubleToLongBits(getAvgSpeed()));
         hash = (37 * hash) + MAXSPEED_FIELD_NUMBER;
         hash = (53 * hash) + com.google.protobuf.Internal.hashLong(
             java.lang.Double.doubleToLongBits(getMaxSpeed()));
-        hash = (37 * hash) + MINGRADIENT_FIELD_NUMBER;
-        hash = (53 * hash) + getMinGradient();
-        hash = (37 * hash) + MAXGRADIENT_FIELD_NUMBER;
-        hash = (53 * hash) + getMaxGradient();
-        hash = (37 * hash) + AVGGRADIENT_FIELD_NUMBER;
-        hash = (53 * hash) + getAvgGradient();
-        hash = (37 * hash) + NLAPS_FIELD_NUMBER;
-        hash = (53 * hash) + getNLaps();
-        if (!internalGetHrvs().getMap().isEmpty()) {
-          hash = (37 * hash) + HRVS_FIELD_NUMBER;
-          hash = (53 * hash) + internalGetHrvs().hashCode();
-        }
+        hash = (37 * hash) + MAXPOSITIVEGRADIENT_FIELD_NUMBER;
+        hash = (53 * hash) + getMaxPositiveGradient();
+        hash = (37 * hash) + MAXNEGATIVEGRADIENT_FIELD_NUMBER;
+        hash = (53 * hash) + getMaxNegativeGradient();
+        hash = (37 * hash) + AVGPOSITIVEGRADIENT_FIELD_NUMBER;
+        hash = (53 * hash) + getAvgPositiveGradient();
+        hash = (37 * hash) + AVGNEGATIVEGRADIENT_FIELD_NUMBER;
+        hash = (53 * hash) + getAvgNegativeGradient();
         hash = (37 * hash) + TOTALASCTIME_FIELD_NUMBER;
         hash = (53 * hash) + com.google.protobuf.Internal.hashLong(
             java.lang.Double.doubleToLongBits(getTotalAscTime()));
@@ -11235,13 +11200,16 @@ public final class ActivityOuterClass {
         hash = (37 * hash) + TOTALDESCDIST_FIELD_NUMBER;
         hash = (53 * hash) + com.google.protobuf.Internal.hashLong(
             java.lang.Double.doubleToLongBits(getTotalDescDist()));
-        hash = (37 * hash) + PAUSEDISTANCE_FIELD_NUMBER;
-        hash = (53 * hash) + com.google.protobuf.Internal.hashLong(
-            java.lang.Double.doubleToLongBits(getPauseDistance()));
-        hash = (37 * hash) + STOPCOUNT_FIELD_NUMBER;
-        hash = (53 * hash) + getStopCount();
-        hash = (37 * hash) + PAUSECOUNT_FIELD_NUMBER;
-        hash = (53 * hash) + getPauseCount();
+        hash = (37 * hash) + SEGMENTTYPE_FIELD_NUMBER;
+        hash = (53 * hash) + segmentType_;
+        hash = (37 * hash) + MAXPOSITIVEVERTICALSPEED_FIELD_NUMBER;
+        hash = (53 * hash) + getMaxPositiveVerticalSpeed();
+        hash = (37 * hash) + MAXNEGATIVEVERTICALSPEED_FIELD_NUMBER;
+        hash = (53 * hash) + getMaxNegativeVerticalSpeed();
+        hash = (37 * hash) + AVGPOSITIVEVERTICALSPEED_FIELD_NUMBER;
+        hash = (53 * hash) + getAvgPositiveVerticalSpeed();
+        hash = (37 * hash) + AVGNEGATIVEVERTICALSPEED_FIELD_NUMBER;
+        hash = (53 * hash) + getAvgNegativeVerticalSpeed();
         hash = (29 * hash) + unknownFields.hashCode();
         memoizedHashCode = hash;
         return hash;
@@ -11353,8 +11321,6 @@ public final class ActivityOuterClass {
           switch (number) {
             case 1:
               return internalGetHasAttributeMap();
-            case 28:
-              return internalGetHrvs();
             default:
               throw new RuntimeException(
                   "Invalid map field number: " + number);
@@ -11366,8 +11332,6 @@ public final class ActivityOuterClass {
           switch (number) {
             case 1:
               return internalGetMutableHasAttributeMap();
-            case 28:
-              return internalGetMutableHrvs();
             default:
               throw new RuntimeException(
                   "Invalid map field number: " + number);
@@ -11418,8 +11382,6 @@ public final class ActivityOuterClass {
 
           totalDistance_ = 0D;
 
-          totalCalories_ = 0D;
-
           avgHr_ = 0;
 
           maxHr_ = 0;
@@ -11430,27 +11392,22 @@ public final class ActivityOuterClass {
 
           maxCadence_ = 0;
 
-          minCadence_ = 0;
-
           avgTemp_ = 0;
 
           maxTemp_ = 0;
-
-          minTemp_ = 0;
 
           avgSpeed_ = 0D;
 
           maxSpeed_ = 0D;
 
-          minGradient_ = 0;
+          maxPositiveGradient_ = 0;
 
-          maxGradient_ = 0;
+          maxNegativeGradient_ = 0;
 
-          avgGradient_ = 0;
+          avgPositiveGradient_ = 0;
 
-          nLaps_ = 0;
+          avgNegativeGradient_ = 0;
 
-          internalGetMutableHrvs().clear();
           totalAscTime_ = 0D;
 
           totalDescTime_ = 0D;
@@ -11459,11 +11416,15 @@ public final class ActivityOuterClass {
 
           totalDescDist_ = 0D;
 
-          pauseDistance_ = 0D;
+          segmentType_ = 0;
 
-          stopCount_ = 0;
+          maxPositiveVerticalSpeed_ = 0;
 
-          pauseCount_ = 0;
+          maxNegativeVerticalSpeed_ = 0;
+
+          avgPositiveVerticalSpeed_ = 0;
+
+          avgNegativeVerticalSpeed_ = 0;
 
           return this;
         }
@@ -11490,7 +11451,6 @@ public final class ActivityOuterClass {
           int from_bitField0_ = bitField0_;
           int from_bitField1_ = bitField1_;
           int to_bitField0_ = 0;
-          int to_bitField1_ = 0;
           result.hasAttributeMap_ = internalGetHasAttributeMap();
           result.hasAttributeMap_.makeImmutable();
           result.startTs_ = startTs_;
@@ -11503,33 +11463,29 @@ public final class ActivityOuterClass {
           result.totalAscent_ = totalAscent_;
           result.totalDescent_ = totalDescent_;
           result.totalDistance_ = totalDistance_;
-          result.totalCalories_ = totalCalories_;
           result.avgHr_ = avgHr_;
           result.maxHr_ = maxHr_;
           result.minHr_ = minHr_;
           result.avgCadence_ = avgCadence_;
           result.maxCadence_ = maxCadence_;
-          result.minCadence_ = minCadence_;
           result.avgTemp_ = avgTemp_;
           result.maxTemp_ = maxTemp_;
-          result.minTemp_ = minTemp_;
           result.avgSpeed_ = avgSpeed_;
           result.maxSpeed_ = maxSpeed_;
-          result.minGradient_ = minGradient_;
-          result.maxGradient_ = maxGradient_;
-          result.avgGradient_ = avgGradient_;
-          result.nLaps_ = nLaps_;
-          result.hrvs_ = internalGetHrvs();
-          result.hrvs_.makeImmutable();
+          result.maxPositiveGradient_ = maxPositiveGradient_;
+          result.maxNegativeGradient_ = maxNegativeGradient_;
+          result.avgPositiveGradient_ = avgPositiveGradient_;
+          result.avgNegativeGradient_ = avgNegativeGradient_;
           result.totalAscTime_ = totalAscTime_;
           result.totalDescTime_ = totalDescTime_;
           result.totalAscDist_ = totalAscDist_;
           result.totalDescDist_ = totalDescDist_;
-          result.pauseDistance_ = pauseDistance_;
-          result.stopCount_ = stopCount_;
-          result.pauseCount_ = pauseCount_;
+          result.segmentType_ = segmentType_;
+          result.maxPositiveVerticalSpeed_ = maxPositiveVerticalSpeed_;
+          result.maxNegativeVerticalSpeed_ = maxNegativeVerticalSpeed_;
+          result.avgPositiveVerticalSpeed_ = avgPositiveVerticalSpeed_;
+          result.avgNegativeVerticalSpeed_ = avgNegativeVerticalSpeed_;
           result.bitField0_ = to_bitField0_;
-          result.bitField1_ = to_bitField1_;
           onBuilt();
           return result;
         }
@@ -11605,9 +11561,6 @@ public final class ActivityOuterClass {
           if (other.getTotalDistance() != 0D) {
             setTotalDistance(other.getTotalDistance());
           }
-          if (other.getTotalCalories() != 0D) {
-            setTotalCalories(other.getTotalCalories());
-          }
           if (other.getAvgHr() != 0) {
             setAvgHr(other.getAvgHr());
           }
@@ -11623,17 +11576,11 @@ public final class ActivityOuterClass {
           if (other.getMaxCadence() != 0) {
             setMaxCadence(other.getMaxCadence());
           }
-          if (other.getMinCadence() != 0) {
-            setMinCadence(other.getMinCadence());
-          }
           if (other.getAvgTemp() != 0) {
             setAvgTemp(other.getAvgTemp());
           }
           if (other.getMaxTemp() != 0) {
             setMaxTemp(other.getMaxTemp());
-          }
-          if (other.getMinTemp() != 0) {
-            setMinTemp(other.getMinTemp());
           }
           if (other.getAvgSpeed() != 0D) {
             setAvgSpeed(other.getAvgSpeed());
@@ -11641,20 +11588,18 @@ public final class ActivityOuterClass {
           if (other.getMaxSpeed() != 0D) {
             setMaxSpeed(other.getMaxSpeed());
           }
-          if (other.getMinGradient() != 0) {
-            setMinGradient(other.getMinGradient());
+          if (other.getMaxPositiveGradient() != 0) {
+            setMaxPositiveGradient(other.getMaxPositiveGradient());
           }
-          if (other.getMaxGradient() != 0) {
-            setMaxGradient(other.getMaxGradient());
+          if (other.getMaxNegativeGradient() != 0) {
+            setMaxNegativeGradient(other.getMaxNegativeGradient());
           }
-          if (other.getAvgGradient() != 0) {
-            setAvgGradient(other.getAvgGradient());
+          if (other.getAvgPositiveGradient() != 0) {
+            setAvgPositiveGradient(other.getAvgPositiveGradient());
           }
-          if (other.getNLaps() != 0) {
-            setNLaps(other.getNLaps());
+          if (other.getAvgNegativeGradient() != 0) {
+            setAvgNegativeGradient(other.getAvgNegativeGradient());
           }
-          internalGetMutableHrvs().mergeFrom(
-              other.internalGetHrvs());
           if (other.getTotalAscTime() != 0D) {
             setTotalAscTime(other.getTotalAscTime());
           }
@@ -11667,14 +11612,20 @@ public final class ActivityOuterClass {
           if (other.getTotalDescDist() != 0D) {
             setTotalDescDist(other.getTotalDescDist());
           }
-          if (other.getPauseDistance() != 0D) {
-            setPauseDistance(other.getPauseDistance());
+          if (other.segmentType_ != 0) {
+            setSegmentTypeValue(other.getSegmentTypeValue());
           }
-          if (other.getStopCount() != 0) {
-            setStopCount(other.getStopCount());
+          if (other.getMaxPositiveVerticalSpeed() != 0) {
+            setMaxPositiveVerticalSpeed(other.getMaxPositiveVerticalSpeed());
           }
-          if (other.getPauseCount() != 0) {
-            setPauseCount(other.getPauseCount());
+          if (other.getMaxNegativeVerticalSpeed() != 0) {
+            setMaxNegativeVerticalSpeed(other.getMaxNegativeVerticalSpeed());
+          }
+          if (other.getAvgPositiveVerticalSpeed() != 0) {
+            setAvgPositiveVerticalSpeed(other.getAvgPositiveVerticalSpeed());
+          }
+          if (other.getAvgNegativeVerticalSpeed() != 0) {
+            setAvgNegativeVerticalSpeed(other.getAvgNegativeVerticalSpeed());
           }
           this.mergeUnknownFields(other.unknownFields);
           onChanged();
@@ -12174,41 +12125,15 @@ public final class ActivityOuterClass {
           return this;
         }
 
-        private double totalCalories_ ;
-        /**
-         * <code>double totalCalories = 12;</code>
-         */
-        public double getTotalCalories() {
-          return totalCalories_;
-        }
-        /**
-         * <code>double totalCalories = 12;</code>
-         */
-        public Builder setTotalCalories(double value) {
-          
-          totalCalories_ = value;
-          onChanged();
-          return this;
-        }
-        /**
-         * <code>double totalCalories = 12;</code>
-         */
-        public Builder clearTotalCalories() {
-          
-          totalCalories_ = 0D;
-          onChanged();
-          return this;
-        }
-
         private int avgHr_ ;
         /**
-         * <code>int32 avgHr = 13;</code>
+         * <code>int32 avgHr = 12;</code>
          */
         public int getAvgHr() {
           return avgHr_;
         }
         /**
-         * <code>int32 avgHr = 13;</code>
+         * <code>int32 avgHr = 12;</code>
          */
         public Builder setAvgHr(int value) {
           
@@ -12217,7 +12142,7 @@ public final class ActivityOuterClass {
           return this;
         }
         /**
-         * <code>int32 avgHr = 13;</code>
+         * <code>int32 avgHr = 12;</code>
          */
         public Builder clearAvgHr() {
           
@@ -12228,13 +12153,13 @@ public final class ActivityOuterClass {
 
         private int maxHr_ ;
         /**
-         * <code>int32 maxHr = 14;</code>
+         * <code>int32 maxHr = 13;</code>
          */
         public int getMaxHr() {
           return maxHr_;
         }
         /**
-         * <code>int32 maxHr = 14;</code>
+         * <code>int32 maxHr = 13;</code>
          */
         public Builder setMaxHr(int value) {
           
@@ -12243,7 +12168,7 @@ public final class ActivityOuterClass {
           return this;
         }
         /**
-         * <code>int32 maxHr = 14;</code>
+         * <code>int32 maxHr = 13;</code>
          */
         public Builder clearMaxHr() {
           
@@ -12254,13 +12179,13 @@ public final class ActivityOuterClass {
 
         private int minHr_ ;
         /**
-         * <code>int32 minHr = 15;</code>
+         * <code>int32 minHr = 14;</code>
          */
         public int getMinHr() {
           return minHr_;
         }
         /**
-         * <code>int32 minHr = 15;</code>
+         * <code>int32 minHr = 14;</code>
          */
         public Builder setMinHr(int value) {
           
@@ -12269,7 +12194,7 @@ public final class ActivityOuterClass {
           return this;
         }
         /**
-         * <code>int32 minHr = 15;</code>
+         * <code>int32 minHr = 14;</code>
          */
         public Builder clearMinHr() {
           
@@ -12280,13 +12205,13 @@ public final class ActivityOuterClass {
 
         private int avgCadence_ ;
         /**
-         * <code>int32 avgCadence = 16;</code>
+         * <code>int32 avgCadence = 15;</code>
          */
         public int getAvgCadence() {
           return avgCadence_;
         }
         /**
-         * <code>int32 avgCadence = 16;</code>
+         * <code>int32 avgCadence = 15;</code>
          */
         public Builder setAvgCadence(int value) {
           
@@ -12295,7 +12220,7 @@ public final class ActivityOuterClass {
           return this;
         }
         /**
-         * <code>int32 avgCadence = 16;</code>
+         * <code>int32 avgCadence = 15;</code>
          */
         public Builder clearAvgCadence() {
           
@@ -12306,13 +12231,13 @@ public final class ActivityOuterClass {
 
         private int maxCadence_ ;
         /**
-         * <code>int32 maxCadence = 17;</code>
+         * <code>int32 maxCadence = 16;</code>
          */
         public int getMaxCadence() {
           return maxCadence_;
         }
         /**
-         * <code>int32 maxCadence = 17;</code>
+         * <code>int32 maxCadence = 16;</code>
          */
         public Builder setMaxCadence(int value) {
           
@@ -12321,7 +12246,7 @@ public final class ActivityOuterClass {
           return this;
         }
         /**
-         * <code>int32 maxCadence = 17;</code>
+         * <code>int32 maxCadence = 16;</code>
          */
         public Builder clearMaxCadence() {
           
@@ -12330,41 +12255,15 @@ public final class ActivityOuterClass {
           return this;
         }
 
-        private int minCadence_ ;
-        /**
-         * <code>int32 minCadence = 18;</code>
-         */
-        public int getMinCadence() {
-          return minCadence_;
-        }
-        /**
-         * <code>int32 minCadence = 18;</code>
-         */
-        public Builder setMinCadence(int value) {
-          
-          minCadence_ = value;
-          onChanged();
-          return this;
-        }
-        /**
-         * <code>int32 minCadence = 18;</code>
-         */
-        public Builder clearMinCadence() {
-          
-          minCadence_ = 0;
-          onChanged();
-          return this;
-        }
-
         private int avgTemp_ ;
         /**
-         * <code>int32 avgTemp = 19;</code>
+         * <code>int32 avgTemp = 17;</code>
          */
         public int getAvgTemp() {
           return avgTemp_;
         }
         /**
-         * <code>int32 avgTemp = 19;</code>
+         * <code>int32 avgTemp = 17;</code>
          */
         public Builder setAvgTemp(int value) {
           
@@ -12373,7 +12272,7 @@ public final class ActivityOuterClass {
           return this;
         }
         /**
-         * <code>int32 avgTemp = 19;</code>
+         * <code>int32 avgTemp = 17;</code>
          */
         public Builder clearAvgTemp() {
           
@@ -12384,13 +12283,13 @@ public final class ActivityOuterClass {
 
         private int maxTemp_ ;
         /**
-         * <code>int32 maxTemp = 20;</code>
+         * <code>int32 maxTemp = 18;</code>
          */
         public int getMaxTemp() {
           return maxTemp_;
         }
         /**
-         * <code>int32 maxTemp = 20;</code>
+         * <code>int32 maxTemp = 18;</code>
          */
         public Builder setMaxTemp(int value) {
           
@@ -12399,7 +12298,7 @@ public final class ActivityOuterClass {
           return this;
         }
         /**
-         * <code>int32 maxTemp = 20;</code>
+         * <code>int32 maxTemp = 18;</code>
          */
         public Builder clearMaxTemp() {
           
@@ -12408,41 +12307,15 @@ public final class ActivityOuterClass {
           return this;
         }
 
-        private int minTemp_ ;
-        /**
-         * <code>int32 minTemp = 21;</code>
-         */
-        public int getMinTemp() {
-          return minTemp_;
-        }
-        /**
-         * <code>int32 minTemp = 21;</code>
-         */
-        public Builder setMinTemp(int value) {
-          
-          minTemp_ = value;
-          onChanged();
-          return this;
-        }
-        /**
-         * <code>int32 minTemp = 21;</code>
-         */
-        public Builder clearMinTemp() {
-          
-          minTemp_ = 0;
-          onChanged();
-          return this;
-        }
-
         private double avgSpeed_ ;
         /**
-         * <code>double avgSpeed = 22;</code>
+         * <code>double avgSpeed = 19;</code>
          */
         public double getAvgSpeed() {
           return avgSpeed_;
         }
         /**
-         * <code>double avgSpeed = 22;</code>
+         * <code>double avgSpeed = 19;</code>
          */
         public Builder setAvgSpeed(double value) {
           
@@ -12451,7 +12324,7 @@ public final class ActivityOuterClass {
           return this;
         }
         /**
-         * <code>double avgSpeed = 22;</code>
+         * <code>double avgSpeed = 19;</code>
          */
         public Builder clearAvgSpeed() {
           
@@ -12462,13 +12335,13 @@ public final class ActivityOuterClass {
 
         private double maxSpeed_ ;
         /**
-         * <code>double maxSpeed = 23;</code>
+         * <code>double maxSpeed = 20;</code>
          */
         public double getMaxSpeed() {
           return maxSpeed_;
         }
         /**
-         * <code>double maxSpeed = 23;</code>
+         * <code>double maxSpeed = 20;</code>
          */
         public Builder setMaxSpeed(double value) {
           
@@ -12477,7 +12350,7 @@ public final class ActivityOuterClass {
           return this;
         }
         /**
-         * <code>double maxSpeed = 23;</code>
+         * <code>double maxSpeed = 20;</code>
          */
         public Builder clearMaxSpeed() {
           
@@ -12486,242 +12359,119 @@ public final class ActivityOuterClass {
           return this;
         }
 
-        private int minGradient_ ;
+        private int maxPositiveGradient_ ;
         /**
-         * <code>int32 minGradient = 24;</code>
+         * <code>int32 maxPositiveGradient = 21;</code>
          */
-        public int getMinGradient() {
-          return minGradient_;
+        public int getMaxPositiveGradient() {
+          return maxPositiveGradient_;
         }
         /**
-         * <code>int32 minGradient = 24;</code>
+         * <code>int32 maxPositiveGradient = 21;</code>
          */
-        public Builder setMinGradient(int value) {
+        public Builder setMaxPositiveGradient(int value) {
           
-          minGradient_ = value;
+          maxPositiveGradient_ = value;
           onChanged();
           return this;
         }
         /**
-         * <code>int32 minGradient = 24;</code>
+         * <code>int32 maxPositiveGradient = 21;</code>
          */
-        public Builder clearMinGradient() {
+        public Builder clearMaxPositiveGradient() {
           
-          minGradient_ = 0;
+          maxPositiveGradient_ = 0;
           onChanged();
           return this;
         }
 
-        private int maxGradient_ ;
+        private int maxNegativeGradient_ ;
         /**
-         * <code>int32 maxGradient = 25;</code>
+         * <code>int32 maxNegativeGradient = 22;</code>
          */
-        public int getMaxGradient() {
-          return maxGradient_;
+        public int getMaxNegativeGradient() {
+          return maxNegativeGradient_;
         }
         /**
-         * <code>int32 maxGradient = 25;</code>
+         * <code>int32 maxNegativeGradient = 22;</code>
          */
-        public Builder setMaxGradient(int value) {
+        public Builder setMaxNegativeGradient(int value) {
           
-          maxGradient_ = value;
+          maxNegativeGradient_ = value;
           onChanged();
           return this;
         }
         /**
-         * <code>int32 maxGradient = 25;</code>
+         * <code>int32 maxNegativeGradient = 22;</code>
          */
-        public Builder clearMaxGradient() {
+        public Builder clearMaxNegativeGradient() {
           
-          maxGradient_ = 0;
+          maxNegativeGradient_ = 0;
           onChanged();
           return this;
         }
 
-        private int avgGradient_ ;
+        private int avgPositiveGradient_ ;
         /**
-         * <code>int32 avgGradient = 26;</code>
+         * <code>int32 avgPositiveGradient = 23;</code>
          */
-        public int getAvgGradient() {
-          return avgGradient_;
+        public int getAvgPositiveGradient() {
+          return avgPositiveGradient_;
         }
         /**
-         * <code>int32 avgGradient = 26;</code>
+         * <code>int32 avgPositiveGradient = 23;</code>
          */
-        public Builder setAvgGradient(int value) {
+        public Builder setAvgPositiveGradient(int value) {
           
-          avgGradient_ = value;
+          avgPositiveGradient_ = value;
           onChanged();
           return this;
         }
         /**
-         * <code>int32 avgGradient = 26;</code>
+         * <code>int32 avgPositiveGradient = 23;</code>
          */
-        public Builder clearAvgGradient() {
+        public Builder clearAvgPositiveGradient() {
           
-          avgGradient_ = 0;
+          avgPositiveGradient_ = 0;
           onChanged();
           return this;
         }
 
-        private int nLaps_ ;
+        private int avgNegativeGradient_ ;
         /**
-         * <code>int32 nLaps = 27;</code>
+         * <code>int32 avgNegativeGradient = 24;</code>
          */
-        public int getNLaps() {
-          return nLaps_;
+        public int getAvgNegativeGradient() {
+          return avgNegativeGradient_;
         }
         /**
-         * <code>int32 nLaps = 27;</code>
+         * <code>int32 avgNegativeGradient = 24;</code>
          */
-        public Builder setNLaps(int value) {
+        public Builder setAvgNegativeGradient(int value) {
           
-          nLaps_ = value;
+          avgNegativeGradient_ = value;
           onChanged();
           return this;
         }
         /**
-         * <code>int32 nLaps = 27;</code>
+         * <code>int32 avgNegativeGradient = 24;</code>
          */
-        public Builder clearNLaps() {
+        public Builder clearAvgNegativeGradient() {
           
-          nLaps_ = 0;
+          avgNegativeGradient_ = 0;
           onChanged();
-          return this;
-        }
-
-        private com.google.protobuf.MapField<
-            java.lang.String, java.lang.Double> hrvs_;
-        private com.google.protobuf.MapField<java.lang.String, java.lang.Double>
-        internalGetHrvs() {
-          if (hrvs_ == null) {
-            return com.google.protobuf.MapField.emptyMapField(
-                HrvsDefaultEntryHolder.defaultEntry);
-          }
-          return hrvs_;
-        }
-        private com.google.protobuf.MapField<java.lang.String, java.lang.Double>
-        internalGetMutableHrvs() {
-          onChanged();;
-          if (hrvs_ == null) {
-            hrvs_ = com.google.protobuf.MapField.newMapField(
-                HrvsDefaultEntryHolder.defaultEntry);
-          }
-          if (!hrvs_.isMutable()) {
-            hrvs_ = hrvs_.copy();
-          }
-          return hrvs_;
-        }
-
-        public int getHrvsCount() {
-          return internalGetHrvs().getMap().size();
-        }
-        /**
-         * <code>map&lt;string, double&gt; hrvs = 28;</code>
-         */
-
-        public boolean containsHrvs(
-            java.lang.String key) {
-          if (key == null) { throw new java.lang.NullPointerException(); }
-          return internalGetHrvs().getMap().containsKey(key);
-        }
-        /**
-         * Use {@link #getHrvsMap()} instead.
-         */
-        @java.lang.Deprecated
-        public java.util.Map<java.lang.String, java.lang.Double> getHrvs() {
-          return getHrvsMap();
-        }
-        /**
-         * <code>map&lt;string, double&gt; hrvs = 28;</code>
-         */
-
-        public java.util.Map<java.lang.String, java.lang.Double> getHrvsMap() {
-          return internalGetHrvs().getMap();
-        }
-        /**
-         * <code>map&lt;string, double&gt; hrvs = 28;</code>
-         */
-
-        public double getHrvsOrDefault(
-            java.lang.String key,
-            double defaultValue) {
-          if (key == null) { throw new java.lang.NullPointerException(); }
-          java.util.Map<java.lang.String, java.lang.Double> map =
-              internalGetHrvs().getMap();
-          return map.containsKey(key) ? map.get(key) : defaultValue;
-        }
-        /**
-         * <code>map&lt;string, double&gt; hrvs = 28;</code>
-         */
-
-        public double getHrvsOrThrow(
-            java.lang.String key) {
-          if (key == null) { throw new java.lang.NullPointerException(); }
-          java.util.Map<java.lang.String, java.lang.Double> map =
-              internalGetHrvs().getMap();
-          if (!map.containsKey(key)) {
-            throw new java.lang.IllegalArgumentException();
-          }
-          return map.get(key);
-        }
-
-        public Builder clearHrvs() {
-          internalGetMutableHrvs().getMutableMap()
-              .clear();
-          return this;
-        }
-        /**
-         * <code>map&lt;string, double&gt; hrvs = 28;</code>
-         */
-
-        public Builder removeHrvs(
-            java.lang.String key) {
-          if (key == null) { throw new java.lang.NullPointerException(); }
-          internalGetMutableHrvs().getMutableMap()
-              .remove(key);
-          return this;
-        }
-        /**
-         * Use alternate mutation accessors instead.
-         */
-        @java.lang.Deprecated
-        public java.util.Map<java.lang.String, java.lang.Double>
-        getMutableHrvs() {
-          return internalGetMutableHrvs().getMutableMap();
-        }
-        /**
-         * <code>map&lt;string, double&gt; hrvs = 28;</code>
-         */
-        public Builder putHrvs(
-            java.lang.String key,
-            double value) {
-          if (key == null) { throw new java.lang.NullPointerException(); }
-          
-          internalGetMutableHrvs().getMutableMap()
-              .put(key, value);
-          return this;
-        }
-        /**
-         * <code>map&lt;string, double&gt; hrvs = 28;</code>
-         */
-
-        public Builder putAllHrvs(
-            java.util.Map<java.lang.String, java.lang.Double> values) {
-          internalGetMutableHrvs().getMutableMap()
-              .putAll(values);
           return this;
         }
 
         private double totalAscTime_ ;
         /**
-         * <code>double totalAscTime = 29;</code>
+         * <code>double totalAscTime = 25;</code>
          */
         public double getTotalAscTime() {
           return totalAscTime_;
         }
         /**
-         * <code>double totalAscTime = 29;</code>
+         * <code>double totalAscTime = 25;</code>
          */
         public Builder setTotalAscTime(double value) {
           
@@ -12730,7 +12480,7 @@ public final class ActivityOuterClass {
           return this;
         }
         /**
-         * <code>double totalAscTime = 29;</code>
+         * <code>double totalAscTime = 25;</code>
          */
         public Builder clearTotalAscTime() {
           
@@ -12741,13 +12491,13 @@ public final class ActivityOuterClass {
 
         private double totalDescTime_ ;
         /**
-         * <code>double totalDescTime = 30;</code>
+         * <code>double totalDescTime = 26;</code>
          */
         public double getTotalDescTime() {
           return totalDescTime_;
         }
         /**
-         * <code>double totalDescTime = 30;</code>
+         * <code>double totalDescTime = 26;</code>
          */
         public Builder setTotalDescTime(double value) {
           
@@ -12756,7 +12506,7 @@ public final class ActivityOuterClass {
           return this;
         }
         /**
-         * <code>double totalDescTime = 30;</code>
+         * <code>double totalDescTime = 26;</code>
          */
         public Builder clearTotalDescTime() {
           
@@ -12767,13 +12517,13 @@ public final class ActivityOuterClass {
 
         private double totalAscDist_ ;
         /**
-         * <code>double totalAscDist = 31;</code>
+         * <code>double totalAscDist = 27;</code>
          */
         public double getTotalAscDist() {
           return totalAscDist_;
         }
         /**
-         * <code>double totalAscDist = 31;</code>
+         * <code>double totalAscDist = 27;</code>
          */
         public Builder setTotalAscDist(double value) {
           
@@ -12782,7 +12532,7 @@ public final class ActivityOuterClass {
           return this;
         }
         /**
-         * <code>double totalAscDist = 31;</code>
+         * <code>double totalAscDist = 27;</code>
          */
         public Builder clearTotalAscDist() {
           
@@ -12793,13 +12543,13 @@ public final class ActivityOuterClass {
 
         private double totalDescDist_ ;
         /**
-         * <code>double totalDescDist = 32;</code>
+         * <code>double totalDescDist = 28;</code>
          */
         public double getTotalDescDist() {
           return totalDescDist_;
         }
         /**
-         * <code>double totalDescDist = 32;</code>
+         * <code>double totalDescDist = 28;</code>
          */
         public Builder setTotalDescDist(double value) {
           
@@ -12808,7 +12558,7 @@ public final class ActivityOuterClass {
           return this;
         }
         /**
-         * <code>double totalDescDist = 32;</code>
+         * <code>double totalDescDist = 28;</code>
          */
         public Builder clearTotalDescDist() {
           
@@ -12817,80 +12567,150 @@ public final class ActivityOuterClass {
           return this;
         }
 
-        private double pauseDistance_ ;
+        private int segmentType_ = 0;
         /**
-         * <code>double pauseDistance = 33;</code>
+         * <code>.Activity.SegmentType segmentType = 29;</code>
          */
-        public double getPauseDistance() {
-          return pauseDistance_;
+        public int getSegmentTypeValue() {
+          return segmentType_;
         }
         /**
-         * <code>double pauseDistance = 33;</code>
+         * <code>.Activity.SegmentType segmentType = 29;</code>
          */
-        public Builder setPauseDistance(double value) {
-          
-          pauseDistance_ = value;
+        public Builder setSegmentTypeValue(int value) {
+          segmentType_ = value;
           onChanged();
           return this;
         }
         /**
-         * <code>double pauseDistance = 33;</code>
+         * <code>.Activity.SegmentType segmentType = 29;</code>
          */
-        public Builder clearPauseDistance() {
-          
-          pauseDistance_ = 0D;
-          onChanged();
-          return this;
-        }
-
-        private int stopCount_ ;
-        /**
-         * <code>int32 stopCount = 34;</code>
-         */
-        public int getStopCount() {
-          return stopCount_;
+        public ski.crunch.activity.model.ActivityOuterClass.Activity.SegmentType getSegmentType() {
+          ski.crunch.activity.model.ActivityOuterClass.Activity.SegmentType result = ski.crunch.activity.model.ActivityOuterClass.Activity.SegmentType.valueOf(segmentType_);
+          return result == null ? ski.crunch.activity.model.ActivityOuterClass.Activity.SegmentType.UNRECOGNIZED : result;
         }
         /**
-         * <code>int32 stopCount = 34;</code>
+         * <code>.Activity.SegmentType segmentType = 29;</code>
          */
-        public Builder setStopCount(int value) {
+        public Builder setSegmentType(ski.crunch.activity.model.ActivityOuterClass.Activity.SegmentType value) {
+          if (value == null) {
+            throw new NullPointerException();
+          }
           
-          stopCount_ = value;
+          segmentType_ = value.getNumber();
           onChanged();
           return this;
         }
         /**
-         * <code>int32 stopCount = 34;</code>
+         * <code>.Activity.SegmentType segmentType = 29;</code>
          */
-        public Builder clearStopCount() {
+        public Builder clearSegmentType() {
           
-          stopCount_ = 0;
+          segmentType_ = 0;
           onChanged();
           return this;
         }
 
-        private int pauseCount_ ;
+        private int maxPositiveVerticalSpeed_ ;
         /**
-         * <code>int32 pauseCount = 35;</code>
+         * <code>int32 maxPositiveVerticalSpeed = 30;</code>
          */
-        public int getPauseCount() {
-          return pauseCount_;
+        public int getMaxPositiveVerticalSpeed() {
+          return maxPositiveVerticalSpeed_;
         }
         /**
-         * <code>int32 pauseCount = 35;</code>
+         * <code>int32 maxPositiveVerticalSpeed = 30;</code>
          */
-        public Builder setPauseCount(int value) {
+        public Builder setMaxPositiveVerticalSpeed(int value) {
           
-          pauseCount_ = value;
+          maxPositiveVerticalSpeed_ = value;
           onChanged();
           return this;
         }
         /**
-         * <code>int32 pauseCount = 35;</code>
+         * <code>int32 maxPositiveVerticalSpeed = 30;</code>
          */
-        public Builder clearPauseCount() {
+        public Builder clearMaxPositiveVerticalSpeed() {
           
-          pauseCount_ = 0;
+          maxPositiveVerticalSpeed_ = 0;
+          onChanged();
+          return this;
+        }
+
+        private int maxNegativeVerticalSpeed_ ;
+        /**
+         * <code>int32 maxNegativeVerticalSpeed = 31;</code>
+         */
+        public int getMaxNegativeVerticalSpeed() {
+          return maxNegativeVerticalSpeed_;
+        }
+        /**
+         * <code>int32 maxNegativeVerticalSpeed = 31;</code>
+         */
+        public Builder setMaxNegativeVerticalSpeed(int value) {
+          
+          maxNegativeVerticalSpeed_ = value;
+          onChanged();
+          return this;
+        }
+        /**
+         * <code>int32 maxNegativeVerticalSpeed = 31;</code>
+         */
+        public Builder clearMaxNegativeVerticalSpeed() {
+          
+          maxNegativeVerticalSpeed_ = 0;
+          onChanged();
+          return this;
+        }
+
+        private int avgPositiveVerticalSpeed_ ;
+        /**
+         * <code>int32 avgPositiveVerticalSpeed = 32;</code>
+         */
+        public int getAvgPositiveVerticalSpeed() {
+          return avgPositiveVerticalSpeed_;
+        }
+        /**
+         * <code>int32 avgPositiveVerticalSpeed = 32;</code>
+         */
+        public Builder setAvgPositiveVerticalSpeed(int value) {
+          
+          avgPositiveVerticalSpeed_ = value;
+          onChanged();
+          return this;
+        }
+        /**
+         * <code>int32 avgPositiveVerticalSpeed = 32;</code>
+         */
+        public Builder clearAvgPositiveVerticalSpeed() {
+          
+          avgPositiveVerticalSpeed_ = 0;
+          onChanged();
+          return this;
+        }
+
+        private int avgNegativeVerticalSpeed_ ;
+        /**
+         * <code>int32 avgNegativeVerticalSpeed = 33;</code>
+         */
+        public int getAvgNegativeVerticalSpeed() {
+          return avgNegativeVerticalSpeed_;
+        }
+        /**
+         * <code>int32 avgNegativeVerticalSpeed = 33;</code>
+         */
+        public Builder setAvgNegativeVerticalSpeed(int value) {
+          
+          avgNegativeVerticalSpeed_ = value;
+          onChanged();
+          return this;
+        }
+        /**
+         * <code>int32 avgNegativeVerticalSpeed = 33;</code>
+         */
+        public Builder clearAvgNegativeVerticalSpeed() {
+          
+          avgNegativeVerticalSpeed_ = 0;
           onChanged();
           return this;
         }
@@ -17991,24 +17811,14 @@ public final class ActivityOuterClass {
           getStopTsBytes();
 
       /**
-       * <code>string startIdx = 3;</code>
+       * <code>int32 startIdx = 3;</code>
        */
-      java.lang.String getStartIdx();
-      /**
-       * <code>string startIdx = 3;</code>
-       */
-      com.google.protobuf.ByteString
-          getStartIdxBytes();
+      int getStartIdx();
 
       /**
-       * <code>string stopIdx = 4;</code>
+       * <code>int32 stopIdx = 4;</code>
        */
-      java.lang.String getStopIdx();
-      /**
-       * <code>string stopIdx = 4;</code>
-       */
-      com.google.protobuf.ByteString
-          getStopIdxBytes();
+      int getStopIdx();
 
       /**
        * <code>.Activity.Summary summary = 5;</code>
@@ -18038,8 +17848,8 @@ public final class ActivityOuterClass {
       private Segment() {
         startTs_ = "";
         stopTs_ = "";
-        startIdx_ = "";
-        stopIdx_ = "";
+        startIdx_ = 0;
+        stopIdx_ = 0;
       }
 
       @java.lang.Override
@@ -18085,16 +17895,14 @@ public final class ActivityOuterClass {
                 stopTs_ = s;
                 break;
               }
-              case 26: {
-                java.lang.String s = input.readStringRequireUtf8();
+              case 24: {
 
-                startIdx_ = s;
+                startIdx_ = input.readInt32();
                 break;
               }
-              case 34: {
-                java.lang.String s = input.readStringRequireUtf8();
+              case 32: {
 
-                stopIdx_ = s;
+                stopIdx_ = input.readInt32();
                 break;
               }
               case 42: {
@@ -18203,71 +18011,21 @@ public final class ActivityOuterClass {
       }
 
       public static final int STARTIDX_FIELD_NUMBER = 3;
-      private volatile java.lang.Object startIdx_;
+      private int startIdx_;
       /**
-       * <code>string startIdx = 3;</code>
+       * <code>int32 startIdx = 3;</code>
        */
-      public java.lang.String getStartIdx() {
-        java.lang.Object ref = startIdx_;
-        if (ref instanceof java.lang.String) {
-          return (java.lang.String) ref;
-        } else {
-          com.google.protobuf.ByteString bs = 
-              (com.google.protobuf.ByteString) ref;
-          java.lang.String s = bs.toStringUtf8();
-          startIdx_ = s;
-          return s;
-        }
-      }
-      /**
-       * <code>string startIdx = 3;</code>
-       */
-      public com.google.protobuf.ByteString
-          getStartIdxBytes() {
-        java.lang.Object ref = startIdx_;
-        if (ref instanceof java.lang.String) {
-          com.google.protobuf.ByteString b = 
-              com.google.protobuf.ByteString.copyFromUtf8(
-                  (java.lang.String) ref);
-          startIdx_ = b;
-          return b;
-        } else {
-          return (com.google.protobuf.ByteString) ref;
-        }
+      public int getStartIdx() {
+        return startIdx_;
       }
 
       public static final int STOPIDX_FIELD_NUMBER = 4;
-      private volatile java.lang.Object stopIdx_;
+      private int stopIdx_;
       /**
-       * <code>string stopIdx = 4;</code>
+       * <code>int32 stopIdx = 4;</code>
        */
-      public java.lang.String getStopIdx() {
-        java.lang.Object ref = stopIdx_;
-        if (ref instanceof java.lang.String) {
-          return (java.lang.String) ref;
-        } else {
-          com.google.protobuf.ByteString bs = 
-              (com.google.protobuf.ByteString) ref;
-          java.lang.String s = bs.toStringUtf8();
-          stopIdx_ = s;
-          return s;
-        }
-      }
-      /**
-       * <code>string stopIdx = 4;</code>
-       */
-      public com.google.protobuf.ByteString
-          getStopIdxBytes() {
-        java.lang.Object ref = stopIdx_;
-        if (ref instanceof java.lang.String) {
-          com.google.protobuf.ByteString b = 
-              com.google.protobuf.ByteString.copyFromUtf8(
-                  (java.lang.String) ref);
-          stopIdx_ = b;
-          return b;
-        } else {
-          return (com.google.protobuf.ByteString) ref;
-        }
+      public int getStopIdx() {
+        return stopIdx_;
       }
 
       public static final int SUMMARY_FIELD_NUMBER = 5;
@@ -18309,11 +18067,11 @@ public final class ActivityOuterClass {
         if (!getStopTsBytes().isEmpty()) {
           com.google.protobuf.GeneratedMessageV3.writeString(output, 2, stopTs_);
         }
-        if (!getStartIdxBytes().isEmpty()) {
-          com.google.protobuf.GeneratedMessageV3.writeString(output, 3, startIdx_);
+        if (startIdx_ != 0) {
+          output.writeInt32(3, startIdx_);
         }
-        if (!getStopIdxBytes().isEmpty()) {
-          com.google.protobuf.GeneratedMessageV3.writeString(output, 4, stopIdx_);
+        if (stopIdx_ != 0) {
+          output.writeInt32(4, stopIdx_);
         }
         if (summary_ != null) {
           output.writeMessage(5, getSummary());
@@ -18332,11 +18090,13 @@ public final class ActivityOuterClass {
         if (!getStopTsBytes().isEmpty()) {
           size += com.google.protobuf.GeneratedMessageV3.computeStringSize(2, stopTs_);
         }
-        if (!getStartIdxBytes().isEmpty()) {
-          size += com.google.protobuf.GeneratedMessageV3.computeStringSize(3, startIdx_);
+        if (startIdx_ != 0) {
+          size += com.google.protobuf.CodedOutputStream
+            .computeInt32Size(3, startIdx_);
         }
-        if (!getStopIdxBytes().isEmpty()) {
-          size += com.google.protobuf.GeneratedMessageV3.computeStringSize(4, stopIdx_);
+        if (stopIdx_ != 0) {
+          size += com.google.protobuf.CodedOutputStream
+            .computeInt32Size(4, stopIdx_);
         }
         if (summary_ != null) {
           size += com.google.protobuf.CodedOutputStream
@@ -18362,10 +18122,10 @@ public final class ActivityOuterClass {
             .equals(other.getStartTs());
         result = result && getStopTs()
             .equals(other.getStopTs());
-        result = result && getStartIdx()
-            .equals(other.getStartIdx());
-        result = result && getStopIdx()
-            .equals(other.getStopIdx());
+        result = result && (getStartIdx()
+            == other.getStartIdx());
+        result = result && (getStopIdx()
+            == other.getStopIdx());
         result = result && (hasSummary() == other.hasSummary());
         if (hasSummary()) {
           result = result && getSummary()
@@ -18387,9 +18147,9 @@ public final class ActivityOuterClass {
         hash = (37 * hash) + STOPTS_FIELD_NUMBER;
         hash = (53 * hash) + getStopTs().hashCode();
         hash = (37 * hash) + STARTIDX_FIELD_NUMBER;
-        hash = (53 * hash) + getStartIdx().hashCode();
+        hash = (53 * hash) + getStartIdx();
         hash = (37 * hash) + STOPIDX_FIELD_NUMBER;
-        hash = (53 * hash) + getStopIdx().hashCode();
+        hash = (53 * hash) + getStopIdx();
         if (hasSummary()) {
           hash = (37 * hash) + SUMMARY_FIELD_NUMBER;
           hash = (53 * hash) + getSummary().hashCode();
@@ -18527,9 +18287,9 @@ public final class ActivityOuterClass {
 
           stopTs_ = "";
 
-          startIdx_ = "";
+          startIdx_ = 0;
 
-          stopIdx_ = "";
+          stopIdx_ = 0;
 
           if (summaryBuilder_ == null) {
             summary_ = null;
@@ -18617,13 +18377,11 @@ public final class ActivityOuterClass {
             stopTs_ = other.stopTs_;
             onChanged();
           }
-          if (!other.getStartIdx().isEmpty()) {
-            startIdx_ = other.startIdx_;
-            onChanged();
+          if (other.getStartIdx() != 0) {
+            setStartIdx(other.getStartIdx());
           }
-          if (!other.getStopIdx().isEmpty()) {
-            stopIdx_ = other.stopIdx_;
-            onChanged();
+          if (other.getStopIdx() != 0) {
+            setStopIdx(other.getStopIdx());
           }
           if (other.hasSummary()) {
             mergeSummary(other.getSummary());
@@ -18793,140 +18551,54 @@ public final class ActivityOuterClass {
           return this;
         }
 
-        private java.lang.Object startIdx_ = "";
+        private int startIdx_ ;
         /**
-         * <code>string startIdx = 3;</code>
+         * <code>int32 startIdx = 3;</code>
          */
-        public java.lang.String getStartIdx() {
-          java.lang.Object ref = startIdx_;
-          if (!(ref instanceof java.lang.String)) {
-            com.google.protobuf.ByteString bs =
-                (com.google.protobuf.ByteString) ref;
-            java.lang.String s = bs.toStringUtf8();
-            startIdx_ = s;
-            return s;
-          } else {
-            return (java.lang.String) ref;
-          }
+        public int getStartIdx() {
+          return startIdx_;
         }
         /**
-         * <code>string startIdx = 3;</code>
+         * <code>int32 startIdx = 3;</code>
          */
-        public com.google.protobuf.ByteString
-            getStartIdxBytes() {
-          java.lang.Object ref = startIdx_;
-          if (ref instanceof String) {
-            com.google.protobuf.ByteString b = 
-                com.google.protobuf.ByteString.copyFromUtf8(
-                    (java.lang.String) ref);
-            startIdx_ = b;
-            return b;
-          } else {
-            return (com.google.protobuf.ByteString) ref;
-          }
-        }
-        /**
-         * <code>string startIdx = 3;</code>
-         */
-        public Builder setStartIdx(
-            java.lang.String value) {
-          if (value == null) {
-    throw new NullPointerException();
-  }
-  
+        public Builder setStartIdx(int value) {
+          
           startIdx_ = value;
           onChanged();
           return this;
         }
         /**
-         * <code>string startIdx = 3;</code>
+         * <code>int32 startIdx = 3;</code>
          */
         public Builder clearStartIdx() {
           
-          startIdx_ = getDefaultInstance().getStartIdx();
-          onChanged();
-          return this;
-        }
-        /**
-         * <code>string startIdx = 3;</code>
-         */
-        public Builder setStartIdxBytes(
-            com.google.protobuf.ByteString value) {
-          if (value == null) {
-    throw new NullPointerException();
-  }
-  checkByteStringIsUtf8(value);
-          
-          startIdx_ = value;
+          startIdx_ = 0;
           onChanged();
           return this;
         }
 
-        private java.lang.Object stopIdx_ = "";
+        private int stopIdx_ ;
         /**
-         * <code>string stopIdx = 4;</code>
+         * <code>int32 stopIdx = 4;</code>
          */
-        public java.lang.String getStopIdx() {
-          java.lang.Object ref = stopIdx_;
-          if (!(ref instanceof java.lang.String)) {
-            com.google.protobuf.ByteString bs =
-                (com.google.protobuf.ByteString) ref;
-            java.lang.String s = bs.toStringUtf8();
-            stopIdx_ = s;
-            return s;
-          } else {
-            return (java.lang.String) ref;
-          }
+        public int getStopIdx() {
+          return stopIdx_;
         }
         /**
-         * <code>string stopIdx = 4;</code>
+         * <code>int32 stopIdx = 4;</code>
          */
-        public com.google.protobuf.ByteString
-            getStopIdxBytes() {
-          java.lang.Object ref = stopIdx_;
-          if (ref instanceof String) {
-            com.google.protobuf.ByteString b = 
-                com.google.protobuf.ByteString.copyFromUtf8(
-                    (java.lang.String) ref);
-            stopIdx_ = b;
-            return b;
-          } else {
-            return (com.google.protobuf.ByteString) ref;
-          }
-        }
-        /**
-         * <code>string stopIdx = 4;</code>
-         */
-        public Builder setStopIdx(
-            java.lang.String value) {
-          if (value == null) {
-    throw new NullPointerException();
-  }
-  
+        public Builder setStopIdx(int value) {
+          
           stopIdx_ = value;
           onChanged();
           return this;
         }
         /**
-         * <code>string stopIdx = 4;</code>
+         * <code>int32 stopIdx = 4;</code>
          */
         public Builder clearStopIdx() {
           
-          stopIdx_ = getDefaultInstance().getStopIdx();
-          onChanged();
-          return this;
-        }
-        /**
-         * <code>string stopIdx = 4;</code>
-         */
-        public Builder setStopIdxBytes(
-            com.google.protobuf.ByteString value) {
-          if (value == null) {
-    throw new NullPointerException();
-  }
-  checkByteStringIsUtf8(value);
-          
-          stopIdx_ = value;
+          stopIdx_ = 0;
           onChanged();
           return this;
         }
@@ -19402,6 +19074,27 @@ public final class ActivityOuterClass {
       return stops_.get(index);
     }
 
+    public static final int ACTIVITYSEGMENT_FIELD_NUMBER = 11;
+    private ski.crunch.activity.model.ActivityOuterClass.Activity.Segment activitySegment_;
+    /**
+     * <code>.Activity.Segment activitySegment = 11;</code>
+     */
+    public boolean hasActivitySegment() {
+      return activitySegment_ != null;
+    }
+    /**
+     * <code>.Activity.Segment activitySegment = 11;</code>
+     */
+    public ski.crunch.activity.model.ActivityOuterClass.Activity.Segment getActivitySegment() {
+      return activitySegment_ == null ? ski.crunch.activity.model.ActivityOuterClass.Activity.Segment.getDefaultInstance() : activitySegment_;
+    }
+    /**
+     * <code>.Activity.Segment activitySegment = 11;</code>
+     */
+    public ski.crunch.activity.model.ActivityOuterClass.Activity.SegmentOrBuilder getActivitySegmentOrBuilder() {
+      return getActivitySegment();
+    }
+
     private byte memoizedIsInitialized = -1;
     public final boolean isInitialized() {
       byte isInitialized = memoizedIsInitialized;
@@ -19443,6 +19136,9 @@ public final class ActivityOuterClass {
       }
       for (int i = 0; i < stops_.size(); i++) {
         output.writeMessage(10, stops_.get(i));
+      }
+      if (activitySegment_ != null) {
+        output.writeMessage(11, getActivitySegment());
       }
       unknownFields.writeTo(output);
     }
@@ -19490,6 +19186,10 @@ public final class ActivityOuterClass {
       for (int i = 0; i < stops_.size(); i++) {
         size += com.google.protobuf.CodedOutputStream
           .computeMessageSize(10, stops_.get(i));
+      }
+      if (activitySegment_ != null) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeMessageSize(11, getActivitySegment());
       }
       size += unknownFields.getSerializedSize();
       memoizedSize = size;
@@ -19539,6 +19239,11 @@ public final class ActivityOuterClass {
           .equals(other.getLapsList());
       result = result && getStopsList()
           .equals(other.getStopsList());
+      result = result && (hasActivitySegment() == other.hasActivitySegment());
+      if (hasActivitySegment()) {
+        result = result && getActivitySegment()
+            .equals(other.getActivitySegment());
+      }
       result = result && unknownFields.equals(other.unknownFields);
       return result;
     }
@@ -19587,6 +19292,10 @@ public final class ActivityOuterClass {
       if (getStopsCount() > 0) {
         hash = (37 * hash) + STOPS_FIELD_NUMBER;
         hash = (53 * hash) + getStopsList().hashCode();
+      }
+      if (hasActivitySegment()) {
+        hash = (37 * hash) + ACTIVITYSEGMENT_FIELD_NUMBER;
+        hash = (53 * hash) + getActivitySegment().hashCode();
       }
       hash = (29 * hash) + unknownFields.hashCode();
       memoizedHashCode = hash;
@@ -19778,6 +19487,12 @@ public final class ActivityOuterClass {
         } else {
           stopsBuilder_.clear();
         }
+        if (activitySegmentBuilder_ == null) {
+          activitySegment_ = null;
+        } else {
+          activitySegment_ = null;
+          activitySegmentBuilder_ = null;
+        }
         return this;
       }
 
@@ -19867,6 +19582,11 @@ public final class ActivityOuterClass {
           result.stops_ = stops_;
         } else {
           result.stops_ = stopsBuilder_.build();
+        }
+        if (activitySegmentBuilder_ == null) {
+          result.activitySegment_ = activitySegment_;
+        } else {
+          result.activitySegment_ = activitySegmentBuilder_.build();
         }
         result.bitField0_ = to_bitField0_;
         onBuilt();
@@ -20055,6 +19775,9 @@ public final class ActivityOuterClass {
               stopsBuilder_.addAllMessages(other.stops_);
             }
           }
+        }
+        if (other.hasActivitySegment()) {
+          mergeActivitySegment(other.getActivitySegment());
         }
         this.mergeUnknownFields(other.unknownFields);
         onChanged();
@@ -21856,6 +21579,123 @@ public final class ActivityOuterClass {
         }
         return stopsBuilder_;
       }
+
+      private ski.crunch.activity.model.ActivityOuterClass.Activity.Segment activitySegment_ = null;
+      private com.google.protobuf.SingleFieldBuilderV3<
+          ski.crunch.activity.model.ActivityOuterClass.Activity.Segment, ski.crunch.activity.model.ActivityOuterClass.Activity.Segment.Builder, ski.crunch.activity.model.ActivityOuterClass.Activity.SegmentOrBuilder> activitySegmentBuilder_;
+      /**
+       * <code>.Activity.Segment activitySegment = 11;</code>
+       */
+      public boolean hasActivitySegment() {
+        return activitySegmentBuilder_ != null || activitySegment_ != null;
+      }
+      /**
+       * <code>.Activity.Segment activitySegment = 11;</code>
+       */
+      public ski.crunch.activity.model.ActivityOuterClass.Activity.Segment getActivitySegment() {
+        if (activitySegmentBuilder_ == null) {
+          return activitySegment_ == null ? ski.crunch.activity.model.ActivityOuterClass.Activity.Segment.getDefaultInstance() : activitySegment_;
+        } else {
+          return activitySegmentBuilder_.getMessage();
+        }
+      }
+      /**
+       * <code>.Activity.Segment activitySegment = 11;</code>
+       */
+      public Builder setActivitySegment(ski.crunch.activity.model.ActivityOuterClass.Activity.Segment value) {
+        if (activitySegmentBuilder_ == null) {
+          if (value == null) {
+            throw new NullPointerException();
+          }
+          activitySegment_ = value;
+          onChanged();
+        } else {
+          activitySegmentBuilder_.setMessage(value);
+        }
+
+        return this;
+      }
+      /**
+       * <code>.Activity.Segment activitySegment = 11;</code>
+       */
+      public Builder setActivitySegment(
+          ski.crunch.activity.model.ActivityOuterClass.Activity.Segment.Builder builderForValue) {
+        if (activitySegmentBuilder_ == null) {
+          activitySegment_ = builderForValue.build();
+          onChanged();
+        } else {
+          activitySegmentBuilder_.setMessage(builderForValue.build());
+        }
+
+        return this;
+      }
+      /**
+       * <code>.Activity.Segment activitySegment = 11;</code>
+       */
+      public Builder mergeActivitySegment(ski.crunch.activity.model.ActivityOuterClass.Activity.Segment value) {
+        if (activitySegmentBuilder_ == null) {
+          if (activitySegment_ != null) {
+            activitySegment_ =
+              ski.crunch.activity.model.ActivityOuterClass.Activity.Segment.newBuilder(activitySegment_).mergeFrom(value).buildPartial();
+          } else {
+            activitySegment_ = value;
+          }
+          onChanged();
+        } else {
+          activitySegmentBuilder_.mergeFrom(value);
+        }
+
+        return this;
+      }
+      /**
+       * <code>.Activity.Segment activitySegment = 11;</code>
+       */
+      public Builder clearActivitySegment() {
+        if (activitySegmentBuilder_ == null) {
+          activitySegment_ = null;
+          onChanged();
+        } else {
+          activitySegment_ = null;
+          activitySegmentBuilder_ = null;
+        }
+
+        return this;
+      }
+      /**
+       * <code>.Activity.Segment activitySegment = 11;</code>
+       */
+      public ski.crunch.activity.model.ActivityOuterClass.Activity.Segment.Builder getActivitySegmentBuilder() {
+        
+        onChanged();
+        return getActivitySegmentFieldBuilder().getBuilder();
+      }
+      /**
+       * <code>.Activity.Segment activitySegment = 11;</code>
+       */
+      public ski.crunch.activity.model.ActivityOuterClass.Activity.SegmentOrBuilder getActivitySegmentOrBuilder() {
+        if (activitySegmentBuilder_ != null) {
+          return activitySegmentBuilder_.getMessageOrBuilder();
+        } else {
+          return activitySegment_ == null ?
+              ski.crunch.activity.model.ActivityOuterClass.Activity.Segment.getDefaultInstance() : activitySegment_;
+        }
+      }
+      /**
+       * <code>.Activity.Segment activitySegment = 11;</code>
+       */
+      private com.google.protobuf.SingleFieldBuilderV3<
+          ski.crunch.activity.model.ActivityOuterClass.Activity.Segment, ski.crunch.activity.model.ActivityOuterClass.Activity.Segment.Builder, ski.crunch.activity.model.ActivityOuterClass.Activity.SegmentOrBuilder> 
+          getActivitySegmentFieldBuilder() {
+        if (activitySegmentBuilder_ == null) {
+          activitySegmentBuilder_ = new com.google.protobuf.SingleFieldBuilderV3<
+              ski.crunch.activity.model.ActivityOuterClass.Activity.Segment, ski.crunch.activity.model.ActivityOuterClass.Activity.Segment.Builder, ski.crunch.activity.model.ActivityOuterClass.Activity.SegmentOrBuilder>(
+                  getActivitySegment(),
+                  getParentForChildren(),
+                  isClean());
+          activitySegment_ = null;
+        }
+        return activitySegmentBuilder_;
+      }
       public final Builder setUnknownFields(
           final com.google.protobuf.UnknownFieldSet unknownFields) {
         return super.setUnknownFieldsProto3(unknownFields);
@@ -21946,11 +21786,6 @@ public final class ActivityOuterClass {
     com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
       internal_static_Activity_Summary_HasAttributeMapEntry_fieldAccessorTable;
   private static final com.google.protobuf.Descriptors.Descriptor
-    internal_static_Activity_Summary_HrvsEntry_descriptor;
-  private static final 
-    com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
-      internal_static_Activity_Summary_HrvsEntry_fieldAccessorTable;
-  private static final com.google.protobuf.Descriptors.Descriptor
     internal_static_Activity_Session_descriptor;
   private static final 
     com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
@@ -21984,7 +21819,7 @@ public final class ActivityOuterClass {
       descriptor;
   static {
     java.lang.String[] descriptorData = {
-      "\n\016Activity.proto\"\2021\n\010Activity\022\034\n\004meta\030\001 " +
+      "\n\016Activity.proto\"\3641\n\010Activity\022\034\n\004meta\030\001 " +
       "\001(\0132\016.Activity.Meta\022$\n\010userData\030\002 \001(\0132\022." +
       "Activity.UserData\022\"\n\007summary\030\003 \001(\0132\021.Act" +
       "ivity.Summary\022 \n\006values\030\004 \001(\0132\020.Activity" +
@@ -21992,157 +21827,160 @@ public final class ActivityOuterClass {
       "ent\022\n\n\002id\030\006 \001(\t\022#\n\010sessions\030\007 \003(\0132\021.Acti" +
       "vity.Session\022!\n\006pauses\030\010 \003(\0132\021.Activity." +
       "Segment\022\037\n\004laps\030\t \003(\0132\021.Activity.Segment" +
-      "\022 \n\005stops\030\n \003(\0132\021.Activity.Segment\032\330\001\n\004M" +
-      "eta\022\021\n\tcreatedTs\030\001 \001(\t\022/\n\014manufacturer\030\002" +
-      " \001(\0162\031.Activity.FitManufacturer\022\017\n\007produ" +
-      "ct\030\003 \001(\005\022\017\n\007version\030\004 \001(\001\022\016\n\006source\030\005 \001(" +
-      "\t\022\020\n\010uploadTs\030\006 \001(\t\022$\n\010location\030\t \001(\0132\022." +
-      "Activity.Location\022\"\n\007weather\030\n \001(\0132\021.Act" +
-      "ivity.Weather\032M\n\010UserData\022\017\n\007feeling\030\001 \001" +
-      "(\005\022\r\n\005notes\030\002 \001(\t\022\014\n\004tags\030\003 \003(\t\022\023\n\013userW" +
-      "eather\030\004 \001(\t\032\343\002\n\007Weather\022\023\n\013temperature\030" +
-      "\001 \001(\001\022\033\n\023apparentTemperature\030\002 \001(\001\022\021\n\twi" +
-      "ndSpeed\030\003 \001(\002\022\025\n\rwindDirection\030\004 \001(\005\022\022\n\n" +
-      "cloudCover\030\005 \001(\002\022\020\n\010pressure\030\006 \001(\002\022(\n\npr" +
-      "ecipType\030\007 \001(\0162\024.Activity.PrecipType\022\027\n\017" +
-      "precipIntensity\030\010 \001(\001\022\032\n\022precipAccumulat" +
-      "ion\030\t \001(\001\022\022\n\nvisibility\030\n \001(\002\022#\n\004icon\030\013 " +
-      "\001(\0162\025.Activity.WeatherIcon\022\020\n\010humidity\030\014" +
-      " \001(\002\022\021\n\tsnowDepth\030\r \001(\002\022\031\n\021snowInPast24H" +
-      "ours\030\016 \001(\002\032\340\001\n\010Location\022\013\n\003lat\030\001 \001(\001\022\013\n\003" +
-      "lon\030\002 \001(\001\022(\n\006source\030\003 \001(\0162\030.Activity.Loc" +
-      "ationSource\022\020\n\010address1\030\004 \001(\t\022\020\n\010address" +
-      "2\030\005 \001(\t\022\014\n\004city\030\006 \001(\t\022\016\n\006county\030\007 \001(\t\022\014\n" +
-      "\004prov\030\010 \001(\t\022\017\n\007country\030\t \001(\t\022\013\n\003zip\030\n \001(" +
-      "\t\022\"\n\006fences\030\013 \003(\0132\022.Activity.Geofence\032$\n" +
-      "\010Geofence\022\n\n\002id\030\001 \001(\005\022\014\n\004name\030\002 \001(\t\032\343\006\n\007" +
-      "Summary\022?\n\017hasAttributeMap\030\001 \003(\0132&.Activ" +
-      "ity.Summary.HasAttributeMapEntry\022\017\n\007star" +
-      "tTs\030\002 \001(\t\022\r\n\005endTs\030\003 \001(\t\022\024\n\014totalElapsed" +
-      "\030\004 \001(\001\022\022\n\ntotalTimer\030\005 \001(\001\022\023\n\013totalMovin" +
-      "g\030\006 \001(\001\022\024\n\014totalStopped\030\007 \001(\001\022\023\n\013totalPa" +
-      "used\030\010 \001(\001\022\023\n\013totalAscent\030\t \001(\001\022\024\n\014total" +
-      "Descent\030\n \001(\001\022\025\n\rtotalDistance\030\013 \001(\001\022\025\n\r" +
-      "totalCalories\030\014 \001(\001\022\r\n\005avgHr\030\r \001(\005\022\r\n\005ma" +
-      "xHr\030\016 \001(\005\022\r\n\005minHr\030\017 \001(\005\022\022\n\navgCadence\030\020" +
-      " \001(\005\022\022\n\nmaxCadence\030\021 \001(\005\022\022\n\nminCadence\030\022" +
-      " \001(\005\022\017\n\007avgTemp\030\023 \001(\005\022\017\n\007maxTemp\030\024 \001(\005\022\017" +
-      "\n\007minTemp\030\025 \001(\005\022\020\n\010avgSpeed\030\026 \001(\001\022\020\n\010max" +
-      "Speed\030\027 \001(\001\022\023\n\013minGradient\030\030 \001(\005\022\023\n\013maxG" +
-      "radient\030\031 \001(\005\022\023\n\013avgGradient\030\032 \001(\005\022\r\n\005nL" +
-      "aps\030\033 \001(\005\022)\n\004hrvs\030\034 \003(\0132\033.Activity.Summa" +
-      "ry.HrvsEntry\022\024\n\014totalAscTime\030\035 \001(\001\022\025\n\rto" +
-      "talDescTime\030\036 \001(\001\022\024\n\014totalAscDist\030\037 \001(\001\022" +
-      "\025\n\rtotalDescDist\030  \001(\001\022\025\n\rpauseDistance\030" +
-      "! \001(\001\022\021\n\tstopCount\030\" \001(\005\022\022\n\npauseCount\030#" +
-      " \001(\005\0326\n\024HasAttributeMapEntry\022\013\n\003key\030\001 \001(" +
-      "\t\022\r\n\005value\030\002 \001(\010:\0028\001\032+\n\tHrvsEntry\022\013\n\003key" +
-      "\030\001 \001(\t\022\r\n\005value\030\002 \001(\001:\0028\001\032\227\001\n\007Session\022\036\n" +
-      "\005sport\030\001 \001(\0162\017.Activity.Sport\022$\n\010subSpor" +
-      "t\030\002 \001(\0162\022.Activity.SubSport\022\"\n\007segment\030\003" +
-      " \001(\0132\021.Activity.Segment\022\"\n\007summary\030\004 \001(\013" +
-      "2\021.Activity.Summary\032\256\002\n\006Values\022\n\n\002ts\030\001 \003" +
-      "(\t\022\n\n\002hr\030\002 \003(\005\022\013\n\003lat\030\003 \003(\001\022\013\n\003lon\030\004 \003(\001" +
-      "\022\r\n\005speed\030\005 \003(\001\022\020\n\010altitude\030\006 \003(\001\022\r\n\005gra" +
-      "de\030\007 \003(\001\022\020\n\010distance\030\010 \003(\001\022\023\n\013temperatur" +
-      "e\030\t \003(\001\022\016\n\006moving\030\n \003(\010\022\017\n\007cadence\030\013 \003(\005" +
-      "\022(\n\004hrvs\030\014 \003(\0132\032.Activity.Values.HrvsEnt" +
-      "ry\022\013\n\003hrv\030\r \003(\001\022\026\n\016vertical_speed\030\016 \003(\001\032" +
-      "+\n\tHrvsEntry\022\013\n\003key\030\001 \001(\t\022\r\n\005value\030\002 \001(\001" +
-      ":\0028\001\032{\n\010FitEvent\022\r\n\005index\030\001 \001(\005\022\n\n\002ts\030\002 " +
-      "\001(\t\022\r\n\005event\030\003 \001(\t\022&\n\teventType\030\004 \001(\0162\023." +
-      "Activity.EventType\022\014\n\004info\030\005 \001(\t\022\017\n\007trig" +
-      "ger\030\006 \001(\t\032q\n\007Segment\022\017\n\007startTs\030\001 \001(\t\022\016\n" +
-      "\006stopTs\030\002 \001(\t\022\020\n\010startIdx\030\003 \001(\t\022\017\n\007stopI" +
-      "dx\030\004 \001(\t\022\"\n\007summary\030\005 \001(\0132\021.Activity.Sum" +
-      "mary\"+\n\nPrecipType\022\010\n\004RAIN\020\000\022\t\n\005SLEET\020\001\022" +
-      "\010\n\004SNOW\020\002\"\252\001\n\013WeatherIcon\022\r\n\tCLEAR_DAY\020\000" +
-      "\022\017\n\013CLEAR_NIGHT\020\001\022\r\n\tRAIN_ICON\020\002\022\r\n\tSNOW" +
-      "_ICON\020\003\022\016\n\nSLEET_ICON\020\004\022\010\n\004WIND\020\005\022\007\n\003FOG" +
-      "\020\006\022\n\n\006CLOUDY\020\007\022\025\n\021PARTLY_CLOUDY_DAY\020\010\022\027\n" +
-      "\023PARTLY_CLOUDY_NIGHT\020\t\"&\n\016LocationSource" +
-      "\022\n\n\006GOOGLE\020\000\022\010\n\004HERE\020\002\"\337\017\n\017FitManufactur" +
-      "er\022\013\n\007UNKNOWN\020\000\022\n\n\006GARMIN\020\001\022\026\n\022GARMIN_FR" +
-      "405_ANTFS\020\002\022\n\n\006ZEPHYR\020\003\022\n\n\006DAYTON\020\004\022\007\n\003I" +
-      "DT\020\005\022\007\n\003SRM\020\006\022\t\n\005QUARQ\020\007\022\t\n\005IBIKE\020\010\022\t\n\005S" +
-      "ARIS\020\t\022\014\n\010SPARK_HK\020\n\022\n\n\006TANITA\020\013\022\014\n\010ECHO" +
-      "WELL\020\014\022\022\n\016DYNASTREAM_OEM\020\r\022\014\n\010NAUTILUS\020\016" +
-      "\022\016\n\nDYNASTREAM\020\017\022\t\n\005TIMEX\020\020\022\r\n\tMETRIGEAR" +
-      "\020\021\022\t\n\005XELIC\020\022\022\n\n\006BEURER\020\023\022\017\n\013CARDIOSPORT" +
-      "\020\024\022\013\n\007A_AND_D\020\025\022\007\n\003HMM\020\026\022\n\n\006SUUNTO\020\027\022\024\n\020" +
-      "THITA_ELEKTRONIK\020\030\022\n\n\006GPULSE\020\031\022\020\n\014CLEAN_" +
-      "MOBILE\020\032\022\017\n\013PEDAL_BRAIN\020\033\022\r\n\tPEAKSWARE\020\034" +
-      "\022\013\n\007SAXONAR\020\035\022\022\n\016LEMOND_FITNESS\020\036\022\n\n\006DEX" +
-      "COM\020\037\022\021\n\rWAHOO_FITNESS\020 \022\022\n\016OCTANE_FITNE" +
-      "SS\020!\022\020\n\014ARCHINOETICS\020\"\022\020\n\014THE_HURT_BOX\020#" +
-      "\022\023\n\017CITIZEN_SYSTEMS\020$\022\014\n\010MAGELLAN\020%\022\n\n\006O" +
-      "SYNCE\020&\022\t\n\005HOLUX\020\'\022\014\n\010CONCEPT2\020(\022\022\n\016ONE_" +
-      "GIANT_LEAP\020*\022\016\n\nACE_SENSOR\020+\022\021\n\rBRIM_BRO" +
-      "THERS\020,\022\n\n\006XPLOVA\020-\022\026\n\022PERCEPTION_DIGITA" +
-      "L\020.\022\016\n\nBF1SYSTEMS\020/\022\013\n\007PIONEER\0200\022\013\n\007SPAN" +
-      "TEC\0201\022\016\n\nMETALOGICS\0202\022\013\n\007I4IIIIS\0203\022\017\n\013SE" +
-      "IKO_EPSON\0204\022\023\n\017SEIKO_EPSON_OEM\0205\022\017\n\013IFOR" +
-      "_POWELL\0206\022\022\n\016MAXWELL_GUIDER\0207\022\r\n\tSTAR_TR" +
-      "AC\0208\022\r\n\tBREAKAWAY\0209\022\032\n\026ALATECH_TECHNOLOG" +
-      "Y_LTD\020:\022\031\n\025MIO_TECHNOLOGY_EUROPE\020;\022\t\n\005RO" +
-      "TOR\020<\022\014\n\010GEONAUTE\020=\022\013\n\007ID_BIKE\020>\022\017\n\013SPEC" +
-      "IALIZED\020?\022\010\n\004WTEK\020@\022\030\n\024PHYSICAL_ENTERPRI" +
-      "SES\020A\022\032\n\026NORTH_POLE_ENGINEERING\020B\022\t\n\005BKO" +
-      "OL\020C\022\n\n\006CATEYE\020D\022\022\n\016STAGES_CYCLING\020E\022\016\n\n" +
-      "SIGMASPORT\020F\022\n\n\006TOMTOM\020G\022\r\n\tPERIPEDAL\020H\022" +
-      "\014\n\010WATTBIKE\020I\022\010\n\004MOXY\020L\022\016\n\nCICLOSPORT\020M\022" +
-      "\r\n\tPOWERBAHN\020N\022\026\n\022ACORN_PROJECTS_APS\020O\022\014" +
-      "\n\010LIFEBEAM\020P\022\r\n\tBONTRAGER\020Q\022\n\n\006WELLGO\020R\022" +
-      "\013\n\007SCOSCHE\020S\022\n\n\006MAGURA\020T\022\013\n\007WOODWAY\020U\022\t\n" +
-      "\005ELITE\020V\022\025\n\021NIELSEN_KELLERMAN\020W\022\013\n\007DK_CI" +
-      "TY\020X\022\010\n\004TACX\020Y\022\030\n\024DIRECTION_TECHNOLOGY\020Z" +
-      "\022\014\n\010MAGTONIC\020[\022\021\n\rONEPARTCARBON\020\\\022\034\n\030INS" +
-      "IDE_RIDE_TECHNOLOGIES\020]\022\023\n\017SOUND_OF_MOTI" +
-      "ON\020^\022\t\n\005STRYD\020_\022\007\n\003ICG\020`\022\013\n\007MIPULSE\020a\022\021\n" +
-      "\rBSX_ATHLETICS\020b\022\010\n\004LOOK\020c\022\022\n\016CAMPAGNOLO" +
-      "_SRL\020d\022\023\n\017BODY_BIKE_SMART\020e\022\017\n\013PRAXISWOR" +
-      "KS\020f\022\025\n\021LIMITS_TECHNOLOGY\020g\022\030\n\024TOPACTION" +
-      "_TECHNOLOGY\020h\022\014\n\010COSINUSS\020i\022\013\n\007FITCARE\020j" +
-      "\022\n\n\006MAGENE\020k\022\032\n\026GIANT_MANUFACTURING_CO\020l" +
-      "\022\016\n\nTIGRASPORT\020m\022\020\n\013DEVELOPMENT\020\377\001\022\022\n\rHE" +
-      "ALTHANDLIFE\020\201\002\022\013\n\006LEZYNE\020\202\002\022\020\n\013SCRIBE_LA" +
-      "BS\020\203\002\022\n\n\005ZWIFT\020\204\002\022\014\n\007WATTEAM\020\205\002\022\n\n\005RECON" +
-      "\020\206\002\022\027\n\022FAVERO_ELECTRONICS\020\207\002\022\r\n\010DYNOVELO" +
-      "\020\210\002\022\013\n\006STRAVA\020\211\002\022\013\n\006PRECOR\020\212\002\022\013\n\006BRYTON\020" +
-      "\213\002\022\t\n\004SRAM\020\214\002\022\013\n\006NAVMAN\020\215\002\022\t\n\004COBI\020\216\002\022\n\n" +
-      "\005SPIVI\020\217\002\022\021\n\014MIO_MAGELLAN\020\220\002\022\016\n\tEVESPORT" +
-      "S\020\221\002\022\025\n\020SENSITIVUS_GAUGE\020\222\002\022\013\n\006PODOON\020\223\002" +
-      "\"\316\001\n\tEventType\022\t\n\005START\020\000\022\010\n\004STOP\020\001\022\033\n\027C" +
-      "ONSECUTIVE_DEPRECIATED\020\002\022\n\n\006MARKER\020\003\022\014\n\010" +
-      "STOP_ALL\020\004\022\025\n\021BEGIN_DEPRECIATED\020\005\022\023\n\017END" +
-      "_DEPRECIATED\020\006\022\027\n\023END_ALL_DEPRECIATED\020\007\022" +
-      "\020\n\014STOP_DISABLE\020\010\022\024\n\020STOP_DISABLE_ALL\020\t\022" +
-      "\010\n\004NULL\020\n\"\336\002\n\005Sport\022\013\n\007GENERIC\020\000\022\013\n\007RUNN" +
-      "ING\020\001\022\013\n\007CYCLING\020\002\022\016\n\nTRANSITION\020\003\022\025\n\021FI" +
-      "TNESS_EQUIPMENT\020\004\022\014\n\010SWIMMING\020\005\022\016\n\nBASKE" +
-      "TBALL\020\006\022\n\n\006SOCCER\020\007\022\n\n\006TENNIS\020\010\022\025\n\021AMERI" +
-      "CAN_FOOTBALL\020\t\022\014\n\010TRAINING\020\n\022\013\n\007WALKING\020" +
-      "\013\022\030\n\024CROSS_COUNTRY_SKIING\020\014\022\021\n\rALPINE_SK" +
-      "IING\020\r\022\020\n\014SNOWBOARDING\020\016\022\n\n\006ROWING\020\017\022\022\n\016" +
-      "MOUNTAINEERING\020\020\022\n\n\006HIKING\020\021\022\016\n\nMULTISPO" +
-      "RT\020\022\022\014\n\010PADDLING\020\023\022\010\n\003ALL\020\376\001\022\014\n\007INVALID\020" +
-      "\377\001\"\340\004\n\010SubSport\022\024\n\020GENERIC_SUBSPORT\020\000\022\r\n" +
-      "\tTREADMILL\020\001\022\n\n\006STREET\020\002\022\t\n\005TRAIL\020\003\022\t\n\005T" +
-      "RACK\020\004\022\010\n\004SPIN\020\005\022\022\n\016INDOOR_CYCLING\020\006\022\010\n\004" +
-      "ROAD\020\007\022\014\n\010MOUNTAIN\020\010\022\014\n\010DOWNHILL\020\t\022\r\n\tRE" +
-      "CUMBENT\020\n\022\016\n\nCYCLOCROSS\020\013\022\020\n\014HAND_CYCLIN" +
-      "G\020\014\022\021\n\rTRACK_CYCLING\020\r\022\021\n\rINDOOR_ROWING\020" +
-      "\016\022\016\n\nELLIPTICAL\020\017\022\022\n\016STAIR_CLIMBING\020\020\022\020\n" +
-      "\014LAP_SWIMMING\020\021\022\016\n\nOPEN_WATER\020\022\022\030\n\024FLEXI" +
-      "BILITY_TRAINING\020\023\022\025\n\021STRENGTH_TRAINING\020\024" +
-      "\022\013\n\007WARM_UP\020\025\022\t\n\005MATCH\020\026\022\014\n\010EXERCISE\020\027\022\r" +
-      "\n\tCHALLENGE\020\030\022\021\n\rINDOOR_SKIING\020\031\022\023\n\017CARD" +
-      "IO_TRAINING\020\032\022\022\n\016INDOOR_WALKING\020\033\022\016\n\nCLA" +
-      "SSIC_XC\020\034\022\014\n\010SKATE_XC\020\035\022\017\n\013TELEMARK_XC\020\036" +
-      "\022\022\n\016BACKCOUNTRY_XC\020\037\022\022\n\016ALPINE_TOURING\020 " +
-      "\022\t\n\005SKIMO\020!\022\021\n\014ALL_SUBSPORT\020\376\001\022\025\n\020INVALI" +
-      "D_SUBSPORT\020\377\001B\033\n\031ski.crunch.activity.mod" +
-      "elb\006proto3"
+      "\022 \n\005stops\030\n \003(\0132\021.Activity.Segment\022*\n\017ac" +
+      "tivitySegment\030\013 \001(\0132\021.Activity.Segment\032\330" +
+      "\001\n\004Meta\022\021\n\tcreatedTs\030\001 \001(\t\022/\n\014manufactur" +
+      "er\030\002 \001(\0162\031.Activity.FitManufacturer\022\017\n\007p" +
+      "roduct\030\003 \001(\005\022\017\n\007version\030\004 \001(\001\022\016\n\006source\030" +
+      "\005 \001(\t\022\020\n\010uploadTs\030\006 \001(\t\022$\n\010location\030\t \001(" +
+      "\0132\022.Activity.Location\022\"\n\007weather\030\n \001(\0132\021" +
+      ".Activity.Weather\032M\n\010UserData\022\017\n\007feeling" +
+      "\030\001 \001(\005\022\r\n\005notes\030\002 \001(\t\022\014\n\004tags\030\003 \003(\t\022\023\n\013u" +
+      "serWeather\030\004 \001(\t\032\343\002\n\007Weather\022\023\n\013temperat" +
+      "ure\030\001 \001(\001\022\033\n\023apparentTemperature\030\002 \001(\001\022\021" +
+      "\n\twindSpeed\030\003 \001(\002\022\025\n\rwindDirection\030\004 \001(\005" +
+      "\022\022\n\ncloudCover\030\005 \001(\002\022\020\n\010pressure\030\006 \001(\002\022(" +
+      "\n\nprecipType\030\007 \001(\0162\024.Activity.PrecipType" +
+      "\022\027\n\017precipIntensity\030\010 \001(\001\022\032\n\022precipAccum" +
+      "ulation\030\t \001(\001\022\022\n\nvisibility\030\n \001(\002\022#\n\004ico" +
+      "n\030\013 \001(\0162\025.Activity.WeatherIcon\022\020\n\010humidi" +
+      "ty\030\014 \001(\002\022\021\n\tsnowDepth\030\r \001(\002\022\031\n\021snowInPas" +
+      "t24Hours\030\016 \001(\002\032\340\001\n\010Location\022\013\n\003lat\030\001 \001(\001" +
+      "\022\013\n\003lon\030\002 \001(\001\022(\n\006source\030\003 \001(\0162\030.Activity" +
+      ".LocationSource\022\020\n\010address1\030\004 \001(\t\022\020\n\010add" +
+      "ress2\030\005 \001(\t\022\014\n\004city\030\006 \001(\t\022\016\n\006county\030\007 \001(" +
+      "\t\022\014\n\004prov\030\010 \001(\t\022\017\n\007country\030\t \001(\t\022\013\n\003zip\030" +
+      "\n \001(\t\022\"\n\006fences\030\013 \003(\0132\022.Activity.Geofenc" +
+      "e\032$\n\010Geofence\022\n\n\002id\030\001 \001(\005\022\014\n\004name\030\002 \001(\t\032" +
+      "\353\006\n\007Summary\022?\n\017hasAttributeMap\030\001 \003(\0132&.A" +
+      "ctivity.Summary.HasAttributeMapEntry\022\017\n\007" +
+      "startTs\030\002 \001(\t\022\r\n\005endTs\030\003 \001(\t\022\024\n\014totalEla" +
+      "psed\030\004 \001(\001\022\022\n\ntotalTimer\030\005 \001(\001\022\023\n\013totalM" +
+      "oving\030\006 \001(\001\022\024\n\014totalStopped\030\007 \001(\001\022\023\n\013tot" +
+      "alPaused\030\010 \001(\001\022\023\n\013totalAscent\030\t \001(\001\022\024\n\014t" +
+      "otalDescent\030\n \001(\001\022\025\n\rtotalDistance\030\013 \001(\001" +
+      "\022\r\n\005avgHr\030\014 \001(\005\022\r\n\005maxHr\030\r \001(\005\022\r\n\005minHr\030" +
+      "\016 \001(\005\022\022\n\navgCadence\030\017 \001(\005\022\022\n\nmaxCadence\030" +
+      "\020 \001(\005\022\017\n\007avgTemp\030\021 \001(\005\022\017\n\007maxTemp\030\022 \001(\005\022" +
+      "\020\n\010avgSpeed\030\023 \001(\001\022\020\n\010maxSpeed\030\024 \001(\001\022\033\n\023m" +
+      "axPositiveGradient\030\025 \001(\005\022\033\n\023maxNegativeG" +
+      "radient\030\026 \001(\005\022\033\n\023avgPositiveGradient\030\027 \001" +
+      "(\005\022\033\n\023avgNegativeGradient\030\030 \001(\005\022\024\n\014total" +
+      "AscTime\030\031 \001(\001\022\025\n\rtotalDescTime\030\032 \001(\001\022\024\n\014" +
+      "totalAscDist\030\033 \001(\001\022\025\n\rtotalDescDist\030\034 \001(" +
+      "\001\022*\n\013segmentType\030\035 \001(\0162\025.Activity.Segmen" +
+      "tType\022 \n\030maxPositiveVerticalSpeed\030\036 \001(\005\022" +
+      " \n\030maxNegativeVerticalSpeed\030\037 \001(\005\022 \n\030avg" +
+      "PositiveVerticalSpeed\030  \001(\005\022 \n\030avgNegati" +
+      "veVerticalSpeed\030! \001(\005\0326\n\024HasAttributeMap" +
+      "Entry\022\013\n\003key\030\001 \001(\t\022\r\n\005value\030\002 \001(\010:\0028\001\032\227\001" +
+      "\n\007Session\022\036\n\005sport\030\001 \001(\0162\017.Activity.Spor" +
+      "t\022$\n\010subSport\030\002 \001(\0162\022.Activity.SubSport\022" +
+      "\"\n\007segment\030\003 \001(\0132\021.Activity.Segment\022\"\n\007s" +
+      "ummary\030\004 \001(\0132\021.Activity.Summary\032\256\002\n\006Valu" +
+      "es\022\n\n\002ts\030\001 \003(\t\022\n\n\002hr\030\002 \003(\005\022\013\n\003lat\030\003 \003(\001\022" +
+      "\013\n\003lon\030\004 \003(\001\022\r\n\005speed\030\005 \003(\001\022\020\n\010altitude\030" +
+      "\006 \003(\001\022\r\n\005grade\030\007 \003(\001\022\020\n\010distance\030\010 \003(\001\022\023" +
+      "\n\013temperature\030\t \003(\001\022\016\n\006moving\030\n \003(\010\022\017\n\007c" +
+      "adence\030\013 \003(\005\022(\n\004hrvs\030\014 \003(\0132\032.Activity.Va" +
+      "lues.HrvsEntry\022\013\n\003hrv\030\r \003(\001\022\026\n\016vertical_" +
+      "speed\030\016 \003(\001\032+\n\tHrvsEntry\022\013\n\003key\030\001 \001(\t\022\r\n" +
+      "\005value\030\002 \001(\001:\0028\001\032{\n\010FitEvent\022\r\n\005index\030\001 " +
+      "\001(\005\022\n\n\002ts\030\002 \001(\t\022\r\n\005event\030\003 \001(\t\022&\n\teventT" +
+      "ype\030\004 \001(\0162\023.Activity.EventType\022\014\n\004info\030\005" +
+      " \001(\t\022\017\n\007trigger\030\006 \001(\t\032q\n\007Segment\022\017\n\007star" +
+      "tTs\030\001 \001(\t\022\016\n\006stopTs\030\002 \001(\t\022\020\n\010startIdx\030\003 " +
+      "\001(\005\022\017\n\007stopIdx\030\004 \001(\005\022\"\n\007summary\030\005 \001(\0132\021." +
+      "Activity.Summary\"+\n\nPrecipType\022\010\n\004RAIN\020\000" +
+      "\022\t\n\005SLEET\020\001\022\010\n\004SNOW\020\002\"\252\001\n\013WeatherIcon\022\r\n" +
+      "\tCLEAR_DAY\020\000\022\017\n\013CLEAR_NIGHT\020\001\022\r\n\tRAIN_IC" +
+      "ON\020\002\022\r\n\tSNOW_ICON\020\003\022\016\n\nSLEET_ICON\020\004\022\010\n\004W" +
+      "IND\020\005\022\007\n\003FOG\020\006\022\n\n\006CLOUDY\020\007\022\025\n\021PARTLY_CLO" +
+      "UDY_DAY\020\010\022\027\n\023PARTLY_CLOUDY_NIGHT\020\t\"&\n\016Lo" +
+      "cationSource\022\n\n\006GOOGLE\020\000\022\010\n\004HERE\020\002\"<\n\013Se" +
+      "gmentType\022\014\n\010ACTIVITY\020\000\022\013\n\007SESSION\020\001\022\007\n\003" +
+      "LAP\020\002\022\t\n\005PAUSE\020\003\"\337\017\n\017FitManufacturer\022\013\n\007" +
+      "UNKNOWN\020\000\022\n\n\006GARMIN\020\001\022\026\n\022GARMIN_FR405_AN" +
+      "TFS\020\002\022\n\n\006ZEPHYR\020\003\022\n\n\006DAYTON\020\004\022\007\n\003IDT\020\005\022\007" +
+      "\n\003SRM\020\006\022\t\n\005QUARQ\020\007\022\t\n\005IBIKE\020\010\022\t\n\005SARIS\020\t" +
+      "\022\014\n\010SPARK_HK\020\n\022\n\n\006TANITA\020\013\022\014\n\010ECHOWELL\020\014" +
+      "\022\022\n\016DYNASTREAM_OEM\020\r\022\014\n\010NAUTILUS\020\016\022\016\n\nDY" +
+      "NASTREAM\020\017\022\t\n\005TIMEX\020\020\022\r\n\tMETRIGEAR\020\021\022\t\n\005" +
+      "XELIC\020\022\022\n\n\006BEURER\020\023\022\017\n\013CARDIOSPORT\020\024\022\013\n\007" +
+      "A_AND_D\020\025\022\007\n\003HMM\020\026\022\n\n\006SUUNTO\020\027\022\024\n\020THITA_" +
+      "ELEKTRONIK\020\030\022\n\n\006GPULSE\020\031\022\020\n\014CLEAN_MOBILE" +
+      "\020\032\022\017\n\013PEDAL_BRAIN\020\033\022\r\n\tPEAKSWARE\020\034\022\013\n\007SA" +
+      "XONAR\020\035\022\022\n\016LEMOND_FITNESS\020\036\022\n\n\006DEXCOM\020\037\022" +
+      "\021\n\rWAHOO_FITNESS\020 \022\022\n\016OCTANE_FITNESS\020!\022\020" +
+      "\n\014ARCHINOETICS\020\"\022\020\n\014THE_HURT_BOX\020#\022\023\n\017CI" +
+      "TIZEN_SYSTEMS\020$\022\014\n\010MAGELLAN\020%\022\n\n\006OSYNCE\020" +
+      "&\022\t\n\005HOLUX\020\'\022\014\n\010CONCEPT2\020(\022\022\n\016ONE_GIANT_" +
+      "LEAP\020*\022\016\n\nACE_SENSOR\020+\022\021\n\rBRIM_BROTHERS\020" +
+      ",\022\n\n\006XPLOVA\020-\022\026\n\022PERCEPTION_DIGITAL\020.\022\016\n" +
+      "\nBF1SYSTEMS\020/\022\013\n\007PIONEER\0200\022\013\n\007SPANTEC\0201\022" +
+      "\016\n\nMETALOGICS\0202\022\013\n\007I4IIIIS\0203\022\017\n\013SEIKO_EP" +
+      "SON\0204\022\023\n\017SEIKO_EPSON_OEM\0205\022\017\n\013IFOR_POWEL" +
+      "L\0206\022\022\n\016MAXWELL_GUIDER\0207\022\r\n\tSTAR_TRAC\0208\022\r" +
+      "\n\tBREAKAWAY\0209\022\032\n\026ALATECH_TECHNOLOGY_LTD\020" +
+      ":\022\031\n\025MIO_TECHNOLOGY_EUROPE\020;\022\t\n\005ROTOR\020<\022" +
+      "\014\n\010GEONAUTE\020=\022\013\n\007ID_BIKE\020>\022\017\n\013SPECIALIZE" +
+      "D\020?\022\010\n\004WTEK\020@\022\030\n\024PHYSICAL_ENTERPRISES\020A\022" +
+      "\032\n\026NORTH_POLE_ENGINEERING\020B\022\t\n\005BKOOL\020C\022\n" +
+      "\n\006CATEYE\020D\022\022\n\016STAGES_CYCLING\020E\022\016\n\nSIGMAS" +
+      "PORT\020F\022\n\n\006TOMTOM\020G\022\r\n\tPERIPEDAL\020H\022\014\n\010WAT" +
+      "TBIKE\020I\022\010\n\004MOXY\020L\022\016\n\nCICLOSPORT\020M\022\r\n\tPOW" +
+      "ERBAHN\020N\022\026\n\022ACORN_PROJECTS_APS\020O\022\014\n\010LIFE" +
+      "BEAM\020P\022\r\n\tBONTRAGER\020Q\022\n\n\006WELLGO\020R\022\013\n\007SCO" +
+      "SCHE\020S\022\n\n\006MAGURA\020T\022\013\n\007WOODWAY\020U\022\t\n\005ELITE" +
+      "\020V\022\025\n\021NIELSEN_KELLERMAN\020W\022\013\n\007DK_CITY\020X\022\010" +
+      "\n\004TACX\020Y\022\030\n\024DIRECTION_TECHNOLOGY\020Z\022\014\n\010MA" +
+      "GTONIC\020[\022\021\n\rONEPARTCARBON\020\\\022\034\n\030INSIDE_RI" +
+      "DE_TECHNOLOGIES\020]\022\023\n\017SOUND_OF_MOTION\020^\022\t" +
+      "\n\005STRYD\020_\022\007\n\003ICG\020`\022\013\n\007MIPULSE\020a\022\021\n\rBSX_A" +
+      "THLETICS\020b\022\010\n\004LOOK\020c\022\022\n\016CAMPAGNOLO_SRL\020d" +
+      "\022\023\n\017BODY_BIKE_SMART\020e\022\017\n\013PRAXISWORKS\020f\022\025" +
+      "\n\021LIMITS_TECHNOLOGY\020g\022\030\n\024TOPACTION_TECHN" +
+      "OLOGY\020h\022\014\n\010COSINUSS\020i\022\013\n\007FITCARE\020j\022\n\n\006MA" +
+      "GENE\020k\022\032\n\026GIANT_MANUFACTURING_CO\020l\022\016\n\nTI" +
+      "GRASPORT\020m\022\020\n\013DEVELOPMENT\020\377\001\022\022\n\rHEALTHAN" +
+      "DLIFE\020\201\002\022\013\n\006LEZYNE\020\202\002\022\020\n\013SCRIBE_LABS\020\203\002\022" +
+      "\n\n\005ZWIFT\020\204\002\022\014\n\007WATTEAM\020\205\002\022\n\n\005RECON\020\206\002\022\027\n" +
+      "\022FAVERO_ELECTRONICS\020\207\002\022\r\n\010DYNOVELO\020\210\002\022\013\n" +
+      "\006STRAVA\020\211\002\022\013\n\006PRECOR\020\212\002\022\013\n\006BRYTON\020\213\002\022\t\n\004" +
+      "SRAM\020\214\002\022\013\n\006NAVMAN\020\215\002\022\t\n\004COBI\020\216\002\022\n\n\005SPIVI" +
+      "\020\217\002\022\021\n\014MIO_MAGELLAN\020\220\002\022\016\n\tEVESPORTS\020\221\002\022\025" +
+      "\n\020SENSITIVUS_GAUGE\020\222\002\022\013\n\006PODOON\020\223\002\"\316\001\n\tE" +
+      "ventType\022\t\n\005START\020\000\022\010\n\004STOP\020\001\022\033\n\027CONSECU" +
+      "TIVE_DEPRECIATED\020\002\022\n\n\006MARKER\020\003\022\014\n\010STOP_A" +
+      "LL\020\004\022\025\n\021BEGIN_DEPRECIATED\020\005\022\023\n\017END_DEPRE" +
+      "CIATED\020\006\022\027\n\023END_ALL_DEPRECIATED\020\007\022\020\n\014STO" +
+      "P_DISABLE\020\010\022\024\n\020STOP_DISABLE_ALL\020\t\022\010\n\004NUL" +
+      "L\020\n\"\336\002\n\005Sport\022\013\n\007GENERIC\020\000\022\013\n\007RUNNING\020\001\022" +
+      "\013\n\007CYCLING\020\002\022\016\n\nTRANSITION\020\003\022\025\n\021FITNESS_" +
+      "EQUIPMENT\020\004\022\014\n\010SWIMMING\020\005\022\016\n\nBASKETBALL\020" +
+      "\006\022\n\n\006SOCCER\020\007\022\n\n\006TENNIS\020\010\022\025\n\021AMERICAN_FO" +
+      "OTBALL\020\t\022\014\n\010TRAINING\020\n\022\013\n\007WALKING\020\013\022\030\n\024C" +
+      "ROSS_COUNTRY_SKIING\020\014\022\021\n\rALPINE_SKIING\020\r" +
+      "\022\020\n\014SNOWBOARDING\020\016\022\n\n\006ROWING\020\017\022\022\n\016MOUNTA" +
+      "INEERING\020\020\022\n\n\006HIKING\020\021\022\016\n\nMULTISPORT\020\022\022\014" +
+      "\n\010PADDLING\020\023\022\010\n\003ALL\020\376\001\022\014\n\007INVALID\020\377\001\"\340\004\n" +
+      "\010SubSport\022\024\n\020GENERIC_SUBSPORT\020\000\022\r\n\tTREAD" +
+      "MILL\020\001\022\n\n\006STREET\020\002\022\t\n\005TRAIL\020\003\022\t\n\005TRACK\020\004" +
+      "\022\010\n\004SPIN\020\005\022\022\n\016INDOOR_CYCLING\020\006\022\010\n\004ROAD\020\007" +
+      "\022\014\n\010MOUNTAIN\020\010\022\014\n\010DOWNHILL\020\t\022\r\n\tRECUMBEN" +
+      "T\020\n\022\016\n\nCYCLOCROSS\020\013\022\020\n\014HAND_CYCLING\020\014\022\021\n" +
+      "\rTRACK_CYCLING\020\r\022\021\n\rINDOOR_ROWING\020\016\022\016\n\nE" +
+      "LLIPTICAL\020\017\022\022\n\016STAIR_CLIMBING\020\020\022\020\n\014LAP_S" +
+      "WIMMING\020\021\022\016\n\nOPEN_WATER\020\022\022\030\n\024FLEXIBILITY" +
+      "_TRAINING\020\023\022\025\n\021STRENGTH_TRAINING\020\024\022\013\n\007WA" +
+      "RM_UP\020\025\022\t\n\005MATCH\020\026\022\014\n\010EXERCISE\020\027\022\r\n\tCHAL" +
+      "LENGE\020\030\022\021\n\rINDOOR_SKIING\020\031\022\023\n\017CARDIO_TRA" +
+      "INING\020\032\022\022\n\016INDOOR_WALKING\020\033\022\016\n\nCLASSIC_X" +
+      "C\020\034\022\014\n\010SKATE_XC\020\035\022\017\n\013TELEMARK_XC\020\036\022\022\n\016BA" +
+      "CKCOUNTRY_XC\020\037\022\022\n\016ALPINE_TOURING\020 \022\t\n\005SK" +
+      "IMO\020!\022\021\n\014ALL_SUBSPORT\020\376\001\022\025\n\020INVALID_SUBS" +
+      "PORT\020\377\001B\033\n\031ski.crunch.activity.modelb\006pr" +
+      "oto3"
     };
     com.google.protobuf.Descriptors.FileDescriptor.InternalDescriptorAssigner assigner =
         new com.google.protobuf.Descriptors.FileDescriptor.    InternalDescriptorAssigner() {
@@ -22161,7 +21999,7 @@ public final class ActivityOuterClass {
     internal_static_Activity_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
         internal_static_Activity_descriptor,
-        new java.lang.String[] { "Meta", "UserData", "Summary", "Values", "Events", "Id", "Sessions", "Pauses", "Laps", "Stops", });
+        new java.lang.String[] { "Meta", "UserData", "Summary", "Values", "Events", "Id", "Sessions", "Pauses", "Laps", "Stops", "ActivitySegment", });
     internal_static_Activity_Meta_descriptor =
       internal_static_Activity_descriptor.getNestedTypes().get(0);
     internal_static_Activity_Meta_fieldAccessorTable = new
@@ -22197,18 +22035,12 @@ public final class ActivityOuterClass {
     internal_static_Activity_Summary_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
         internal_static_Activity_Summary_descriptor,
-        new java.lang.String[] { "HasAttributeMap", "StartTs", "EndTs", "TotalElapsed", "TotalTimer", "TotalMoving", "TotalStopped", "TotalPaused", "TotalAscent", "TotalDescent", "TotalDistance", "TotalCalories", "AvgHr", "MaxHr", "MinHr", "AvgCadence", "MaxCadence", "MinCadence", "AvgTemp", "MaxTemp", "MinTemp", "AvgSpeed", "MaxSpeed", "MinGradient", "MaxGradient", "AvgGradient", "NLaps", "Hrvs", "TotalAscTime", "TotalDescTime", "TotalAscDist", "TotalDescDist", "PauseDistance", "StopCount", "PauseCount", });
+        new java.lang.String[] { "HasAttributeMap", "StartTs", "EndTs", "TotalElapsed", "TotalTimer", "TotalMoving", "TotalStopped", "TotalPaused", "TotalAscent", "TotalDescent", "TotalDistance", "AvgHr", "MaxHr", "MinHr", "AvgCadence", "MaxCadence", "AvgTemp", "MaxTemp", "AvgSpeed", "MaxSpeed", "MaxPositiveGradient", "MaxNegativeGradient", "AvgPositiveGradient", "AvgNegativeGradient", "TotalAscTime", "TotalDescTime", "TotalAscDist", "TotalDescDist", "SegmentType", "MaxPositiveVerticalSpeed", "MaxNegativeVerticalSpeed", "AvgPositiveVerticalSpeed", "AvgNegativeVerticalSpeed", });
     internal_static_Activity_Summary_HasAttributeMapEntry_descriptor =
       internal_static_Activity_Summary_descriptor.getNestedTypes().get(0);
     internal_static_Activity_Summary_HasAttributeMapEntry_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
         internal_static_Activity_Summary_HasAttributeMapEntry_descriptor,
-        new java.lang.String[] { "Key", "Value", });
-    internal_static_Activity_Summary_HrvsEntry_descriptor =
-      internal_static_Activity_Summary_descriptor.getNestedTypes().get(1);
-    internal_static_Activity_Summary_HrvsEntry_fieldAccessorTable = new
-      com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
-        internal_static_Activity_Summary_HrvsEntry_descriptor,
         new java.lang.String[] { "Key", "Value", });
     internal_static_Activity_Session_descriptor =
       internal_static_Activity_descriptor.getNestedTypes().get(6);
