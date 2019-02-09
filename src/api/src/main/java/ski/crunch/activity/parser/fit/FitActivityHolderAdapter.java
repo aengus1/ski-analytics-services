@@ -22,7 +22,7 @@ public class FitActivityHolderAdapter implements ActivityHolderAdapter {
 
 
     @Override
-    public ActivityHolder convert(InputStream is) throws ParseException, IOException {
+    public ActivityHolder convert(InputStream is) throws IOException {
 
         FileIdMessageListener fileIdMessageListener = new FileIdMessageListener(holder);
         ActivityMessageListener activityMessageListener = new ActivityMessageListener(holder);

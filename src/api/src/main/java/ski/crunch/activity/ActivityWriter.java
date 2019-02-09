@@ -5,6 +5,6 @@ import ski.crunch.activity.processor.model.ActivityHolder;
 
 public interface ActivityWriter {
 
-    public ActivityOuterClass.Activity writeToActivity(ActivityHolder holder, String id);
+    public ActivityOuterClass.Activity writeToActivity(ActivityHolder holder, String id, ActivityOuterClass.Activity.Weather weather, ActivityOuterClass.Activity.Location location);
 
 }

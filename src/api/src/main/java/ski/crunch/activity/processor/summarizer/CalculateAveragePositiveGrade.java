@@ -1,4 +1,4 @@
-package ski.crunch.activity.summarizer;
+package ski.crunch.activity.processor.summarizer;
 
 import ski.crunch.activity.processor.model.ActivityHolder;
 

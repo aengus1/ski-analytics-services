@@ -1,4 +1,4 @@
-package ski.crunch.activity.summarizer;
+package ski.crunch.activity.processor.summarizer;
 
 import org.apache.log4j.Logger;
 import ski.crunch.activity.processor.model.ActivityHolder;

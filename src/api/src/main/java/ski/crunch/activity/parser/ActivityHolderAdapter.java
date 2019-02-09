@@ -3,7 +3,7 @@ import ski.crunch.activity.processor.model.ActivityHolder;
 
 import java.io.IOException;
 import java.io.InputStream;
-import java.text.ParseException;
+import ski.crunch.utils.ParseException;
 
 public interface ActivityHolderAdapter {
 

@@ -18,7 +18,7 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
-import java.text.ParseException;
+import ski.crunch.utils.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.List;
@@ -55,7 +55,7 @@ public class ActivityPipelineTest {
                                 < targetFormat.parse(activity.getRecords().get(i + 1).ts()).getTime()
                 );
             }
-        } catch (ParseException ex) {
+        } catch (java.text.ParseException ex) {
             ex.printStackTrace();
             assert (false);
         }

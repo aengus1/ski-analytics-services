@@ -3,7 +3,7 @@ package ski.crunch.activity.parser.fit;
 import com.garmin.fit.Field;
 import com.garmin.fit.FileIdMesg;
 import com.garmin.fit.FileIdMesgListener;
-import ski.crunch.activity.model.ActivityOuterClass;
+import com.garmin.fit.Manufacturer;
 import ski.crunch.activity.processor.model.ActivityHolder;
 
 import java.util.Date;
@@ -38,9 +38,9 @@ public class FileIdMessageListener extends AbstractMesgListener implements FileI
                 }
                 if (f.getName().equals("manufacturer")) {
                     logger.debug( "manufacturer: "
-                            + ActivityOuterClass.Activity.FitManufacturer.forNumber((int) f.getValue()));
+                            + Manufacturer.getStringFromValue((int) f.getValue()));
                     activityHolder.setManufacturer(
-                            ActivityOuterClass.Activity.FitManufacturer.forNumber((int) f.getValue()).name());
+                            Manufacturer.getStringFromValue((int) f.getValue()));
                 }
 
                 if (f.getName().equals("product")) {

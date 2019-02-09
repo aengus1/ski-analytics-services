@@ -7,9 +7,9 @@ import scala.ski.crunch.activity.processor.model.ActivityRecord;
 import ski.crunch.activity.processor.model.ActivityEvent;
 import ski.crunch.activity.processor.model.ActivityHolder;
 import ski.crunch.activity.processor.model.EventType;
-import ski.crunch.activity.summarizer.ActivitySummarizer;
+import ski.crunch.activity.processor.summarizer.ActivitySummarizer;
 
-import java.text.ParseException;
+import ski.crunch.utils.ParseException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -79,7 +79,7 @@ public class ActivitySummarizerTest {
         holder.setEvents(events);
 
         this.holder = holder;
-        this.summarizer = new ActivitySummarizer(holder);
+        this.summarizer = new ActivitySummarizer();
         // pause is summary 0, lap is summary 1
 
     }
@@ -87,140 +87,118 @@ public class ActivitySummarizerTest {
 
     @Test
     public void testCalcElapsed() {
-        try {
-            summarizer.summarize(holder);
-        } catch (ParseException e) {
-            e.printStackTrace();
-        }
 
-        assertEquals(3,this.holder.getSummaries().get(0).totalElapsed());
+            summarizer.process(holder);
+
+
+        assertEquals(3,this.holder.getPauseSummaries().get(0).totalElapsed());
 
     }
 
     @Test
     public void testCalcTotalMoving() {
-        try {
-            summarizer.summarize(holder);
-        } catch (ParseException e) {
-            e.printStackTrace();
-        }
+            summarizer.process(holder);
 
-        assertEquals(3,this.holder.getSummaries().get(0).totalMoving());
+
+        assertEquals(3,this.holder.getPauseSummaries().get(0).totalMoving());
 
     }
 
 
     @Test
     public void testCalcTotalStopped() {
-        try {
-            summarizer.summarize(holder);
-        } catch (ParseException e) {
-            e.printStackTrace();
-        }
 
-        assertEquals(0,this.holder.getSummaries().get(0).totalTimer());
+            summarizer.process(holder);
+
+
+        assertEquals(0,this.holder.getPauseSummaries().get(0).totalTimer());
     }
 
     @Test
     public void testCalcTotalTimerWithOverlap() {
-        try {
-            summarizer.summarize(holder);
-        } catch (ParseException e) {
-            e.printStackTrace();
-        }
-        assertEquals(2, this.holder.getSummaries().get(1).totalTimer());
+
+            summarizer.process(holder);
+
+        assertEquals(2, this.holder.getLapSummaries().get(0).totalTimer());
     }
 
     @Test
     public void testCalcTotalTimerWithOutOverlap() {
-        try {
-            summarizer.summarize(holder);
-        } catch (ParseException e) {
-            e.printStackTrace();
-        }
-        assertEquals(2, this.holder.getSummaries().get(1).totalTimer());
+
+            summarizer.process(holder);
+
+        assertEquals(2, this.holder.getLapSummaries().get(0).totalTimer());
     }
 
     @Test
     public void testCalcTotalAscent() {
-        try {
-            summarizer.summarize(holder);
-        } catch (ParseException e) {
-            e.printStackTrace();
-        }
+
+            summarizer.process(holder);
+
 
         //test the pause case
         //pause (3 to 6) == 4m +
         //0 to 3 -> 6 m
         // 6 to 11 -> 0m
-        assertEquals(4, this.holder.getSummaries().get(0).totalAscent());
+        assertEquals(4, this.holder.getPauseSummaries().get(0).totalAscent());
 
         //test the lap case
         //1 to 3 -> 2 m
         // 3 to 6 -> paused - don't count
-        assertEquals(2, this.holder.getSummaries().get(1).totalAscent());
+        assertEquals(2, this.holder.getLapSummaries().get(0).totalAscent());
     }
 
 
     @Test
     public void testCalcTotalDescent() {
-        try {
-            summarizer.summarize(holder);
-        } catch (ParseException e) {
-            e.printStackTrace();
-        }
+            summarizer.process(holder);
+
         //pause case
-        assertEquals(4, this.holder.getSummaries().get(0).totalDescent());
+        assertEquals(4, this.holder.getPauseSummaries().get(0).totalDescent());
 
         // lap case
-        assertEquals(0, this.holder.getSummaries().get(1).totalDescent());
+        assertEquals(0, this.holder.getLapSummaries().get(0).totalDescent());
     }
 
 
     @Test
     public void testCalcTotalDistance() {
-        try {
-            summarizer.summarize(holder);
-        } catch (ParseException e) {
-            e.printStackTrace();
-        }
+
+            summarizer.process(holder);
+
         //pause case
-        assertEquals(13, this.holder.getSummaries().get(0).totalDistance());
+        assertEquals(13, this.holder.getPauseSummaries().get(0).totalDistance());
 
         // lap case
-        assertEquals(12, this.holder.getSummaries().get(1).totalDistance());
+        assertEquals(12, this.holder.getLapSummaries().get(0).totalDistance());
     }
 
 
     @Test
     public void testCalcAvgHr() {
-        try {
-            summarizer.summarize(holder);
-        } catch (ParseException e) {
-            e.printStackTrace();
-        }
+
+            summarizer.process(holder);
+
         //pause case
         double avg = (141 + 142 + 153) / 3;
-        assertEquals(avg, this.holder.getSummaries().get(0).avgHr());
+        assertEquals(avg, this.holder.getPauseSummaries().get(0).avgHr());
 
         // lap case
         double avgL = (135 + 140) / 2;
-        assertEquals(avgL, this.holder.getSummaries().get(1).avgHr());
+        assertEquals(avgL, this.holder.getLapSummaries().get(0).avgHr());
     }
 
 
     @Test
     public void testCalcMaxHr() {
-        try {
-            summarizer.summarize(holder);
-        } catch (ParseException e) {
-            e.printStackTrace();
-        }
+
+            summarizer.process(holder);
+
         //pause case
-        assertEquals(153, this.holder.getSummaries().get(0).maxHr());
+        assertEquals(153, this.holder.getPauseSummaries().get(0).maxHr());
 
         // lap case
-        assertEquals(140, this.holder.getSummaries().get(1).maxHr());
+        assertEquals(140, this.holder.getLapSummaries().get(0).maxHr());
     }
 
 

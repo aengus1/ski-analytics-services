@@ -1,6 +1,7 @@
 package ski.crunch.activity.processor;
 
 import ski.crunch.activity.processor.model.ActivityHolder;
+import ski.crunch.activity.processor.summarizer.ActivitySummarizer;
 
 public class ActivityProcessor {
 
@@ -21,6 +22,7 @@ public class ActivityProcessor {
         Handler setEventIndexHandler = new SetEventIndexHandler();
         Handler detectLapHandler = new DetectLapHandler();
         Handler sortEventsByTsHandler = new SortEventsByTsHandler();
+        Handler summarizeActivityHandler = new ActivitySummarizer();
 
         // detect detect lap events
         // summarize
@@ -43,6 +45,7 @@ public class ActivityProcessor {
         manager.addHandler(setEventIndexHandler);
         manager.addHandler(sortByTsHandler);
         manager.addHandler(sortEventsByTsHandler);
+        manager.addHandler(summarizeActivityHandler);
 
         return manager.doPipeline(holder);
     }

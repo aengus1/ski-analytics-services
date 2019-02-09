@@ -136,12 +136,12 @@ public class SessionMessageListener extends AbstractMesgListener implements Sess
                     maxSpeed = (double) field.getValue();
                 }
             }
-            summary = new ActivitySummary(startTs, endTs, totalElapsed, totalTimer, totalMoving, totalStopped,
+            summary = new ActivitySummary("SESSION",startTs, endTs, totalElapsed, totalTimer, totalMoving, totalStopped,
                     totalPaused, totalAscent, totalDescent, totalDistance, avgHr, maxHr, avgCadence,
                     maxCadence, avgTemp, maxTemp, avgSpeed, maxSpeed, nLaps, -999, -999,
                     -999, -999
                     ,-999, -999, -999);
-            activityHolder.getSummaries().add(summary);
+            activityHolder.getSessionSummaries().add(summary);
             activityHolder.getEvents().add(sessionStart);
             activityHolder.getEvents().add(sessionEnd);
         } catch (Exception ex) {

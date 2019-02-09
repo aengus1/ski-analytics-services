@@ -1,7 +1,8 @@
-package ski.crunch.activity.summarizer;
+package ski.crunch.activity.processor.summarizer;
 
 import org.apache.log4j.Logger;
 import scala.ski.crunch.activity.processor.model.ActivitySummary;
+import ski.crunch.activity.processor.Handler;
 import ski.crunch.activity.processor.model.ActivityEvent;
 import ski.crunch.activity.processor.model.ActivityHolder;
 import ski.crunch.activity.processor.model.EventType;
@@ -14,14 +15,13 @@ import java.util.stream.Collectors;
 
 import static ski.crunch.activity.processor.model.ActivityHolder.TARGET_FORMAT;
 
-public class ActivitySummarizer {
+public class ActivitySummarizer  implements Handler<ActivityHolder> {
 
     private Logger logger;
     private ActivityHolder holder;
     private List<Range> pauseIndex = new ArrayList<Range>();
 
-    public ActivitySummarizer(ActivityHolder holder) {
-        this.holder = holder;
+    public ActivitySummarizer() {
         this.logger = Logger.getLogger(getClass().getName());
     }
 
@@ -47,22 +47,17 @@ public class ActivitySummarizer {
      * 4. calc activity summary - done
      * 5. calc session summaries
      *
-     * @param holder
      * @return
      * @throws ParseException
      */
-    public ActivityHolder summarize(ActivityHolder holder) throws ParseException {
-        System.out.println("n summaries = " + holder.getSummaries().size());
+    @Override
+    public ActivityHolder process(ActivityHolder holder){
+        this.holder = holder;
         buildPauseIndex();
-        List<ActivitySummary> pauseSummaries = summarizePauseSegments();
-        List<ActivitySummary> lapSummaries = summarizeLapSegments();
-        ActivitySummary activitySummary = summarizeActivity();
-        List<ActivitySummary> sessionSummaries = summarizeSessions();
-
-        pauseSummaries.addAll(lapSummaries);
-        pauseSummaries.add(activitySummary);
-        holder.getSummaries().addAll(pauseSummaries);
-        holder.getSummaries().addAll(sessionSummaries);
+        holder.setPauseSummaries(summarizePauseSegments());
+        holder.setLapSummaries(summarizeLapSegments());
+        holder.setActivitySummary(summarizeActivity());
+        holder.setSessionSummaries(summarizeSessions());
         return holder;
     }
 

@@ -12,17 +12,24 @@ import com.amazonaws.util.Base64;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.apache.log4j.Logger;
+import scala.ski.crunch.activity.processor.model.ActivityRecord;
+import ski.crunch.activity.ActivityWriter;
+import ski.crunch.activity.ActivityWriterImpl;
 import ski.crunch.activity.model.ActivityItem;
+import ski.crunch.activity.model.ActivityOuterClass;
 import ski.crunch.activity.model.ApiGatewayResponse;
 import ski.crunch.activity.model.PutActivityResponse;
-import ski.crunch.utils.ErrorResponse;
-import ski.crunch.utils.LambdaProxyConfig;
-import ski.crunch.utils.ParseException;
-import ski.crunch.utils.SaveException;
+import ski.crunch.activity.parser.ActivityHolderAdapter;
+import ski.crunch.activity.parser.fit.FitActivityHolderAdapter;
+import ski.crunch.activity.processor.ActivityProcessor;
+import ski.crunch.activity.processor.model.ActivityHolder;
+import ski.crunch.activity.processor.summarizer.ActivitySummarizer;
+import ski.crunch.utils.*;
 
 
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
+import java.io.InputStream;
 import java.text.SimpleDateFormat;
 import java.util.*;
 
@@ -83,10 +90,10 @@ public class ActivityService {
 
             //Write to S3
             String[] contentType = config.getHeaders().getContentType().split("application/");
-            if(contentType.length > 1){
-                writeRawFileToS3(config.getBody(), activityId,contentType[1]);
-            }else {
-                writeRawFileToS3(config.getBody(), activityId,"null");
+            if (contentType.length > 1) {
+                writeRawFileToS3(config.getBody(), activityId, contentType[1]);
+            } else {
+                writeRawFileToS3(config.getBody(), activityId, "null");
             }
 
 
@@ -190,6 +197,111 @@ public class ActivityService {
         }
     }
 
+    public ApiGatewayResponse processAndSaveActivity(Map<String, Object> input, Context context) {
+
+        //1. obtain bucket name and key from input
+        String bucket = null;
+        String id = "";
+        String key = "";
+        String newKey = "";
+        try {
+            LambdaProxyConfig config = new LambdaProxyConfig(input);
+            Map bucketMap = (Map) config.getS3Parameters().get("bucket");
+            Map objectMap = (Map) config.getS3Parameters().get("object");
+            bucket = (String) bucketMap.get("name");
+            key = (String) objectMap.get("key");
+
+            if (bucket == null || key == null) {
+                throw new ParseException("failed to parse activity bucket / key from config");
+            }
+            assert (bucket != null);
+            assert (key != null);
+
+            //2. extract activity id
+            id = extractActivityId(key);
+            newKey = id.concat(".pbf");
+
+        } catch (ParseException ex) {
+            LOG.error(" error  parsing input parameters:" + ex.getMessage());
+            return errorResponse("error occurred parsing input", ex);
+        }
+
+
+        //3. read in raw file from s3
+        S3Service s3Service = new S3Service(region);
+        InputStream is = null;
+        ActivityHolder activity = null;
+        try {
+            LOG.info("attempting to read " + key + " from " + bucket);
+            is = s3Service.getObjectAsInputStream(bucket, key);
+            ActivityHolderAdapter fitParser = new FitActivityHolderAdapter();
+
+            try {
+                activity = fitParser.convert(is);
+
+            } catch (ParseException e) {
+                LOG.error("error parsing raw activity " + key + " from " + bucket + " " + e.getMessage());
+                return ApiGatewayResponse.builder()
+                        .setStatusCode(400)
+                        .setRawBody(new ErrorResponse(400,
+                                "error occurred parsing raw activity",
+                                "error occurred parsing raw activity", "").toJSON())
+                        .build();
+
+            }
+
+            //4. process and summarize
+            ActivityProcessor processor = new ActivityProcessor();
+            activity = processor.process(activity);
+            WeatherService weatherService = new DarkSkyWeatherService();
+            LocationService  locationService = new LocationIqService();
+            ActivityRecord record = activity.getRecords().get(0);
+
+            ActivityOuterClass.Activity.Weather weather = weatherService.getWeather(record.lat(), record.lon(), record.ts());
+            ActivityOuterClass.Activity.Location location = locationService.getLocation(record.lat(), record.lon());
+
+
+            //5. convert to proto and write to S3
+            ActivityOuterClass.Activity result = null;
+            ActivityWriter writer = new ActivityWriterImpl();
+            result = writer.writeToActivity(activity, id, weather, location);
+
+            ConvertibleOutputStream cos = new ConvertibleOutputStream();
+            result.writeTo(cos);
+            s3Service.putObject(bucket, newKey, cos.toInputStream());
+
+            //6. update activity table
+
+            //TODO -> update activity table
+        } catch (IOException e) {
+            e.printStackTrace();
+            return null;
+        }
+        return null;
+    }
+
+    private String extractActivityId(String key) throws ParseException {
+        String id = "";
+
+        if (key != null && key.length() > 1 && key.contains(".")) {
+            id = key.substring(0, key.indexOf(".") - 1);
+            LOG.debug("extracted id: " + id);
+        } else {
+            LOG.error("invalid key name: " + key);
+             throw new ParseException("invalid key name for activity " + key);
+        }
+        return id;
+    }
+
+    private ApiGatewayResponse errorResponse(String message, Throwable t) {
+        return ApiGatewayResponse.builder()
+                .setStatusCode(400)
+                .setRawBody(new ErrorResponse(400,
+                        message + ErrorResponse.getStackTrace(t),
+                        message, "400").toJSON())
+                .build();
+    }
+
 
     /**
      * @param bodyStr
@@ -203,7 +315,7 @@ public class ActivityService {
             body = Base64.decode(bodyStr);
             LOG.debug("decoded raw activity base64 to binary");
             ByteArrayInputStream bais = new ByteArrayInputStream(body);
-            s3.putObject(bais, s3RawActivityBucket, activityId+"."+extension, body.length, "rawActivity");
+            s3.putObject(bais, s3RawActivityBucket, activityId + "." + extension, body.length, "rawActivity");
         } catch (IOException e) {
             LOG.error("error writing object to S3", e);
             throw new SaveException("failed to save raw activity file", e);
@@ -258,6 +370,7 @@ public class ActivityService {
 
     /**
      * method hard deletes raw activity from s3
+     *
      * @param id
      * @return
      */
@@ -271,8 +384,10 @@ public class ActivityService {
             return false;
         }
     }
+
     /**
      * Method hard deletes activity record from table
+     *
      * @param id
      * @return
      */
@@ -290,7 +405,7 @@ public class ActivityService {
             item = items.get(0);
 
         }
-        SimpleDateFormat sdf =  new SimpleDateFormat("yyyy-MM-dd'T'hh:mm:ss.SSS'Z'");
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd'T'hh:mm:ss.SSS'Z'");
         sdf.setTimeZone(TimeZone.getTimeZone("GMT"));
         System.out.println("activityTable: " + activityTable + " date: " + sdf.format(item.getDateOfUpload()));
         Table table = dynamo.getTable(this.activityTable);
@@ -308,7 +423,6 @@ public class ActivityService {
             return false;
         }
     }
-
 
 
 }
