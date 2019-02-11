@@ -46,8 +46,11 @@ public class FitActivityHolderAdapter implements ActivityHolderAdapter {
         localMesgBroadcaster.addListener(hrvMessageListener);
 
         logger.info("parsing .fit file..");
-        localMesgBroadcaster.run(is);
-
+        try {
+            localMesgBroadcaster.run(is);
+        }finally{
+            is.close();
+        }
 
         return holder;
     }

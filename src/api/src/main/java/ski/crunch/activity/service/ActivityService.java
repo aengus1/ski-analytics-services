@@ -27,9 +27,7 @@ import ski.crunch.activity.processor.summarizer.ActivitySummarizer;
 import ski.crunch.utils.*;
 
 
-import java.io.ByteArrayInputStream;
-import java.io.IOException;
-import java.io.InputStream;
+import java.io.*;
 import java.text.SimpleDateFormat;
 import java.util.*;
 
@@ -205,14 +203,30 @@ public class ActivityService {
         String key = "";
         String newKey = "";
         try {
-            LambdaProxyConfig config = new LambdaProxyConfig(input);
-            Map bucketMap = (Map) config.getS3Parameters().get("bucket");
-            Map objectMap = (Map) config.getS3Parameters().get("object");
-            bucket = (String) bucketMap.get("name");
-            key = (String) objectMap.get("key");
 
-            if (bucket == null || key == null) {
-                throw new ParseException("failed to parse activity bucket / key from config");
+            System.out.println("convert activity lambda");
+            Iterator<String> it = input.keySet().iterator();
+            while (it.hasNext()) {
+                String next = it.next();
+                ArrayList<Map> records = (ArrayList<Map>) input.get(next);
+
+                for (Map r : records) {
+                    Iterator rit = r.keySet().iterator();
+                    while (rit.hasNext()) {
+                        String nxt = (String) rit.next();
+                        if (nxt.equals("s3")) {
+                            Map s3Map = (Map) r.get(nxt);
+                            Map buck = (Map) s3Map.get("bucket");
+                            bucket = (String) buck.get("name");
+                            Map obj = (Map) s3Map.get("object");
+                            key = (String) obj.get("key");
+//                        System.out.println("bucket = " + bucket);
+//                        System.out.println("object = " + key);
+                            break;
+                        }
+                    }
+
+                }
             }
             assert (bucket != null);
             assert (key != null);
@@ -228,33 +242,56 @@ public class ActivityService {
 
 
         //3. read in raw file from s3
-        S3Service s3Service = new S3Service(region);
-        InputStream is = null;
-        ActivityHolder activity = null;
         try {
-            LOG.info("attempting to read " + key + " from " + bucket);
-            is = s3Service.getObjectAsInputStream(bucket, key);
-            ActivityHolderAdapter fitParser = new FitActivityHolderAdapter();
-
+            S3Service s3Service = new S3Service(region);
+            ActivityHolder activity = null;
+            //saving to tmpdir first as had problems reading directly from inputstream
+            //per aws docs, should read data and close stream asap
+            File rawTmp = new File("/tmp", key);
             try {
-                activity = fitParser.convert(is);
-
-            } catch (ParseException e) {
-                LOG.error("error parsing raw activity " + key + " from " + bucket + " " + e.getMessage());
-                return ApiGatewayResponse.builder()
-                        .setStatusCode(400)
-                        .setRawBody(new ErrorResponse(400,
-                                "error occurred parsing raw activity",
-                                "error occurred parsing raw activity", "").toJSON())
-                        .build();
-
+                FileUtils.deleteIfExists(rawTmp);
+                s3Service.saveObjectToTmpDir(bucket, key);
+            } catch (IOException e) {
+                LOG.error("error saving file " + e.getMessage());
             }
+            ActivityHolderAdapter fitParser = new FitActivityHolderAdapter();
+            try (FileInputStream fis = new FileInputStream(rawTmp)) {
+                try (BufferedInputStream bis = new BufferedInputStream(fis)) {
+                    activity = fitParser.convert(bis);
+                } catch (ParseException ex) {
+                    LOG.error("parse exception " + ex.getMessage());
+                }
+
+            } catch (FileNotFoundException ex) {
+                LOG.error("error reading file " + ex.getMessage());
+            } catch (IOException ex) {
+                LOG.error("error reading file " + ex.getMessage());
+            }
+//        try (InputStream is = s3Service.getObjectAsInputStream(bucket, key)) {
+//            LOG.info("attempting to read " + key + " from " + bucket);
+//            try (BufferedInputStream buffered = new BufferedInputStream(is)) {
+//                ActivityHolderAdapter fitParser = new FitActivityHolderAdapter();
+//
+//                try {
+//                    activity = fitParser.convert(buffered);
+//
+//                } catch (ParseException e) {
+//                    LOG.error("error parsing raw activity " + key + " from " + bucket + " " + e.getMessage());
+//                    return ApiGatewayResponse.builder()
+//                            .setStatusCode(400)
+//                            .setRawBody(new ErrorResponse(400,
+//                                    "error occurred parsing raw activity",
+//                                    "error occurred parsing raw activity", "").toJSON())
+//                            .build();
+//
+//                }
+
 
             //4. process and summarize
             ActivityProcessor processor = new ActivityProcessor();
             activity = processor.process(activity);
             WeatherService weatherService = new DarkSkyWeatherService();
-            LocationService  locationService = new LocationIqService();
+            LocationService locationService = new LocationIqService();
             ActivityRecord record = activity.getRecords().get(0);
 
             ActivityOuterClass.Activity.Weather weather = weatherService.getWeather(record.lat(), record.lon(), record.ts());
@@ -268,7 +305,9 @@ public class ActivityService {
 
             ConvertibleOutputStream cos = new ConvertibleOutputStream();
             result.writeTo(cos);
-            s3Service.putObject(bucket, newKey, cos.toInputStream());
+            System.out.println("processed bucket = " + s3ProcessedActivityBucket);
+            //TODO -> getting access denied ex
+            s3Service.putObject(s3ProcessedActivityBucket, newKey, cos.toInputStream());
 
             //6. update activity table
 
@@ -288,7 +327,7 @@ public class ActivityService {
             LOG.debug("extracted id: " + id);
         } else {
             LOG.error("invalid key name: " + key);
-             throw new ParseException("invalid key name for activity " + key);
+            throw new ParseException("invalid key name for activity " + key);
         }
         return id;
     }

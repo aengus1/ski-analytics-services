@@ -79,8 +79,12 @@ public class ActivityWriterImpl implements ActivityWriter {
         this.metaBuilder.setProduct(holder.getProduct());
         this.metaBuilder.setUploadTs(targetFormat.format(new Date(System.currentTimeMillis())));
         this.metaBuilder.setVersion(PROTO_VERSION);
-        this.metaBuilder.setLocation(location);
-        this.metaBuilder.setWeather(weather);
+        if(location != null) {
+            this.metaBuilder.setLocation(location);
+        }
+        if(weather != null) {
+            this.metaBuilder.setWeather(weather);
+        }
         return this.metaBuilder.build();
 
     }
@@ -118,7 +122,7 @@ public class ActivityWriterImpl implements ActivityWriter {
                     segmentBuilder.setStopTs(evtEnd.getTs());
                     ActivityOuterClass.Activity.Summary summary = null;
                     switch (startEventType) {
-                        case LAP_STOP:
+                        case LAP_START:
                             summary = writeSummary(holder.getLapSummaries().stream().filter(x -> x.startTs().equals(evt.getTs())).findFirst().get());
                             break;
                         case ACTIVITY_START:
@@ -130,8 +134,13 @@ public class ActivityWriterImpl implements ActivityWriter {
                         case PAUSE_START:
                             writeSummary(holder.getPauseSummaries().stream().filter(x -> x.startTs().equals(evt.getTs())).findFirst().get());
                             break;
+//                        case MOTION_STOP:
+//                            writeSummary(holder.getStopSummaries().stream().filter(x -> x.startTs().equals(evt.getTs())).findFirst().get());
+//                            break;
                     }
-                    segmentBuilder.setSummary(summary);
+                    if(summary != null){
+                        segmentBuilder.setSummary(summary);
+                    }
                     segments.add(segmentBuilder.build());
                     segmentBuilder.clear();
                 });
