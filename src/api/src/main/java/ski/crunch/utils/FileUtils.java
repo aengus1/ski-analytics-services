@@ -34,4 +34,10 @@ public class FileUtils {
         return buffer.toByteArray();
     }
 
+    public static void deleteIfExists(File file) {
+        if(file.exists()) {
+            file.delete();
+        }
+    }
+
 }

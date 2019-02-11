@@ -18,6 +18,7 @@ public class ActivityHolder {
     private ActivitySummary activitySummary;
     private List<ActivitySummary> lapSummaries;
     private List<ActivitySummary> pauseSummaries;
+    private List<ActivitySummary> stopSummaries;
     private List<ActivitySummary> sessionSummaries;
     private String createdTs;
     private int product;
@@ -32,6 +33,7 @@ public class ActivityHolder {
         this.setLapSummaries(new ArrayList<>());
         this.setPauseSummaries(new ArrayList<>());
         this.setSessionSummaries(new ArrayList<>());
+        this.setStopSummaries(new ArrayList<>());
         this.createdTs = "";
         this.product = -1;
         this.manufacturer = "";
@@ -45,6 +47,7 @@ public class ActivityHolder {
         this.setSessionSummaries(copy.getSessionSummaries());
         this.setPauseSummaries(copy.getPauseSummaries());
         this.setLapSummaries(copy.getLapSummaries());
+        this.setStopSummaries(copy.getStopSummaries());
         this.createdTs = copy.getCreatedTs();
         this.product = copy.getProduct();
         this.manufacturer = copy.getManufacturer();
@@ -134,5 +137,13 @@ public class ActivityHolder {
 
     public void setSessionSummaries(List<ActivitySummary> sessionSummaries) {
         this.sessionSummaries = sessionSummaries;
+    }
+
+    public List<ActivitySummary> getStopSummaries() {
+        return stopSummaries;
+    }
+
+    public void setStopSummaries(List<ActivitySummary> stopSummaries) {
+        this.stopSummaries = stopSummaries;
     }
 }

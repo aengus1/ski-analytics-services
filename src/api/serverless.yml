@@ -44,6 +44,7 @@ provider:
       Resource: "arn:aws:s3:::${{self:custom.activityBucketName}}"
     - Effect: Allow
       Action:
+        - s3:PutObject
         - s3:GetObject
       Resource: "arn:aws:s3:::${{self:custom.activityBucketName}}/*"
     - Effect: Allow
@@ -106,6 +107,8 @@ functions:
           arn: arn:aws:cognito-idp:us-west-2:556823078430:userpool/us-west-2_FrH0UdrNz
   ParseFitActivityLambda:
     handler: ski.crunch.activity.ParseFitActivityLambda
+    memorySize: 1256
+    timeout: 20
     environment:
       s3ActivityBucketName: ${{self:custom.activityBucketName}}
       s3rawActivityBucketName: ${{self:custom.rawActivityBucketName}}

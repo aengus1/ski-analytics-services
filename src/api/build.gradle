@@ -1,7 +1,7 @@
 
 plugins {
-    id 'java'
     id 'scala'
+    id 'java'
 }
 
 
@@ -29,8 +29,7 @@ dependencies {
             'org.junit.jupiter:junit-jupiter-api:5.1.0',
             // https://mvnrepository.com/artifact/com.sun.jersey/jersey-client
             'org.glassfish.jersey.core:jersey-client:2.5.1',
-            'com.fasterxml.jackson.core:jackson-core:2.9.7',
-            "org.scalactic:scalactic:3.0.1"
+            'com.fasterxml.jackson.core:jackson-core:2.9.7'
 
 
     )
@@ -70,9 +69,21 @@ test {
     }
 }
 
+sourceSets {
+    main {
+        scala {
+            srcDirs = ['src/main/scala', 'src/main/java']
+        }
+        java {
+            srcDirs = []
+        }
+    }
+}
+
 task buildZip(type: Zip) {
     baseName = "api"
     from compileJava
+    from compileScala
     from processResources
     into('lib') {
         from configurations.runtime

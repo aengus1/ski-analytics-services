@@ -61,6 +61,8 @@ public class ActivitySummarizer  implements Handler<ActivityHolder> {
         return holder;
     }
 
+    //TODO summarizeStopSegments
+
     private List<ActivitySummary> summarizeLapSegments() {
         List<ActivitySummary> lapSummaries = new ArrayList<>();
         holder.getEvents().stream().filter(x -> x.getEventType().equals(EventType.LAP_START)).forEach(event -> {

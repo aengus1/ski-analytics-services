@@ -1,7 +1,7 @@
 #!/bin/bash
 
 
-if ../../gradlew build; then
+if ../../gradlew build -x test; then
   echo "Gradle task succeeded. Deploying..." >&2
   sls deploy -v
 
