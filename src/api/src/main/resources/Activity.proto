@@ -142,7 +142,7 @@ message Session{
     Sport sport = 1;
     SubSport subSport = 2;
     Segment segment = 3;
-    Summary summary = 4;
+    Summary summary = 4;  //remove
 }
 
 enum SegmentType {
