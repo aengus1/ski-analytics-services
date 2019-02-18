@@ -267,24 +267,7 @@ public class ActivityService {
             } catch (IOException ex) {
                 LOG.error("error reading file " + ex.getMessage());
             }
-//        try (InputStream is = s3Service.getObjectAsInputStream(bucket, key)) {
-//            LOG.info("attempting to read " + key + " from " + bucket);
-//            try (BufferedInputStream buffered = new BufferedInputStream(is)) {
-//                ActivityHolderAdapter fitParser = new FitActivityHolderAdapter();
-//
-//                try {
-//                    activity = fitParser.convert(buffered);
-//
-//                } catch (ParseException e) {
-//                    LOG.error("error parsing raw activity " + key + " from " + bucket + " " + e.getMessage());
-//                    return ApiGatewayResponse.builder()
-//                            .setStatusCode(400)
-//                            .setRawBody(new ErrorResponse(400,
-//                                    "error occurred parsing raw activity",
-//                                    "error occurred parsing raw activity", "").toJSON())
-//                            .build();
-//
-//                }
+
 
 
             //4. process and summarize
@@ -424,6 +407,24 @@ public class ActivityService {
         }
     }
 
+
+    /**
+     * method hard deletes raw activity from s3
+     *
+     * @param id
+     * @return
+     */
+    public boolean deleteProcessedActivityFromS3(String id) {
+        try {
+            LOG.debug("Attempting delete of processed activity: " + id + " from " + this.s3ProcessedActivityBucket);
+            this.s3.deleteObject(this.s3ProcessedActivityBucket, id);
+            return true;
+        } catch (IOException ex) {
+            LOG.error("Error deleting processed activity: " + id + " from S3", ex);
+            return false;
+        }
+    }
+
     /**
      * Method hard deletes activity record from table
      *
@@ -462,6 +463,7 @@ public class ActivityService {
             return false;
         }
     }
+
 
 
 }

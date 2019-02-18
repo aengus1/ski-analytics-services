@@ -48,6 +48,10 @@ class ActivityTests {
     private ActivityService activityService = null;
     private S3Service s3 = null;
     private DynamoDBService dynamo = null;
+    private String processedActivityBucket = null;
+    private String rawActivityBucket = null;
+
+    private ProfileCredentialsProvider credentialsProvider = null;
 
     private final static String AWS_PROFILE = "backend_dev";
     private static final Logger LOG = Logger.getLogger(ActivityTests.class);
@@ -97,45 +101,28 @@ class ActivityTests {
         String region = apiStackServerlessState.getUserPoolRegion();
 
         this.helper = new AuthenticationHelper(userPoolId, clientId, "", region, AWS_PROFILE);
-
+        this.credentialsProvider = new ProfileCredentialsProvider(AWS_PROFILE);
         helper.PerformAdminSignup(testUserName, testPassword);
 
         this.accessKey = helper.PerformSRPAuthentication(testUserName, testPassword);
         LOG.info("ACCESS KEY: " + this.accessKey);
-        this.s3 = new S3Service(apiStackServerlessState.getRegion());
+        this.s3 = new S3Service(apiStackServerlessState.getRegion(), credentialsProvider);
         this.dynamo = new DynamoDBService(region, apiStackServerlessState.getActivityTable(),
-                new ProfileCredentialsProvider(AWS_PROFILE));
-        this.activityService = new ActivityService(s3, new ProfileCredentialsProvider(AWS_PROFILE),dynamo
-                ,apiStackServerlessState.getRegion(),
-                apiStackServerlessState.getRawActivityBucketName(),apiStackServerlessState.getActivityBucketName(),
-                apiStackServerlessState.getActivityTable() );
+                this.credentialsProvider);
+        this.activityService = new ActivityService(s3, this.credentialsProvider, dynamo
+                , apiStackServerlessState.getRegion(),
+                apiStackServerlessState.getRawActivityBucketName(), apiStackServerlessState.getActivityBucketName(),
+                apiStackServerlessState.getActivityTable());
 
+        this.processedActivityBucket = apiStackServerlessState.getActivityBucketName();
+        this.rawActivityBucket = apiStackServerlessState.getRawActivityBucketName();
         System.out.println("printing variables...");
         System.out.println(apiStackServerlessState.getRawActivityBucketName());
         System.out.println(apiStackServerlessState.getActivityBucketName());
-        System.out.println(apiStackServerlessState.getActivityTable() );
+        System.out.println(apiStackServerlessState.getActivityTable());
 
     }
 
-    @Test
-    void generateDevAccessKey() {
-        helper.PerformAdminSignup(devUserName, devPassword);
-
-        this.devAccessKey = helper.PerformSRPAuthentication(devUserName, devPassword);
-        LOG.info("DEV ACCESS KEY: " + this.devAccessKey);
-    }
-
-    @Test
-    void testJsonWriter() {
-        String resp = null;
-        try {
-            final ObjectMapper objectMapper = new ObjectMapper();
-            resp = objectMapper.writeValueAsString(new PutActivityResponse("test124"));
-            System.out.println(resp);
-        } catch (Exception ex) {
-            ex.printStackTrace();
-        }
-    }
 
     @Test
     void putActivityAuthFailureTest() {
@@ -197,7 +184,7 @@ class ActivityTests {
                 .buildPut(payload).invoke();
 
         String result = response.readEntity(String.class);
-        System.out.println("res = " + result);
+        LOG.info("success result: " + result);
         assert (response.getStatus() == 200);
 
         ObjectMapper objectMapper = new ObjectMapper();
@@ -206,76 +193,50 @@ class ActivityTests {
         try {
             rootNode = objectMapper.readTree(result);
             this.activityId = rootNode.path("activityId").asText();
-            System.out.println("activityId = " + activityId);
+            LOG.info("ACTIVITY ID: " + activityId);
         } catch (IOException e) {
             e.printStackTrace();
         }
 
-
-    }
-
-//    @Test
-//    void getActivitySuccessTest() {
-//
-//        String endpoint = null;
+        // appears to be an eventual consistency issue here. S3 returning not found
 //        try {
-//            endpoint = apiStackCfHelper.getApiEndpoint();
-//            LOG.info("ENDPOINT: " + endpoint);
-//        } catch (NotFoundException ex) {
-//            ex.printStackTrace();
+//            Thread.currentThread().sleep(20000);
+//            LOG.info("checking processed bucket " + processedActivityBucket + " for activity: " + activityId+".pbf");
+//            assert(s3.doesObjectExist(processedActivityBucket, activityId+".pbf") == true);
+//        } catch (InterruptedException ex) {
+//
 //        }
-//        Client client = ClientBuilder.newClient();
-////        WebTarget target = client.target(endpoint).path("activity/"+this.activityId);
-//        WebTarget target = client.target(endpoint).path("activity/1"+this.activityId);
-//
-//
-//        Response response = target.request(MediaType.valueOf("application/x-protobuf"))
-//                .accept("application/x-protobuf")
-//                .header("Content-Type", "application/x-empty")
-//                .header("Accept", "application/x-protobuf")
-//                .header("Authorization", this.accessKey)
-//                .buildGet().invoke();
-//
-//        System.out.println("res = " + response.getStatus());
-//        try(InputStream  result = response.readEntity(InputStream.class)){
-//            byte[] bytes = IOUtils.toByteArray(result);
-//            assert(bytes.length > 0);
-//
-//        }catch(IOException ex){
-//            ex.printStackTrace();
-//            assert(false);
-//        }
-//
-//        assert (response.getStatus() == 200);
-//
-//    }
 
-
-    //todo -> clean up activity table
-    // todo -> clean up raw activity bucket
-    //todo -> clean up processed activity path
-
-//    @Test
-//    void testAccessKey() {
-//        AuthenticationHelper helper = new AuthenticationHelper("us-west-2_FrH0UdrNz",
-//                "755f5d0elsg5ie96116540qm3u", "secretkey", "us-west-2");
-//
-//        String result = helper.PerformSRPAuthentication("aengusmccullough@hotmail.com", "Norwich123");
-//        System.out.println("result = " + result);
-//
-//
-//    }
-
-
-    @Test
-    void destroyDevUser() {
-        helper.deleteUser(this.devUserName);
     }
 
+    /**
+     * Helper to generate an access key for debugging
+     * Uncomment to run individually - not a part of the test suite
+     */
+//    @Test
+//    void generateDevAccessKey() {
+//        helper.PerformAdminSignup(devUserName, devPassword);
+//
+//        this.devAccessKey = helper.PerformSRPAuthentication(devUserName, devPassword);
+//        LOG.info("DEV ACCESS KEY: " + this.devAccessKey);
+//    }
+//
+//    @Test
+//    void destroyDevUser() {
+//        helper.deleteUser(this.devUserName);
+//    }
     @AfterAll
     void tearDown() {
         activityService.deleteActivityItemById(activityId);
-        // activityService.deleteRawActivityFromS3(activityId+".fit");
+        activityService.deleteRawActivityFromS3(activityId + ".fit");
+        try {
+            Thread.currentThread().sleep(20000);
+            LOG.info("deleting from processed bucket " + processedActivityBucket + " for activity: " + activityId + ".pbf");
+            activityService.deleteProcessedActivityFromS3(activityId + ".pbf");
+        } catch (InterruptedException ex) {
+
+        }
+
         helper.deleteUser(this.testUserName);
     }
 

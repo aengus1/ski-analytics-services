@@ -1,11 +1,13 @@
 package ski.crunch.activity.service;
 
 import com.amazonaws.SdkClientException;
+import com.amazonaws.auth.profile.ProfileCredentialsProvider;
 import com.amazonaws.services.s3.AmazonS3;
 import com.amazonaws.services.s3.AmazonS3ClientBuilder;
 import com.amazonaws.services.s3.model.*;
 import com.amazonaws.util.IOUtils;
 import org.apache.commons.io.FileUtils;
+import org.apache.http.auth.AuthScope;
 import org.apache.log4j.Logger;
 
 import java.io.*;
@@ -23,6 +25,13 @@ public class S3Service {
         this.s3Client = AmazonS3ClientBuilder.standard()
                 .withRegion(region)
                 //.withCredentials(new ProfileCredentialsProvider())
+                .build();
+    }
+
+    public S3Service(String region, ProfileCredentialsProvider credentialsProvider) {
+        this.s3Client = AmazonS3ClientBuilder.standard()
+                .withRegion(region)
+                .withCredentials(credentialsProvider)
                 .build();
     }
 
