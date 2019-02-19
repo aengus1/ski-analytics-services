@@ -109,7 +109,7 @@ class ActivityTests {
         this.s3 = new S3Service(apiStackServerlessState.getRegion(), credentialsProvider);
         this.dynamo = new DynamoDBService(region, apiStackServerlessState.getActivityTable(),
                 this.credentialsProvider);
-        this.activityService = new ActivityService(s3, this.credentialsProvider, dynamo
+        this.activityService = new ActivityService(null, s3, this.credentialsProvider, dynamo
                 , apiStackServerlessState.getRegion(),
                 apiStackServerlessState.getRawActivityBucketName(), apiStackServerlessState.getActivityBucketName(),
                 apiStackServerlessState.getActivityTable());

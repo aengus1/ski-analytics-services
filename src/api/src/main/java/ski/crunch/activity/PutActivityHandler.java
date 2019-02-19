@@ -16,10 +16,12 @@ import java.util.*;
 
 public class PutActivityHandler implements RequestHandler<Map<String, Object>, ApiGatewayResponse> {
 
+    private static final String WEATHER_API_PARAMETER_NAME="-weather-api-key";
     private String s3RawActivityBucket = null;
     private String s3ActivityBucket = null;
     private String region = null;
     private String activityTable = null;
+    private String stage = null;
     private S3Service s3 = null;
     private AWSCredentialsProvider credentialsProvider = null;
     private DynamoDBService dynamo = null;
@@ -31,6 +33,7 @@ public class PutActivityHandler implements RequestHandler<Map<String, Object>, A
         this.s3RawActivityBucket = System.getenv("s3RawActivityBucketName");
         this.s3ActivityBucket = System.getenv("s3ActivityBucketName");
         this.region = System.getenv("AWS_DEFAULT_REGION");
+        this.stage = System.getenv("currentStage");
         this.activityTable = System.getenv("activityTable");
         this.s3 = new S3Service(region);
 
@@ -43,8 +46,9 @@ public class PutActivityHandler implements RequestHandler<Map<String, Object>, A
         }
         this.dynamo = new DynamoDBService(region,activityTable, credentialsProvider );
         this.parameterService = new SSMParameterService(region, credentialsProvider);
-        this.weatherService = new DarkSkyWeatherService(parameterService);
-        this.activityService = new ActivityService(parameterService, weatherService, s3, credentialsProvider, dynamo, region,
+        String weatherApiKey = stage+"-"+parameterService.getParameter(WEATHER_API_PARAMETER_NAME);
+        this.weatherService = new DarkSkyWeatherService(weatherApiKey);
+        this.activityService = new ActivityService( weatherService, s3, credentialsProvider, dynamo, region,
                 s3RawActivityBucket,s3ActivityBucket, activityTable);
     }
 

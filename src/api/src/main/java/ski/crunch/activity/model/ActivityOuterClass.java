@@ -449,6 +449,10 @@ public final class ActivityOuterClass {
        * <code>SNOW = 2;</code>
        */
       SNOW(2),
+      /**
+       * <code>NA_PRECIP = 3;</code>
+       */
+      NA_PRECIP(3),
       UNRECOGNIZED(-1),
       ;
 
@@ -464,6 +468,10 @@ public final class ActivityOuterClass {
        * <code>SNOW = 2;</code>
        */
       public static final int SNOW_VALUE = 2;
+      /**
+       * <code>NA_PRECIP = 3;</code>
+       */
+      public static final int NA_PRECIP_VALUE = 3;
 
 
       public final int getNumber() {
@@ -487,6 +495,7 @@ public final class ActivityOuterClass {
           case 0: return RAIN;
           case 1: return SLEET;
           case 2: return SNOW;
+          case 3: return NA_PRECIP;
           default: return null;
         }
       }
@@ -584,6 +593,10 @@ public final class ActivityOuterClass {
        * <code>PARTLY_CLOUDY_NIGHT = 9;</code>
        */
       PARTLY_CLOUDY_NIGHT(9),
+      /**
+       * <code>NA_ICON = 10;</code>
+       */
+      NA_ICON(10),
       UNRECOGNIZED(-1),
       ;
 
@@ -627,6 +640,10 @@ public final class ActivityOuterClass {
        * <code>PARTLY_CLOUDY_NIGHT = 9;</code>
        */
       public static final int PARTLY_CLOUDY_NIGHT_VALUE = 9;
+      /**
+       * <code>NA_ICON = 10;</code>
+       */
+      public static final int NA_ICON_VALUE = 10;
 
 
       public final int getNumber() {
@@ -657,6 +674,7 @@ public final class ActivityOuterClass {
           case 7: return CLOUDY;
           case 8: return PARTLY_CLOUDY_DAY;
           case 9: return PARTLY_CLOUDY_NIGHT;
+          case 10: return NA_ICON;
           default: return null;
         }
       }
@@ -719,6 +737,10 @@ public final class ActivityOuterClass {
        */
       GOOGLE(0),
       /**
+       * <code>LOCATION_IQ = 1;</code>
+       */
+      LOCATION_IQ(1),
+      /**
        * <code>HERE = 2;</code>
        */
       HERE(2),
@@ -729,6 +751,10 @@ public final class ActivityOuterClass {
        * <code>GOOGLE = 0;</code>
        */
       public static final int GOOGLE_VALUE = 0;
+      /**
+       * <code>LOCATION_IQ = 1;</code>
+       */
+      public static final int LOCATION_IQ_VALUE = 1;
       /**
        * <code>HERE = 2;</code>
        */
@@ -754,6 +780,7 @@ public final class ActivityOuterClass {
       public static LocationSource forNumber(int value) {
         switch (value) {
           case 0: return GOOGLE;
+          case 1: return LOCATION_IQ;
           case 2: return HERE;
           default: return null;
         }
@@ -5823,6 +5850,33 @@ public final class ActivityOuterClass {
        * <code>float snowInPast24Hours = 14;</code>
        */
       float getSnowInPast24Hours();
+
+      /**
+       * <pre>
+       *text description
+       * </pre>
+       *
+       * <code>string summary = 15;</code>
+       */
+      java.lang.String getSummary();
+      /**
+       * <pre>
+       *text description
+       * </pre>
+       *
+       * <code>string summary = 15;</code>
+       */
+      com.google.protobuf.ByteString
+          getSummaryBytes();
+
+      /**
+       * <pre>
+       *celsius
+       * </pre>
+       *
+       * <code>double dewPoint = 16;</code>
+       */
+      double getDewPoint();
     }
     /**
      * Protobuf type {@code Activity.Weather}
@@ -5851,6 +5905,8 @@ public final class ActivityOuterClass {
         humidity_ = 0F;
         snowDepth_ = 0F;
         snowInPast24Hours_ = 0F;
+        summary_ = "";
+        dewPoint_ = 0D;
       }
 
       @java.lang.Override
@@ -5954,6 +6010,17 @@ public final class ActivityOuterClass {
               case 117: {
 
                 snowInPast24Hours_ = input.readFloat();
+                break;
+              }
+              case 122: {
+                java.lang.String s = input.readStringRequireUtf8();
+
+                summary_ = s;
+                break;
+              }
+              case 129: {
+
+                dewPoint_ = input.readDouble();
                 break;
               }
             }
@@ -6168,6 +6235,61 @@ public final class ActivityOuterClass {
         return snowInPast24Hours_;
       }
 
+      public static final int SUMMARY_FIELD_NUMBER = 15;
+      private volatile java.lang.Object summary_;
+      /**
+       * <pre>
+       *text description
+       * </pre>
+       *
+       * <code>string summary = 15;</code>
+       */
+      public java.lang.String getSummary() {
+        java.lang.Object ref = summary_;
+        if (ref instanceof java.lang.String) {
+          return (java.lang.String) ref;
+        } else {
+          com.google.protobuf.ByteString bs = 
+              (com.google.protobuf.ByteString) ref;
+          java.lang.String s = bs.toStringUtf8();
+          summary_ = s;
+          return s;
+        }
+      }
+      /**
+       * <pre>
+       *text description
+       * </pre>
+       *
+       * <code>string summary = 15;</code>
+       */
+      public com.google.protobuf.ByteString
+          getSummaryBytes() {
+        java.lang.Object ref = summary_;
+        if (ref instanceof java.lang.String) {
+          com.google.protobuf.ByteString b = 
+              com.google.protobuf.ByteString.copyFromUtf8(
+                  (java.lang.String) ref);
+          summary_ = b;
+          return b;
+        } else {
+          return (com.google.protobuf.ByteString) ref;
+        }
+      }
+
+      public static final int DEWPOINT_FIELD_NUMBER = 16;
+      private double dewPoint_;
+      /**
+       * <pre>
+       *celsius
+       * </pre>
+       *
+       * <code>double dewPoint = 16;</code>
+       */
+      public double getDewPoint() {
+        return dewPoint_;
+      }
+
       private byte memoizedIsInitialized = -1;
       public final boolean isInitialized() {
         byte isInitialized = memoizedIsInitialized;
@@ -6221,6 +6343,12 @@ public final class ActivityOuterClass {
         }
         if (snowInPast24Hours_ != 0F) {
           output.writeFloat(14, snowInPast24Hours_);
+        }
+        if (!getSummaryBytes().isEmpty()) {
+          com.google.protobuf.GeneratedMessageV3.writeString(output, 15, summary_);
+        }
+        if (dewPoint_ != 0D) {
+          output.writeDouble(16, dewPoint_);
         }
         unknownFields.writeTo(output);
       }
@@ -6286,6 +6414,13 @@ public final class ActivityOuterClass {
           size += com.google.protobuf.CodedOutputStream
             .computeFloatSize(14, snowInPast24Hours_);
         }
+        if (!getSummaryBytes().isEmpty()) {
+          size += com.google.protobuf.GeneratedMessageV3.computeStringSize(15, summary_);
+        }
+        if (dewPoint_ != 0D) {
+          size += com.google.protobuf.CodedOutputStream
+            .computeDoubleSize(16, dewPoint_);
+        }
         size += unknownFields.getSerializedSize();
         memoizedSize = size;
         return size;
@@ -6350,6 +6485,12 @@ public final class ActivityOuterClass {
             java.lang.Float.floatToIntBits(getSnowInPast24Hours())
             == java.lang.Float.floatToIntBits(
                 other.getSnowInPast24Hours()));
+        result = result && getSummary()
+            .equals(other.getSummary());
+        result = result && (
+            java.lang.Double.doubleToLongBits(getDewPoint())
+            == java.lang.Double.doubleToLongBits(
+                other.getDewPoint()));
         result = result && unknownFields.equals(other.unknownFields);
         return result;
       }
@@ -6400,6 +6541,11 @@ public final class ActivityOuterClass {
         hash = (37 * hash) + SNOWINPAST24HOURS_FIELD_NUMBER;
         hash = (53 * hash) + java.lang.Float.floatToIntBits(
             getSnowInPast24Hours());
+        hash = (37 * hash) + SUMMARY_FIELD_NUMBER;
+        hash = (53 * hash) + getSummary().hashCode();
+        hash = (37 * hash) + DEWPOINT_FIELD_NUMBER;
+        hash = (53 * hash) + com.google.protobuf.Internal.hashLong(
+            java.lang.Double.doubleToLongBits(getDewPoint()));
         hash = (29 * hash) + unknownFields.hashCode();
         memoizedHashCode = hash;
         return hash;
@@ -6557,6 +6703,10 @@ public final class ActivityOuterClass {
 
           snowInPast24Hours_ = 0F;
 
+          summary_ = "";
+
+          dewPoint_ = 0D;
+
           return this;
         }
 
@@ -6593,6 +6743,8 @@ public final class ActivityOuterClass {
           result.humidity_ = humidity_;
           result.snowDepth_ = snowDepth_;
           result.snowInPast24Hours_ = snowInPast24Hours_;
+          result.summary_ = summary_;
+          result.dewPoint_ = dewPoint_;
           onBuilt();
           return result;
         }
@@ -6675,6 +6827,13 @@ public final class ActivityOuterClass {
           }
           if (other.getSnowInPast24Hours() != 0F) {
             setSnowInPast24Hours(other.getSnowInPast24Hours());
+          }
+          if (!other.getSummary().isEmpty()) {
+            summary_ = other.summary_;
+            onChanged();
+          }
+          if (other.getDewPoint() != 0D) {
+            setDewPoint(other.getDewPoint());
           }
           this.mergeUnknownFields(other.unknownFields);
           onChanged();
@@ -7243,6 +7402,133 @@ public final class ActivityOuterClass {
         public Builder clearSnowInPast24Hours() {
           
           snowInPast24Hours_ = 0F;
+          onChanged();
+          return this;
+        }
+
+        private java.lang.Object summary_ = "";
+        /**
+         * <pre>
+         *text description
+         * </pre>
+         *
+         * <code>string summary = 15;</code>
+         */
+        public java.lang.String getSummary() {
+          java.lang.Object ref = summary_;
+          if (!(ref instanceof java.lang.String)) {
+            com.google.protobuf.ByteString bs =
+                (com.google.protobuf.ByteString) ref;
+            java.lang.String s = bs.toStringUtf8();
+            summary_ = s;
+            return s;
+          } else {
+            return (java.lang.String) ref;
+          }
+        }
+        /**
+         * <pre>
+         *text description
+         * </pre>
+         *
+         * <code>string summary = 15;</code>
+         */
+        public com.google.protobuf.ByteString
+            getSummaryBytes() {
+          java.lang.Object ref = summary_;
+          if (ref instanceof String) {
+            com.google.protobuf.ByteString b = 
+                com.google.protobuf.ByteString.copyFromUtf8(
+                    (java.lang.String) ref);
+            summary_ = b;
+            return b;
+          } else {
+            return (com.google.protobuf.ByteString) ref;
+          }
+        }
+        /**
+         * <pre>
+         *text description
+         * </pre>
+         *
+         * <code>string summary = 15;</code>
+         */
+        public Builder setSummary(
+            java.lang.String value) {
+          if (value == null) {
+    throw new NullPointerException();
+  }
+  
+          summary_ = value;
+          onChanged();
+          return this;
+        }
+        /**
+         * <pre>
+         *text description
+         * </pre>
+         *
+         * <code>string summary = 15;</code>
+         */
+        public Builder clearSummary() {
+          
+          summary_ = getDefaultInstance().getSummary();
+          onChanged();
+          return this;
+        }
+        /**
+         * <pre>
+         *text description
+         * </pre>
+         *
+         * <code>string summary = 15;</code>
+         */
+        public Builder setSummaryBytes(
+            com.google.protobuf.ByteString value) {
+          if (value == null) {
+    throw new NullPointerException();
+  }
+  checkByteStringIsUtf8(value);
+          
+          summary_ = value;
+          onChanged();
+          return this;
+        }
+
+        private double dewPoint_ ;
+        /**
+         * <pre>
+         *celsius
+         * </pre>
+         *
+         * <code>double dewPoint = 16;</code>
+         */
+        public double getDewPoint() {
+          return dewPoint_;
+        }
+        /**
+         * <pre>
+         *celsius
+         * </pre>
+         *
+         * <code>double dewPoint = 16;</code>
+         */
+        public Builder setDewPoint(double value) {
+          
+          dewPoint_ = value;
+          onChanged();
+          return this;
+        }
+        /**
+         * <pre>
+         *celsius
+         * </pre>
+         *
+         * <code>double dewPoint = 16;</code>
+         */
+        public Builder clearDewPoint() {
+          
+          dewPoint_ = 0D;
           onChanged();
           return this;
         }
@@ -12799,14 +13085,26 @@ public final class ActivityOuterClass {
       ski.crunch.activity.model.ActivityOuterClass.Activity.SegmentOrBuilder getSegmentOrBuilder();
 
       /**
+       * <pre>
+       *remove
+       * </pre>
+       *
        * <code>.Activity.Summary summary = 4;</code>
        */
       boolean hasSummary();
       /**
+       * <pre>
+       *remove
+       * </pre>
+       *
        * <code>.Activity.Summary summary = 4;</code>
        */
       ski.crunch.activity.model.ActivityOuterClass.Activity.Summary getSummary();
       /**
+       * <pre>
+       *remove
+       * </pre>
+       *
        * <code>.Activity.Summary summary = 4;</code>
        */
       ski.crunch.activity.model.ActivityOuterClass.Activity.SummaryOrBuilder getSummaryOrBuilder();
@@ -12977,18 +13275,30 @@ public final class ActivityOuterClass {
       public static final int SUMMARY_FIELD_NUMBER = 4;
       private ski.crunch.activity.model.ActivityOuterClass.Activity.Summary summary_;
       /**
+       * <pre>
+       *remove
+       * </pre>
+       *
        * <code>.Activity.Summary summary = 4;</code>
        */
       public boolean hasSummary() {
         return summary_ != null;
       }
       /**
+       * <pre>
+       *remove
+       * </pre>
+       *
        * <code>.Activity.Summary summary = 4;</code>
        */
       public ski.crunch.activity.model.ActivityOuterClass.Activity.Summary getSummary() {
         return summary_ == null ? ski.crunch.activity.model.ActivityOuterClass.Activity.Summary.getDefaultInstance() : summary_;
       }
       /**
+       * <pre>
+       *remove
+       * </pre>
+       *
        * <code>.Activity.Summary summary = 4;</code>
        */
       public ski.crunch.activity.model.ActivityOuterClass.Activity.SummaryOrBuilder getSummaryOrBuilder() {
@@ -13562,12 +13872,20 @@ public final class ActivityOuterClass {
         private com.google.protobuf.SingleFieldBuilderV3<
             ski.crunch.activity.model.ActivityOuterClass.Activity.Summary, ski.crunch.activity.model.ActivityOuterClass.Activity.Summary.Builder, ski.crunch.activity.model.ActivityOuterClass.Activity.SummaryOrBuilder> summaryBuilder_;
         /**
+         * <pre>
+         *remove
+         * </pre>
+         *
          * <code>.Activity.Summary summary = 4;</code>
          */
         public boolean hasSummary() {
           return summaryBuilder_ != null || summary_ != null;
         }
         /**
+         * <pre>
+         *remove
+         * </pre>
+         *
          * <code>.Activity.Summary summary = 4;</code>
          */
         public ski.crunch.activity.model.ActivityOuterClass.Activity.Summary getSummary() {
@@ -13578,6 +13896,10 @@ public final class ActivityOuterClass {
           }
         }
         /**
+         * <pre>
+         *remove
+         * </pre>
+         *
          * <code>.Activity.Summary summary = 4;</code>
          */
         public Builder setSummary(ski.crunch.activity.model.ActivityOuterClass.Activity.Summary value) {
@@ -13594,6 +13916,10 @@ public final class ActivityOuterClass {
           return this;
         }
         /**
+         * <pre>
+         *remove
+         * </pre>
+         *
          * <code>.Activity.Summary summary = 4;</code>
          */
         public Builder setSummary(
@@ -13608,6 +13934,10 @@ public final class ActivityOuterClass {
           return this;
         }
         /**
+         * <pre>
+         *remove
+         * </pre>
+         *
          * <code>.Activity.Summary summary = 4;</code>
          */
         public Builder mergeSummary(ski.crunch.activity.model.ActivityOuterClass.Activity.Summary value) {
@@ -13626,6 +13956,10 @@ public final class ActivityOuterClass {
           return this;
         }
         /**
+         * <pre>
+         *remove
+         * </pre>
+         *
          * <code>.Activity.Summary summary = 4;</code>
          */
         public Builder clearSummary() {
@@ -13640,6 +13974,10 @@ public final class ActivityOuterClass {
           return this;
         }
         /**
+         * <pre>
+         *remove
+         * </pre>
+         *
          * <code>.Activity.Summary summary = 4;</code>
          */
         public ski.crunch.activity.model.ActivityOuterClass.Activity.Summary.Builder getSummaryBuilder() {
@@ -13648,6 +13986,10 @@ public final class ActivityOuterClass {
           return getSummaryFieldBuilder().getBuilder();
         }
         /**
+         * <pre>
+         *remove
+         * </pre>
+         *
          * <code>.Activity.Summary summary = 4;</code>
          */
         public ski.crunch.activity.model.ActivityOuterClass.Activity.SummaryOrBuilder getSummaryOrBuilder() {
@@ -13659,6 +14001,10 @@ public final class ActivityOuterClass {
           }
         }
         /**
+         * <pre>
+         *remove
+         * </pre>
+         *
          * <code>.Activity.Summary summary = 4;</code>
          */
         private com.google.protobuf.SingleFieldBuilderV3<
@@ -21819,7 +22165,7 @@ public final class ActivityOuterClass {
       descriptor;
   static {
     java.lang.String[] descriptorData = {
-      "\n\016Activity.proto\"\3641\n\010Activity\022\034\n\004meta\030\001 " +
+      "\n\016Activity.proto\"\3042\n\010Activity\022\034\n\004meta\030\001 " +
       "\001(\0132\016.Activity.Meta\022$\n\010userData\030\002 \001(\0132\022." +
       "Activity.UserData\022\"\n\007summary\030\003 \001(\0132\021.Act" +
       "ivity.Summary\022 \n\006values\030\004 \001(\0132\020.Activity" +
@@ -21836,7 +22182,7 @@ public final class ActivityOuterClass {
       "\0132\022.Activity.Location\022\"\n\007weather\030\n \001(\0132\021" +
       ".Activity.Weather\032M\n\010UserData\022\017\n\007feeling" +
       "\030\001 \001(\005\022\r\n\005notes\030\002 \001(\t\022\014\n\004tags\030\003 \003(\t\022\023\n\013u" +
-      "serWeather\030\004 \001(\t\032\343\002\n\007Weather\022\023\n\013temperat" +
+      "serWeather\030\004 \001(\t\032\206\003\n\007Weather\022\023\n\013temperat" +
       "ure\030\001 \001(\001\022\033\n\023apparentTemperature\030\002 \001(\001\022\021" +
       "\n\twindSpeed\030\003 \001(\002\022\025\n\rwindDirection\030\004 \001(\005" +
       "\022\022\n\ncloudCover\030\005 \001(\002\022\020\n\010pressure\030\006 \001(\002\022(" +
@@ -21845,59 +22191,61 @@ public final class ActivityOuterClass {
       "ulation\030\t \001(\001\022\022\n\nvisibility\030\n \001(\002\022#\n\004ico" +
       "n\030\013 \001(\0162\025.Activity.WeatherIcon\022\020\n\010humidi" +
       "ty\030\014 \001(\002\022\021\n\tsnowDepth\030\r \001(\002\022\031\n\021snowInPas" +
-      "t24Hours\030\016 \001(\002\032\340\001\n\010Location\022\013\n\003lat\030\001 \001(\001" +
-      "\022\013\n\003lon\030\002 \001(\001\022(\n\006source\030\003 \001(\0162\030.Activity" +
-      ".LocationSource\022\020\n\010address1\030\004 \001(\t\022\020\n\010add" +
-      "ress2\030\005 \001(\t\022\014\n\004city\030\006 \001(\t\022\016\n\006county\030\007 \001(" +
-      "\t\022\014\n\004prov\030\010 \001(\t\022\017\n\007country\030\t \001(\t\022\013\n\003zip\030" +
-      "\n \001(\t\022\"\n\006fences\030\013 \003(\0132\022.Activity.Geofenc" +
-      "e\032$\n\010Geofence\022\n\n\002id\030\001 \001(\005\022\014\n\004name\030\002 \001(\t\032" +
-      "\353\006\n\007Summary\022?\n\017hasAttributeMap\030\001 \003(\0132&.A" +
-      "ctivity.Summary.HasAttributeMapEntry\022\017\n\007" +
-      "startTs\030\002 \001(\t\022\r\n\005endTs\030\003 \001(\t\022\024\n\014totalEla" +
-      "psed\030\004 \001(\001\022\022\n\ntotalTimer\030\005 \001(\001\022\023\n\013totalM" +
-      "oving\030\006 \001(\001\022\024\n\014totalStopped\030\007 \001(\001\022\023\n\013tot" +
-      "alPaused\030\010 \001(\001\022\023\n\013totalAscent\030\t \001(\001\022\024\n\014t" +
-      "otalDescent\030\n \001(\001\022\025\n\rtotalDistance\030\013 \001(\001" +
-      "\022\r\n\005avgHr\030\014 \001(\005\022\r\n\005maxHr\030\r \001(\005\022\r\n\005minHr\030" +
-      "\016 \001(\005\022\022\n\navgCadence\030\017 \001(\005\022\022\n\nmaxCadence\030" +
-      "\020 \001(\005\022\017\n\007avgTemp\030\021 \001(\005\022\017\n\007maxTemp\030\022 \001(\005\022" +
-      "\020\n\010avgSpeed\030\023 \001(\001\022\020\n\010maxSpeed\030\024 \001(\001\022\033\n\023m" +
-      "axPositiveGradient\030\025 \001(\005\022\033\n\023maxNegativeG" +
-      "radient\030\026 \001(\005\022\033\n\023avgPositiveGradient\030\027 \001" +
-      "(\005\022\033\n\023avgNegativeGradient\030\030 \001(\005\022\024\n\014total" +
-      "AscTime\030\031 \001(\001\022\025\n\rtotalDescTime\030\032 \001(\001\022\024\n\014" +
-      "totalAscDist\030\033 \001(\001\022\025\n\rtotalDescDist\030\034 \001(" +
-      "\001\022*\n\013segmentType\030\035 \001(\0162\025.Activity.Segmen" +
-      "tType\022 \n\030maxPositiveVerticalSpeed\030\036 \001(\005\022" +
-      " \n\030maxNegativeVerticalSpeed\030\037 \001(\005\022 \n\030avg" +
-      "PositiveVerticalSpeed\030  \001(\005\022 \n\030avgNegati" +
-      "veVerticalSpeed\030! \001(\005\0326\n\024HasAttributeMap" +
-      "Entry\022\013\n\003key\030\001 \001(\t\022\r\n\005value\030\002 \001(\010:\0028\001\032\227\001" +
-      "\n\007Session\022\036\n\005sport\030\001 \001(\0162\017.Activity.Spor" +
-      "t\022$\n\010subSport\030\002 \001(\0162\022.Activity.SubSport\022" +
-      "\"\n\007segment\030\003 \001(\0132\021.Activity.Segment\022\"\n\007s" +
-      "ummary\030\004 \001(\0132\021.Activity.Summary\032\256\002\n\006Valu" +
-      "es\022\n\n\002ts\030\001 \003(\t\022\n\n\002hr\030\002 \003(\005\022\013\n\003lat\030\003 \003(\001\022" +
-      "\013\n\003lon\030\004 \003(\001\022\r\n\005speed\030\005 \003(\001\022\020\n\010altitude\030" +
-      "\006 \003(\001\022\r\n\005grade\030\007 \003(\001\022\020\n\010distance\030\010 \003(\001\022\023" +
-      "\n\013temperature\030\t \003(\001\022\016\n\006moving\030\n \003(\010\022\017\n\007c" +
-      "adence\030\013 \003(\005\022(\n\004hrvs\030\014 \003(\0132\032.Activity.Va" +
-      "lues.HrvsEntry\022\013\n\003hrv\030\r \003(\001\022\026\n\016vertical_" +
-      "speed\030\016 \003(\001\032+\n\tHrvsEntry\022\013\n\003key\030\001 \001(\t\022\r\n" +
-      "\005value\030\002 \001(\001:\0028\001\032{\n\010FitEvent\022\r\n\005index\030\001 " +
-      "\001(\005\022\n\n\002ts\030\002 \001(\t\022\r\n\005event\030\003 \001(\t\022&\n\teventT" +
-      "ype\030\004 \001(\0162\023.Activity.EventType\022\014\n\004info\030\005" +
-      " \001(\t\022\017\n\007trigger\030\006 \001(\t\032q\n\007Segment\022\017\n\007star" +
-      "tTs\030\001 \001(\t\022\016\n\006stopTs\030\002 \001(\t\022\020\n\010startIdx\030\003 " +
-      "\001(\005\022\017\n\007stopIdx\030\004 \001(\005\022\"\n\007summary\030\005 \001(\0132\021." +
-      "Activity.Summary\"+\n\nPrecipType\022\010\n\004RAIN\020\000" +
-      "\022\t\n\005SLEET\020\001\022\010\n\004SNOW\020\002\"\252\001\n\013WeatherIcon\022\r\n" +
-      "\tCLEAR_DAY\020\000\022\017\n\013CLEAR_NIGHT\020\001\022\r\n\tRAIN_IC" +
-      "ON\020\002\022\r\n\tSNOW_ICON\020\003\022\016\n\nSLEET_ICON\020\004\022\010\n\004W" +
-      "IND\020\005\022\007\n\003FOG\020\006\022\n\n\006CLOUDY\020\007\022\025\n\021PARTLY_CLO" +
-      "UDY_DAY\020\010\022\027\n\023PARTLY_CLOUDY_NIGHT\020\t\"&\n\016Lo" +
-      "cationSource\022\n\n\006GOOGLE\020\000\022\010\n\004HERE\020\002\"<\n\013Se" +
+      "t24Hours\030\016 \001(\002\022\017\n\007summary\030\017 \001(\t\022\020\n\010dewPo" +
+      "int\030\020 \001(\001\032\340\001\n\010Location\022\013\n\003lat\030\001 \001(\001\022\013\n\003l" +
+      "on\030\002 \001(\001\022(\n\006source\030\003 \001(\0162\030.Activity.Loca" +
+      "tionSource\022\020\n\010address1\030\004 \001(\t\022\020\n\010address2" +
+      "\030\005 \001(\t\022\014\n\004city\030\006 \001(\t\022\016\n\006county\030\007 \001(\t\022\014\n\004" +
+      "prov\030\010 \001(\t\022\017\n\007country\030\t \001(\t\022\013\n\003zip\030\n \001(\t" +
+      "\022\"\n\006fences\030\013 \003(\0132\022.Activity.Geofence\032$\n\010" +
+      "Geofence\022\n\n\002id\030\001 \001(\005\022\014\n\004name\030\002 \001(\t\032\353\006\n\007S" +
+      "ummary\022?\n\017hasAttributeMap\030\001 \003(\0132&.Activi" +
+      "ty.Summary.HasAttributeMapEntry\022\017\n\007start" +
+      "Ts\030\002 \001(\t\022\r\n\005endTs\030\003 \001(\t\022\024\n\014totalElapsed\030" +
+      "\004 \001(\001\022\022\n\ntotalTimer\030\005 \001(\001\022\023\n\013totalMoving" +
+      "\030\006 \001(\001\022\024\n\014totalStopped\030\007 \001(\001\022\023\n\013totalPau" +
+      "sed\030\010 \001(\001\022\023\n\013totalAscent\030\t \001(\001\022\024\n\014totalD" +
+      "escent\030\n \001(\001\022\025\n\rtotalDistance\030\013 \001(\001\022\r\n\005a" +
+      "vgHr\030\014 \001(\005\022\r\n\005maxHr\030\r \001(\005\022\r\n\005minHr\030\016 \001(\005" +
+      "\022\022\n\navgCadence\030\017 \001(\005\022\022\n\nmaxCadence\030\020 \001(\005" +
+      "\022\017\n\007avgTemp\030\021 \001(\005\022\017\n\007maxTemp\030\022 \001(\005\022\020\n\010av" +
+      "gSpeed\030\023 \001(\001\022\020\n\010maxSpeed\030\024 \001(\001\022\033\n\023maxPos" +
+      "itiveGradient\030\025 \001(\005\022\033\n\023maxNegativeGradie" +
+      "nt\030\026 \001(\005\022\033\n\023avgPositiveGradient\030\027 \001(\005\022\033\n" +
+      "\023avgNegativeGradient\030\030 \001(\005\022\024\n\014totalAscTi" +
+      "me\030\031 \001(\001\022\025\n\rtotalDescTime\030\032 \001(\001\022\024\n\014total" +
+      "AscDist\030\033 \001(\001\022\025\n\rtotalDescDist\030\034 \001(\001\022*\n\013" +
+      "segmentType\030\035 \001(\0162\025.Activity.SegmentType" +
+      "\022 \n\030maxPositiveVerticalSpeed\030\036 \001(\005\022 \n\030ma" +
+      "xNegativeVerticalSpeed\030\037 \001(\005\022 \n\030avgPosit" +
+      "iveVerticalSpeed\030  \001(\005\022 \n\030avgNegativeVer" +
+      "ticalSpeed\030! \001(\005\0326\n\024HasAttributeMapEntry" +
+      "\022\013\n\003key\030\001 \001(\t\022\r\n\005value\030\002 \001(\010:\0028\001\032\227\001\n\007Ses" +
+      "sion\022\036\n\005sport\030\001 \001(\0162\017.Activity.Sport\022$\n\010" +
+      "subSport\030\002 \001(\0162\022.Activity.SubSport\022\"\n\007se" +
+      "gment\030\003 \001(\0132\021.Activity.Segment\022\"\n\007summar" +
+      "y\030\004 \001(\0132\021.Activity.Summary\032\256\002\n\006Values\022\n\n" +
+      "\002ts\030\001 \003(\t\022\n\n\002hr\030\002 \003(\005\022\013\n\003lat\030\003 \003(\001\022\013\n\003lo" +
+      "n\030\004 \003(\001\022\r\n\005speed\030\005 \003(\001\022\020\n\010altitude\030\006 \003(\001" +
+      "\022\r\n\005grade\030\007 \003(\001\022\020\n\010distance\030\010 \003(\001\022\023\n\013tem" +
+      "perature\030\t \003(\001\022\016\n\006moving\030\n \003(\010\022\017\n\007cadenc" +
+      "e\030\013 \003(\005\022(\n\004hrvs\030\014 \003(\0132\032.Activity.Values." +
+      "HrvsEntry\022\013\n\003hrv\030\r \003(\001\022\026\n\016vertical_speed" +
+      "\030\016 \003(\001\032+\n\tHrvsEntry\022\013\n\003key\030\001 \001(\t\022\r\n\005valu" +
+      "e\030\002 \001(\001:\0028\001\032{\n\010FitEvent\022\r\n\005index\030\001 \001(\005\022\n" +
+      "\n\002ts\030\002 \001(\t\022\r\n\005event\030\003 \001(\t\022&\n\teventType\030\004" +
+      " \001(\0162\023.Activity.EventType\022\014\n\004info\030\005 \001(\t\022" +
+      "\017\n\007trigger\030\006 \001(\t\032q\n\007Segment\022\017\n\007startTs\030\001" +
+      " \001(\t\022\016\n\006stopTs\030\002 \001(\t\022\020\n\010startIdx\030\003 \001(\005\022\017" +
+      "\n\007stopIdx\030\004 \001(\005\022\"\n\007summary\030\005 \001(\0132\021.Activ" +
+      "ity.Summary\":\n\nPrecipType\022\010\n\004RAIN\020\000\022\t\n\005S" +
+      "LEET\020\001\022\010\n\004SNOW\020\002\022\r\n\tNA_PRECIP\020\003\"\267\001\n\013Weat" +
+      "herIcon\022\r\n\tCLEAR_DAY\020\000\022\017\n\013CLEAR_NIGHT\020\001\022" +
+      "\r\n\tRAIN_ICON\020\002\022\r\n\tSNOW_ICON\020\003\022\016\n\nSLEET_I" +
+      "CON\020\004\022\010\n\004WIND\020\005\022\007\n\003FOG\020\006\022\n\n\006CLOUDY\020\007\022\025\n\021" +
+      "PARTLY_CLOUDY_DAY\020\010\022\027\n\023PARTLY_CLOUDY_NIG" +
+      "HT\020\t\022\013\n\007NA_ICON\020\n\"7\n\016LocationSource\022\n\n\006G" +
+      "OOGLE\020\000\022\017\n\013LOCATION_IQ\020\001\022\010\n\004HERE\020\002\"<\n\013Se" +
       "gmentType\022\014\n\010ACTIVITY\020\000\022\013\n\007SESSION\020\001\022\007\n\003" +
       "LAP\020\002\022\t\n\005PAUSE\020\003\"\337\017\n\017FitManufacturer\022\013\n\007" +
       "UNKNOWN\020\000\022\n\n\006GARMIN\020\001\022\026\n\022GARMIN_FR405_AN" +
@@ -22017,7 +22365,7 @@ public final class ActivityOuterClass {
     internal_static_Activity_Weather_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
         internal_static_Activity_Weather_descriptor,
-        new java.lang.String[] { "Temperature", "ApparentTemperature", "WindSpeed", "WindDirection", "CloudCover", "Pressure", "PrecipType", "PrecipIntensity", "PrecipAccumulation", "Visibility", "Icon", "Humidity", "SnowDepth", "SnowInPast24Hours", });
+        new java.lang.String[] { "Temperature", "ApparentTemperature", "WindSpeed", "WindDirection", "CloudCover", "Pressure", "PrecipType", "PrecipIntensity", "PrecipAccumulation", "Visibility", "Icon", "Humidity", "SnowDepth", "SnowInPast24Hours", "Summary", "DewPoint", });
     internal_static_Activity_Location_descriptor =
       internal_static_Activity_descriptor.getNestedTypes().get(3);
     internal_static_Activity_Location_fieldAccessorTable = new

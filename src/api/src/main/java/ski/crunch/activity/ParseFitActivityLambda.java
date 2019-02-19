@@ -24,6 +24,8 @@ import java.text.ParseException;
 import java.util.*;
 
 public class ParseFitActivityLambda implements RequestHandler<Map<String, Object>, ApiGatewayResponse> {
+
+    private static final String WEATHER_API_PARAMETER_NAME="-weather-api-key";
     private String region;
     private String s3ActivityBucket;
     private String s3RawActivityBucket;
@@ -34,6 +36,7 @@ public class ParseFitActivityLambda implements RequestHandler<Map<String, Object
     private DefaultAWSCredentialsProviderChain credentialsProvider;
     private WeatherService weatherService;
     private SSMParameterService parameterService;
+    private String stage;
 
     private static final Logger LOG = Logger.getLogger(ParseFitActivityLambda.class);
 
@@ -43,6 +46,7 @@ public class ParseFitActivityLambda implements RequestHandler<Map<String, Object
 
         this.region = System.getenv("AWS_DEFAULT_REGION");
         this.activityTable = System.getenv("activityTable");
+        this.stage = System.getenv("currentStage");
         this.s3 = new S3Service(region);
 
         try {
@@ -56,8 +60,10 @@ public class ParseFitActivityLambda implements RequestHandler<Map<String, Object
         this.s3RawActivityBucket = System.getenv("s3RawActivityBucketName");
 
         this.parameterService = new SSMParameterService(region, credentialsProvider);
-        this.weatherService = new DarkSkyWeatherService(parameterService);
-        this.activityService = new ActivityService(parameterService, weatherService, s3, credentialsProvider, dynamo, region,
+        this.parameterService = new SSMParameterService(region, credentialsProvider);
+        String weatherApiKey = stage+"-"+parameterService.getParameter(WEATHER_API_PARAMETER_NAME);
+        this.weatherService = new DarkSkyWeatherService(weatherApiKey);
+        this.activityService = new ActivityService( weatherService, s3, credentialsProvider, dynamo, region,
                 s3RawActivityBucket,s3ActivityBucket, activityTable);
     }
 

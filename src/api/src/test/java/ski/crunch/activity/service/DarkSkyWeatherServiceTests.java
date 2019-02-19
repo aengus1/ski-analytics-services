@@ -1,100 +1,119 @@
 package ski.crunch.activity.service;
 
-import org.apache.http.client.methods.CloseableHttpResponse;
+import com.fasterxml.jackson.databind.JsonNode;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import org.apache.http.client.methods.HttpGet;
-import org.apache.http.impl.client.CloseableHttpClient;
-import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestInstance;
-import org.mockito.ArgumentCaptor;
 import org.mockito.Mock;
 import org.mockito.Mockito;
-import org.mockito.MockitoAnnotations;
+import ski.crunch.activity.model.ActivityOuterClass;
+import ski.crunch.utils.HttpClientUtil;
 
 import java.io.IOException;
 import java.net.URI;
-import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.when;
+import static org.mockito.Mockito.*;
 
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
 public class DarkSkyWeatherServiceTests {
 
 
     @Mock
-    private CloseableHttpClient defaultHttpClient;
+    private HttpClientUtil clientUtil;
 
-    @Mock
     private HttpGet httpGet;
 
-    @Mock
-    SSMParameterService ssmParameterService;
+    private DarkSkyWeatherService service = null;
 
-    @Mock
-    CloseableHttpResponse response;
+    private double lat = 53.50111, lon = -113.55511;
+    private String ts = "2018-01-01T12:02:02";
+    private String apiKey = "abc123";
+    private JsonNode response = null;
+
+    private String jsonResponse = "{\"latitude\":37.8267,\"longitude\":-122.4233,\"timezone\":\"America/Los_Angeles\"," +
+            "\"currently\":{\"time\":1483301522,\"summary\":\"Partly Cloudy\",\"icon\":\"partly-cloudy-day\"," +
+            "\"precipIntensity\":0,\"precipProbability\":0,\"temperature\":51.4,\"apparentTemperature\":51.4," +
+            "\"dewPoint\":37.88,\"humidity\":0.6,\"pressure\":1014,\"windSpeed\":4.02,\"windGust\":10.27,\"windBearing\":279," +
+            "\"cloudCover\":0.28,\"uvIndex\":2,\"visibility\":10},\"daily\":{\"data\":[{\"time\":1483257600," +
+            "\"summary\":\"Mostly cloudy throughout the day.\",\"icon\":\"partly-cloudy-day\",\"sunriseTime\":1483284394," +
+            "\"sunsetTime\":1483318969,\"moonPhase\":0.11,\"precipIntensity\":0.0002,\"precipIntensityMax\":0.0024," +
+            "\"precipIntensityMaxTime\":1483333200,\"precipProbability\":0.16,\"precipType\":\"rain\",\"temperatureHigh\"" +
+            ":53.42,\"temperatureHighTime\":1483311600,\"temperatureLow\":43.06,\"temperatureLowTime\":1483369200,\"appa" +
+            "rentTemperatureHigh\":53.42,\"apparentTemperatureHighTime\":1483311600,\"apparentTemperatureLow\":43.06,\"a" +
+            "pparentTemperatureLowTime\":1483369200,\"dewPoint\":39.19,\"humidity\":0.71,\"pressure\":1013.87,\"windSpee" +
+            "d\":4.06,\"windGust\":13.09,\"windGustTime\":1483315200,\"windBearing\":272,\"cloudCover\":0.68,\"uvIndex\"" +
+            ":2,\"uvIndexTime\":1483297200,\"visibility\":9.99,\"temperatureMin\":45.99,\"temperatureMinTime\":148334040" +
+            "0,\"temperatureMax\":53.42,\"temperatureMaxTime\":1483311600,\"apparentTemperatureMin\":45.1,\"apparentTempe" +
+            "ratureMinTime\":1483326000,\"apparentTemperatureMax\":53.42,\"apparentTemperatureMaxTime\":1483311600}]},\"" +
+            "flags\":{\"sources\":[\"cmc\",\"gfs\",\"hrrr\",\"icon\",\"isd\",\"madis\",\"nam\",\"sref\"],\"nearest-stati" +
+            "on\":2.582,\"units\":\"us\"},\"offset\":-8}";
 
 
-    public static DateTimeFormatter FORMATTER = DateTimeFormatter.ISO_LOCAL_DATE_TIME;
-    public DarkSkyWeatherService service = null;
-
-    @BeforeAll
+    @BeforeEach
     public void init() {
-//         System.setProperty("currentStage", "staging");
-        MockitoAnnotations.initMocks(this);
+        httpGet = new HttpGet();
+        clientUtil = Mockito.mock(HttpClientUtil.class);
+        // MockitoAnnotations.initMocks(this);
+        service = new DarkSkyWeatherService(apiKey, clientUtil, httpGet);
+        ObjectMapper mapper = new ObjectMapper();
+        try {
+            response = mapper.readTree(jsonResponse);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
 
-
     @Test()
-    public void testParameterRetrievalCall() {
-        ArgumentCaptor<String> argument = ArgumentCaptor.forClass(String.class);
-        verify(ssmParameterService.getParameter(argument.capture()));
-        this.service = new DarkSkyWeatherService(ssmParameterService, defaultHttpClient, httpGet);
-        System.out.println("ARG VALUE = " + argument.getValue());
-        assertEquals("staging-weather-api-key", argument.getValue());
-//        .thenReturn("abc123");
+    public void testHttpCallIsMade() {
 
-//        verify(ssmParameterService, Mockito.atLeast(1)).getParameter("prod-weather-api-key");
-    }
 
-    @Test()
-    public void testHttpCall() {
-
-        //build the url
-        String ts = FORMATTER.format(LocalDateTime.now());
-        double lat = 53.5;
-        double lon = -113.5;
-        String apiKey = "abc123";
-        StringBuilder sb = new StringBuilder();
-        String uri = sb.append(DarkSkyWeatherService.DARK_SKY_API_URL).append("/")
-                .append(apiKey).append("/")
-                .append(lat).append(",")
-                .append(lon).append(",")
-                .append(ts).toString();
-
-        httpGet.setURI(URI.create(uri));
-
+        httpGet.setURI(URI.create(DarkSkyWeatherService.DARK_SKY_API_URL + "/" + apiKey + "/"
+                + lat + "," + lon + "," + ts));
 
         try {
-            when(ssmParameterService.getParameter("staging-weather-api-key")).thenReturn("abc123");
-            when(defaultHttpClient.execute(httpGet)).thenReturn(response);
-            this.service = new DarkSkyWeatherService(ssmParameterService, defaultHttpClient, httpGet);
-            service.queryWeatherAPI(lat, lon, ts);
+            JsonNode result = service.queryWeatherAPI(lat, lon, ts);
+            verify(clientUtil,times(1)).getJsonNode(httpGet);
 
-            verify(defaultHttpClient).execute(httpGet);
-//            Mockito.verify(defaultHttpClient, Mockito.atMost(1)).execute(httpGet);
-
-
-        } catch (IOException ex) {
-            ex.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
         }
-
     }
 
-    private String jsonSuccess() {
-        return "{success}";
+
+
+    @Test()
+    public void testParse() {
+
+        httpGet.setURI(URI.create(DarkSkyWeatherService.DARK_SKY_API_URL + "/" + apiKey + "/"
+                + lat + "," + lon + "," + ts));
+
+        try {
+            when(clientUtil.getJsonNode(httpGet)).thenReturn(response);
+            JsonNode result = service.queryWeatherAPI(lat, lon, ts);
+            verify(clientUtil,times(1)).getJsonNode(httpGet);
+
+            ActivityOuterClass.Activity.Weather weather = service.parseJsonResult(result);
+
+            assertEquals(51.5, weather.getApparentTemperature());
+            assertEquals("Partly Cloudy", weather.getSummary());
+            assertEquals(0, weather.getPrecipIntensity());
+            assertEquals(51.4, weather.getTemperature());
+            assertEquals(37.88,weather.getDewPoint());
+            assertEquals(0.6,weather.getHumidity());
+            assertEquals(1014, weather.getPressure());
+            assertEquals(4.02, weather.getWindSpeed());
+            assertEquals(0.28, weather.getCloudCover());
+            assertEquals(10, weather.getVisibility());
+            assertEquals(ActivityOuterClass.Activity.PrecipType.NA_PRECIP, weather.getPrecipType());
+            assertEquals(ActivityOuterClass.Activity.WeatherIcon.NA_ICON, weather.getIcon());
+
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
+
 }

@@ -14,6 +14,8 @@ import ski.crunch.activity.service.*;
 
 public class GetActivityHandler implements RequestHandler<Map<String, Object>, ApiGatewayResponse> {
 
+    private static final String WEATHER_API_PARAMETER_NAME="-weather-api-key";
+    private String stage = null;
     private String s3Bucket = null;
     private String region = null;
     private String activityTable = null;
@@ -34,6 +36,7 @@ public class GetActivityHandler implements RequestHandler<Map<String, Object>, A
         this.s3Bucket = System.getenv("s3ActivityBucketName");
         this.region = System.getenv("AWS_DEFAULT_REGION");
         this.activityTable = System.getenv("activityTable");
+        this.stage = System.getenv("currentStage");
         this.s3 = new S3Service(region);
 
         try {
@@ -45,8 +48,9 @@ public class GetActivityHandler implements RequestHandler<Map<String, Object>, A
         }
         this.dynamo = new DynamoDBService(region, activityTable, credentialsProvider);
         this.parameterService = new SSMParameterService(region, credentialsProvider);
-        this.weatherService = new DarkSkyWeatherService(parameterService);
-        this.activityService = new ActivityService(parameterService, weatherService, s3, credentialsProvider, dynamo, region,
+        String weatherApiKey = stage+"-"+parameterService.getParameter(WEATHER_API_PARAMETER_NAME);
+        this.weatherService = new DarkSkyWeatherService(weatherApiKey);
+        this.activityService = new ActivityService( weatherService, s3, credentialsProvider, dynamo, region,
                 s3RawActivityBucket, s3Bucket, activityTable);
     }
 
