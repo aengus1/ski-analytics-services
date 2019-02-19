@@ -9,9 +9,7 @@ import com.amazonaws.services.lambda.runtime.RequestHandler;
 
 import org.apache.log4j.Logger;
 import ski.crunch.activity.model.ApiGatewayResponse;
-import ski.crunch.activity.service.ActivityService;
-import ski.crunch.activity.service.DynamoDBService;
-import ski.crunch.activity.service.S3Service;
+import ski.crunch.activity.service.*;
 
 import java.util.*;
 
@@ -26,6 +24,8 @@ public class PutActivityHandler implements RequestHandler<Map<String, Object>, A
     private AWSCredentialsProvider credentialsProvider = null;
     private DynamoDBService dynamo = null;
     private ActivityService activityService = null;
+    private SSMParameterService parameterService = null;
+    private WeatherService weatherService = null;
 
     public PutActivityHandler(){
         this.s3RawActivityBucket = System.getenv("s3RawActivityBucketName");
@@ -42,7 +42,9 @@ public class PutActivityHandler implements RequestHandler<Map<String, Object>, A
             LOG.error("Unable to obtain default aws credentials", e);
         }
         this.dynamo = new DynamoDBService(region,activityTable, credentialsProvider );
-        this.activityService = new ActivityService(s3, credentialsProvider, dynamo, region,
+        this.parameterService = new SSMParameterService(region, credentialsProvider);
+        this.weatherService = new DarkSkyWeatherService(parameterService);
+        this.activityService = new ActivityService(parameterService, weatherService, s3, credentialsProvider, dynamo, region,
                 s3RawActivityBucket,s3ActivityBucket, activityTable);
     }
 

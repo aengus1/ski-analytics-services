@@ -13,9 +13,7 @@ import ski.crunch.activity.parser.fit.FitActivityHolderAdapter;
 import ski.crunch.activity.processor.ActivityProcessor;
 import ski.crunch.activity.processor.model.ActivityHolder;
 import ski.crunch.activity.processor.summarizer.ActivitySummarizer;
-import ski.crunch.activity.service.ActivityService;
-import ski.crunch.activity.service.DynamoDBService;
-import ski.crunch.activity.service.S3Service;
+import ski.crunch.activity.service.*;
 import ski.crunch.utils.ConvertibleOutputStream;
 
 
@@ -34,6 +32,8 @@ public class ParseFitActivityLambda implements RequestHandler<Map<String, Object
     private ActivityService activityService;
     private String activityTable;
     private DefaultAWSCredentialsProviderChain credentialsProvider;
+    private WeatherService weatherService;
+    private SSMParameterService parameterService;
 
     private static final Logger LOG = Logger.getLogger(ParseFitActivityLambda.class);
 
@@ -54,7 +54,10 @@ public class ParseFitActivityLambda implements RequestHandler<Map<String, Object
         }
         this.dynamo = new DynamoDBService(region,activityTable, credentialsProvider );
         this.s3RawActivityBucket = System.getenv("s3RawActivityBucketName");
-        this.activityService = new ActivityService(s3, credentialsProvider, dynamo, region,
+
+        this.parameterService = new SSMParameterService(region, credentialsProvider);
+        this.weatherService = new DarkSkyWeatherService(parameterService);
+        this.activityService = new ActivityService(parameterService, weatherService, s3, credentialsProvider, dynamo, region,
                 s3RawActivityBucket,s3ActivityBucket, activityTable);
     }
 

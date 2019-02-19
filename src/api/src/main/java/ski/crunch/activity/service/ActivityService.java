@@ -43,10 +43,12 @@ public class ActivityService {
     private S3Service s3 = null;
     private AWSCredentialsProvider credentialsProvider = null;
     private DynamoDBService dynamo = null;
+    private WeatherService weatherService;
+    private SSMParameterService parameterService;
 
     private static final ObjectMapper objectMapper = new ObjectMapper();
 
-    public ActivityService(S3Service s3Service, AWSCredentialsProvider credentialsProvider, DynamoDBService dynamo,
+    public ActivityService(SSMParameterService paramService, WeatherService weatherService, S3Service s3Service, AWSCredentialsProvider credentialsProvider, DynamoDBService dynamo,
                            String region, String s3RawActivityBucket, String s3ProcessedActivityBucket, String activityTable) {
         this.s3RawActivityBucket = s3RawActivityBucket;
         this.s3ProcessedActivityBucket = s3ProcessedActivityBucket;
@@ -55,6 +57,8 @@ public class ActivityService {
         this.dynamo = dynamo;
         this.s3 = s3Service;
         this.activityTable = activityTable;
+        this.weatherService = weatherService;
+        this.parameterService = paramService;
 
     }
 
@@ -273,7 +277,8 @@ public class ActivityService {
             //4. process and summarize
             ActivityProcessor processor = new ActivityProcessor();
             activity = processor.process(activity);
-            WeatherService weatherService = new DarkSkyWeatherService();
+
+            WeatherService weatherService = new DarkSkyWeatherService(parameterService);
             LocationService locationService = new LocationIqService();
             ActivityRecord record = activity.getRecords().get(0);
 
