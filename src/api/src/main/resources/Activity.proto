@@ -14,6 +14,7 @@ repeated Segment pauses = 8;
 repeated Segment laps = 9;
 repeated Segment stops = 10;
 Segment activitySegment = 11;
+int32 initialMove = 12; // required for ease of geocoding / weather lookup
 
 
 message Meta {

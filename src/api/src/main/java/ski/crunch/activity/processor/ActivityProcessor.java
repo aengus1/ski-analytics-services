@@ -23,6 +23,7 @@ public class ActivityProcessor {
         Handler detectLapHandler = new DetectLapHandler();
         Handler sortEventsByTsHandler = new SortEventsByTsHandler();
         Handler summarizeActivityHandler = new ActivitySummarizer();
+        Handler setInitialMoveHandler = new SetInitialMoveHandler();
 
         // detect detect lap events
         // summarize
@@ -46,6 +47,7 @@ public class ActivityProcessor {
         manager.addHandler(sortByTsHandler);
         manager.addHandler(sortEventsByTsHandler);
         manager.addHandler(summarizeActivityHandler);
+        manager.addHandler(setInitialMoveHandler);
 
         return manager.doPipeline(holder);
     }

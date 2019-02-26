@@ -48,9 +48,7 @@ public class GetActivityHandler implements RequestHandler<Map<String, Object>, A
         }
         this.dynamo = new DynamoDBService(region, activityTable, credentialsProvider);
         this.parameterService = new SSMParameterService(region, credentialsProvider);
-        String weatherApiKey = stage+"-"+parameterService.getParameter(WEATHER_API_PARAMETER_NAME);
-        this.weatherService = new DarkSkyWeatherService(weatherApiKey);
-        this.activityService = new ActivityService( weatherService, s3, credentialsProvider, dynamo, region,
+        this.activityService = new ActivityService( s3, credentialsProvider, dynamo, region,
                 s3RawActivityBucket, s3Bucket, activityTable);
     }
 

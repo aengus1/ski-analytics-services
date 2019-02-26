@@ -43,12 +43,11 @@ public class ActivityService {
     private S3Service s3 = null;
     private AWSCredentialsProvider credentialsProvider = null;
     private DynamoDBService dynamo = null;
-    private WeatherService weatherService;
 
 
     private static final ObjectMapper objectMapper = new ObjectMapper();
 
-    public ActivityService( WeatherService weatherService, S3Service s3Service, AWSCredentialsProvider credentialsProvider, DynamoDBService dynamo,
+    public ActivityService(S3Service s3Service, AWSCredentialsProvider credentialsProvider, DynamoDBService dynamo,
                            String region, String s3RawActivityBucket, String s3ProcessedActivityBucket, String activityTable) {
         this.s3RawActivityBucket = s3RawActivityBucket;
         this.s3ProcessedActivityBucket = s3ProcessedActivityBucket;
@@ -57,8 +56,6 @@ public class ActivityService {
         this.dynamo = dynamo;
         this.s3 = s3Service;
         this.activityTable = activityTable;
-        this.weatherService = weatherService;
-
     }
 
     /**
@@ -198,7 +195,7 @@ public class ActivityService {
         }
     }
 
-    public ApiGatewayResponse processAndSaveActivity(Map<String, Object> input, Context context) {
+    public ApiGatewayResponse processAndSaveActivity(Map<String, Object> input, Context context, WeatherService weatherService) {
 
         //1. obtain bucket name and key from input
         String bucket = null;
@@ -207,7 +204,7 @@ public class ActivityService {
         String newKey = "";
         try {
 
-            System.out.println("convert activity lambda");
+            LOG.info("process and save activity");
             Iterator<String> it = input.keySet().iterator();
             while (it.hasNext()) {
                 String next = it.next();
@@ -272,17 +269,22 @@ public class ActivityService {
             }
 
 
-
             //4. process and summarize
             ActivityProcessor processor = new ActivityProcessor();
             activity = processor.process(activity);
 
             LocationService locationService = new LocationIqService();
-            ActivityRecord record = activity.getRecords().get(0);
 
-            ActivityOuterClass.Activity.Weather weather = weatherService.getWeather(record.lat(), record.lon(), record.ts());
-            ActivityOuterClass.Activity.Location location = locationService.getLocation(record.lat(), record.lon());
+            int initMove = activity.getInitialMove();
+            ActivityOuterClass.Activity.Weather weather = null;
+            ActivityOuterClass.Activity.Location location = null;
 
+            if (initMove > 0) {
+                LOG.info("gps data found. getting weather and location info");
+                ActivityRecord record = activity.getRecords().get(initMove);
+                weather = weatherService.getWeather(record.lat(), record.lon(), record.ts());
+                location = locationService.getLocation(record.lat(), record.lon());
+            }
 
             //5. convert to proto and write to S3
             ActivityOuterClass.Activity result = null;
@@ -466,7 +468,6 @@ public class ActivityService {
             return false;
         }
     }
-
 
 
 }

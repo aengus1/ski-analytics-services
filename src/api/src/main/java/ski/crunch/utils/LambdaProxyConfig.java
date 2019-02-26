@@ -56,6 +56,12 @@ public class LambdaProxyConfig {
             this.setBody((String) input.get("body"));
             this.setS3Parameters(s3);
             this.setPathParameters(pathParams);
+            try {
+                this.setStage((String) requestContext.get("stage"));
+            }catch(NullPointerException ex){
+
+            }
+
         } catch (Exception ex) {
             throw new ParseException("Error occurred parsing lambda proxy config" + ErrorResponse.getStackTrace(ex), ex);
         }
@@ -64,6 +70,7 @@ public class LambdaProxyConfig {
     String resource;
     String path;
     String httpMethod;
+    private String stage;
     Map<String, String> queryStringParameters;
     Map<String, String> pathParameters;
     private Map<String, Object> s3Parameters;
@@ -159,6 +166,14 @@ public class LambdaProxyConfig {
 
     public void setS3Parameters(Map<String, Object> s3Parameters) {
         this.s3Parameters = s3Parameters;
+    }
+
+    public String getStage() {
+        return stage;
+    }
+
+    public void setStage(String stage) {
+        this.stage = stage;
     }
 
 

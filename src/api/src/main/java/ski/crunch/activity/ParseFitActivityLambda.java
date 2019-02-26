@@ -15,17 +15,19 @@ import ski.crunch.activity.processor.model.ActivityHolder;
 import ski.crunch.activity.processor.summarizer.ActivitySummarizer;
 import ski.crunch.activity.service.*;
 import ski.crunch.utils.ConvertibleOutputStream;
+import ski.crunch.utils.ErrorResponse;
+import ski.crunch.utils.LambdaProxyConfig;
+import ski.crunch.utils.ParseException;
 
 
 import java.io.IOException;
 import java.io.InputStream;
 
-import java.text.ParseException;
 import java.util.*;
 
 public class ParseFitActivityLambda implements RequestHandler<Map<String, Object>, ApiGatewayResponse> {
 
-    private static final String WEATHER_API_PARAMETER_NAME="-weather-api-key";
+    private static final String WEATHER_API_PARAMETER_NAME = "-weather-api-key";
     private String region;
     private String s3ActivityBucket;
     private String s3RawActivityBucket;
@@ -36,7 +38,6 @@ public class ParseFitActivityLambda implements RequestHandler<Map<String, Object
     private DefaultAWSCredentialsProviderChain credentialsProvider;
     private WeatherService weatherService;
     private SSMParameterService parameterService;
-    private String stage;
 
     private static final Logger LOG = Logger.getLogger(ParseFitActivityLambda.class);
 
@@ -46,7 +47,6 @@ public class ParseFitActivityLambda implements RequestHandler<Map<String, Object
 
         this.region = System.getenv("AWS_DEFAULT_REGION");
         this.activityTable = System.getenv("activityTable");
-        this.stage = System.getenv("currentStage");
         this.s3 = new S3Service(region);
 
         try {
@@ -56,22 +56,25 @@ public class ParseFitActivityLambda implements RequestHandler<Map<String, Object
         } catch (AmazonClientException e) {
             LOG.error("Unable to obtain default aws credentials", e);
         }
-        this.dynamo = new DynamoDBService(region,activityTable, credentialsProvider );
+        this.dynamo = new DynamoDBService(region, activityTable, credentialsProvider);
         this.s3RawActivityBucket = System.getenv("s3RawActivityBucketName");
 
         this.parameterService = new SSMParameterService(region, credentialsProvider);
         this.parameterService = new SSMParameterService(region, credentialsProvider);
-        String weatherApiKey = stage+"-"+parameterService.getParameter(WEATHER_API_PARAMETER_NAME);
-        this.weatherService = new DarkSkyWeatherService(weatherApiKey);
-        this.activityService = new ActivityService( weatherService, s3, credentialsProvider, dynamo, region,
-                s3RawActivityBucket,s3ActivityBucket, activityTable);
+        this.activityService = new ActivityService(s3, credentialsProvider, dynamo, region,
+                s3RawActivityBucket, s3ActivityBucket, activityTable);
     }
 
     @Override
     public ApiGatewayResponse handleRequest(Map<String, Object> input, Context context) {
+        String stage = System.getenv("currentStage");
+        LOG.info("stage = " + stage);
+
+        String weatherApiKey = parameterService.getParameter(stage + WEATHER_API_PARAMETER_NAME);
+        this.weatherService = new DarkSkyWeatherService(weatherApiKey);
 
         LOG.debug("ParseFitActivityHandler called");
-        return this.activityService.processAndSaveActivity(input, context);
+        return this.activityService.processAndSaveActivity(input, context, weatherService);
 
     }
 }

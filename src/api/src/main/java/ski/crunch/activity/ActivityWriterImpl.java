@@ -14,8 +14,6 @@ import java.util.stream.Collectors;
 
 
 //TODO -> Summary (at session, activity, and segment level)
-//todo -> ID
-//todo -> META FIELDS (SEE BELOW)
 public class ActivityWriterImpl implements ActivityWriter {
     public static final int PROTO_VERSION = 1;
     public static final SimpleDateFormat targetFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss");
@@ -58,6 +56,7 @@ public class ActivityWriterImpl implements ActivityWriter {
 
 
         return activityBuilder
+                .setId(id)
                 .setMeta(meta)
                 .setValues(values)
                 .setActivitySegment(activitySegment)
@@ -66,7 +65,6 @@ public class ActivityWriterImpl implements ActivityWriter {
                 .addAllStops(stopSegments)
                 .addAllSessions(sessions)
                 .setSummary(summary)
-
                 .build();
 
 

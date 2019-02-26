@@ -13,7 +13,7 @@ dependencies {
             'com.amazonaws:aws-java-sdk-dynamodb:1.11.166',
             'com.amazonaws:aws-java-sdk-cloudformation:1.11.166',
             'com.amazonaws:aws-java-sdk-cognitoidp:1.11.442',
-            'com.amazonaws:aws-java-sdk-ssm:1.11.500',
+            'com.amazonaws:aws-java-sdk-ssm:1.11.163',
             'com.amazonaws:aws-lambda-java-log4j:1.0.0',
             'com.fasterxml.jackson.core:jackson-core:2.8.5',
             'com.fasterxml.jackson.core:jackson-databind:2.8.5',

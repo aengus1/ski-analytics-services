@@ -10,6 +10,8 @@ import com.amazonaws.services.lambda.runtime.RequestHandler;
 import org.apache.log4j.Logger;
 import ski.crunch.activity.model.ApiGatewayResponse;
 import ski.crunch.activity.service.*;
+import ski.crunch.utils.LambdaProxyConfig;
+import ski.crunch.utils.ParseException;
 
 import java.util.*;
 
@@ -21,19 +23,17 @@ public class PutActivityHandler implements RequestHandler<Map<String, Object>, A
     private String s3ActivityBucket = null;
     private String region = null;
     private String activityTable = null;
-    private String stage = null;
     private S3Service s3 = null;
     private AWSCredentialsProvider credentialsProvider = null;
     private DynamoDBService dynamo = null;
     private ActivityService activityService = null;
     private SSMParameterService parameterService = null;
-    private WeatherService weatherService = null;
 
     public PutActivityHandler(){
         this.s3RawActivityBucket = System.getenv("s3RawActivityBucketName");
         this.s3ActivityBucket = System.getenv("s3ActivityBucketName");
         this.region = System.getenv("AWS_DEFAULT_REGION");
-        this.stage = System.getenv("currentStage");
+        // this.stage = System.getenv("stage");
         this.activityTable = System.getenv("activityTable");
         this.s3 = new S3Service(region);
 
@@ -46,9 +46,7 @@ public class PutActivityHandler implements RequestHandler<Map<String, Object>, A
         }
         this.dynamo = new DynamoDBService(region,activityTable, credentialsProvider );
         this.parameterService = new SSMParameterService(region, credentialsProvider);
-        String weatherApiKey = stage+"-"+parameterService.getParameter(WEATHER_API_PARAMETER_NAME);
-        this.weatherService = new DarkSkyWeatherService(weatherApiKey);
-        this.activityService = new ActivityService( weatherService, s3, credentialsProvider, dynamo, region,
+        this.activityService = new ActivityService( s3, credentialsProvider, dynamo, region,
                 s3RawActivityBucket,s3ActivityBucket, activityTable);
     }
 
@@ -57,6 +55,7 @@ public class PutActivityHandler implements RequestHandler<Map<String, Object>, A
 
     @Override
     public ApiGatewayResponse handleRequest(Map<String, Object> input, Context context) {
+
         LOG.debug("PutActivityHandler called");
         return activityService.saveRawActivity(input,context);
     }
