@@ -180,6 +180,13 @@ resources:
         Type: "String"
         Value: "abc123"
         Description: "SSM Parameter for storing dark sky weather api key"
+    SsmParamForLocationIqKey:
+      Type: "AWS::SSM::Parameter"
+      Properties:
+        Name: "${{self:custom.currentStage}}-location-api-key"
+        Type: "String"
+        Value: "abc123"
+        Description: "SSM Parameter for storing location iq geocoding api key"
 
 
 # attempt to use solution for referencing cf params: https://github.com/serverless/serverless/issues/3212#issuecomment-307341924

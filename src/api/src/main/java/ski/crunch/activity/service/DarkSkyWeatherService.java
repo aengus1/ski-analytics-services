@@ -2,14 +2,9 @@ package ski.crunch.activity.service;
 
 
 import com.fasterxml.jackson.databind.JsonNode;
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.databind.node.IntNode;
-import org.apache.http.HttpEntity;
-import org.apache.http.client.methods.CloseableHttpResponse;
 import org.apache.http.client.methods.HttpGet;
 import org.apache.http.impl.client.CloseableHttpClient;
 import org.apache.http.impl.client.HttpClients;
-import org.apache.http.util.EntityUtils;
 import org.apache.log4j.Logger;
 import ski.crunch.activity.model.ActivityOuterClass;
 import ski.crunch.utils.HttpClientUtil;
@@ -17,10 +12,8 @@ import ski.crunch.utils.HttpClientUtil;
 import java.io.IOException;
 import java.net.URI;
 import java.util.Iterator;
-import java.util.LinkedHashMap;
 import java.util.Map;
 
-//todo -> add logger
 
 public class DarkSkyWeatherService implements WeatherService {
 
@@ -46,16 +39,15 @@ public class DarkSkyWeatherService implements WeatherService {
 
     @Override
     public ActivityOuterClass.Activity.Weather getWeather(double lat, double lon, String ts) {
-
+        ActivityOuterClass.Activity.Weather weather = null;
         try {
             JsonNode result = queryWeatherAPI(lat, lon, ts);
-            ActivityOuterClass.Activity.Weather weather = parseJsonResult(result);
+            weather = parseJsonResult(result);
         } catch (IOException ex) {
             logger.error("Error retrieving weather data", ex);
         }
 
-
-        return null;
+        return weather;
     }
 
     public ActivityOuterClass.Activity.Weather parseJsonResult(JsonNode json) {
