@@ -65,6 +65,10 @@ provider:
         - dynamodb:UpdateItem
         - dynamodb:DeleteItem
       Resource: "arn:aws:dynamodb:${{opt:region, self:provider.region}}:*:table/${{self:custom.activityTable}}"
+    - Effect: Allow
+      Action:
+        - ssm:GetParameter
+      Resource: "arn:aws:ssm:${{opt:region, self:provider.region}}:*:parameter/*-weather-api-key"
 
 package:
   artifact: build/distributions/api.zip
@@ -75,6 +79,7 @@ functions:
     environment:
       s3ActivityBucketName: ${{self:custom.activityBucketName}}
       activityTable: ${{self:custom.currentStage}}-crunch-Activity
+      currentStage: ${{self:custom.currentStage}}
     events:
       - http:
           path: activity/{id}
@@ -98,6 +103,7 @@ functions:
     environment:
       s3RawActivityBucketName: ${{self:custom.rawActivityBucketName}}
       activityTable: ${{self:custom.currentStage}}-crunch-Activity
+      currentStage: ${{self:custom.currentStage}}
     events:
      - http:
         path: activity
@@ -113,6 +119,7 @@ functions:
       s3ActivityBucketName: ${{self:custom.activityBucketName}}
       s3rawActivityBucketName: ${{self:custom.rawActivityBucketName}}
       activityTable: ${{self:custom.currentStage}}-crunch-Activity
+      currentStage: ${{self:custom.currentStage}}
     events:
      - s3: ForRawActivity
        event: s3:ObjectCreated:*
@@ -166,6 +173,13 @@ resources:
           WriteCapacityUnits: 1
         TableName: ${{self:custom.currentStage}}-crunch-Activity
         Tags: ${{self:custom.resourceTags}}
+    SsmParamForWeatherApiKey:
+      Type: "AWS::SSM::Parameter"
+      Properties:
+        Name: "${{self:custom.currentStage}}-weather-api-key"
+        Type: "String"
+        Value: "abc123"
+        Description: "SSM Parameter for storing dark sky weather api key"
 
 
 # attempt to use solution for referencing cf params: https://github.com/serverless/serverless/issues/3212#issuecomment-307341924

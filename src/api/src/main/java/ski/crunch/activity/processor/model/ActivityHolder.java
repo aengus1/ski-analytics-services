@@ -23,6 +23,7 @@ public class ActivityHolder {
     private String createdTs;
     private int product;
     private String manufacturer;
+    private int initialMove;
 
     public ActivityHolder() {
 
@@ -37,6 +38,7 @@ public class ActivityHolder {
         this.createdTs = "";
         this.product = -1;
         this.manufacturer = "";
+        this.initialMove =-1;
     }
 
     public ActivityHolder(ActivityHolder copy) {
@@ -51,6 +53,7 @@ public class ActivityHolder {
         this.createdTs = copy.getCreatedTs();
         this.product = copy.getProduct();
         this.manufacturer = copy.getManufacturer();
+        this.initialMove = copy.initialMove;
     }
 
     public List<ActivityRecord> getRecords() {
@@ -145,5 +148,13 @@ public class ActivityHolder {
 
     public void setStopSummaries(List<ActivitySummary> stopSummaries) {
         this.stopSummaries = stopSummaries;
+    }
+
+    public int getInitialMove() {
+        return initialMove;
+    }
+
+    public void setInitialMove(int initialMove) {
+        this.initialMove = initialMove;
     }
 }

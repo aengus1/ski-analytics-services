@@ -23,6 +23,7 @@ import javax.ws.rs.client.Entity;
 import javax.ws.rs.client.WebTarget;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
+import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.nio.file.DirectoryStream;
@@ -74,9 +75,17 @@ class ActivityTests {
         // convert serverless-state output to retrieve userpool variables
         ServerlessState apiStackServerlessState = null;
         ServerlessState authStackServerlessState = null;
+
         try {
-            apiStackServerlessState = ServerlessState.readServerlessState("./.serverless/serverless-state.json");
-            authStackServerlessState = ServerlessState.readServerlessState("./../auth/.serverless/serverless-state.json");
+
+            //System.setProperty("currentStage", "staging");
+            String ss = getClass().getResource("../../..").getPath();
+            File f = new File(ss);
+            String apiPath =  f.getParentFile().getParentFile().getParentFile().getParentFile().getPath();
+            String path = new File(apiPath+"/api/.serverless","serverless-state.json").getPath();
+            String authPath = new File(apiPath+"/auth/.serverless","serverless-state.json").getPath();
+            apiStackServerlessState = ServerlessState.readServerlessState(path);
+            authStackServerlessState = ServerlessState.readServerlessState(authPath);
         } catch (IOException e) {
             System.err.println("Failed to read serverless-state.json. Exiting test suite");
             e.printStackTrace();
@@ -109,7 +118,7 @@ class ActivityTests {
         this.s3 = new S3Service(apiStackServerlessState.getRegion(), credentialsProvider);
         this.dynamo = new DynamoDBService(region, apiStackServerlessState.getActivityTable(),
                 this.credentialsProvider);
-        this.activityService = new ActivityService(s3, this.credentialsProvider, dynamo
+        this.activityService = new ActivityService( s3, this.credentialsProvider, dynamo
                 , apiStackServerlessState.getRegion(),
                 apiStackServerlessState.getRawActivityBucketName(), apiStackServerlessState.getActivityBucketName(),
                 apiStackServerlessState.getActivityTable());

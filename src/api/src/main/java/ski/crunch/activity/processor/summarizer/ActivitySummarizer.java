@@ -1,6 +1,7 @@
 package ski.crunch.activity.processor.summarizer;
 
 import org.apache.log4j.Logger;
+import scala.ski.crunch.activity.processor.model.ActivityRecord;
 import scala.ski.crunch.activity.processor.model.ActivitySummary;
 import ski.crunch.activity.processor.Handler;
 import ski.crunch.activity.processor.model.ActivityEvent;
@@ -9,6 +10,7 @@ import ski.crunch.activity.processor.model.EventType;
 
 import java.text.ParseException;
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 
 import java.util.stream.Collectors;
@@ -302,6 +304,7 @@ public class ActivitySummarizer  implements Handler<ActivityHolder> {
                 maxNegativeVerticalSpeed
         );
     }
+
 
     private List<ActivitySummary> summarizeSessions() {
         List<ActivitySummary> sessionSummaries = new ArrayList<>();

@@ -14,6 +14,7 @@ repeated Segment pauses = 8;
 repeated Segment laps = 9;
 repeated Segment stops = 10;
 Segment activitySegment = 11;
+int32 initialMove = 12; // required for ease of geocoding / weather lookup
 
 
 message Meta {
@@ -50,6 +51,8 @@ message Weather {
     float humidity = 12; // ratio  0 1
     float snowDepth = 13; //cm
     float snowInPast24Hours = 14;  //cm
+    string summary = 15; //text description
+    double dewPoint = 16; //celsius
 
 }
 
@@ -57,6 +60,7 @@ enum PrecipType {
     RAIN = 0;
     SLEET = 1;
     SNOW = 2;
+    NA_PRECIP=3;
 }
 
 enum WeatherIcon {
@@ -70,6 +74,7 @@ enum WeatherIcon {
     CLOUDY = 7;
     PARTLY_CLOUDY_DAY = 8;
     PARTLY_CLOUDY_NIGHT = 9;
+    NA_ICON=10;
 }
 
 message Location {
@@ -89,7 +94,9 @@ message Location {
 
 enum LocationSource {
     GOOGLE = 0;
+    LOCATION_IQ=1;
     HERE = 2;
+
 
 }
 
