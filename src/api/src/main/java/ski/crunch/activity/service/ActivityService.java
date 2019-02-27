@@ -195,7 +195,8 @@ public class ActivityService {
         }
     }
 
-    public ApiGatewayResponse processAndSaveActivity(Map<String, Object> input, Context context, WeatherService weatherService) {
+    public ApiGatewayResponse processAndSaveActivity(Map<String, Object> input, Context context,
+                                                     WeatherService weatherService, LocationService locationService) {
 
         //1. obtain bucket name and key from input
         String bucket = null;
@@ -273,7 +274,6 @@ public class ActivityService {
             ActivityProcessor processor = new ActivityProcessor();
             activity = processor.process(activity);
 
-            LocationService locationService = new LocationIqService();
 
             int initMove = activity.getInitialMove();
             ActivityOuterClass.Activity.Weather weather = null;

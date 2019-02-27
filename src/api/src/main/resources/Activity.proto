@@ -89,6 +89,8 @@ message Location {
     string country = 9;
     string zip = 10;
     repeated Geofence fences = 11;
+    string displayName = 12;
+    string name = 13;
 
 }
 

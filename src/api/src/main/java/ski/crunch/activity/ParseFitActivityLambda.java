@@ -28,6 +28,7 @@ import java.util.*;
 public class ParseFitActivityLambda implements RequestHandler<Map<String, Object>, ApiGatewayResponse> {
 
     private static final String WEATHER_API_PARAMETER_NAME = "-weather-api-key";
+    private static final String LOCATION_API_PARAMETER_NAME = "-location-api-key";
     private String region;
     private String s3ActivityBucket;
     private String s3RawActivityBucket;
@@ -37,6 +38,7 @@ public class ParseFitActivityLambda implements RequestHandler<Map<String, Object
     private String activityTable;
     private DefaultAWSCredentialsProviderChain credentialsProvider;
     private WeatherService weatherService;
+    private LocationService locationService;
     private SSMParameterService parameterService;
 
     private static final Logger LOG = Logger.getLogger(ParseFitActivityLambda.class);
@@ -73,8 +75,11 @@ public class ParseFitActivityLambda implements RequestHandler<Map<String, Object
         String weatherApiKey = parameterService.getParameter(stage + WEATHER_API_PARAMETER_NAME);
         this.weatherService = new DarkSkyWeatherService(weatherApiKey);
 
+        String locationApiKey = parameterService.getParameter(stage + LOCATION_API_PARAMETER_NAME);
+        this.locationService = new LocationIqService(locationApiKey);
+
         LOG.debug("ParseFitActivityHandler called");
-        return this.activityService.processAndSaveActivity(input, context, weatherService);
+        return this.activityService.processAndSaveActivity(input, context, weatherService, locationService);
 
     }
 }
