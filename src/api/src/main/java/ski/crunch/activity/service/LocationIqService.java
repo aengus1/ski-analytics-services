@@ -1,6 +1,7 @@
 package ski.crunch.activity.service;
 
 import com.fasterxml.jackson.databind.JsonNode;
+import com.fasterxml.jackson.databind.node.TextNode;
 import org.apache.http.client.methods.HttpGet;
 import org.apache.http.impl.client.CloseableHttpClient;
 import org.apache.http.impl.client.HttpClients;
@@ -57,10 +58,56 @@ public class LocationIqService implements LocationService {
 
     public ActivityOuterClass.Activity.Location parseJsonResult(JsonNode json) {
         ActivityOuterClass.Activity.Location.Builder locationBuilder = ActivityOuterClass.Activity.Location.newBuilder();
+        locationBuilder.setSource(ActivityOuterClass.Activity.LocationSource.LOCATION_IQ);
         Iterator it = json.fields();
         while (it.hasNext()) {
             Map.Entry next = ((Map.Entry) it.next());
-            System.out.println(next.getKey() + " " + next.getValue());
+//            System.out.println(next.getKey() + " " + next.getValue());
+            String key = next.getKey().toString();
+            switch(key) {
+                case "display_name": {
+                    TextNode value = (TextNode) next.getValue();
+                    locationBuilder.setDisplayName(value.textValue());
+                    break;
+                }
+                case "address": {
+                    JsonNode value = (JsonNode) next.getValue();
+                    Iterator itAddress = value.fields();
+                    while(itAddress.hasNext()) {
+                        Map.Entry keyNext = ((Map.Entry) itAddress.next());
+                        String keyAddress = keyNext.getKey().toString();
+                        System.out.println(keyAddress);
+                        TextNode keyValue = (TextNode) keyNext.getValue();
+                        switch (keyAddress) {
+                            case "name" : {
+                                locationBuilder.setName(keyValue.textValue());
+                                break;
+                            }
+                            case "house_number": {
+                                locationBuilder.setAddress1(keyValue.textValue());
+                                break;
+                            }
+                            case "road": {
+                                locationBuilder.setAddress1(locationBuilder.getAddress1() + " " + keyValue.textValue());
+                                break;
+                            }
+                            case "county": {
+                                locationBuilder.setCounty(keyValue.textValue());
+                                break;
+                            }
+                            case "state": {
+                                locationBuilder.setProv(keyValue.textValue());
+                                break;
+                            }
+                            case "country": {
+                                locationBuilder.setCountry(keyValue.textValue());
+                                break;
+                            }
+                        }
+                    }
+                }
+
+            }
 
         }
 

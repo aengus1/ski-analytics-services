@@ -7722,6 +7722,16 @@ public final class ActivityOuterClass {
        */
       com.google.protobuf.ByteString
           getDisplayNameBytes();
+
+      /**
+       * <code>string name = 13;</code>
+       */
+      java.lang.String getName();
+      /**
+       * <code>string name = 13;</code>
+       */
+      com.google.protobuf.ByteString
+          getNameBytes();
     }
     /**
      * Protobuf type {@code Activity.Location}
@@ -7748,6 +7758,7 @@ public final class ActivityOuterClass {
         zip_ = "";
         fences_ = java.util.Collections.emptyList();
         displayName_ = "";
+        name_ = "";
       }
 
       @java.lang.Override
@@ -7852,6 +7863,12 @@ public final class ActivityOuterClass {
                 java.lang.String s = input.readStringRequireUtf8();
 
                 displayName_ = s;
+                break;
+              }
+              case 106: {
+                java.lang.String s = input.readStringRequireUtf8();
+
+                name_ = s;
                 break;
               }
             }
@@ -8223,6 +8240,40 @@ public final class ActivityOuterClass {
         }
       }
 
+      public static final int NAME_FIELD_NUMBER = 13;
+      private volatile java.lang.Object name_;
+      /**
+       * <code>string name = 13;</code>
+       */
+      public java.lang.String getName() {
+        java.lang.Object ref = name_;
+        if (ref instanceof java.lang.String) {
+          return (java.lang.String) ref;
+        } else {
+          com.google.protobuf.ByteString bs = 
+              (com.google.protobuf.ByteString) ref;
+          java.lang.String s = bs.toStringUtf8();
+          name_ = s;
+          return s;
+        }
+      }
+      /**
+       * <code>string name = 13;</code>
+       */
+      public com.google.protobuf.ByteString
+          getNameBytes() {
+        java.lang.Object ref = name_;
+        if (ref instanceof java.lang.String) {
+          com.google.protobuf.ByteString b = 
+              com.google.protobuf.ByteString.copyFromUtf8(
+                  (java.lang.String) ref);
+          name_ = b;
+          return b;
+        } else {
+          return (com.google.protobuf.ByteString) ref;
+        }
+      }
+
       private byte memoizedIsInitialized = -1;
       public final boolean isInitialized() {
         byte isInitialized = memoizedIsInitialized;
@@ -8270,6 +8321,9 @@ public final class ActivityOuterClass {
         }
         if (!getDisplayNameBytes().isEmpty()) {
           com.google.protobuf.GeneratedMessageV3.writeString(output, 12, displayName_);
+        }
+        if (!getNameBytes().isEmpty()) {
+          com.google.protobuf.GeneratedMessageV3.writeString(output, 13, name_);
         }
         unknownFields.writeTo(output);
       }
@@ -8319,6 +8373,9 @@ public final class ActivityOuterClass {
         if (!getDisplayNameBytes().isEmpty()) {
           size += com.google.protobuf.GeneratedMessageV3.computeStringSize(12, displayName_);
         }
+        if (!getNameBytes().isEmpty()) {
+          size += com.google.protobuf.GeneratedMessageV3.computeStringSize(13, name_);
+        }
         size += unknownFields.getSerializedSize();
         memoizedSize = size;
         return size;
@@ -8362,6 +8419,8 @@ public final class ActivityOuterClass {
             .equals(other.getFencesList());
         result = result && getDisplayName()
             .equals(other.getDisplayName());
+        result = result && getName()
+            .equals(other.getName());
         result = result && unknownFields.equals(other.unknownFields);
         return result;
       }
@@ -8401,6 +8460,8 @@ public final class ActivityOuterClass {
         }
         hash = (37 * hash) + DISPLAYNAME_FIELD_NUMBER;
         hash = (53 * hash) + getDisplayName().hashCode();
+        hash = (37 * hash) + NAME_FIELD_NUMBER;
+        hash = (53 * hash) + getName().hashCode();
         hash = (29 * hash) + unknownFields.hashCode();
         memoizedHashCode = hash;
         return hash;
@@ -8559,6 +8620,8 @@ public final class ActivityOuterClass {
           }
           displayName_ = "";
 
+          name_ = "";
+
           return this;
         }
 
@@ -8603,6 +8666,7 @@ public final class ActivityOuterClass {
             result.fences_ = fencesBuilder_.build();
           }
           result.displayName_ = displayName_;
+          result.name_ = name_;
           result.bitField0_ = to_bitField0_;
           onBuilt();
           return result;
@@ -8710,6 +8774,10 @@ public final class ActivityOuterClass {
           }
           if (!other.getDisplayName().isEmpty()) {
             displayName_ = other.displayName_;
+            onChanged();
+          }
+          if (!other.getName().isEmpty()) {
+            name_ = other.name_;
             onChanged();
           }
           this.mergeUnknownFields(other.unknownFields);
@@ -9624,6 +9692,75 @@ public final class ActivityOuterClass {
   checkByteStringIsUtf8(value);
           
           displayName_ = value;
+          onChanged();
+          return this;
+        }
+
+        private java.lang.Object name_ = "";
+        /**
+         * <code>string name = 13;</code>
+         */
+        public java.lang.String getName() {
+          java.lang.Object ref = name_;
+          if (!(ref instanceof java.lang.String)) {
+            com.google.protobuf.ByteString bs =
+                (com.google.protobuf.ByteString) ref;
+            java.lang.String s = bs.toStringUtf8();
+            name_ = s;
+            return s;
+          } else {
+            return (java.lang.String) ref;
+          }
+        }
+        /**
+         * <code>string name = 13;</code>
+         */
+        public com.google.protobuf.ByteString
+            getNameBytes() {
+          java.lang.Object ref = name_;
+          if (ref instanceof String) {
+            com.google.protobuf.ByteString b = 
+                com.google.protobuf.ByteString.copyFromUtf8(
+                    (java.lang.String) ref);
+            name_ = b;
+            return b;
+          } else {
+            return (com.google.protobuf.ByteString) ref;
+          }
+        }
+        /**
+         * <code>string name = 13;</code>
+         */
+        public Builder setName(
+            java.lang.String value) {
+          if (value == null) {
+    throw new NullPointerException();
+  }
+  
+          name_ = value;
+          onChanged();
+          return this;
+        }
+        /**
+         * <code>string name = 13;</code>
+         */
+        public Builder clearName() {
+          
+          name_ = getDefaultInstance().getName();
+          onChanged();
+          return this;
+        }
+        /**
+         * <code>string name = 13;</code>
+         */
+        public Builder setNameBytes(
+            com.google.protobuf.ByteString value) {
+          if (value == null) {
+    throw new NullPointerException();
+  }
+  checkByteStringIsUtf8(value);
+          
+          name_ = value;
           onChanged();
           return this;
         }
@@ -22385,7 +22522,7 @@ public final class ActivityOuterClass {
       descriptor;
   static {
     java.lang.String[] descriptorData = {
-      "\n\016Activity.proto\"\3562\n\010Activity\022\034\n\004meta\030\001 " +
+      "\n\016Activity.proto\"\3742\n\010Activity\022\034\n\004meta\030\001 " +
       "\001(\0132\016.Activity.Meta\022$\n\010userData\030\002 \001(\0132\022." +
       "Activity.UserData\022\"\n\007summary\030\003 \001(\0132\021.Act" +
       "ivity.Summary\022 \n\006values\030\004 \001(\0132\020.Activity" +
@@ -22412,144 +22549,144 @@ public final class ActivityOuterClass {
       "sibility\030\n \001(\002\022#\n\004icon\030\013 \001(\0162\025.Activity." +
       "WeatherIcon\022\020\n\010humidity\030\014 \001(\002\022\021\n\tsnowDep" +
       "th\030\r \001(\002\022\031\n\021snowInPast24Hours\030\016 \001(\002\022\017\n\007s" +
-      "ummary\030\017 \001(\t\022\020\n\010dewPoint\030\020 \001(\001\032\365\001\n\010Locat" +
+      "ummary\030\017 \001(\t\022\020\n\010dewPoint\030\020 \001(\001\032\203\002\n\010Locat" +
       "ion\022\013\n\003lat\030\001 \001(\001\022\013\n\003lon\030\002 \001(\001\022(\n\006source\030" +
       "\003 \001(\0162\030.Activity.LocationSource\022\020\n\010addre" +
       "ss1\030\004 \001(\t\022\020\n\010address2\030\005 \001(\t\022\014\n\004city\030\006 \001(" +
       "\t\022\016\n\006county\030\007 \001(\t\022\014\n\004prov\030\010 \001(\t\022\017\n\007count" +
       "ry\030\t \001(\t\022\013\n\003zip\030\n \001(\t\022\"\n\006fences\030\013 \003(\0132\022." +
-      "Activity.Geofence\022\023\n\013displayName\030\014 \001(\t\032$" +
-      "\n\010Geofence\022\n\n\002id\030\001 \001(\005\022\014\n\004name\030\002 \001(\t\032\353\006\n" +
-      "\007Summary\022?\n\017hasAttributeMap\030\001 \003(\0132&.Acti" +
-      "vity.Summary.HasAttributeMapEntry\022\017\n\007sta" +
-      "rtTs\030\002 \001(\t\022\r\n\005endTs\030\003 \001(\t\022\024\n\014totalElapse" +
-      "d\030\004 \001(\001\022\022\n\ntotalTimer\030\005 \001(\001\022\023\n\013totalMovi" +
-      "ng\030\006 \001(\001\022\024\n\014totalStopped\030\007 \001(\001\022\023\n\013totalP" +
-      "aused\030\010 \001(\001\022\023\n\013totalAscent\030\t \001(\001\022\024\n\014tota" +
-      "lDescent\030\n \001(\001\022\025\n\rtotalDistance\030\013 \001(\001\022\r\n" +
-      "\005avgHr\030\014 \001(\005\022\r\n\005maxHr\030\r \001(\005\022\r\n\005minHr\030\016 \001" +
-      "(\005\022\022\n\navgCadence\030\017 \001(\005\022\022\n\nmaxCadence\030\020 \001" +
-      "(\005\022\017\n\007avgTemp\030\021 \001(\005\022\017\n\007maxTemp\030\022 \001(\005\022\020\n\010" +
-      "avgSpeed\030\023 \001(\001\022\020\n\010maxSpeed\030\024 \001(\001\022\033\n\023maxP" +
-      "ositiveGradient\030\025 \001(\005\022\033\n\023maxNegativeGrad" +
-      "ient\030\026 \001(\005\022\033\n\023avgPositiveGradient\030\027 \001(\005\022" +
-      "\033\n\023avgNegativeGradient\030\030 \001(\005\022\024\n\014totalAsc" +
-      "Time\030\031 \001(\001\022\025\n\rtotalDescTime\030\032 \001(\001\022\024\n\014tot" +
-      "alAscDist\030\033 \001(\001\022\025\n\rtotalDescDist\030\034 \001(\001\022*" +
-      "\n\013segmentType\030\035 \001(\0162\025.Activity.SegmentTy" +
-      "pe\022 \n\030maxPositiveVerticalSpeed\030\036 \001(\005\022 \n\030" +
-      "maxNegativeVerticalSpeed\030\037 \001(\005\022 \n\030avgPos" +
-      "itiveVerticalSpeed\030  \001(\005\022 \n\030avgNegativeV" +
-      "erticalSpeed\030! \001(\005\0326\n\024HasAttributeMapEnt" +
-      "ry\022\013\n\003key\030\001 \001(\t\022\r\n\005value\030\002 \001(\010:\0028\001\032\227\001\n\007S" +
-      "ession\022\036\n\005sport\030\001 \001(\0162\017.Activity.Sport\022$" +
-      "\n\010subSport\030\002 \001(\0162\022.Activity.SubSport\022\"\n\007" +
-      "segment\030\003 \001(\0132\021.Activity.Segment\022\"\n\007summ" +
-      "ary\030\004 \001(\0132\021.Activity.Summary\032\256\002\n\006Values\022" +
-      "\n\n\002ts\030\001 \003(\t\022\n\n\002hr\030\002 \003(\005\022\013\n\003lat\030\003 \003(\001\022\013\n\003" +
-      "lon\030\004 \003(\001\022\r\n\005speed\030\005 \003(\001\022\020\n\010altitude\030\006 \003" +
-      "(\001\022\r\n\005grade\030\007 \003(\001\022\020\n\010distance\030\010 \003(\001\022\023\n\013t" +
-      "emperature\030\t \003(\001\022\016\n\006moving\030\n \003(\010\022\017\n\007cade" +
-      "nce\030\013 \003(\005\022(\n\004hrvs\030\014 \003(\0132\032.Activity.Value" +
-      "s.HrvsEntry\022\013\n\003hrv\030\r \003(\001\022\026\n\016vertical_spe" +
-      "ed\030\016 \003(\001\032+\n\tHrvsEntry\022\013\n\003key\030\001 \001(\t\022\r\n\005va" +
-      "lue\030\002 \001(\001:\0028\001\032{\n\010FitEvent\022\r\n\005index\030\001 \001(\005" +
-      "\022\n\n\002ts\030\002 \001(\t\022\r\n\005event\030\003 \001(\t\022&\n\teventType" +
-      "\030\004 \001(\0162\023.Activity.EventType\022\014\n\004info\030\005 \001(" +
-      "\t\022\017\n\007trigger\030\006 \001(\t\032q\n\007Segment\022\017\n\007startTs" +
-      "\030\001 \001(\t\022\016\n\006stopTs\030\002 \001(\t\022\020\n\010startIdx\030\003 \001(\005" +
-      "\022\017\n\007stopIdx\030\004 \001(\005\022\"\n\007summary\030\005 \001(\0132\021.Act" +
-      "ivity.Summary\":\n\nPrecipType\022\010\n\004RAIN\020\000\022\t\n" +
-      "\005SLEET\020\001\022\010\n\004SNOW\020\002\022\r\n\tNA_PRECIP\020\003\"\267\001\n\013We" +
-      "atherIcon\022\r\n\tCLEAR_DAY\020\000\022\017\n\013CLEAR_NIGHT\020" +
-      "\001\022\r\n\tRAIN_ICON\020\002\022\r\n\tSNOW_ICON\020\003\022\016\n\nSLEET" +
-      "_ICON\020\004\022\010\n\004WIND\020\005\022\007\n\003FOG\020\006\022\n\n\006CLOUDY\020\007\022\025" +
-      "\n\021PARTLY_CLOUDY_DAY\020\010\022\027\n\023PARTLY_CLOUDY_N" +
-      "IGHT\020\t\022\013\n\007NA_ICON\020\n\"7\n\016LocationSource\022\n\n" +
-      "\006GOOGLE\020\000\022\017\n\013LOCATION_IQ\020\001\022\010\n\004HERE\020\002\"<\n\013" +
-      "SegmentType\022\014\n\010ACTIVITY\020\000\022\013\n\007SESSION\020\001\022\007" +
-      "\n\003LAP\020\002\022\t\n\005PAUSE\020\003\"\337\017\n\017FitManufacturer\022\013" +
-      "\n\007UNKNOWN\020\000\022\n\n\006GARMIN\020\001\022\026\n\022GARMIN_FR405_" +
-      "ANTFS\020\002\022\n\n\006ZEPHYR\020\003\022\n\n\006DAYTON\020\004\022\007\n\003IDT\020\005" +
-      "\022\007\n\003SRM\020\006\022\t\n\005QUARQ\020\007\022\t\n\005IBIKE\020\010\022\t\n\005SARIS" +
-      "\020\t\022\014\n\010SPARK_HK\020\n\022\n\n\006TANITA\020\013\022\014\n\010ECHOWELL" +
-      "\020\014\022\022\n\016DYNASTREAM_OEM\020\r\022\014\n\010NAUTILUS\020\016\022\016\n\n" +
-      "DYNASTREAM\020\017\022\t\n\005TIMEX\020\020\022\r\n\tMETRIGEAR\020\021\022\t" +
-      "\n\005XELIC\020\022\022\n\n\006BEURER\020\023\022\017\n\013CARDIOSPORT\020\024\022\013" +
-      "\n\007A_AND_D\020\025\022\007\n\003HMM\020\026\022\n\n\006SUUNTO\020\027\022\024\n\020THIT" +
-      "A_ELEKTRONIK\020\030\022\n\n\006GPULSE\020\031\022\020\n\014CLEAN_MOBI" +
-      "LE\020\032\022\017\n\013PEDAL_BRAIN\020\033\022\r\n\tPEAKSWARE\020\034\022\013\n\007" +
-      "SAXONAR\020\035\022\022\n\016LEMOND_FITNESS\020\036\022\n\n\006DEXCOM\020" +
-      "\037\022\021\n\rWAHOO_FITNESS\020 \022\022\n\016OCTANE_FITNESS\020!" +
-      "\022\020\n\014ARCHINOETICS\020\"\022\020\n\014THE_HURT_BOX\020#\022\023\n\017" +
-      "CITIZEN_SYSTEMS\020$\022\014\n\010MAGELLAN\020%\022\n\n\006OSYNC" +
-      "E\020&\022\t\n\005HOLUX\020\'\022\014\n\010CONCEPT2\020(\022\022\n\016ONE_GIAN" +
-      "T_LEAP\020*\022\016\n\nACE_SENSOR\020+\022\021\n\rBRIM_BROTHER" +
-      "S\020,\022\n\n\006XPLOVA\020-\022\026\n\022PERCEPTION_DIGITAL\020.\022" +
-      "\016\n\nBF1SYSTEMS\020/\022\013\n\007PIONEER\0200\022\013\n\007SPANTEC\020" +
-      "1\022\016\n\nMETALOGICS\0202\022\013\n\007I4IIIIS\0203\022\017\n\013SEIKO_" +
-      "EPSON\0204\022\023\n\017SEIKO_EPSON_OEM\0205\022\017\n\013IFOR_POW" +
-      "ELL\0206\022\022\n\016MAXWELL_GUIDER\0207\022\r\n\tSTAR_TRAC\0208" +
-      "\022\r\n\tBREAKAWAY\0209\022\032\n\026ALATECH_TECHNOLOGY_LT" +
-      "D\020:\022\031\n\025MIO_TECHNOLOGY_EUROPE\020;\022\t\n\005ROTOR\020" +
-      "<\022\014\n\010GEONAUTE\020=\022\013\n\007ID_BIKE\020>\022\017\n\013SPECIALI" +
-      "ZED\020?\022\010\n\004WTEK\020@\022\030\n\024PHYSICAL_ENTERPRISES\020" +
-      "A\022\032\n\026NORTH_POLE_ENGINEERING\020B\022\t\n\005BKOOL\020C" +
-      "\022\n\n\006CATEYE\020D\022\022\n\016STAGES_CYCLING\020E\022\016\n\nSIGM" +
-      "ASPORT\020F\022\n\n\006TOMTOM\020G\022\r\n\tPERIPEDAL\020H\022\014\n\010W" +
-      "ATTBIKE\020I\022\010\n\004MOXY\020L\022\016\n\nCICLOSPORT\020M\022\r\n\tP" +
-      "OWERBAHN\020N\022\026\n\022ACORN_PROJECTS_APS\020O\022\014\n\010LI" +
-      "FEBEAM\020P\022\r\n\tBONTRAGER\020Q\022\n\n\006WELLGO\020R\022\013\n\007S" +
-      "COSCHE\020S\022\n\n\006MAGURA\020T\022\013\n\007WOODWAY\020U\022\t\n\005ELI" +
-      "TE\020V\022\025\n\021NIELSEN_KELLERMAN\020W\022\013\n\007DK_CITY\020X" +
-      "\022\010\n\004TACX\020Y\022\030\n\024DIRECTION_TECHNOLOGY\020Z\022\014\n\010" +
-      "MAGTONIC\020[\022\021\n\rONEPARTCARBON\020\\\022\034\n\030INSIDE_" +
-      "RIDE_TECHNOLOGIES\020]\022\023\n\017SOUND_OF_MOTION\020^" +
-      "\022\t\n\005STRYD\020_\022\007\n\003ICG\020`\022\013\n\007MIPULSE\020a\022\021\n\rBSX" +
-      "_ATHLETICS\020b\022\010\n\004LOOK\020c\022\022\n\016CAMPAGNOLO_SRL" +
-      "\020d\022\023\n\017BODY_BIKE_SMART\020e\022\017\n\013PRAXISWORKS\020f" +
-      "\022\025\n\021LIMITS_TECHNOLOGY\020g\022\030\n\024TOPACTION_TEC" +
-      "HNOLOGY\020h\022\014\n\010COSINUSS\020i\022\013\n\007FITCARE\020j\022\n\n\006" +
-      "MAGENE\020k\022\032\n\026GIANT_MANUFACTURING_CO\020l\022\016\n\n" +
-      "TIGRASPORT\020m\022\020\n\013DEVELOPMENT\020\377\001\022\022\n\rHEALTH" +
-      "ANDLIFE\020\201\002\022\013\n\006LEZYNE\020\202\002\022\020\n\013SCRIBE_LABS\020\203" +
-      "\002\022\n\n\005ZWIFT\020\204\002\022\014\n\007WATTEAM\020\205\002\022\n\n\005RECON\020\206\002\022" +
-      "\027\n\022FAVERO_ELECTRONICS\020\207\002\022\r\n\010DYNOVELO\020\210\002\022" +
-      "\013\n\006STRAVA\020\211\002\022\013\n\006PRECOR\020\212\002\022\013\n\006BRYTON\020\213\002\022\t" +
-      "\n\004SRAM\020\214\002\022\013\n\006NAVMAN\020\215\002\022\t\n\004COBI\020\216\002\022\n\n\005SPI" +
-      "VI\020\217\002\022\021\n\014MIO_MAGELLAN\020\220\002\022\016\n\tEVESPORTS\020\221\002" +
-      "\022\025\n\020SENSITIVUS_GAUGE\020\222\002\022\013\n\006PODOON\020\223\002\"\316\001\n" +
-      "\tEventType\022\t\n\005START\020\000\022\010\n\004STOP\020\001\022\033\n\027CONSE" +
-      "CUTIVE_DEPRECIATED\020\002\022\n\n\006MARKER\020\003\022\014\n\010STOP" +
-      "_ALL\020\004\022\025\n\021BEGIN_DEPRECIATED\020\005\022\023\n\017END_DEP" +
-      "RECIATED\020\006\022\027\n\023END_ALL_DEPRECIATED\020\007\022\020\n\014S" +
-      "TOP_DISABLE\020\010\022\024\n\020STOP_DISABLE_ALL\020\t\022\010\n\004N" +
-      "ULL\020\n\"\336\002\n\005Sport\022\013\n\007GENERIC\020\000\022\013\n\007RUNNING\020" +
-      "\001\022\013\n\007CYCLING\020\002\022\016\n\nTRANSITION\020\003\022\025\n\021FITNES" +
-      "S_EQUIPMENT\020\004\022\014\n\010SWIMMING\020\005\022\016\n\nBASKETBAL" +
-      "L\020\006\022\n\n\006SOCCER\020\007\022\n\n\006TENNIS\020\010\022\025\n\021AMERICAN_" +
-      "FOOTBALL\020\t\022\014\n\010TRAINING\020\n\022\013\n\007WALKING\020\013\022\030\n" +
-      "\024CROSS_COUNTRY_SKIING\020\014\022\021\n\rALPINE_SKIING" +
-      "\020\r\022\020\n\014SNOWBOARDING\020\016\022\n\n\006ROWING\020\017\022\022\n\016MOUN" +
-      "TAINEERING\020\020\022\n\n\006HIKING\020\021\022\016\n\nMULTISPORT\020\022" +
-      "\022\014\n\010PADDLING\020\023\022\010\n\003ALL\020\376\001\022\014\n\007INVALID\020\377\001\"\340" +
-      "\004\n\010SubSport\022\024\n\020GENERIC_SUBSPORT\020\000\022\r\n\tTRE" +
-      "ADMILL\020\001\022\n\n\006STREET\020\002\022\t\n\005TRAIL\020\003\022\t\n\005TRACK" +
-      "\020\004\022\010\n\004SPIN\020\005\022\022\n\016INDOOR_CYCLING\020\006\022\010\n\004ROAD" +
-      "\020\007\022\014\n\010MOUNTAIN\020\010\022\014\n\010DOWNHILL\020\t\022\r\n\tRECUMB" +
-      "ENT\020\n\022\016\n\nCYCLOCROSS\020\013\022\020\n\014HAND_CYCLING\020\014\022" +
-      "\021\n\rTRACK_CYCLING\020\r\022\021\n\rINDOOR_ROWING\020\016\022\016\n" +
-      "\nELLIPTICAL\020\017\022\022\n\016STAIR_CLIMBING\020\020\022\020\n\014LAP" +
-      "_SWIMMING\020\021\022\016\n\nOPEN_WATER\020\022\022\030\n\024FLEXIBILI" +
-      "TY_TRAINING\020\023\022\025\n\021STRENGTH_TRAINING\020\024\022\013\n\007" +
-      "WARM_UP\020\025\022\t\n\005MATCH\020\026\022\014\n\010EXERCISE\020\027\022\r\n\tCH" +
-      "ALLENGE\020\030\022\021\n\rINDOOR_SKIING\020\031\022\023\n\017CARDIO_T" +
-      "RAINING\020\032\022\022\n\016INDOOR_WALKING\020\033\022\016\n\nCLASSIC" +
-      "_XC\020\034\022\014\n\010SKATE_XC\020\035\022\017\n\013TELEMARK_XC\020\036\022\022\n\016" +
-      "BACKCOUNTRY_XC\020\037\022\022\n\016ALPINE_TOURING\020 \022\t\n\005" +
-      "SKIMO\020!\022\021\n\014ALL_SUBSPORT\020\376\001\022\025\n\020INVALID_SU" +
-      "BSPORT\020\377\001B\033\n\031ski.crunch.activity.modelb\006" +
-      "proto3"
+      "Activity.Geofence\022\023\n\013displayName\030\014 \001(\t\022\014" +
+      "\n\004name\030\r \001(\t\032$\n\010Geofence\022\n\n\002id\030\001 \001(\005\022\014\n\004" +
+      "name\030\002 \001(\t\032\353\006\n\007Summary\022?\n\017hasAttributeMa" +
+      "p\030\001 \003(\0132&.Activity.Summary.HasAttributeM" +
+      "apEntry\022\017\n\007startTs\030\002 \001(\t\022\r\n\005endTs\030\003 \001(\t\022" +
+      "\024\n\014totalElapsed\030\004 \001(\001\022\022\n\ntotalTimer\030\005 \001(" +
+      "\001\022\023\n\013totalMoving\030\006 \001(\001\022\024\n\014totalStopped\030\007" +
+      " \001(\001\022\023\n\013totalPaused\030\010 \001(\001\022\023\n\013totalAscent" +
+      "\030\t \001(\001\022\024\n\014totalDescent\030\n \001(\001\022\025\n\rtotalDis" +
+      "tance\030\013 \001(\001\022\r\n\005avgHr\030\014 \001(\005\022\r\n\005maxHr\030\r \001(" +
+      "\005\022\r\n\005minHr\030\016 \001(\005\022\022\n\navgCadence\030\017 \001(\005\022\022\n\n" +
+      "maxCadence\030\020 \001(\005\022\017\n\007avgTemp\030\021 \001(\005\022\017\n\007max" +
+      "Temp\030\022 \001(\005\022\020\n\010avgSpeed\030\023 \001(\001\022\020\n\010maxSpeed" +
+      "\030\024 \001(\001\022\033\n\023maxPositiveGradient\030\025 \001(\005\022\033\n\023m" +
+      "axNegativeGradient\030\026 \001(\005\022\033\n\023avgPositiveG" +
+      "radient\030\027 \001(\005\022\033\n\023avgNegativeGradient\030\030 \001" +
+      "(\005\022\024\n\014totalAscTime\030\031 \001(\001\022\025\n\rtotalDescTim" +
+      "e\030\032 \001(\001\022\024\n\014totalAscDist\030\033 \001(\001\022\025\n\rtotalDe" +
+      "scDist\030\034 \001(\001\022*\n\013segmentType\030\035 \001(\0162\025.Acti" +
+      "vity.SegmentType\022 \n\030maxPositiveVerticalS" +
+      "peed\030\036 \001(\005\022 \n\030maxNegativeVerticalSpeed\030\037" +
+      " \001(\005\022 \n\030avgPositiveVerticalSpeed\030  \001(\005\022 " +
+      "\n\030avgNegativeVerticalSpeed\030! \001(\005\0326\n\024HasA" +
+      "ttributeMapEntry\022\013\n\003key\030\001 \001(\t\022\r\n\005value\030\002" +
+      " \001(\010:\0028\001\032\227\001\n\007Session\022\036\n\005sport\030\001 \001(\0162\017.Ac" +
+      "tivity.Sport\022$\n\010subSport\030\002 \001(\0162\022.Activit" +
+      "y.SubSport\022\"\n\007segment\030\003 \001(\0132\021.Activity.S" +
+      "egment\022\"\n\007summary\030\004 \001(\0132\021.Activity.Summa" +
+      "ry\032\256\002\n\006Values\022\n\n\002ts\030\001 \003(\t\022\n\n\002hr\030\002 \003(\005\022\013\n" +
+      "\003lat\030\003 \003(\001\022\013\n\003lon\030\004 \003(\001\022\r\n\005speed\030\005 \003(\001\022\020" +
+      "\n\010altitude\030\006 \003(\001\022\r\n\005grade\030\007 \003(\001\022\020\n\010dista" +
+      "nce\030\010 \003(\001\022\023\n\013temperature\030\t \003(\001\022\016\n\006moving" +
+      "\030\n \003(\010\022\017\n\007cadence\030\013 \003(\005\022(\n\004hrvs\030\014 \003(\0132\032." +
+      "Activity.Values.HrvsEntry\022\013\n\003hrv\030\r \003(\001\022\026" +
+      "\n\016vertical_speed\030\016 \003(\001\032+\n\tHrvsEntry\022\013\n\003k" +
+      "ey\030\001 \001(\t\022\r\n\005value\030\002 \001(\001:\0028\001\032{\n\010FitEvent\022" +
+      "\r\n\005index\030\001 \001(\005\022\n\n\002ts\030\002 \001(\t\022\r\n\005event\030\003 \001(" +
+      "\t\022&\n\teventType\030\004 \001(\0162\023.Activity.EventTyp" +
+      "e\022\014\n\004info\030\005 \001(\t\022\017\n\007trigger\030\006 \001(\t\032q\n\007Segm" +
+      "ent\022\017\n\007startTs\030\001 \001(\t\022\016\n\006stopTs\030\002 \001(\t\022\020\n\010" +
+      "startIdx\030\003 \001(\005\022\017\n\007stopIdx\030\004 \001(\005\022\"\n\007summa" +
+      "ry\030\005 \001(\0132\021.Activity.Summary\":\n\nPrecipTyp" +
+      "e\022\010\n\004RAIN\020\000\022\t\n\005SLEET\020\001\022\010\n\004SNOW\020\002\022\r\n\tNA_P" +
+      "RECIP\020\003\"\267\001\n\013WeatherIcon\022\r\n\tCLEAR_DAY\020\000\022\017" +
+      "\n\013CLEAR_NIGHT\020\001\022\r\n\tRAIN_ICON\020\002\022\r\n\tSNOW_I" +
+      "CON\020\003\022\016\n\nSLEET_ICON\020\004\022\010\n\004WIND\020\005\022\007\n\003FOG\020\006" +
+      "\022\n\n\006CLOUDY\020\007\022\025\n\021PARTLY_CLOUDY_DAY\020\010\022\027\n\023P" +
+      "ARTLY_CLOUDY_NIGHT\020\t\022\013\n\007NA_ICON\020\n\"7\n\016Loc" +
+      "ationSource\022\n\n\006GOOGLE\020\000\022\017\n\013LOCATION_IQ\020\001" +
+      "\022\010\n\004HERE\020\002\"<\n\013SegmentType\022\014\n\010ACTIVITY\020\000\022" +
+      "\013\n\007SESSION\020\001\022\007\n\003LAP\020\002\022\t\n\005PAUSE\020\003\"\337\017\n\017Fit" +
+      "Manufacturer\022\013\n\007UNKNOWN\020\000\022\n\n\006GARMIN\020\001\022\026\n" +
+      "\022GARMIN_FR405_ANTFS\020\002\022\n\n\006ZEPHYR\020\003\022\n\n\006DAY" +
+      "TON\020\004\022\007\n\003IDT\020\005\022\007\n\003SRM\020\006\022\t\n\005QUARQ\020\007\022\t\n\005IB" +
+      "IKE\020\010\022\t\n\005SARIS\020\t\022\014\n\010SPARK_HK\020\n\022\n\n\006TANITA" +
+      "\020\013\022\014\n\010ECHOWELL\020\014\022\022\n\016DYNASTREAM_OEM\020\r\022\014\n\010" +
+      "NAUTILUS\020\016\022\016\n\nDYNASTREAM\020\017\022\t\n\005TIMEX\020\020\022\r\n" +
+      "\tMETRIGEAR\020\021\022\t\n\005XELIC\020\022\022\n\n\006BEURER\020\023\022\017\n\013C" +
+      "ARDIOSPORT\020\024\022\013\n\007A_AND_D\020\025\022\007\n\003HMM\020\026\022\n\n\006SU" +
+      "UNTO\020\027\022\024\n\020THITA_ELEKTRONIK\020\030\022\n\n\006GPULSE\020\031" +
+      "\022\020\n\014CLEAN_MOBILE\020\032\022\017\n\013PEDAL_BRAIN\020\033\022\r\n\tP" +
+      "EAKSWARE\020\034\022\013\n\007SAXONAR\020\035\022\022\n\016LEMOND_FITNES" +
+      "S\020\036\022\n\n\006DEXCOM\020\037\022\021\n\rWAHOO_FITNESS\020 \022\022\n\016OC" +
+      "TANE_FITNESS\020!\022\020\n\014ARCHINOETICS\020\"\022\020\n\014THE_" +
+      "HURT_BOX\020#\022\023\n\017CITIZEN_SYSTEMS\020$\022\014\n\010MAGEL" +
+      "LAN\020%\022\n\n\006OSYNCE\020&\022\t\n\005HOLUX\020\'\022\014\n\010CONCEPT2" +
+      "\020(\022\022\n\016ONE_GIANT_LEAP\020*\022\016\n\nACE_SENSOR\020+\022\021" +
+      "\n\rBRIM_BROTHERS\020,\022\n\n\006XPLOVA\020-\022\026\n\022PERCEPT" +
+      "ION_DIGITAL\020.\022\016\n\nBF1SYSTEMS\020/\022\013\n\007PIONEER" +
+      "\0200\022\013\n\007SPANTEC\0201\022\016\n\nMETALOGICS\0202\022\013\n\007I4III" +
+      "IS\0203\022\017\n\013SEIKO_EPSON\0204\022\023\n\017SEIKO_EPSON_OEM" +
+      "\0205\022\017\n\013IFOR_POWELL\0206\022\022\n\016MAXWELL_GUIDER\0207\022" +
+      "\r\n\tSTAR_TRAC\0208\022\r\n\tBREAKAWAY\0209\022\032\n\026ALATECH" +
+      "_TECHNOLOGY_LTD\020:\022\031\n\025MIO_TECHNOLOGY_EURO" +
+      "PE\020;\022\t\n\005ROTOR\020<\022\014\n\010GEONAUTE\020=\022\013\n\007ID_BIKE" +
+      "\020>\022\017\n\013SPECIALIZED\020?\022\010\n\004WTEK\020@\022\030\n\024PHYSICA" +
+      "L_ENTERPRISES\020A\022\032\n\026NORTH_POLE_ENGINEERIN" +
+      "G\020B\022\t\n\005BKOOL\020C\022\n\n\006CATEYE\020D\022\022\n\016STAGES_CYC" +
+      "LING\020E\022\016\n\nSIGMASPORT\020F\022\n\n\006TOMTOM\020G\022\r\n\tPE" +
+      "RIPEDAL\020H\022\014\n\010WATTBIKE\020I\022\010\n\004MOXY\020L\022\016\n\nCIC" +
+      "LOSPORT\020M\022\r\n\tPOWERBAHN\020N\022\026\n\022ACORN_PROJEC" +
+      "TS_APS\020O\022\014\n\010LIFEBEAM\020P\022\r\n\tBONTRAGER\020Q\022\n\n" +
+      "\006WELLGO\020R\022\013\n\007SCOSCHE\020S\022\n\n\006MAGURA\020T\022\013\n\007WO" +
+      "ODWAY\020U\022\t\n\005ELITE\020V\022\025\n\021NIELSEN_KELLERMAN\020" +
+      "W\022\013\n\007DK_CITY\020X\022\010\n\004TACX\020Y\022\030\n\024DIRECTION_TE" +
+      "CHNOLOGY\020Z\022\014\n\010MAGTONIC\020[\022\021\n\rONEPARTCARBO" +
+      "N\020\\\022\034\n\030INSIDE_RIDE_TECHNOLOGIES\020]\022\023\n\017SOU" +
+      "ND_OF_MOTION\020^\022\t\n\005STRYD\020_\022\007\n\003ICG\020`\022\013\n\007MI" +
+      "PULSE\020a\022\021\n\rBSX_ATHLETICS\020b\022\010\n\004LOOK\020c\022\022\n\016" +
+      "CAMPAGNOLO_SRL\020d\022\023\n\017BODY_BIKE_SMART\020e\022\017\n" +
+      "\013PRAXISWORKS\020f\022\025\n\021LIMITS_TECHNOLOGY\020g\022\030\n" +
+      "\024TOPACTION_TECHNOLOGY\020h\022\014\n\010COSINUSS\020i\022\013\n" +
+      "\007FITCARE\020j\022\n\n\006MAGENE\020k\022\032\n\026GIANT_MANUFACT" +
+      "URING_CO\020l\022\016\n\nTIGRASPORT\020m\022\020\n\013DEVELOPMEN" +
+      "T\020\377\001\022\022\n\rHEALTHANDLIFE\020\201\002\022\013\n\006LEZYNE\020\202\002\022\020\n" +
+      "\013SCRIBE_LABS\020\203\002\022\n\n\005ZWIFT\020\204\002\022\014\n\007WATTEAM\020\205" +
+      "\002\022\n\n\005RECON\020\206\002\022\027\n\022FAVERO_ELECTRONICS\020\207\002\022\r" +
+      "\n\010DYNOVELO\020\210\002\022\013\n\006STRAVA\020\211\002\022\013\n\006PRECOR\020\212\002\022" +
+      "\013\n\006BRYTON\020\213\002\022\t\n\004SRAM\020\214\002\022\013\n\006NAVMAN\020\215\002\022\t\n\004" +
+      "COBI\020\216\002\022\n\n\005SPIVI\020\217\002\022\021\n\014MIO_MAGELLAN\020\220\002\022\016" +
+      "\n\tEVESPORTS\020\221\002\022\025\n\020SENSITIVUS_GAUGE\020\222\002\022\013\n" +
+      "\006PODOON\020\223\002\"\316\001\n\tEventType\022\t\n\005START\020\000\022\010\n\004S" +
+      "TOP\020\001\022\033\n\027CONSECUTIVE_DEPRECIATED\020\002\022\n\n\006MA" +
+      "RKER\020\003\022\014\n\010STOP_ALL\020\004\022\025\n\021BEGIN_DEPRECIATE" +
+      "D\020\005\022\023\n\017END_DEPRECIATED\020\006\022\027\n\023END_ALL_DEPR" +
+      "ECIATED\020\007\022\020\n\014STOP_DISABLE\020\010\022\024\n\020STOP_DISA" +
+      "BLE_ALL\020\t\022\010\n\004NULL\020\n\"\336\002\n\005Sport\022\013\n\007GENERIC" +
+      "\020\000\022\013\n\007RUNNING\020\001\022\013\n\007CYCLING\020\002\022\016\n\nTRANSITI" +
+      "ON\020\003\022\025\n\021FITNESS_EQUIPMENT\020\004\022\014\n\010SWIMMING\020" +
+      "\005\022\016\n\nBASKETBALL\020\006\022\n\n\006SOCCER\020\007\022\n\n\006TENNIS\020" +
+      "\010\022\025\n\021AMERICAN_FOOTBALL\020\t\022\014\n\010TRAINING\020\n\022\013" +
+      "\n\007WALKING\020\013\022\030\n\024CROSS_COUNTRY_SKIING\020\014\022\021\n" +
+      "\rALPINE_SKIING\020\r\022\020\n\014SNOWBOARDING\020\016\022\n\n\006RO" +
+      "WING\020\017\022\022\n\016MOUNTAINEERING\020\020\022\n\n\006HIKING\020\021\022\016" +
+      "\n\nMULTISPORT\020\022\022\014\n\010PADDLING\020\023\022\010\n\003ALL\020\376\001\022\014" +
+      "\n\007INVALID\020\377\001\"\340\004\n\010SubSport\022\024\n\020GENERIC_SUB" +
+      "SPORT\020\000\022\r\n\tTREADMILL\020\001\022\n\n\006STREET\020\002\022\t\n\005TR" +
+      "AIL\020\003\022\t\n\005TRACK\020\004\022\010\n\004SPIN\020\005\022\022\n\016INDOOR_CYC" +
+      "LING\020\006\022\010\n\004ROAD\020\007\022\014\n\010MOUNTAIN\020\010\022\014\n\010DOWNHI" +
+      "LL\020\t\022\r\n\tRECUMBENT\020\n\022\016\n\nCYCLOCROSS\020\013\022\020\n\014H" +
+      "AND_CYCLING\020\014\022\021\n\rTRACK_CYCLING\020\r\022\021\n\rINDO" +
+      "OR_ROWING\020\016\022\016\n\nELLIPTICAL\020\017\022\022\n\016STAIR_CLI" +
+      "MBING\020\020\022\020\n\014LAP_SWIMMING\020\021\022\016\n\nOPEN_WATER\020" +
+      "\022\022\030\n\024FLEXIBILITY_TRAINING\020\023\022\025\n\021STRENGTH_" +
+      "TRAINING\020\024\022\013\n\007WARM_UP\020\025\022\t\n\005MATCH\020\026\022\014\n\010EX" +
+      "ERCISE\020\027\022\r\n\tCHALLENGE\020\030\022\021\n\rINDOOR_SKIING" +
+      "\020\031\022\023\n\017CARDIO_TRAINING\020\032\022\022\n\016INDOOR_WALKIN" +
+      "G\020\033\022\016\n\nCLASSIC_XC\020\034\022\014\n\010SKATE_XC\020\035\022\017\n\013TEL" +
+      "EMARK_XC\020\036\022\022\n\016BACKCOUNTRY_XC\020\037\022\022\n\016ALPINE" +
+      "_TOURING\020 \022\t\n\005SKIMO\020!\022\021\n\014ALL_SUBSPORT\020\376\001" +
+      "\022\025\n\020INVALID_SUBSPORT\020\377\001B\033\n\031ski.crunch.ac" +
+      "tivity.modelb\006proto3"
     };
     com.google.protobuf.Descriptors.FileDescriptor.InternalDescriptorAssigner assigner =
         new com.google.protobuf.Descriptors.FileDescriptor.    InternalDescriptorAssigner() {
@@ -22592,7 +22729,7 @@ public final class ActivityOuterClass {
     internal_static_Activity_Location_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
         internal_static_Activity_Location_descriptor,
-        new java.lang.String[] { "Lat", "Lon", "Source", "Address1", "Address2", "City", "County", "Prov", "Country", "Zip", "Fences", "DisplayName", });
+        new java.lang.String[] { "Lat", "Lon", "Source", "Address1", "Address2", "City", "County", "Prov", "Country", "Zip", "Fences", "DisplayName", "Name", });
     internal_static_Activity_Geofence_descriptor =
       internal_static_Activity_descriptor.getNestedTypes().get(4);
     internal_static_Activity_Geofence_fieldAccessorTable = new

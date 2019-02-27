@@ -68,7 +68,7 @@ provider:
     - Effect: Allow
       Action:
         - ssm:GetParameter
-      Resource: "arn:aws:ssm:${{opt:region, self:provider.region}}:*:parameter/*-weather-api-key"
+      Resource: "arn:aws:ssm:${{opt:region, self:provider.region}}:*:parameter/*-*-api-key"
 
 package:
   artifact: build/distributions/api.zip
