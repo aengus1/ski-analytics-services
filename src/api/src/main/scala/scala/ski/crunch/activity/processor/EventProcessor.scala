@@ -64,7 +64,7 @@ class EventProcessor(holder: ActivityHolder) {
             }
           })
           val res: java.util.ArrayList[ActivityEvent] = new java.util.ArrayList[ActivityEvent](evts.reverse.asJava)
-          holder.setEvents(res)
+          // holder.setEvents(res)
           val newHolder = new ActivityHolder(holder)
           newHolder.setEvents(res)
           new EventProcessor(newHolder)
@@ -90,7 +90,7 @@ class EventProcessor(holder: ActivityHolder) {
         })
 
         val res: java.util.ArrayList[ActivityEvent] = new java.util.ArrayList[ActivityEvent](events.reverse.asJava)
-        holder.setEvents(res)
+        // holder.setEvents(res)
         val newHolder = new ActivityHolder(holder)
         newHolder.setEvents(res)
         new EventProcessor(newHolder)
@@ -129,8 +129,10 @@ class EventProcessor(holder: ActivityHolder) {
           .map(x => new ActivityEvent(index.get(x.getTs).getOrElse(-999), EventType.LAP_STOP, x.getTs))
         val eventResults: List[ActivityEvent] = startLapEvents ++ stopLapEvents ++ nonLapEvents
         val res: java.util.ArrayList[ActivityEvent] = new java.util.ArrayList[ActivityEvent](eventResults.reverse.asJava)
-        holder.setEvents(res)
-        new EventProcessor(holder)
+
+        val newHolder = new ActivityHolder(holder)
+        newHolder.setEvents(res)
+        new EventProcessor(newHolder)
       }
       case "GARMIN" => {
         // lap button press on garmin is coded as lap - session_end.  autolap is coded as lap - distance
@@ -148,8 +150,10 @@ class EventProcessor(holder: ActivityHolder) {
 
         val eventResults: List[ActivityEvent] = startLapEvents ++ startAutoLapEvents ++ stopLapEvents ++ stopAutoLapEvents ++nonLapEvents
         val res: java.util.ArrayList[ActivityEvent] = new java.util.ArrayList[ActivityEvent](eventResults.reverse.asJava)
-        holder.setEvents(res)
-        new EventProcessor(holder)
+        //holder.setEvents(res)
+        val newHolder = new ActivityHolder(holder)
+        newHolder.setEvents(res)
+        new EventProcessor(newHolder)
 
       }
       case _ => None
@@ -186,8 +190,11 @@ class EventProcessor(holder: ActivityHolder) {
        }
      }
           val res: java.util.ArrayList[ActivityEvent] = new java.util.ArrayList[ActivityEvent](events ++ evts.reverse.asJava)
-          holder.setEvents(res)
-          new EventProcessor(holder)
+
+        val newHolder = new ActivityHolder(holder)
+          newHolder.setEvents(res)
+
+          new EventProcessor(newHolder)
     }
 
 }

@@ -28,7 +28,7 @@ public class EventMessageListener extends AbstractMesgListener implements EventM
 
 
     /**
-     * TODO -> grab timer events for garmin pauses (really should grab all events recorded in file)
+     *
      * @param holder
      */
     public EventMessageListener(ActivityHolder holder){

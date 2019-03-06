@@ -6,6 +6,9 @@ import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestInstance;
 import scala.ski.crunch.activity.processor.model.ActivityRecord;
+import ski.crunch.activity.ActivityWriter;
+import ski.crunch.activity.ActivityWriterImpl;
+import ski.crunch.activity.model.ActivityOuterClass;
 import ski.crunch.activity.processor.model.ActivityEvent;
 import ski.crunch.activity.processor.model.ActivityHolder;
 import ski.crunch.activity.processor.model.EventType;
@@ -291,6 +294,17 @@ public class ActivityPipelineTest {
         assertEquals(holder.getRecords().size() - 1, holder.getEvents().stream()
                 .filter(x -> x.getEventType().equals(EventType.ACTIVITY_STOP)).findFirst().get().getIndex());
 
+    }
+
+    @Test
+    public void testSessionCreation(){
+        ActivityHolder holder = setupActivity(pauseTest);
+        ActivityProcessor pipeline = new ActivityProcessor();
+        ActivityHolder processed = pipeline.process(holder);
+        ActivityWriter writer = new ActivityWriterImpl();
+        ActivityOuterClass.Activity result = writer.writeToActivity(processed,"test", null, null);
+
+        assertEquals(1, result.getSessionsCount());
     }
 
 

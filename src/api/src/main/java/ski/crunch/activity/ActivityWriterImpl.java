@@ -167,6 +167,7 @@ public class ActivityWriterImpl implements ActivityWriter {
             segmentBuilder.setSummary(summary);
             sessions.add(sessionBuilder.build());
         });
+
         return sessions;
     }
 

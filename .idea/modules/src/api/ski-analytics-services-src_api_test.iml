@@ -20,13 +20,13 @@
     <orderEntry type="library" name="Gradle: com.amazonaws:aws-lambda-java-log4j:1.0.0" level="project" />
     <orderEntry type="library" name="Gradle: com.amazonaws:aws-lambda-java-core:1.1.0" level="project" />
     <orderEntry type="library" name="Gradle: com.amazonaws:aws-java-sdk-dynamodb:1.11.166" level="project" />
-    <orderEntry type="library" name="Gradle: com.amazonaws:aws-java-sdk-s3:1.11.409" level="project" />
+    <orderEntry type="library" name="Gradle: com.amazonaws:aws-java-sdk-s3:1.11.510" level="project" />
     <orderEntry type="library" name="Gradle: com.amazonaws:aws-java-sdk-cloudformation:1.11.166" level="project" />
     <orderEntry type="library" name="Gradle: com.amazonaws:aws-java-sdk-cognitoidp:1.11.442" level="project" />
     <orderEntry type="library" name="Gradle: com.amazonaws:aws-java-sdk-ssm:1.11.163" level="project" />
-    <orderEntry type="library" name="Gradle: com.amazonaws:aws-java-sdk-kms:1.11.409" level="project" />
-    <orderEntry type="library" name="Gradle: com.amazonaws:aws-java-sdk-core:1.11.442" level="project" />
-    <orderEntry type="library" name="Gradle: com.amazonaws:jmespath-java:1.11.442" level="project" />
+    <orderEntry type="library" name="Gradle: com.amazonaws:aws-java-sdk-kms:1.11.510" level="project" />
+    <orderEntry type="library" name="Gradle: com.amazonaws:aws-java-sdk-core:1.11.510" level="project" />
+    <orderEntry type="library" name="Gradle: com.amazonaws:jmespath-java:1.11.510" level="project" />
     <orderEntry type="library" name="Gradle: com.fasterxml.jackson.core:jackson-databind:2.8.5" level="project" />
     <orderEntry type="library" name="Gradle: com.fasterxml.jackson.dataformat:jackson-dataformat-cbor:2.6.7" level="project" />
     <orderEntry type="library" name="Gradle: com.fasterxml.jackson.core:jackson-core:2.9.7" level="project" />

@@ -69,7 +69,7 @@ public class ActivitySummarizer  implements Handler<ActivityHolder> {
         List<ActivitySummary> lapSummaries = new ArrayList<>();
         holder.getEvents().stream().filter(x -> x.getEventType().equals(EventType.LAP_START)).forEach(event -> {
 
-            ActivityEvent end = holder.getEvents().stream().filter(x -> x.getEventType().equals(EventType.LAP_STOP)
+            ActivityEvent end = holder.getEvents().stream().filter(x -> x.getEventType().equals(EventType.LAP_STOP) && (x.getIndex() > event.getIndex())
                     && !lapSummaries.stream().map(summary -> summary.startTs()).collect(Collectors.toList()).contains(x.getTs()))
                     .findFirst().get();
 
@@ -153,7 +153,7 @@ public class ActivitySummarizer  implements Handler<ActivityHolder> {
         List<ActivitySummary> pauseSummaries = new ArrayList<>();
         holder.getEvents().stream().filter(x -> x.getEventType().equals(EventType.PAUSE_START)).forEach(event -> {
 
-            ActivityEvent end = holder.getEvents().stream().filter(x -> x.getEventType().equals(EventType.PAUSE_STOP)
+            ActivityEvent end = holder.getEvents().stream().filter(x -> x.getEventType().equals(EventType.PAUSE_STOP) && (x.getIndex() > event.getIndex())
                     && !pauseSummaries.stream().map(summary -> summary.startTs()).collect(Collectors.toList()).contains(x.getTs()))
                     .findFirst().get();
 
@@ -310,7 +310,7 @@ public class ActivitySummarizer  implements Handler<ActivityHolder> {
         List<ActivitySummary> sessionSummaries = new ArrayList<>();
         holder.getEvents().stream().filter(x -> x.getEventType().equals(EventType.SESSION_START)).forEach(event -> {
 
-            ActivityEvent end = holder.getEvents().stream().filter(x -> x.getEventType().equals(EventType.SESSION_STOP)
+            ActivityEvent end = holder.getEvents().stream().filter(x -> x.getEventType().equals(EventType.SESSION_STOP) && (x.getIndex() > event.getIndex())
                     && !sessionSummaries.stream().map(summary -> summary.startTs()).collect(Collectors.toList()).contains(x.getTs()))
                     .findFirst().get();
 
@@ -384,6 +384,7 @@ public class ActivitySummarizer  implements Handler<ActivityHolder> {
                     avNegativeVerticalSpeed,
                     maxNegativeVerticalSpeed
             );
+            sessionSummaries.add(summary);
 
         });
 

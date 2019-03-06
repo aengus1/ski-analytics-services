@@ -8,14 +8,11 @@ import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestInstance;
-import ski.crunch.activity.model.PutActivityResponse;
+import ski.crunch.activity.model.ActivityOuterClass;
 import ski.crunch.activity.service.ActivityService;
 import ski.crunch.activity.service.DynamoDBService;
 import ski.crunch.activity.service.S3Service;
-import ski.crunch.utils.AuthenticationHelper;
-import ski.crunch.utils.CloudFormationHelper;
-import ski.crunch.utils.NotFoundException;
-import ski.crunch.utils.ServerlessState;
+import ski.crunch.utils.*;
 
 import javax.ws.rs.client.Client;
 import javax.ws.rs.client.ClientBuilder;
@@ -32,6 +29,9 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.List;
+
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
@@ -79,11 +79,28 @@ class ActivityTests {
         try {
 
             //System.setProperty("currentStage", "staging");
-            String ss = getClass().getResource("../../..").getPath();
+
+            //is test being executed from build (test suite) or out (individual) directory
+            String buildPath = ActivityTests.class.getProtectionDomain().getCodeSource().getLocation().getPath();
+            System.out.println("build path = " + buildPath);
+            String apiPath;
+            String authPath;
+            String path;
+            String ss = ActivityTests.class.getResource("../../../").getPath();
             File f = new File(ss);
-            String apiPath =  f.getParentFile().getParentFile().getParentFile().getParentFile().getPath();
-            String path = new File(apiPath+"/api/.serverless","serverless-state.json").getPath();
-            String authPath = new File(apiPath+"/auth/.serverless","serverless-state.json").getPath();
+            apiPath =  f.getParentFile().getParentFile().getParentFile().getParentFile().getPath();
+
+            if(buildPath.contains("/api/build/classes/java/test/")){
+                //test suite
+                 apiPath =  f.getParentFile().getParentFile().getParentFile().getParentFile().getPath();
+                 path = new File(apiPath+"/.serverless","serverless-state.json").getPath();
+                 authPath = new File(apiPath+"/../auth/.serverless","serverless-state.json").getPath();
+            } else {
+                //individual
+                path = new File(apiPath+"/api/.serverless","serverless-state.json").getPath();
+                authPath = new File(apiPath+"/auth/.serverless","serverless-state.json").getPath();
+            }
+
             apiStackServerlessState = ServerlessState.readServerlessState(path);
             authStackServerlessState = ServerlessState.readServerlessState(authPath);
         } catch (IOException e) {
@@ -208,13 +225,23 @@ class ActivityTests {
         }
 
         // appears to be an eventual consistency issue here. S3 returning not found
-//        try {
-//            Thread.currentThread().sleep(20000);
-//            LOG.info("checking processed bucket " + processedActivityBucket + " for activity: " + activityId+".pbf");
-//            assert(s3.doesObjectExist(processedActivityBucket, activityId+".pbf") == true);
-//        } catch (InterruptedException ex) {
-//
-//        }
+        try {
+            Thread.currentThread().sleep(20000);
+            LOG.info("checking processed bucket " + processedActivityBucket + " for activity: " + activityId+".pbf");
+            assert(s3.doesObjectExist(processedActivityBucket, activityId+".pbf") == true);
+        } catch (InterruptedException ex) {
+
+        }
+
+        try {
+            byte[] buffer = s3.getObject(processedActivityBucket, activityId + ".pbf");
+            ActivityOuterClass.Activity finalActivity = ActivityOuterClass.Activity.parseFrom(buffer);
+            assertEquals(1, finalActivity.getSessionsCount());
+            assertTrue(finalActivity.getSessions(0).getSport()!=null);
+
+        }catch(IOException ex){
+            ex.printStackTrace();
+        }
 
     }
 
@@ -234,6 +261,31 @@ class ActivityTests {
 //    void destroyDevUser() {
 //        helper.deleteUser(this.devUserName);
 //    }
+
+
+    private  String extractActivityId(String key) throws ParseException {
+        String id = "";
+
+        if (key != null && key.length() > 1 && key.contains(".")) {
+            id = key.substring(0, key.indexOf("."));
+            LOG.debug("extracted id: " + id);
+        } else {
+            LOG.error("invalid key name: " + key);
+            throw new ParseException("invalid key name for activity " + key);
+        }
+        return id;
+    }
+
+    @Test
+    public void testActivityIdExtract(){
+        try {
+            String id = this.extractActivityId("029781f1-4eac-453f-91e4-ae44f76c57d0.fit");
+            System.out.println("id = " + id);
+            System.out.println(id.concat(".pbf"));
+        }catch(Exception ex){
+            ex.printStackTrace();
+        }
+    }
     @AfterAll
     void tearDown() {
         activityService.deleteActivityItemById(activityId);
