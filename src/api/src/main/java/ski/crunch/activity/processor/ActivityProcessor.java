@@ -19,8 +19,8 @@ public class ActivityProcessor {
         Handler detectPauseHandler = new DetectPauseHandler();
         Handler detectMotionHandler = new DetectMotionHandler();
         Handler closeSegmentsHandler = new CloseSegmentsHandler();
-        Handler setEventIndexHandler = new SetEventIndexHandler();
         Handler detectLapHandler = new DetectLapHandler();
+        Handler setEventIndexHandler = new SetEventIndexHandler();
         Handler sortEventsByTsHandler = new SortEventsByTsHandler();
         Handler summarizeActivityHandler = new ActivitySummarizer();
         Handler setInitialMoveHandler = new SetInitialMoveHandler();
@@ -42,6 +42,7 @@ public class ActivityProcessor {
         manager.addHandler(detectPauseHandler);
         manager.addHandler(detectMotionHandler);
         manager.addHandler(closeSegmentsHandler);
+        manager.addHandler(setEventIndexHandler);
         manager.addHandler(detectLapHandler);
         manager.addHandler(setEventIndexHandler);
         manager.addHandler(sortByTsHandler);

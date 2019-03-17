@@ -61,6 +61,7 @@
     <orderEntry type="library" name="Gradle: org.scalactic:scalactic_2.11:3.0.0" level="project" />
     <orderEntry type="module" module-name="src_api_main" scope="TEST" />
     <orderEntry type="library" scope="TEST" name="Gradle: org.mockito:mockito-all:1.10.19" level="project" />
+    <orderEntry type="library" scope="TEST" name="Gradle: com.amazonaws:aws-java-sdk-core:1.11.510" level="project" />
   </component>
   <component name="TestModuleProperties" production-module="src_api_main" />
 </module>

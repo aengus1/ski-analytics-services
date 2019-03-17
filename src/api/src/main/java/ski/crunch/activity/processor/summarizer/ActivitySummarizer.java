@@ -17,7 +17,7 @@ import java.util.stream.Collectors;
 
 import static ski.crunch.activity.processor.model.ActivityHolder.TARGET_FORMAT;
 
-public class ActivitySummarizer  implements Handler<ActivityHolder> {
+public class ActivitySummarizer implements Handler<ActivityHolder> {
 
     private Logger logger;
     private ActivityHolder holder;
@@ -53,12 +53,14 @@ public class ActivitySummarizer  implements Handler<ActivityHolder> {
      * @throws ParseException
      */
     @Override
-    public ActivityHolder process(ActivityHolder holder){
+    public ActivityHolder process(ActivityHolder holder) {
+
         this.holder = holder;
         buildPauseIndex();
         holder.setPauseSummaries(summarizePauseSegments());
         holder.setLapSummaries(summarizeLapSegments());
         holder.setActivitySummary(summarizeActivity());
+        holder.setStopSummaries(summarizeStopSegments());
         holder.setSessionSummaries(summarizeSessions());
         return holder;
     }
@@ -72,81 +74,26 @@ public class ActivitySummarizer  implements Handler<ActivityHolder> {
             ActivityEvent end = holder.getEvents().stream().filter(x -> x.getEventType().equals(EventType.LAP_STOP) && (x.getIndex() > event.getIndex())
                     && !lapSummaries.stream().map(summary -> summary.startTs()).collect(Collectors.toList()).contains(x.getTs()))
                     .findFirst().get();
-
-            String startTs = event.getTs();
-            String endTs = end.getTs();
-
-            double totalElapsed = calcElapsed(event.getTs(), end.getTs());
-            double totalTimer = calcTotalTimer(event.getIndex(), end.getIndex());
-
-            double totalMoving = calcTotalWithPause(event.getIndex(), end.getIndex(), new CalculateTotalMoving());
-            double totalStopped = calcTotalWithPause(event.getIndex(), end.getIndex(), new CalculateTotalStopped());
-            double totalPaused = totalElapsed - totalTimer;
-
-            double totalAscent = calcTotalWithPause(event.getIndex(), end.getIndex(), new CalculateTotalAscent());
-            double totalDescent = calcTotalWithPause(event.getIndex(), end.getIndex(), new CalculateTotalDescent());
-
-            double totalDistance = calcTotalWithPause(event.getIndex(), end.getIndex(), new CalculateTotalDistance());
-
-            int avHr = (int) calcAverageWithPauseInt(event.getIndex(), end.getIndex(), new AvgFunctionInteger(), i -> i.hr());
-            int maxHr = (int) calcMaxWithPauseInt(event.getIndex(), end.getIndex(), new MaxFunctionInteger(), i -> i.hr());
-
-            int avCadence = (int) calcAverageWithPauseInt(event.getIndex(), end.getIndex(), new AvgFunctionInteger(), i -> i.cadence());
-            int maxCadence = (int) calcMaxWithPauseInt(event.getIndex(), end.getIndex(), new MaxFunctionInteger(), i -> i.cadence());
-
-            double avTemp = calcAverageWithPauseDouble(event.getIndex(), end.getIndex(), new AvgFunctionDouble(), i -> i.temperature());
-            double maxTemp = calcMaxWithPauseDouble(event.getIndex(), end.getIndex(), new MaxFunctionDouble(), i -> i.temperature());
-
-
-            double avPositiveGrade = calcAverageWithPauseDouble(event.getIndex(), end.getIndex(), new CalculateAveragePositiveGrade(), null);
-            double maxPositiveGrade = calcMaxWithPauseDouble(event.getIndex(), end.getIndex(), new CalculateMaxPositiveGrade(), null);
-            double avNegativeGrade = calcAverageWithPauseDouble(event.getIndex(), end.getIndex(), new CalculateAverageNegativeGrade(), null);
-            double maxNegativeGrade = calcMaxWithPauseDouble(event.getIndex(), end.getIndex(), new CalculateMaxNegativeGrade(), null);
-
-            double avPositiveVerticalSpeed = calcAverageWithPauseDouble(event.getIndex(), end.getIndex(), new CalculateAveragePositiveVerticalSpeed(), null);
-            double maxPositiveVerticalSpeed = calcMaxWithPauseDouble(event.getIndex(), end.getIndex(), new CalculateMaxPositiveVerticalSpeed(), null);
-
-            double avNegativeVerticalSpeed = calcAverageWithPauseDouble(event.getIndex(), end.getIndex(), new CalculateAverageNegativeVerticalSpeed(), null);
-            double maxNegativeVerticalSpeed = calcMaxWithPauseDouble(event.getIndex(), end.getIndex(), new CalculateMaxNegativeVerticalSpeed(), null);
-
-            double avgSpeed = calcAverageWithPauseDouble(event.getIndex(), end.getIndex(), new AvgFunctionDouble(), i -> i.velocity());
-            double maxSpeed = calcMaxWithPauseDouble(event.getIndex(), end.getIndex(), new MaxFunctionDouble(), i -> i.velocity());
-
-
-            ActivitySummary summary = new ActivitySummary(
-                    "LAP",
-                    startTs,
-                    endTs,
-                    totalElapsed,
-                    totalTimer,
-                    totalMoving,
-                    totalStopped,
-                    totalPaused,
-                    totalAscent,
-                    totalDescent,
-                    totalDistance,
-                    avHr,
-                    maxHr,
-                    avCadence,
-                    maxCadence,
-                    avTemp,
-                    maxTemp,
-                    avgSpeed,
-                    maxSpeed,
-                    avPositiveGrade,
-                    maxPositiveGrade,
-                    avNegativeGrade,
-                    maxNegativeGrade,
-                    avPositiveVerticalSpeed,
-                    maxPositiveVerticalSpeed,
-                    avNegativeVerticalSpeed,
-                    maxNegativeVerticalSpeed
-            );
-
-
+            ActivitySummary summary = buildSummary(event, end, "LAP");
             lapSummaries.add(summary);
         });
         return lapSummaries;
+    }
+
+    private List<ActivitySummary> summarizeStopSegments() {
+        List<ActivitySummary> motionSummaries = new ArrayList<>();
+        holder.getEvents().stream().filter(x -> x.getEventType().equals(EventType.MOTION_STOP)).forEach(event -> {
+
+            ActivityEvent end = holder.getEvents().stream().filter(x -> x.getEventType().equals(EventType.MOTION_START) && (x.getIndex() > event.getIndex())
+                    && !motionSummaries.stream().map(summary -> summary.startTs()).collect(Collectors.toList()).contains(x.getTs()))
+                    .findFirst().orElse(null);
+            if(end != null) {
+                ActivitySummary summary = buildSummary(event, end, "STOP");
+                motionSummaries.add(summary);
+            }
+
+        });
+        return motionSummaries;
     }
 
     private List<ActivitySummary> summarizePauseSegments() {
@@ -192,7 +139,6 @@ public class ActivitySummarizer  implements Handler<ActivityHolder> {
             double avNegativeVerticalSpeed = new CalculateAverageNegativeVerticalSpeed().calculate(event.getIndex(), end.getIndex(), holder, null);
             double maxNegativeVerticalSpeed = new CalculateMaxNegativeVerticalSpeed().calculate(event.getIndex(), end.getIndex(), holder, null);
 
-            //double avgSpeed = new CalculateAverageSpeed().calculate(holder,event.getIndex(), end.getIndex());
             double avgSpeed = new AvgFunctionDouble().calculate(event.getIndex(), end.getIndex(), holder, i -> i.velocity());
             double maxSpeed = new MaxFunctionDouble().calculate(event.getIndex(), end.getIndex(), holder, i -> i.velocity());
 
@@ -235,47 +181,61 @@ public class ActivitySummarizer  implements Handler<ActivityHolder> {
 
     private ActivitySummary summarizeActivity() {
         int len = holder.getRecords().size() - 1;
-        String startTs = holder.getRecords().get(0).ts();
-        String endTs = holder.getRecords().get(len).ts();
-        double totalElapsed = calcElapsed(startTs, endTs);
-        double totalTimer = calcTotalTimer(0, len);
+        ActivityEvent st = new ActivityEvent();
+        st.setIndex(0);
+        st.setTs(holder.getRecords().get(0).ts());
 
-        double totalMoving = calcTotalWithPause(0, len, new CalculateTotalMoving());
-        double totalStopped = calcTotalWithPause(0, len, new CalculateTotalStopped());
+        ActivityEvent en = new ActivityEvent();
+        en.setIndex(len);
+        en.setTs(holder.getRecords().get(len).ts());
+        return buildSummary(st, en, "ACTIVITY");
+    }
+
+
+    private ActivitySummary buildSummary(ActivityEvent start, ActivityEvent end, String type) {
+        String startTs = start.getTs();
+        String endTs = end.getTs();
+
+
+        double totalElapsed = calcElapsed(start.getTs(), end.getTs());
+        double totalTimer = calcTotalTimer(start.getIndex(), end.getIndex());
+
+        double totalMoving = calcTotalWithPause(start.getIndex(), end.getIndex(), new CalculateTotalMoving());
+        double totalStopped = calcTotalWithPause(start.getIndex(), end.getIndex(), new CalculateTotalStopped());
         double totalPaused = totalElapsed - totalTimer;
 
-        double totalAscent = calcTotalWithPause(0, len, new CalculateTotalAscent());
-        double totalDescent = calcTotalWithPause(0, len, new CalculateTotalDescent());
+        double totalAscent = calcTotalWithPause(start.getIndex(), end.getIndex(), new CalculateTotalAscent());
+        double totalDescent = calcTotalWithPause(start.getIndex(), end.getIndex(), new CalculateTotalDescent());
 
-        double totalDistance = calcTotalWithPause(0, len, new CalculateTotalDistance());
+        double totalDistance = calcTotalWithPause(start.getIndex(), end.getIndex(), new CalculateTotalDistance());
 
-        int avHr = (int) calcAverageWithPauseInt(0, len, new AvgFunctionInteger(), i -> i.hr());
-        int maxHr = (int) calcMaxWithPauseInt(0, len, new MaxFunctionInteger(), i -> i.hr());
+        int avHr = (int) calcAverageWithPause(start.getIndex(), end.getIndex(), new AvgFunctionInteger(), i -> i.hr());
+        int maxHr = (int) calcMaxWithPause(start.getIndex(), end.getIndex(), new MaxFunctionInteger(), i -> i.hr());
 
-        int avCadence = (int) calcAverageWithPauseInt(0, len, new AvgFunctionInteger(), i -> i.cadence());
-        int maxCadence = (int) calcMaxWithPauseInt(0, len, new MaxFunctionInteger(), i -> i.cadence());
+        int avCadence = (int) calcAverageWithPause(start.getIndex(), end.getIndex(), new AvgFunctionInteger(), i -> i.cadence());
+        int maxCadence = (int) calcMaxWithPause(start.getIndex(), end.getIndex(), new MaxFunctionInteger(), i -> i.cadence());
 
-        double avTemp = calcAverageWithPauseDouble(0, len, new AvgFunctionDouble(), i -> i.temperature());
-        double maxTemp = calcMaxWithPauseDouble(0, len, new MaxFunctionDouble(), i -> i.temperature());
+        double avTemp = calcAverageWithPause(start.getIndex(), end.getIndex(), new AvgFunctionDouble(), i -> i.temperature());
+        double maxTemp = calcMaxWithPause(start.getIndex(), end.getIndex(), new MaxFunctionDouble(), i -> i.temperature());
 
 
-        double avPositiveGrade = calcAverageWithPauseDouble(0, len, new CalculateAveragePositiveGrade(), null);
-        double maxPositiveGrade = calcMaxWithPauseDouble(0, len, new CalculateMaxPositiveGrade(), null);
-        double avNegativeGrade = calcAverageWithPauseDouble(0, len, new CalculateAverageNegativeGrade(), null);
-        double maxNegativeGrade = calcMaxWithPauseDouble(0, len, new CalculateMaxNegativeGrade(), null);
+        double avPositiveGrade = calcAverageWithPause(start.getIndex(), end.getIndex(), new CalculateAveragePositiveGrade(), null);
+        double maxPositiveGrade = calcMaxWithPause(start.getIndex(), end.getIndex(), new CalculateMaxPositiveGrade(), null);
+        double avNegativeGrade = calcAverageWithPause(start.getIndex(), end.getIndex(), new CalculateAverageNegativeGrade(), null);
+        double maxNegativeGrade = calcMaxWithPause(start.getIndex(), end.getIndex(), new CalculateMaxNegativeGrade(), null);
 
-        double avPositiveVerticalSpeed = calcAverageWithPauseDouble(0, len, new CalculateAveragePositiveVerticalSpeed(), null);
-        double maxPositiveVerticalSpeed = calcMaxWithPauseDouble(0, len, new CalculateMaxPositiveVerticalSpeed(), null);
+        double avPositiveVerticalSpeed = calcAverageWithPause(start.getIndex(), end.getIndex(), new CalculateAveragePositiveVerticalSpeed(), null);
+        double maxPositiveVerticalSpeed = calcMaxWithPause(start.getIndex(), end.getIndex(), new CalculateMaxPositiveVerticalSpeed(), null);
 
-        double avNegativeVerticalSpeed = calcAverageWithPauseDouble(0, len, new CalculateAverageNegativeVerticalSpeed(), null);
-        double maxNegativeVerticalSpeed = calcMaxWithPauseDouble(0, len, new CalculateMaxNegativeVerticalSpeed(), null);
+        double avNegativeVerticalSpeed = calcAverageWithPause(start.getIndex(), end.getIndex(), new CalculateAverageNegativeVerticalSpeed(), null);
+        double maxNegativeVerticalSpeed = calcMaxWithPause(start.getIndex(), end.getIndex(), new CalculateMaxNegativeVerticalSpeed(), null);
 
-        double avgSpeed = calcAverageWithPauseDouble(0, len, new AvgFunctionDouble(), i -> i.velocity());
-        double maxSpeed = calcMaxWithPauseDouble(0, len, new MaxFunctionDouble(), i -> i.velocity());
+        double avgSpeed = calcAverageWithPause(start.getIndex(), end.getIndex(), new AvgFunctionDouble(), i -> i.velocity());
+        double maxSpeed = calcMaxWithPause(start.getIndex(), end.getIndex(), new MaxFunctionDouble(), i -> i.velocity());
 
 
         return new ActivitySummary(
-                "ACTIVITY",
+                type,
                 startTs,
                 endTs,
                 totalElapsed,
@@ -305,6 +265,7 @@ public class ActivitySummarizer  implements Handler<ActivityHolder> {
         );
     }
 
+    ;
 
     private List<ActivitySummary> summarizeSessions() {
         List<ActivitySummary> sessionSummaries = new ArrayList<>();
@@ -314,76 +275,8 @@ public class ActivitySummarizer  implements Handler<ActivityHolder> {
                     && !sessionSummaries.stream().map(summary -> summary.startTs()).collect(Collectors.toList()).contains(x.getTs()))
                     .findFirst().get();
 
-            String startTs = event.getTs();
-            String endTs = end.getTs();
+            ActivitySummary summary = buildSummary(event, end, "SESSION");
 
-
-            double totalElapsed = calcElapsed(event.getTs(), end.getTs());
-            double totalTimer = calcTotalTimer(event.getIndex(), end.getIndex());
-
-            double totalMoving = calcTotalWithPause(event.getIndex(), end.getIndex(), new CalculateTotalMoving());
-            double totalStopped = calcTotalWithPause(event.getIndex(), end.getIndex(), new CalculateTotalStopped());
-            double totalPaused = totalElapsed - totalTimer;
-
-            double totalAscent = calcTotalWithPause(event.getIndex(), end.getIndex(), new CalculateTotalAscent());
-            double totalDescent = calcTotalWithPause(event.getIndex(), end.getIndex(), new CalculateTotalDescent());
-
-            double totalDistance = calcTotalWithPause(event.getIndex(), end.getIndex(), new CalculateTotalDistance());
-
-            int avHr = (int) calcAverageWithPauseInt(event.getIndex(), end.getIndex(), new AvgFunctionInteger(), i -> i.hr());
-            int maxHr = (int) calcMaxWithPauseInt(event.getIndex(), end.getIndex(), new MaxFunctionInteger(), i -> i.hr());
-
-            int avCadence = (int) calcAverageWithPauseInt(event.getIndex(), end.getIndex(), new AvgFunctionInteger(), i -> i.cadence());
-            int maxCadence = (int) calcMaxWithPauseInt(event.getIndex(), end.getIndex(), new MaxFunctionInteger(), i -> i.cadence());
-
-            double avTemp = calcAverageWithPauseDouble(event.getIndex(), end.getIndex(), new AvgFunctionDouble(), i -> i.temperature());
-            double maxTemp = calcMaxWithPauseDouble(event.getIndex(), end.getIndex(), new MaxFunctionDouble(), i -> i.temperature());
-
-
-            double avPositiveGrade = calcAverageWithPauseDouble(event.getIndex(), end.getIndex(), new CalculateAveragePositiveGrade(), null);
-            double maxPositiveGrade = calcMaxWithPauseDouble(event.getIndex(), end.getIndex(), new CalculateMaxPositiveGrade(), null);
-            double avNegativeGrade = calcAverageWithPauseDouble(event.getIndex(), end.getIndex(), new CalculateAverageNegativeGrade(), null);
-            double maxNegativeGrade = calcMaxWithPauseDouble(event.getIndex(), end.getIndex(), new CalculateMaxNegativeGrade(), null);
-
-            double avPositiveVerticalSpeed = calcAverageWithPauseDouble(event.getIndex(), end.getIndex(), new CalculateAveragePositiveVerticalSpeed(), null);
-            double maxPositiveVerticalSpeed = calcMaxWithPauseDouble(event.getIndex(), end.getIndex(), new CalculateMaxPositiveVerticalSpeed(), null);
-
-            double avNegativeVerticalSpeed = calcAverageWithPauseDouble(event.getIndex(), end.getIndex(), new CalculateAverageNegativeVerticalSpeed(), null);
-            double maxNegativeVerticalSpeed = calcMaxWithPauseDouble(event.getIndex(), end.getIndex(), new CalculateMaxNegativeVerticalSpeed(), null);
-
-            double avgSpeed = calcAverageWithPauseDouble(event.getIndex(), end.getIndex(), new AvgFunctionDouble(), i -> i.velocity());
-            double maxSpeed = calcMaxWithPauseDouble(event.getIndex(), end.getIndex(), new MaxFunctionDouble(), i -> i.velocity());
-
-
-            ActivitySummary summary = new ActivitySummary(
-                    "SESSION",
-                    startTs,
-                    endTs,
-                    totalElapsed,
-                    totalTimer,
-                    totalMoving,
-                    totalStopped,
-                    totalPaused,
-                    totalAscent,
-                    totalDescent,
-                    totalDistance,
-                    avHr,
-                    maxHr,
-                    avCadence,
-                    maxCadence,
-                    avTemp,
-                    maxTemp,
-                    avgSpeed,
-                    maxSpeed,
-                    avPositiveGrade,
-                    maxPositiveGrade,
-                    avNegativeGrade,
-                    maxNegativeGrade,
-                    avPositiveVerticalSpeed,
-                    maxPositiveVerticalSpeed,
-                    avNegativeVerticalSpeed,
-                    maxNegativeVerticalSpeed
-            );
             sessionSummaries.add(summary);
 
         });
@@ -427,7 +320,7 @@ public class ActivitySummarizer  implements Handler<ActivityHolder> {
             int j = startIdx;
             double timer = 0;
             for (Range pause : overlappingPauses) {
-                while (!pause.contains(i) && i <= endIdx) {
+                while (!pause.contains(i) && i < endIdx) {
                     i++;
                 }
                 timer += calcElapsed(holder.getRecords().get(j).ts(), holder.getRecords().get(i).ts());
@@ -446,21 +339,24 @@ public class ActivitySummarizer  implements Handler<ActivityHolder> {
      * @param calculateTotal
      * @return
      */
-    private double calcTotalWithPause(int startIdx, int endIdx, StatisticFunc<Double> calculateTotal) {
+    private <T extends Number> double calcTotalWithPause(int startIdx, int endIdx, StatisticFunc<T> calculateTotal) {
         List<Range> overlappingPauses = pauseIndex.stream().filter(r -> r.overlaps(new Range(startIdx, endIdx))).collect(Collectors.toList());
 
         if (overlappingPauses.isEmpty()) {
-            return calculateTotal.calculate(startIdx, endIdx, holder, null);
+            return calculateTotal.calculate(startIdx, endIdx, holder, null).doubleValue();
         } else {
             int i = startIdx;
             int j = startIdx;
             double result = 0;
             for (Range pause : overlappingPauses) {
-                while (!pause.contains(j) && j <= endIdx) {
+                while (!pause.contains(j) && j < endIdx) {
                     j++;
                 }
-                result += calculateTotal.calculate(i, j, holder, null);
-                j = pause.upper;
+                result += calculateTotal.calculate(i, j, holder, null).doubleValue();
+                j = Math.max(i, pause.upper);
+            }
+            if(j < endIdx) {
+                result += calculateTotal.calculate(j, endIdx, holder, null).doubleValue();
             }
             return result;
         }
@@ -470,73 +366,51 @@ public class ActivitySummarizer  implements Handler<ActivityHolder> {
     /**
      * Calculates average value excluding paused time
      *
-     * @param startIdx
-     * @param endIdx
-     * @param calculateTotal
+     * @param startIdx first index of range to be averaged
+     * @param endIdx last index of range to be averaged
+     * @param calculateTotal average function
      * @return
      */
-    private double calcAverageWithPauseDouble(int startIdx, int endIdx, StatisticFunc<Double> calculateTotal, GetActivityRecordAttributeFunction attribute) {
+    private <T extends Number> double calcAverageWithPause(int startIdx, int endIdx, StatisticFunc<T> calculateTotal, GetActivityRecordAttributeFunction attribute) {
+        //get the pauses that overlap this range
         List<Range> overlappingPauses = pauseIndex.stream().filter(r -> r.overlaps(new Range(startIdx, endIdx))).collect(Collectors.toList());
 
+        if(logger.isDebugEnabled()) {
+            logger.debug("pauses overlapping range " + startIdx + " : " + endIdx);
+            for (Range overlappingPause : overlappingPauses) {
+                logger.debug("pause " + overlappingPause.lower + ":" + overlappingPause.upper);
+            }
+        }
+        // base case -> no pauses overlap this range
         if (overlappingPauses.isEmpty()) {
-            return calculateTotal.calculate(startIdx, endIdx, holder, attribute);
+            return calculateTotal.calculate(startIdx, endIdx, holder, attribute).doubleValue();
         } else {
+
             int i = startIdx;
             int j = startIdx;
             List<Double> avgs = new ArrayList<>();
             List<Integer> weights = new ArrayList<>();
             int total = 0;
+
+
             for (Range pause : overlappingPauses) {
-                while (!pause.contains(j) && j <= endIdx) {
+                while (!pause.contains(j) && j < endIdx) {
                     j++;
                 }
 
-                avgs.add(calculateTotal.calculate(i, j, holder, attribute));
+                avgs.add(calculateTotal.calculate(i, j, holder, attribute).doubleValue());
                 weights.add(j - i);
                 total += (j - i);
-                j = pause.upper;
+                j = Math.max(i, pause.upper);
+            }
+            if(j < endIdx) {
+                avgs.add(calculateTotal.calculate(j, endIdx, holder, attribute).doubleValue());
+                weights.add(j - endIdx);
+                total += (j - endIdx);
             }
             double result = 0;
             for (int k = 0; k < avgs.size(); k++) {
-                result += avgs.get(k) * (weights.get(k) / total);
-            }
-            return result;
-        }
-    }
-
-
-    /**
-     * Calculates average value excluding paused time
-     *
-     * @param startIdx
-     * @param endIdx
-     * @param calculateTotal
-     * @return
-     */
-    private double calcAverageWithPauseInt(int startIdx, int endIdx, StatisticFunc<Integer> calculateTotal, GetActivityRecordAttributeFunction<Integer> attribute) {
-        List<Range> overlappingPauses = pauseIndex.stream().filter(r -> r.overlaps(new Range(startIdx, endIdx))).collect(Collectors.toList());
-
-        if (overlappingPauses.isEmpty()) {
-            return calculateTotal.calculate(startIdx, endIdx, holder, attribute);
-        } else {
-            int i = startIdx;
-            int j = startIdx;
-            List<Integer> avgs = new ArrayList<>();
-            List<Integer> weights = new ArrayList<>();
-            int total = 0;
-            for (Range pause : overlappingPauses) {
-                while (!pause.contains(j) && j <= endIdx) {
-                    j++;
-                }
-
-                avgs.add(calculateTotal.calculate(i, j, holder, attribute));
-                weights.add(j - i);
-                total += (j - i);
-                j = pause.upper;
-            }
-            double result = 0;
-            for (int k = 0; k < avgs.size(); k++) {
-                result += avgs.get(k) * (weights.get(k) / total);
+                result += ((avgs.get(k) * weights.get(k)) / total);
             }
             return result;
         }
@@ -551,60 +425,34 @@ public class ActivitySummarizer  implements Handler<ActivityHolder> {
      * @param calculateTotal
      * @return
      */
-    private double calcMaxWithPauseInt(int startIdx, int endIdx, StatisticFunc<Integer> calculateTotal, GetActivityRecordAttributeFunction<Integer> attribute) {
+    private <T extends Number> double calcMaxWithPause(int startIdx, int endIdx, StatisticFunc<T> calculateTotal, GetActivityRecordAttributeFunction<T> attribute) {
         List<Range> overlappingPauses = pauseIndex.stream().filter(r -> r.overlaps(new Range(startIdx, endIdx))).collect(Collectors.toList());
 
         if (overlappingPauses.isEmpty()) {
-            return calculateTotal.calculate(startIdx, endIdx, holder, attribute);
+            return calculateTotal.calculate(startIdx, endIdx, holder, attribute).doubleValue();
         } else {
             int i = startIdx;
             int j = startIdx;
             double max = 0;
             for (Range pause : overlappingPauses) {
-                while (!pause.contains(j) && j <= endIdx) {
+                while (!pause.contains(j) && j < endIdx) {
                     j++;
                 }
-                double res = calculateTotal.calculate(i, j, holder, attribute);
+                double res = calculateTotal.calculate(i, j, holder, attribute).doubleValue();
                 if (res > max) {
                     max = res;
                 }
-                j = pause.upper;
+                j = Math.max(i, pause.upper);
+            }
+            if(j < endIdx) {
+                double res = calculateTotal.calculate(j, endIdx, holder, attribute).doubleValue();
+                if (res > max) {
+                    max = res;
+                }
             }
             return max;
         }
     }
-
-    /**
-     * Calculates max value excluding paused time
-     *
-     * @param startIdx
-     * @param endIdx
-     * @param calculateTotal
-     * @return
-     */
-    private double calcMaxWithPauseDouble(int startIdx, int endIdx, StatisticFunc<Double> calculateTotal, GetActivityRecordAttributeFunction<Double> attribute) {
-        List<Range> overlappingPauses = pauseIndex.stream().filter(r -> r.overlaps(new Range(startIdx, endIdx))).collect(Collectors.toList());
-
-        if (overlappingPauses.isEmpty()) {
-            return calculateTotal.calculate(startIdx, endIdx, holder, attribute);
-        } else {
-            int i = startIdx;
-            int j = startIdx;
-            double max = 0;
-            for (Range pause : overlappingPauses) {
-                while (!pause.contains(j) && j <= endIdx) {
-                    j++;
-                }
-                double res = calculateTotal.calculate(i, j, holder, attribute);
-                if (res > max) {
-                    max = res;
-                }
-                j = pause.upper;
-            }
-            return max;
-        }
-    }
-
 
     final class Range {
 

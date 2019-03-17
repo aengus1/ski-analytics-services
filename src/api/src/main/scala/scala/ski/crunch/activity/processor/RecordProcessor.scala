@@ -4,6 +4,7 @@ import java.text.SimpleDateFormat
 import java.util.Date
 
 import com.vividsolutions.jts.geom.{Coordinate, GeometryFactory, PrecisionModel}
+import javax.annotation.processing.Processor
 
 import scala.annotation.tailrec
 import scala.collection.immutable.HashMap
@@ -111,17 +112,22 @@ class RecordProcessor(records: List[ActivityRecord]) {
     val cadenceReplaced = ActivityRecord.nullReplace(records.map((x) => x.cadence), -999.0)
     val tempReplaced = ActivityRecord.nullReplace(records.map((x) => x.temperature), -999.0)
     val vertSpeedReplaced = ActivityRecord.nullReplace(records.map((x) => x.verticalSpeed), -999.0)
-    val distanceReplaced = ActivityRecord.nullReplace(records.map((x) => x.distance), -999.0)
+    val distanceNullReplaced = ActivityRecord.nullReplace(records.map((x) => x.distance), -999.0)
+    val distanceZeroValReplaced = ActivityRecord.nullReplace(distanceNullReplaced, 0)
     val gradeReplaced = ActivityRecord.nullReplace(records.map((x) => x.grade), -999.0)
     val hrvReplaced = ActivityRecord.nullReplace(records.map((x) => x.hrv), -999.0)
 
 
-    val tuple = hrReplaced zip altReplaced zip velocityReplaced zip latReplaced zip lonReplaced zip cadenceReplaced zip tempReplaced zip vertSpeedReplaced zip distanceReplaced zip gradeReplaced zip hrvReplaced zip records map {
+    val tuple = hrReplaced zip altReplaced zip velocityReplaced zip latReplaced zip lonReplaced zip cadenceReplaced zip tempReplaced zip vertSpeedReplaced zip distanceZeroValReplaced zip gradeReplaced zip hrvReplaced zip records map {
       case (((((((((((a, b), c), d), e), f), g), h), i), j), k), l) => (a, b, c, d, e, f, g, h, i, j, k, l)
     }
     new RecordProcessor(tuple.map(x =>
       new ActivityRecord(x._12.ts, x._1, x._4, x._5, x._2, x._3, x._10, x._9, x._7,
         x._12.moving, x._6, x._8, x._11)))
+  }
+
+  def fillEmpty(): RecordProcessor = {
+    return null;
   }
 
   /**

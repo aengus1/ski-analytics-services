@@ -307,6 +307,24 @@ public class ActivityPipelineTest {
         assertEquals(1, result.getSessionsCount());
     }
 
+    /**
+     * todo -> unit test the summarizer code.  something isn't right.  A lot of 0 values when not expected
+     * e.g. totalDistance
+     */
+    @Test
+    public void testSummary(){
+        ActivityHolder activity = setupActivity(testFile);
+
+        ActivityProcessor pipeline = new ActivityProcessor();
+        ActivityHolder result = pipeline.process(activity);
+
+        ActivityWriter writer = new ActivityWriterImpl();
+        ActivityOuterClass.Activity res = writer.writeToActivity(result,"test", null, null);
+
+        assertTrue(result.getActivitySummary().totalDistance() > 0);
+        assertTrue(res.getSummary().getTotalDistance() > 0);
+
+    }
 
     private static Optional<ActivityRecord> findRecord(String ts, List<ActivityRecord> records) {
         ActivityRecord record = null;

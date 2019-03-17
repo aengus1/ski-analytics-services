@@ -96,10 +96,12 @@ public class ActivitySummarizerTest {
 
             summarizer.process(holder);
 
-
         assertEquals(3,this.holder.getPauseSummaries().get(0).totalElapsed());
 
     }
+
+
+
 
     @Test
     public void testCalcTotalMoving() {
@@ -177,6 +179,9 @@ public class ActivitySummarizerTest {
 
         // lap case
         assertEquals(12, this.holder.getLapSummaries().get(0).totalDistance());
+
+        //activity case
+        assertEquals(67, this.holder.getActivitySummary().totalDistance());
     }
 
 
@@ -186,11 +191,11 @@ public class ActivitySummarizerTest {
             summarizer.process(holder);
 
         //pause case
-        double avg = (141 + 142 + 153) / 3;
+        double avg = (141 + 142 + 153 ) / 3;
         assertEquals(avg, this.holder.getPauseSummaries().get(0).avgHr());
 
         // lap case
-        double avgL = (135 + 140) / 2;
+        double avgL = (135 + 140 ) / 2;
         assertEquals(avgL, this.holder.getLapSummaries().get(0).avgHr());
     }
 

@@ -107,7 +107,17 @@ public class ActivityHolder {
 
 
     public  static String parseActivityEventInfoField(ActivityEvent event, String fieldName) {
-        return event.getInfo().split(fieldName+":")[1].split("")[1].split(",")[0];
+        if(event.getInfo().contains(":")) {
+            String[] res =  event.getInfo().split(fieldName + ":");
+            if(res.length > 1) {
+                return res[1].split(",")[0];
+            }else {
+                return "GENERIC_SUBSPORT";
+            }
+        }else {
+            System.out.println("help: " + event.getInfo());
+            return "GENERIC_SUBSPORT";
+        }
     }
 
     public ActivitySummary getActivitySummary() {

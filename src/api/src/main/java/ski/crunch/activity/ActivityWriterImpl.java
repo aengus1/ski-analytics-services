@@ -1,5 +1,6 @@
 package ski.crunch.activity;
 
+import com.sun.scenario.effect.impl.sw.sse.SSEBlend_SRC_OUTPeer;
 import scala.ski.crunch.activity.processor.model.ActivitySummary;
 import ski.crunch.activity.model.ActivityOuterClass;
 import ski.crunch.activity.processor.model.ActivityEvent;
@@ -150,6 +151,7 @@ public class ActivityWriterImpl implements ActivityWriter {
         sessionBuilder.clear();
         List<ActivityOuterClass.Activity.Session> sessions = new ArrayList<>();
         this.holder.getEvents().stream().filter(e -> e.getEventType().equals(EventType.SESSION_START)).forEach(session -> {
+            System.out.println(ActivityHolder.parseActivityEventInfoField(session, "sport"));
             sessionBuilder.setSport(ActivityOuterClass.Activity.Sport.valueOf(ActivityHolder.parseActivityEventInfoField(session, "sport")));
             sessionBuilder.setSubSport(ActivityOuterClass.Activity.SubSport.valueOf(ActivityHolder.parseActivityEventInfoField(session, "subsport")));
             segmentBuilder.clear();
@@ -225,7 +227,7 @@ public class ActivityWriterImpl implements ActivityWriter {
         summaryBuilder.setTotalPaused(holderSummary.totalPaused());
         summaryBuilder.setTotalDistance(holderSummary.totalDistance());
 
-
+        System.out.println("total distance in writer: " + summaryBuilder.getTotalDistance());
         summaryBuilder.setTotalAscent(holderSummary.totalAscent());
         summaryBuilder.setTotalDescent(holderSummary.totalDescent());
 

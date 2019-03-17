@@ -4,32 +4,25 @@
     <option name="SCOPE_TYPE" value="4" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="e0bdc5bc-f164-460e-911b-964805426644" name="Default" comment="SKI-157 removed  summary from session">
-      <change afterPath="$PROJECT_DIR$/.idea/libraries/Gradle__com_amazonaws_aws_java_sdk_core_1_11_510.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/libraries/Gradle__com_amazonaws_aws_java_sdk_kms_1_11_510.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/libraries/Gradle__com_amazonaws_aws_java_sdk_s3_1_11_510.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/libraries/Gradle__com_amazonaws_jmespath_java_1_11_510.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/api/src/test/java/ski/crunch/activity/service/AbstractIntegrationTest.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/api/src/test/java/ski/crunch/activity/service/DynamoDBServiceTest.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/api/src/test/java/ski/crunch/activity/service/ParseLambdaTest.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/api/src/test/java/ski/crunch/activity/service/S3ServiceTest.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/modules/src/api/ski-analytics-services-src_api_test.iml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/modules/src/api/ski-analytics-services-src_api_test.iml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/modules/src/api/src_api_main.iml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/modules/src/api/src_api_main.iml" afterDir="false" />
+    <list default="true" id="e0bdc5bc-f164-460e-911b-964805426644" name="Default" comment="SKI-157 fixed a bug in writing distance array.  Added tests for handlers">
+      <change afterPath="$PROJECT_DIR$/src/api/src/test/java/ski/crunch/activity/processor/SetInitialMoveHandlerTest.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/api/src/test/java/ski/crunch/activity/processor/SortEventsByTsHandlerTest.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/api/src/test/java/ski/crunch/activity/processor/SortRecordsByTsHandlerTest.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/compiler.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/compiler.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/modules/src/api/src_api_test.iml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/modules/src/api/src_api_test.iml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/api/build.gradle" beforeDir="false" afterPath="$PROJECT_DIR$/src/api/build.gradle" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/api/serverless.yml" beforeDir="false" afterPath="$PROJECT_DIR$/src/api/serverless.yml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/api/src/main/java/ski/crunch/activity/ActivityWriterImpl.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/api/src/main/java/ski/crunch/activity/ActivityWriterImpl.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/api/src/main/java/ski/crunch/activity/model/ActivityItem.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/api/src/main/java/ski/crunch/activity/model/ActivityItem.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/api/src/main/java/ski/crunch/activity/parser/fit/EventMessageListener.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/api/src/main/java/ski/crunch/activity/parser/fit/EventMessageListener.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/api/src/main/java/ski/crunch/activity/processor/DetectLapHandler.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/api/src/main/java/ski/crunch/activity/processor/DetectLapHandler.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/api/src/main/java/ski/crunch/activity/processor/DetectMotionHandler.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/api/src/main/java/ski/crunch/activity/processor/DetectMotionHandler.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/api/src/main/java/ski/crunch/activity/processor/DetectPauseHandler.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/api/src/main/java/ski/crunch/activity/processor/DetectPauseHandler.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/api/src/main/java/ski/crunch/activity/processor/ActivityProcessor.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/api/src/main/java/ski/crunch/activity/processor/ActivityProcessor.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/api/src/main/java/ski/crunch/activity/processor/SetInitialMoveHandler.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/api/src/main/java/ski/crunch/activity/processor/SetInitialMoveHandler.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/api/src/main/java/ski/crunch/activity/processor/SortEventsByTsHandler.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/api/src/main/java/ski/crunch/activity/processor/SortEventsByTsHandler.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/api/src/main/java/ski/crunch/activity/processor/SortRecordsByTsHandler.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/api/src/main/java/ski/crunch/activity/processor/SortRecordsByTsHandler.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/api/src/main/java/ski/crunch/activity/processor/model/ActivityHolder.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/api/src/main/java/ski/crunch/activity/processor/model/ActivityHolder.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/api/src/main/java/ski/crunch/activity/processor/summarizer/ActivitySummarizer.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/api/src/main/java/ski/crunch/activity/processor/summarizer/ActivitySummarizer.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/api/src/main/java/ski/crunch/activity/service/ActivityService.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/api/src/main/java/ski/crunch/activity/service/ActivityService.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/api/src/main/java/ski/crunch/activity/service/S3Service.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/api/src/main/java/ski/crunch/activity/service/S3Service.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/api/src/main/java/ski/crunch/activity/processor/summarizer/CalculateTotalStopped.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/api/src/main/java/ski/crunch/activity/processor/summarizer/CalculateTotalStopped.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/api/src/main/scala/scala/ski/crunch/activity/processor/EventProcessor.scala" beforeDir="false" afterPath="$PROJECT_DIR$/src/api/src/main/scala/scala/ski/crunch/activity/processor/EventProcessor.scala" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/api/src/main/scala/scala/ski/crunch/activity/processor/RecordProcessor.scala" beforeDir="false" afterPath="$PROJECT_DIR$/src/api/src/main/scala/scala/ski/crunch/activity/processor/RecordProcessor.scala" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/api/src/main/scala/scala/ski/crunch/activity/processor/model/ActivityRecord.scala" beforeDir="false" afterPath="$PROJECT_DIR$/src/api/src/main/scala/scala/ski/crunch/activity/processor/model/ActivityRecord.scala" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/api/src/test/java/ski/crunch/activity/ActivityTests.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/api/src/test/java/ski/crunch/activity/ActivityTests.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/api/src/test/java/ski/crunch/activity/parser/FitActivityHolderAdapterTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/api/src/test/java/ski/crunch/activity/parser/FitActivityHolderAdapterTest.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/api/src/test/java/ski/crunch/activity/processor/ActivityPipelineTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/api/src/test/java/ski/crunch/activity/processor/ActivityPipelineTest.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/api/src/test/java/ski/crunch/activity/processor/ActivitySummarizerTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/api/src/test/java/ski/crunch/activity/processor/ActivitySummarizerTest.java" afterDir="false" />
     </list>
@@ -130,12 +123,6 @@
                 <item name="Tasks" type="e4a08cd1:TasksNode" />
                 <item name="verification" type="c8890929:TasksNode$1" />
               </path>
-              <path>
-                <item name="" type="6a2764b6:ExternalProjectsStructure$RootNode" />
-                <item name="ski-analytics-services" type="f1a62948:ProjectNode" />
-                <item name=":src/api" type="2d1252cf:ModuleNode" />
-                <item name="Run Configurations" type="7b0102dc:RunConfigurationsNode" />
-              </path>
             </expand>
             <select />
           </tree_state>
@@ -143,145 +130,115 @@
       </state>
     </system>
   </component>
-  <component name="FUSProjectUsageTrigger">
-    <session id="496859650">
-      <usages-collector id="statistics.lifecycle.project">
-        <counts>
-          <entry key="project.open.time.29" value="1" />
-          <entry key="project.opened" value="1" />
-        </counts>
-      </usages-collector>
-      <usages-collector id="statistics.file.types.open">
-        <counts>
-          <entry key="AWSCloudFormation (JSON)" value="1" />
-          <entry key="Groovy" value="6" />
-          <entry key="HTML" value="2" />
-          <entry key="IDEA_MODULE" value="2" />
-          <entry key="JAVA" value="144" />
-          <entry key="Markdown" value="4" />
-          <entry key="PLAIN_TEXT" value="2" />
-          <entry key="PROTO" value="5" />
-          <entry key="Scala" value="4" />
-          <entry key="Scratch" value="1" />
-          <entry key="XML" value="1" />
-          <entry key="YAML" value="7" />
-        </counts>
-      </usages-collector>
-      <usages-collector id="statistics.file.types.edit">
-        <counts>
-          <entry key="Groovy" value="202" />
-          <entry key="JAVA" value="15377" />
-          <entry key="Markdown" value="179" />
-          <entry key="PLAIN_TEXT" value="237" />
-          <entry key="PROTO" value="398" />
-          <entry key="Scala" value="88" />
-          <entry key="Scratch" value="274" />
-          <entry key="YAML" value="342" />
-        </counts>
-      </usages-collector>
-      <usages-collector id="statistics.vcs.git.usages">
-        <counts>
-          <entry key="git.branch.checkout.remote" value="1" />
-        </counts>
-      </usages-collector>
-    </session>
-  </component>
   <component name="FavoritesManager">
     <favorites_list name="ski-analytics-services" />
   </component>
   <component name="FileEditorManager">
     <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
-      <file pinned="true" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/api/src/main/java/ski/crunch/activity/processor/summarizer/ActivitySummarizer.java">
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/api/src/test/java/ski/crunch/activity/processor/SortEventsByTsHandlerTest.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="146">
-              <caret line="69" selection-start-line="69" selection-end-line="69" />
+            <state relative-caret-position="182">
+              <caret line="14" selection-start-line="14" selection-end-line="14" selection-end-column="47" />
               <folding>
-                <element signature="e#889#890#0" expanded="true" />
-                <element signature="e#957#958#0" expanded="true" />
-                <element signature="method#summarizePauseSegments#0;class#ActivitySummarizer#0" />
+                <element signature="imports" expanded="true" />
               </folding>
             </state>
           </provider>
         </entry>
       </file>
       <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/api/src/main/java/ski/crunch/activity/processor/DetectLapHandler.java">
+        <entry file="file://$PROJECT_DIR$/src/api/src/test/java/ski/crunch/activity/processor/SetInitialMoveHandlerTest.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="169">
-              <caret line="17" column="44" selection-start-line="17" selection-start-column="44" selection-end-line="17" selection-end-column="44" />
+            <state relative-caret-position="-455">
+              <caret line="18" selection-start-line="18" selection-end-line="18" />
+              <folding>
+                <element signature="imports" expanded="true" />
+                <element signature="e#1205#1221#0" expanded="true" />
+                <element signature="e#2328#2344#0" expanded="true" />
+              </folding>
             </state>
           </provider>
         </entry>
       </file>
       <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/api/src/main/scala/scala/ski/crunch/activity/processor/EventProcessor.scala">
+        <entry file="file://$PROJECT_DIR$/src/api/src/main/scala/scala/ski/crunch/activity/processor/model/ActivityRecord.scala">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="-305">
-              <caret line="109" column="6" selection-start-line="109" selection-start-column="6" selection-end-line="109" selection-end-column="6" />
+            <state relative-caret-position="796">
+              <caret line="94" selection-start-line="94" selection-end-line="94" />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/api/src/main/scala/scala/ski/crunch/activity/processor/RecordProcessor.scala">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="165">
+              <caret line="30" lean-forward="true" selection-start-line="30" selection-end-line="30" />
+              <folding>
+                <element signature="e#45#78#0" expanded="true" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/api/src/test/java/ski/crunch/activity/processor/SortRecordsByTsHandlerTest.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="221">
+              <caret line="28" column="71" selection-start-line="28" selection-start-column="50" selection-end-line="28" selection-end-column="71" />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/api/src/main/java/ski/crunch/activity/processor/SetInitialMoveHandler.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="28">
+              <caret line="9" column="33" selection-start-line="9" selection-start-column="33" selection-end-line="9" selection-end-column="33" />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/api/src/main/java/ski/crunch/activity/processor/SetEventIndexHandler.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="311">
+              <caret line="43" column="9" selection-start-line="43" selection-start-column="9" selection-end-line="43" selection-end-column="9" />
+              <folding>
+                <element signature="e#622#623#0" expanded="true" />
+                <element signature="e#690#691#0" expanded="true" />
+              </folding>
             </state>
           </provider>
         </entry>
       </file>
       <file pinned="false" current-in-tab="true">
-        <entry file="file://$APPLICATION_CONFIG_DIR$/scratches/missing_session_bug.txt">
+        <entry file="file://$PROJECT_DIR$/src/api/src/test/java/ski/crunch/activity/ActivityTests.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="39">
-              <caret line="3" column="22" selection-start-line="3" selection-start-column="22" selection-end-line="3" selection-end-column="22" />
+            <state relative-caret-position="103">
+              <caret line="291" selection-start-line="291" selection-end-line="299" selection-end-column="9" />
             </state>
           </provider>
         </entry>
       </file>
       <file pinned="false" current-in-tab="false">
-        <entry file="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/org.junit.platform/junit-platform-commons/1.1.0/39d7c2eec7178ba6e53445a2851e66a966a7472f/junit-platform-commons-1.1.0-sources.jar!/org/junit/platform/commons/util/ReflectionUtils.java">
+        <entry file="file://$PROJECT_DIR$/src/api/src/main/java/ski/crunch/activity/processor/SortRecordsByTsHandler.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="247">
-              <caret line="438" selection-start-line="438" selection-end-line="438" />
+            <state relative-caret-position="65">
+              <caret line="8" column="36" selection-start-line="8" selection-start-column="36" selection-end-line="8" selection-end-column="36" />
             </state>
           </provider>
         </entry>
       </file>
       <file pinned="true" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/api/src/test/java/ski/crunch/activity/processor/ActivityPipelineTest.java">
+        <entry file="file://$PROJECT_DIR$/src/api/src/test/java/ski/crunch/activity/processor/ActivitySummarizerTest.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="241">
-              <caret line="299" column="25" selection-start-line="299" selection-start-column="16" selection-end-line="299" selection-end-column="35" />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/api/serverless.yml">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="676">
-              <caret line="52" column="22" lean-forward="true" selection-start-line="52" selection-start-column="22" selection-end-line="52" selection-end-column="22" />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/api/src/main/java/ski/crunch/activity/processor/DetectPauseHandler.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="143">
-              <caret line="18" selection-start-line="18" selection-end-line="18" />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/api/src/main/java/ski/crunch/activity/processor/PipelineManager.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="377">
-              <caret line="34" selection-start-line="34" selection-end-line="34" />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/api/src/main/java/ski/crunch/activity/processor/ActivityProcessor.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="323">
-              <caret line="51" selection-start-line="51" selection-end-line="51" />
+            <state relative-caret-position="364">
+              <caret line="28" column="44" selection-start-line="28" selection-start-column="25" selection-end-line="28" selection-end-column="44" />
+              <folding>
+                <element signature="imports" expanded="true" />
+              </folding>
             </state>
           </provider>
         </entry>
@@ -301,21 +258,6 @@
   </component>
   <component name="FindInProjectRecents">
     <findStrings>
-      <find>checking proce</find>
-      <find>attempting delete of pro</find>
-      <find>ssm</find>
-      <find>S3BucketForApp</find>
-      <find>credentialsProvider</find>
-      <find>currentstage</find>
-      <find>LOG</find>
-      <find>string.format</find>
-      <find>currentStage</find>
-      <find>weatherService</find>
-      <find>weatherservice</find>
-      <find>stage</find>
-      <find>account</find>
-      <find>parameter:</find>
-      <find>parameter</find>
       <find>convert activity</find>
       <find>resourcetags</find>
       <find>locationservice</find>
@@ -329,8 +271,23 @@
       <find>sport</find>
       <find>a</find>
       <find>activity i</find>
-      <find>activityid</find>
       <find>ss =</find>
+      <find>ACTIVITY_STOP</find>
+      <find>activity</find>
+      <find>activityid</find>
+      <find>total</find>
+      <find>process</find>
+      <find>totaldistance</find>
+      <find>todo</find>
+      <find>calcAverageWithPauseInt</find>
+      <find>credentialsProvider</find>
+      <find>client</find>
+      <find>credentials</find>
+      <find>checking proce</find>
+      <find>id</find>
+      <find>check</find>
+      <find>checking pr</find>
+      <find>nullrepla</find>
     </findStrings>
     <replaceStrings>
       <replace />
@@ -340,11 +297,14 @@
       <replace>logger</replace>
       <replace>RecordProcessor</replace>
       <replace>0, len,</replace>
+      <replace>start</replace>
+      <replace>calcAverageWithPause</replace>
     </replaceStrings>
     <dirStrings>
       <dir>$PROJECT_DIR$/src/api/src</dir>
       <dir>$PROJECT_DIR$/src/api/src/main/java/ski/crunch/activity/processor</dir>
       <dir>$PROJECT_DIR$/src/api/out</dir>
+      <dir>$PROJECT_DIR$/src/api/src/test/java/ski/crunch/activity/processor</dir>
     </dirStrings>
   </component>
   <component name="Git.Settings">
@@ -355,607 +315,19 @@
       </map>
     </option>
   </component>
-  <component name="GradleLocalSettings">
-    <option name="myGradleHomes">
-      <map>
-        <entry key="$PROJECT_DIR$" value="$USER_HOME$/.gradle/wrapper/dists/gradle-4.9-all/491wbe0x5d54n9cojs2p0zv90/gradle-4.9" />
-      </map>
-    </option>
-    <option name="myGradleVersions">
-      <map>
-        <entry key="$PROJECT_DIR$" value="4.9" />
-      </map>
-    </option>
-    <option name="availableProjects">
-      <map>
-        <entry>
-          <key>
-            <ExternalProjectPojo>
-              <option name="name" value="ski-analytics-services" />
-              <option name="path" value="$PROJECT_DIR$" />
-            </ExternalProjectPojo>
-          </key>
-          <value>
-            <list>
-              <ExternalProjectPojo>
-                <option name="name" value="ski-analytics-services" />
-                <option name="path" value="$PROJECT_DIR$" />
-              </ExternalProjectPojo>
-              <ExternalProjectPojo>
-                <option name="name" value=":src/api" />
-                <option name="path" value="$PROJECT_DIR$/src/api" />
-              </ExternalProjectPojo>
-            </list>
-          </value>
-        </entry>
-      </map>
-    </option>
-    <option name="availableTasks">
-      <map>
-        <entry key="$PROJECT_DIR$">
-          <value>
-            <list>
-              <ExternalTaskPojo>
-                <option name="description" value="Displays the components produced by root project 'ski-analytics-services'. [incubating]" />
-                <option name="linkedExternalProjectPath" value="$PROJECT_DIR$" />
-                <option name="name" value="components" />
-              </ExternalTaskPojo>
-              <ExternalTaskPojo>
-                <option name="description" value="Displays the sub-projects of root project 'ski-analytics-services'." />
-                <option name="linkedExternalProjectPath" value="$PROJECT_DIR$" />
-                <option name="name" value="projects" />
-              </ExternalTaskPojo>
-              <ExternalTaskPojo>
-                <option name="description" value="Assembles and tests this project and all projects that depend on it." />
-                <option name="linkedExternalProjectPath" value="$PROJECT_DIR$" />
-                <option name="name" value="buildDependents" />
-              </ExternalTaskPojo>
-              <ExternalTaskPojo>
-                <option name="description" value="Displays the dependent components of components in root project 'ski-analytics-services'. [incubating]" />
-                <option name="linkedExternalProjectPath" value="$PROJECT_DIR$" />
-                <option name="name" value="dependentComponents" />
-              </ExternalTaskPojo>
-              <ExternalTaskPojo>
-                <option name="description" value="Assembles main classes." />
-                <option name="linkedExternalProjectPath" value="$PROJECT_DIR$" />
-                <option name="name" value="classes" />
-              </ExternalTaskPojo>
-              <ExternalTaskPojo>
-                <option name="description" value="Displays all buildscript dependencies declared in root project 'ski-analytics-services'." />
-                <option name="linkedExternalProjectPath" value="$PROJECT_DIR$" />
-                <option name="name" value="buildEnvironment" />
-              </ExternalTaskPojo>
-              <ExternalTaskPojo>
-                <option name="description" value="Generates Gradle wrapper files." />
-                <option name="linkedExternalProjectPath" value="$PROJECT_DIR$" />
-                <option name="name" value="wrapper" />
-              </ExternalTaskPojo>
-              <ExternalTaskPojo>
-                <option name="description" value="Verifies code coverage metrics based on specified rules for the test task." />
-                <option name="linkedExternalProjectPath" value="$PROJECT_DIR$" />
-                <option name="name" value="jacocoTestCoverageVerification" />
-              </ExternalTaskPojo>
-              <ExternalTaskPojo>
-                <option name="description" value="Assembles test classes." />
-                <option name="linkedExternalProjectPath" value="$PROJECT_DIR$" />
-                <option name="name" value="testClasses" />
-              </ExternalTaskPojo>
-              <ExternalTaskPojo>
-                <option name="description" value="Generates Javadoc API documentation for the main source code." />
-                <option name="linkedExternalProjectPath" value="$PROJECT_DIR$" />
-                <option name="name" value="javadoc" />
-              </ExternalTaskPojo>
-              <ExternalTaskPojo>
-                <option name="description" value="Displays the configuration model of root project 'ski-analytics-services'. [incubating]" />
-                <option name="linkedExternalProjectPath" value="$PROJECT_DIR$" />
-                <option name="name" value="model" />
-              </ExternalTaskPojo>
-              <ExternalTaskPojo>
-                <option name="description" value="Assembles a jar archive containing the main classes." />
-                <option name="linkedExternalProjectPath" value="$PROJECT_DIR$" />
-                <option name="name" value="jar" />
-              </ExternalTaskPojo>
-              <ExternalTaskPojo>
-                <option name="description" value="Processes main resources." />
-                <option name="linkedExternalProjectPath" value="$PROJECT_DIR$" />
-                <option name="name" value="processResources" />
-              </ExternalTaskPojo>
-              <ExternalTaskPojo>
-                <option name="description" value="Displays the tasks runnable from root project 'ski-analytics-services' (some of the displayed tasks may belong to subprojects)." />
-                <option name="linkedExternalProjectPath" value="$PROJECT_DIR$" />
-                <option name="name" value="tasks" />
-              </ExternalTaskPojo>
-              <ExternalTaskPojo>
-                <option name="description" value="Initializes a new Gradle build." />
-                <option name="linkedExternalProjectPath" value="$PROJECT_DIR$" />
-                <option name="name" value="init" />
-              </ExternalTaskPojo>
-              <ExternalTaskPojo>
-                <option name="description" value="Runs the unit tests." />
-                <option name="linkedExternalProjectPath" value="$PROJECT_DIR$" />
-                <option name="name" value="test" />
-              </ExternalTaskPojo>
-              <ExternalTaskPojo>
-                <option name="description" value="Generates Scaladoc for the main source code." />
-                <option name="linkedExternalProjectPath" value="$PROJECT_DIR$" />
-                <option name="name" value="scaladoc" />
-              </ExternalTaskPojo>
-              <ExternalTaskPojo>
-                <option name="description" value="Compiles the test Scala source." />
-                <option name="linkedExternalProjectPath" value="$PROJECT_DIR$" />
-                <option name="name" value="compileTestScala" />
-              </ExternalTaskPojo>
-              <ExternalTaskPojo>
-                <option name="description" value="Compiles main Java source." />
-                <option name="linkedExternalProjectPath" value="$PROJECT_DIR$" />
-                <option name="name" value="compileJava" />
-              </ExternalTaskPojo>
-              <ExternalTaskPojo>
-                <option name="description" value="Displays the insight into a specific dependency in root project 'ski-analytics-services'." />
-                <option name="linkedExternalProjectPath" value="$PROJECT_DIR$" />
-                <option name="name" value="dependencyInsight" />
-              </ExternalTaskPojo>
-              <ExternalTaskPojo>
-                <option name="linkedExternalProjectPath" value="$PROJECT_DIR$" />
-                <option name="name" value="buildZip" />
-              </ExternalTaskPojo>
-              <ExternalTaskPojo>
-                <option name="description" value="Runs all checks." />
-                <option name="linkedExternalProjectPath" value="$PROJECT_DIR$" />
-                <option name="name" value="check" />
-              </ExternalTaskPojo>
-              <ExternalTaskPojo>
-                <option name="description" value="Generates code coverage report for the test task." />
-                <option name="linkedExternalProjectPath" value="$PROJECT_DIR$" />
-                <option name="name" value="jacocoTestReport" />
-              </ExternalTaskPojo>
-              <ExternalTaskPojo>
-                <option name="description" value="Assembles the outputs of this project." />
-                <option name="linkedExternalProjectPath" value="$PROJECT_DIR$" />
-                <option name="name" value="assemble" />
-              </ExternalTaskPojo>
-              <ExternalTaskPojo>
-                <option name="description" value="Deletes the build directory." />
-                <option name="linkedExternalProjectPath" value="$PROJECT_DIR$" />
-                <option name="name" value="clean" />
-              </ExternalTaskPojo>
-              <ExternalTaskPojo>
-                <option name="description" value="Compiles test Java source." />
-                <option name="linkedExternalProjectPath" value="$PROJECT_DIR$" />
-                <option name="name" value="compileTestJava" />
-              </ExternalTaskPojo>
-              <ExternalTaskPojo>
-                <option name="description" value="Displays all dependencies declared in root project 'ski-analytics-services'." />
-                <option name="linkedExternalProjectPath" value="$PROJECT_DIR$" />
-                <option name="name" value="dependencies" />
-              </ExternalTaskPojo>
-              <ExternalTaskPojo>
-                <option name="description" value="Processes test resources." />
-                <option name="linkedExternalProjectPath" value="$PROJECT_DIR$" />
-                <option name="name" value="processTestResources" />
-              </ExternalTaskPojo>
-              <ExternalTaskPojo>
-                <option name="description" value="Displays a help message." />
-                <option name="linkedExternalProjectPath" value="$PROJECT_DIR$" />
-                <option name="name" value="help" />
-              </ExternalTaskPojo>
-              <ExternalTaskPojo>
-                <option name="description" value="Assembles and tests this project." />
-                <option name="linkedExternalProjectPath" value="$PROJECT_DIR$" />
-                <option name="name" value="build" />
-              </ExternalTaskPojo>
-              <ExternalTaskPojo>
-                <option name="description" value="Assembles and tests this project and all projects it depends on." />
-                <option name="linkedExternalProjectPath" value="$PROJECT_DIR$" />
-                <option name="name" value="buildNeeded" />
-              </ExternalTaskPojo>
-              <ExternalTaskPojo>
-                <option name="description" value="Compiles the main Scala source." />
-                <option name="linkedExternalProjectPath" value="$PROJECT_DIR$" />
-                <option name="name" value="compileScala" />
-              </ExternalTaskPojo>
-              <ExternalTaskPojo>
-                <option name="description" value="Displays the properties of root project 'ski-analytics-services'." />
-                <option name="linkedExternalProjectPath" value="$PROJECT_DIR$" />
-                <option name="name" value="properties" />
-              </ExternalTaskPojo>
-            </list>
-          </value>
-        </entry>
-        <entry key="$PROJECT_DIR$/src/api">
-          <value>
-            <list>
-              <ExternalTaskPojo>
-                <option name="description" value="Displays the components produced by project ':src/api'. [incubating]" />
-                <option name="linkedExternalProjectPath" value="$PROJECT_DIR$/src/api" />
-                <option name="name" value="components" />
-              </ExternalTaskPojo>
-              <ExternalTaskPojo>
-                <option name="description" value="Assembles and tests this project and all projects that depend on it." />
-                <option name="linkedExternalProjectPath" value="$PROJECT_DIR$/src/api" />
-                <option name="name" value="buildDependents" />
-              </ExternalTaskPojo>
-              <ExternalTaskPojo>
-                <option name="description" value="Displays the sub-projects of project ':src/api'." />
-                <option name="linkedExternalProjectPath" value="$PROJECT_DIR$/src/api" />
-                <option name="name" value="projects" />
-              </ExternalTaskPojo>
-              <ExternalTaskPojo>
-                <option name="description" value="Assembles main classes." />
-                <option name="linkedExternalProjectPath" value="$PROJECT_DIR$/src/api" />
-                <option name="name" value="classes" />
-              </ExternalTaskPojo>
-              <ExternalTaskPojo>
-                <option name="description" value="Displays the dependent components of components in project ':src/api'. [incubating]" />
-                <option name="linkedExternalProjectPath" value="$PROJECT_DIR$/src/api" />
-                <option name="name" value="dependentComponents" />
-              </ExternalTaskPojo>
-              <ExternalTaskPojo>
-                <option name="description" value="Displays all buildscript dependencies declared in project ':src/api'." />
-                <option name="linkedExternalProjectPath" value="$PROJECT_DIR$/src/api" />
-                <option name="name" value="buildEnvironment" />
-              </ExternalTaskPojo>
-              <ExternalTaskPojo>
-                <option name="linkedExternalProjectPath" value="$PROJECT_DIR$/src/api" />
-                <option name="name" value="wrapper" />
-              </ExternalTaskPojo>
-              <ExternalTaskPojo>
-                <option name="description" value="Verifies code coverage metrics based on specified rules for the test task." />
-                <option name="linkedExternalProjectPath" value="$PROJECT_DIR$/src/api" />
-                <option name="name" value="jacocoTestCoverageVerification" />
-              </ExternalTaskPojo>
-              <ExternalTaskPojo>
-                <option name="description" value="Assembles test classes." />
-                <option name="linkedExternalProjectPath" value="$PROJECT_DIR$/src/api" />
-                <option name="name" value="testClasses" />
-              </ExternalTaskPojo>
-              <ExternalTaskPojo>
-                <option name="description" value="Generates Javadoc API documentation for the main source code." />
-                <option name="linkedExternalProjectPath" value="$PROJECT_DIR$/src/api" />
-                <option name="name" value="javadoc" />
-              </ExternalTaskPojo>
-              <ExternalTaskPojo>
-                <option name="description" value="Assembles a jar archive containing the main classes." />
-                <option name="linkedExternalProjectPath" value="$PROJECT_DIR$/src/api" />
-                <option name="name" value="jar" />
-              </ExternalTaskPojo>
-              <ExternalTaskPojo>
-                <option name="description" value="Displays the configuration model of project ':src/api'. [incubating]" />
-                <option name="linkedExternalProjectPath" value="$PROJECT_DIR$/src/api" />
-                <option name="name" value="model" />
-              </ExternalTaskPojo>
-              <ExternalTaskPojo>
-                <option name="description" value="Processes main resources." />
-                <option name="linkedExternalProjectPath" value="$PROJECT_DIR$/src/api" />
-                <option name="name" value="processResources" />
-              </ExternalTaskPojo>
-              <ExternalTaskPojo>
-                <option name="description" value="Displays the tasks runnable from project ':src/api'." />
-                <option name="linkedExternalProjectPath" value="$PROJECT_DIR$/src/api" />
-                <option name="name" value="tasks" />
-              </ExternalTaskPojo>
-              <ExternalTaskPojo>
-                <option name="description" value="Runs the unit tests." />
-                <option name="linkedExternalProjectPath" value="$PROJECT_DIR$/src/api" />
-                <option name="name" value="test" />
-              </ExternalTaskPojo>
-              <ExternalTaskPojo>
-                <option name="description" value="Generates Scaladoc for the main source code." />
-                <option name="linkedExternalProjectPath" value="$PROJECT_DIR$/src/api" />
-                <option name="name" value="scaladoc" />
-              </ExternalTaskPojo>
-              <ExternalTaskPojo>
-                <option name="description" value="Compiles the test Scala source." />
-                <option name="linkedExternalProjectPath" value="$PROJECT_DIR$/src/api" />
-                <option name="name" value="compileTestScala" />
-              </ExternalTaskPojo>
-              <ExternalTaskPojo>
-                <option name="description" value="Compiles main Java source." />
-                <option name="linkedExternalProjectPath" value="$PROJECT_DIR$/src/api" />
-                <option name="name" value="compileJava" />
-              </ExternalTaskPojo>
-              <ExternalTaskPojo>
-                <option name="linkedExternalProjectPath" value="$PROJECT_DIR$/src/api" />
-                <option name="name" value="buildZip" />
-              </ExternalTaskPojo>
-              <ExternalTaskPojo>
-                <option name="description" value="Displays the insight into a specific dependency in project ':src/api'." />
-                <option name="linkedExternalProjectPath" value="$PROJECT_DIR$/src/api" />
-                <option name="name" value="dependencyInsight" />
-              </ExternalTaskPojo>
-              <ExternalTaskPojo>
-                <option name="description" value="Runs all checks." />
-                <option name="linkedExternalProjectPath" value="$PROJECT_DIR$/src/api" />
-                <option name="name" value="check" />
-              </ExternalTaskPojo>
-              <ExternalTaskPojo>
-                <option name="description" value="Generates code coverage report for the test task." />
-                <option name="linkedExternalProjectPath" value="$PROJECT_DIR$/src/api" />
-                <option name="name" value="jacocoTestReport" />
-              </ExternalTaskPojo>
-              <ExternalTaskPojo>
-                <option name="description" value="Assembles the outputs of this project." />
-                <option name="linkedExternalProjectPath" value="$PROJECT_DIR$/src/api" />
-                <option name="name" value="assemble" />
-              </ExternalTaskPojo>
-              <ExternalTaskPojo>
-                <option name="description" value="Deletes the build directory." />
-                <option name="linkedExternalProjectPath" value="$PROJECT_DIR$/src/api" />
-                <option name="name" value="clean" />
-              </ExternalTaskPojo>
-              <ExternalTaskPojo>
-                <option name="description" value="Compiles test Java source." />
-                <option name="linkedExternalProjectPath" value="$PROJECT_DIR$/src/api" />
-                <option name="name" value="compileTestJava" />
-              </ExternalTaskPojo>
-              <ExternalTaskPojo>
-                <option name="description" value="Displays all dependencies declared in project ':src/api'." />
-                <option name="linkedExternalProjectPath" value="$PROJECT_DIR$/src/api" />
-                <option name="name" value="dependencies" />
-              </ExternalTaskPojo>
-              <ExternalTaskPojo>
-                <option name="description" value="Processes test resources." />
-                <option name="linkedExternalProjectPath" value="$PROJECT_DIR$/src/api" />
-                <option name="name" value="processTestResources" />
-              </ExternalTaskPojo>
-              <ExternalTaskPojo>
-                <option name="description" value="Displays a help message." />
-                <option name="linkedExternalProjectPath" value="$PROJECT_DIR$/src/api" />
-                <option name="name" value="help" />
-              </ExternalTaskPojo>
-              <ExternalTaskPojo>
-                <option name="description" value="Assembles and tests this project." />
-                <option name="linkedExternalProjectPath" value="$PROJECT_DIR$/src/api" />
-                <option name="name" value="build" />
-              </ExternalTaskPojo>
-              <ExternalTaskPojo>
-                <option name="description" value="Assembles and tests this project and all projects it depends on." />
-                <option name="linkedExternalProjectPath" value="$PROJECT_DIR$/src/api" />
-                <option name="name" value="buildNeeded" />
-              </ExternalTaskPojo>
-              <ExternalTaskPojo>
-                <option name="description" value="Compiles the main Scala source." />
-                <option name="linkedExternalProjectPath" value="$PROJECT_DIR$/src/api" />
-                <option name="name" value="compileScala" />
-              </ExternalTaskPojo>
-              <ExternalTaskPojo>
-                <option name="description" value="Displays the properties of project ':src/api'." />
-                <option name="linkedExternalProjectPath" value="$PROJECT_DIR$/src/api" />
-                <option name="name" value="properties" />
-              </ExternalTaskPojo>
-            </list>
-          </value>
-        </entry>
-      </map>
-    </option>
-    <option name="modificationStamps">
-      <map>
-        <entry key="$PROJECT_DIR$" value="9260149421000" />
-        <entry key="$PROJECT_DIR$/.gradle" value="0" />
-        <entry key="$PROJECT_DIR$/build.gradle" value="3822000275" />
-        <entry key="$PROJECT_DIR$/gradle/wrapper/gradle-wrapper.properties" value="2371942159" />
-        <entry key="$PROJECT_DIR$/settings.gradle" value="2352796936" />
-        <entry key="$PROJECT_DIR$/src/api/.gradle" value="0" />
-        <entry key="$PROJECT_DIR$/src/api/build.gradle" value="1364874863" />
-      </map>
-    </option>
-    <option name="projectBuildClasspath">
-      <map>
-        <entry key="$PROJECT_DIR$">
-          <value>
-            <ExternalProjectBuildClasspathPojo>
-              <option name="modulesBuildClasspath">
-                <map>
-                  <entry key="$PROJECT_DIR$">
-                    <value>
-                      <ExternalModuleBuildClasspathPojo>
-                        <option name="path" value="$PROJECT_DIR$" />
-                      </ExternalModuleBuildClasspathPojo>
-                    </value>
-                  </entry>
-                  <entry key="$PROJECT_DIR$/src/api">
-                    <value>
-                      <ExternalModuleBuildClasspathPojo>
-                        <option name="path" value="$PROJECT_DIR$/src/api" />
-                      </ExternalModuleBuildClasspathPojo>
-                    </value>
-                  </entry>
-                </map>
-              </option>
-              <option name="name" value="ski-analytics-services" />
-              <option name="projectBuildClasspath">
-                <list>
-                  <option value="$USER_HOME$/.gradle/wrapper/dists/gradle-4.9-all/491wbe0x5d54n9cojs2p0zv90/gradle-4.9/src/ide" />
-                  <option value="$USER_HOME$/.gradle/wrapper/dists/gradle-4.9-all/491wbe0x5d54n9cojs2p0zv90/gradle-4.9/src/internal-integ-testing" />
-                  <option value="$USER_HOME$/.gradle/wrapper/dists/gradle-4.9-all/491wbe0x5d54n9cojs2p0zv90/gradle-4.9/src/platform-native" />
-                  <option value="$USER_HOME$/.gradle/wrapper/dists/gradle-4.9-all/491wbe0x5d54n9cojs2p0zv90/gradle-4.9/src/reporting" />
-                  <option value="$USER_HOME$/.gradle/wrapper/dists/gradle-4.9-all/491wbe0x5d54n9cojs2p0zv90/gradle-4.9/src/language-groovy" />
-                  <option value="$USER_HOME$/.gradle/wrapper/dists/gradle-4.9-all/491wbe0x5d54n9cojs2p0zv90/gradle-4.9/src/build-option" />
-                  <option value="$USER_HOME$/.gradle/wrapper/dists/gradle-4.9-all/491wbe0x5d54n9cojs2p0zv90/gradle-4.9/src/launcher" />
-                  <option value="$USER_HOME$/.gradle/wrapper/dists/gradle-4.9-all/491wbe0x5d54n9cojs2p0zv90/gradle-4.9/src/platform-base" />
-                  <option value="$USER_HOME$/.gradle/wrapper/dists/gradle-4.9-all/491wbe0x5d54n9cojs2p0zv90/gradle-4.9/src/announce" />
-                  <option value="$USER_HOME$/.gradle/wrapper/dists/gradle-4.9-all/491wbe0x5d54n9cojs2p0zv90/gradle-4.9/src/signing" />
-                  <option value="$USER_HOME$/.gradle/wrapper/dists/gradle-4.9-all/491wbe0x5d54n9cojs2p0zv90/gradle-4.9/src/core" />
-                  <option value="$USER_HOME$/.gradle/wrapper/dists/gradle-4.9-all/491wbe0x5d54n9cojs2p0zv90/gradle-4.9/src/installation-beacon" />
-                  <option value="$USER_HOME$/.gradle/wrapper/dists/gradle-4.9-all/491wbe0x5d54n9cojs2p0zv90/gradle-4.9/src/jvm-services" />
-                  <option value="$USER_HOME$/.gradle/wrapper/dists/gradle-4.9-all/491wbe0x5d54n9cojs2p0zv90/gradle-4.9/src/native" />
-                  <option value="$USER_HOME$/.gradle/wrapper/dists/gradle-4.9-all/491wbe0x5d54n9cojs2p0zv90/gradle-4.9/src/tooling-api" />
-                  <option value="$USER_HOME$/.gradle/wrapper/dists/gradle-4.9-all/491wbe0x5d54n9cojs2p0zv90/gradle-4.9/src/platform-play" />
-                  <option value="$USER_HOME$/.gradle/wrapper/dists/gradle-4.9-all/491wbe0x5d54n9cojs2p0zv90/gradle-4.9/src/ivy" />
-                  <option value="$USER_HOME$/.gradle/wrapper/dists/gradle-4.9-all/491wbe0x5d54n9cojs2p0zv90/gradle-4.9/src/wrapper" />
-                  <option value="$USER_HOME$/.gradle/wrapper/dists/gradle-4.9-all/491wbe0x5d54n9cojs2p0zv90/gradle-4.9/src/process-services" />
-                  <option value="$USER_HOME$/.gradle/wrapper/dists/gradle-4.9-all/491wbe0x5d54n9cojs2p0zv90/gradle-4.9/src/plugins" />
-                  <option value="$USER_HOME$/.gradle/wrapper/dists/gradle-4.9-all/491wbe0x5d54n9cojs2p0zv90/gradle-4.9/src/antlr" />
-                  <option value="$USER_HOME$/.gradle/wrapper/dists/gradle-4.9-all/491wbe0x5d54n9cojs2p0zv90/gradle-4.9/src/plugin-use" />
-                  <option value="$USER_HOME$/.gradle/wrapper/dists/gradle-4.9-all/491wbe0x5d54n9cojs2p0zv90/gradle-4.9/src/language-jvm" />
-                  <option value="$USER_HOME$/.gradle/wrapper/dists/gradle-4.9-all/491wbe0x5d54n9cojs2p0zv90/gradle-4.9/src/maven" />
-                  <option value="$USER_HOME$/.gradle/wrapper/dists/gradle-4.9-all/491wbe0x5d54n9cojs2p0zv90/gradle-4.9/src/testing-base" />
-                  <option value="$USER_HOME$/.gradle/wrapper/dists/gradle-4.9-all/491wbe0x5d54n9cojs2p0zv90/gradle-4.9/src/resources" />
-                  <option value="$USER_HOME$/.gradle/wrapper/dists/gradle-4.9-all/491wbe0x5d54n9cojs2p0zv90/gradle-4.9/src/version-control" />
-                  <option value="$USER_HOME$/.gradle/wrapper/dists/gradle-4.9-all/491wbe0x5d54n9cojs2p0zv90/gradle-4.9/src/osgi" />
-                  <option value="$USER_HOME$/.gradle/wrapper/dists/gradle-4.9-all/491wbe0x5d54n9cojs2p0zv90/gradle-4.9/src/testing-junit-platform" />
-                  <option value="$USER_HOME$/.gradle/wrapper/dists/gradle-4.9-all/491wbe0x5d54n9cojs2p0zv90/gradle-4.9/src/resources-http" />
-                  <option value="$USER_HOME$/.gradle/wrapper/dists/gradle-4.9-all/491wbe0x5d54n9cojs2p0zv90/gradle-4.9/src/internal-testing" />
-                  <option value="$USER_HOME$/.gradle/wrapper/dists/gradle-4.9-all/491wbe0x5d54n9cojs2p0zv90/gradle-4.9/src/composite-builds" />
-                  <option value="$USER_HOME$/.gradle/wrapper/dists/gradle-4.9-all/491wbe0x5d54n9cojs2p0zv90/gradle-4.9/src/model-groovy" />
-                  <option value="$USER_HOME$/.gradle/wrapper/dists/gradle-4.9-all/491wbe0x5d54n9cojs2p0zv90/gradle-4.9/src/test-kit" />
-                  <option value="$USER_HOME$/.gradle/wrapper/dists/gradle-4.9-all/491wbe0x5d54n9cojs2p0zv90/gradle-4.9/src/cli" />
-                  <option value="$USER_HOME$/.gradle/wrapper/dists/gradle-4.9-all/491wbe0x5d54n9cojs2p0zv90/gradle-4.9/src/build-init" />
-                  <option value="$USER_HOME$/.gradle/wrapper/dists/gradle-4.9-all/491wbe0x5d54n9cojs2p0zv90/gradle-4.9/src/ear" />
-                  <option value="$USER_HOME$/.gradle/wrapper/dists/gradle-4.9-all/491wbe0x5d54n9cojs2p0zv90/gradle-4.9/src/jacoco" />
-                  <option value="$USER_HOME$/.gradle/wrapper/dists/gradle-4.9-all/491wbe0x5d54n9cojs2p0zv90/gradle-4.9/src/persistent-cache" />
-                  <option value="$USER_HOME$/.gradle/wrapper/dists/gradle-4.9-all/491wbe0x5d54n9cojs2p0zv90/gradle-4.9/src/build-comparison" />
-                  <option value="$USER_HOME$/.gradle/wrapper/dists/gradle-4.9-all/491wbe0x5d54n9cojs2p0zv90/gradle-4.9/src/publish" />
-                  <option value="$USER_HOME$/.gradle/wrapper/dists/gradle-4.9-all/491wbe0x5d54n9cojs2p0zv90/gradle-4.9/src/platform-jvm" />
-                  <option value="$USER_HOME$/.gradle/wrapper/dists/gradle-4.9-all/491wbe0x5d54n9cojs2p0zv90/gradle-4.9/src/resources-sftp" />
-                  <option value="$USER_HOME$/.gradle/wrapper/dists/gradle-4.9-all/491wbe0x5d54n9cojs2p0zv90/gradle-4.9/src/base-services" />
-                  <option value="$USER_HOME$/.gradle/wrapper/dists/gradle-4.9-all/491wbe0x5d54n9cojs2p0zv90/gradle-4.9/src/model-core" />
-                  <option value="$USER_HOME$/.gradle/wrapper/dists/gradle-4.9-all/491wbe0x5d54n9cojs2p0zv90/gradle-4.9/src/scala" />
-                  <option value="$USER_HOME$/.gradle/wrapper/dists/gradle-4.9-all/491wbe0x5d54n9cojs2p0zv90/gradle-4.9/src/diagnostics" />
-                  <option value="$USER_HOME$/.gradle/wrapper/dists/gradle-4.9-all/491wbe0x5d54n9cojs2p0zv90/gradle-4.9/src/dependency-management" />
-                  <option value="$USER_HOME$/.gradle/wrapper/dists/gradle-4.9-all/491wbe0x5d54n9cojs2p0zv90/gradle-4.9/src/ide-play" />
-                  <option value="$USER_HOME$/.gradle/wrapper/dists/gradle-4.9-all/491wbe0x5d54n9cojs2p0zv90/gradle-4.9/src/workers" />
-                  <option value="$USER_HOME$/.gradle/wrapper/dists/gradle-4.9-all/491wbe0x5d54n9cojs2p0zv90/gradle-4.9/src/code-quality" />
-                  <option value="$USER_HOME$/.gradle/wrapper/dists/gradle-4.9-all/491wbe0x5d54n9cojs2p0zv90/gradle-4.9/src/language-java" />
-                  <option value="$USER_HOME$/.gradle/wrapper/dists/gradle-4.9-all/491wbe0x5d54n9cojs2p0zv90/gradle-4.9/src/build-cache" />
-                  <option value="$USER_HOME$/.gradle/wrapper/dists/gradle-4.9-all/491wbe0x5d54n9cojs2p0zv90/gradle-4.9/src/plugin-development" />
-                  <option value="$USER_HOME$/.gradle/wrapper/dists/gradle-4.9-all/491wbe0x5d54n9cojs2p0zv90/gradle-4.9/src/core-api" />
-                  <option value="$USER_HOME$/.gradle/wrapper/dists/gradle-4.9-all/491wbe0x5d54n9cojs2p0zv90/gradle-4.9/src/javascript" />
-                  <option value="$USER_HOME$/.gradle/wrapper/dists/gradle-4.9-all/491wbe0x5d54n9cojs2p0zv90/gradle-4.9/src/resources-gcs" />
-                  <option value="$USER_HOME$/.gradle/wrapper/dists/gradle-4.9-all/491wbe0x5d54n9cojs2p0zv90/gradle-4.9/src/testing-native" />
-                  <option value="$USER_HOME$/.gradle/wrapper/dists/gradle-4.9-all/491wbe0x5d54n9cojs2p0zv90/gradle-4.9/src/internal-performance-testing" />
-                  <option value="$USER_HOME$/.gradle/wrapper/dists/gradle-4.9-all/491wbe0x5d54n9cojs2p0zv90/gradle-4.9/src/ide-native" />
-                  <option value="$USER_HOME$/.gradle/wrapper/dists/gradle-4.9-all/491wbe0x5d54n9cojs2p0zv90/gradle-4.9/src/base-services-groovy" />
-                  <option value="$USER_HOME$/.gradle/wrapper/dists/gradle-4.9-all/491wbe0x5d54n9cojs2p0zv90/gradle-4.9/src/messaging" />
-                  <option value="$USER_HOME$/.gradle/wrapper/dists/gradle-4.9-all/491wbe0x5d54n9cojs2p0zv90/gradle-4.9/src/testing-jvm" />
-                  <option value="$USER_HOME$/.gradle/wrapper/dists/gradle-4.9-all/491wbe0x5d54n9cojs2p0zv90/gradle-4.9/src/tooling-api-builders" />
-                  <option value="$USER_HOME$/.gradle/wrapper/dists/gradle-4.9-all/491wbe0x5d54n9cojs2p0zv90/gradle-4.9/src/logging" />
-                  <option value="$USER_HOME$/.gradle/wrapper/dists/gradle-4.9-all/491wbe0x5d54n9cojs2p0zv90/gradle-4.9/src/language-scala" />
-                  <option value="$USER_HOME$/.gradle/wrapper/dists/gradle-4.9-all/491wbe0x5d54n9cojs2p0zv90/gradle-4.9/src/language-native" />
-                  <option value="$USER_HOME$/.gradle/wrapper/dists/gradle-4.9-all/491wbe0x5d54n9cojs2p0zv90/gradle-4.9/src/resources-s3" />
-                  <option value="$USER_HOME$/.gradle/wrapper/dists/gradle-4.9-all/491wbe0x5d54n9cojs2p0zv90/gradle-4.9/src/internal-android-performance-testing" />
-                  <option value="$USER_HOME$/.gradle/wrapper/dists/gradle-4.9-all/491wbe0x5d54n9cojs2p0zv90/gradle-4.9/src/build-cache-http" />
-                  <option value="$USER_HOME$/.gradle/wrapper/dists/gradle-4.9-all/491wbe0x5d54n9cojs2p0zv90/gradle-4.9/lib/gradle-model-groovy-4.9.jar" />
-                  <option value="$USER_HOME$/.gradle/wrapper/dists/gradle-4.9-all/491wbe0x5d54n9cojs2p0zv90/gradle-4.9/lib/gradle-kotlin-dsl-tooling-models-0.18.4.jar" />
-                  <option value="$USER_HOME$/.gradle/wrapper/dists/gradle-4.9-all/491wbe0x5d54n9cojs2p0zv90/gradle-4.9/lib/gradle-resources-4.9.jar" />
-                  <option value="$USER_HOME$/.gradle/wrapper/dists/gradle-4.9-all/491wbe0x5d54n9cojs2p0zv90/gradle-4.9/lib/gradle-tooling-api-4.9.jar" />
-                  <option value="$USER_HOME$/.gradle/wrapper/dists/gradle-4.9-all/491wbe0x5d54n9cojs2p0zv90/gradle-4.9/lib/gradle-kotlin-dsl-0.18.4.jar" />
-                  <option value="$USER_HOME$/.gradle/wrapper/dists/gradle-4.9-all/491wbe0x5d54n9cojs2p0zv90/gradle-4.9/lib/gradle-core-api-4.9.jar" />
-                  <option value="$USER_HOME$/.gradle/wrapper/dists/gradle-4.9-all/491wbe0x5d54n9cojs2p0zv90/gradle-4.9/lib/ant-1.9.11.jar" />
-                  <option value="$USER_HOME$/.gradle/wrapper/dists/gradle-4.9-all/491wbe0x5d54n9cojs2p0zv90/gradle-4.9/lib/gradle-cli-4.9.jar" />
-                  <option value="$USER_HOME$/.gradle/wrapper/dists/gradle-4.9-all/491wbe0x5d54n9cojs2p0zv90/gradle-4.9/lib/gradle-docs-4.9.jar" />
-                  <option value="$USER_HOME$/.gradle/wrapper/dists/gradle-4.9-all/491wbe0x5d54n9cojs2p0zv90/gradle-4.9/lib/gradle-persistent-cache-4.9.jar" />
-                  <option value="$USER_HOME$/.gradle/wrapper/dists/gradle-4.9-all/491wbe0x5d54n9cojs2p0zv90/gradle-4.9/lib/gradle-build-option-4.9.jar" />
-                  <option value="$USER_HOME$/.gradle/wrapper/dists/gradle-4.9-all/491wbe0x5d54n9cojs2p0zv90/gradle-4.9/lib/ant-launcher-1.9.11.jar" />
-                  <option value="$USER_HOME$/.gradle/wrapper/dists/gradle-4.9-all/491wbe0x5d54n9cojs2p0zv90/gradle-4.9/lib/gradle-messaging-4.9.jar" />
-                  <option value="$USER_HOME$/.gradle/wrapper/dists/gradle-4.9-all/491wbe0x5d54n9cojs2p0zv90/gradle-4.9/lib/groovy-all-2.4.12.jar" />
-                  <option value="$USER_HOME$/.gradle/wrapper/dists/gradle-4.9-all/491wbe0x5d54n9cojs2p0zv90/gradle-4.9/lib/gradle-jvm-services-4.9.jar" />
-                  <option value="$USER_HOME$/.gradle/wrapper/dists/gradle-4.9-all/491wbe0x5d54n9cojs2p0zv90/gradle-4.9/lib/gradle-launcher-4.9.jar" />
-                  <option value="$USER_HOME$/.gradle/wrapper/dists/gradle-4.9-all/491wbe0x5d54n9cojs2p0zv90/gradle-4.9/lib/gradle-base-services-4.9.jar" />
-                  <option value="$USER_HOME$/.gradle/wrapper/dists/gradle-4.9-all/491wbe0x5d54n9cojs2p0zv90/gradle-4.9/lib/gradle-kotlin-dsl-provider-plugins-0.18.4.jar" />
-                  <option value="$USER_HOME$/.gradle/wrapper/dists/gradle-4.9-all/491wbe0x5d54n9cojs2p0zv90/gradle-4.9/lib/gradle-kotlin-dsl-tooling-builders-0.18.4.jar" />
-                  <option value="$USER_HOME$/.gradle/wrapper/dists/gradle-4.9-all/491wbe0x5d54n9cojs2p0zv90/gradle-4.9/lib/gradle-model-core-4.9.jar" />
-                  <option value="$USER_HOME$/.gradle/wrapper/dists/gradle-4.9-all/491wbe0x5d54n9cojs2p0zv90/gradle-4.9/lib/gradle-core-4.9.jar" />
-                  <option value="$USER_HOME$/.gradle/wrapper/dists/gradle-4.9-all/491wbe0x5d54n9cojs2p0zv90/gradle-4.9/lib/gradle-installation-beacon-4.9.jar" />
-                  <option value="$USER_HOME$/.gradle/wrapper/dists/gradle-4.9-all/491wbe0x5d54n9cojs2p0zv90/gradle-4.9/lib/gradle-base-services-groovy-4.9.jar" />
-                  <option value="$USER_HOME$/.gradle/wrapper/dists/gradle-4.9-all/491wbe0x5d54n9cojs2p0zv90/gradle-4.9/lib/gradle-process-services-4.9.jar" />
-                  <option value="$USER_HOME$/.gradle/wrapper/dists/gradle-4.9-all/491wbe0x5d54n9cojs2p0zv90/gradle-4.9/lib/gradle-build-cache-4.9.jar" />
-                  <option value="$USER_HOME$/.gradle/wrapper/dists/gradle-4.9-all/491wbe0x5d54n9cojs2p0zv90/gradle-4.9/lib/gradle-runtime-api-info-4.9.jar" />
-                  <option value="$USER_HOME$/.gradle/wrapper/dists/gradle-4.9-all/491wbe0x5d54n9cojs2p0zv90/gradle-4.9/lib/gradle-native-4.9.jar" />
-                  <option value="$USER_HOME$/.gradle/wrapper/dists/gradle-4.9-all/491wbe0x5d54n9cojs2p0zv90/gradle-4.9/lib/gradle-logging-4.9.jar" />
-                  <option value="$USER_HOME$/.gradle/wrapper/dists/gradle-4.9-all/491wbe0x5d54n9cojs2p0zv90/gradle-4.9/lib/gradle-wrapper-4.9.jar" />
-                  <option value="$USER_HOME$/.gradle/wrapper/dists/gradle-4.9-all/491wbe0x5d54n9cojs2p0zv90/gradle-4.9/lib/plugins/gradle-platform-jvm-4.9.jar" />
-                  <option value="$USER_HOME$/.gradle/wrapper/dists/gradle-4.9-all/491wbe0x5d54n9cojs2p0zv90/gradle-4.9/lib/plugins/gradle-testing-base-4.9.jar" />
-                  <option value="$USER_HOME$/.gradle/wrapper/dists/gradle-4.9-all/491wbe0x5d54n9cojs2p0zv90/gradle-4.9/lib/plugins/gradle-testing-jvm-4.9.jar" />
-                  <option value="$USER_HOME$/.gradle/wrapper/dists/gradle-4.9-all/491wbe0x5d54n9cojs2p0zv90/gradle-4.9/lib/plugins/gradle-build-init-4.9.jar" />
-                  <option value="$USER_HOME$/.gradle/wrapper/dists/gradle-4.9-all/491wbe0x5d54n9cojs2p0zv90/gradle-4.9/lib/plugins/gradle-maven-4.9.jar" />
-                  <option value="$USER_HOME$/.gradle/wrapper/dists/gradle-4.9-all/491wbe0x5d54n9cojs2p0zv90/gradle-4.9/lib/plugins/gradle-resources-sftp-4.9.jar" />
-                  <option value="$USER_HOME$/.gradle/wrapper/dists/gradle-4.9-all/491wbe0x5d54n9cojs2p0zv90/gradle-4.9/lib/plugins/gradle-signing-4.9.jar" />
-                  <option value="$USER_HOME$/.gradle/wrapper/dists/gradle-4.9-all/491wbe0x5d54n9cojs2p0zv90/gradle-4.9/lib/plugins/gradle-resources-s3-4.9.jar" />
-                  <option value="$USER_HOME$/.gradle/wrapper/dists/gradle-4.9-all/491wbe0x5d54n9cojs2p0zv90/gradle-4.9/lib/plugins/gradle-code-quality-4.9.jar" />
-                  <option value="$USER_HOME$/.gradle/wrapper/dists/gradle-4.9-all/491wbe0x5d54n9cojs2p0zv90/gradle-4.9/lib/plugins/gradle-test-kit-4.9.jar" />
-                  <option value="$USER_HOME$/.gradle/wrapper/dists/gradle-4.9-all/491wbe0x5d54n9cojs2p0zv90/gradle-4.9/lib/plugins/gradle-ivy-4.9.jar" />
-                  <option value="$USER_HOME$/.gradle/wrapper/dists/gradle-4.9-all/491wbe0x5d54n9cojs2p0zv90/gradle-4.9/lib/plugins/gradle-osgi-4.9.jar" />
-                  <option value="$USER_HOME$/.gradle/wrapper/dists/gradle-4.9-all/491wbe0x5d54n9cojs2p0zv90/gradle-4.9/lib/plugins/gradle-language-groovy-4.9.jar" />
-                  <option value="$USER_HOME$/.gradle/wrapper/dists/gradle-4.9-all/491wbe0x5d54n9cojs2p0zv90/gradle-4.9/lib/plugins/gradle-language-java-4.9.jar" />
-                  <option value="$USER_HOME$/.gradle/wrapper/dists/gradle-4.9-all/491wbe0x5d54n9cojs2p0zv90/gradle-4.9/lib/plugins/gradle-antlr-4.9.jar" />
-                  <option value="$USER_HOME$/.gradle/wrapper/dists/gradle-4.9-all/491wbe0x5d54n9cojs2p0zv90/gradle-4.9/lib/plugins/gradle-reporting-4.9.jar" />
-                  <option value="$USER_HOME$/.gradle/wrapper/dists/gradle-4.9-all/491wbe0x5d54n9cojs2p0zv90/gradle-4.9/lib/plugins/gradle-platform-play-4.9.jar" />
-                  <option value="$USER_HOME$/.gradle/wrapper/dists/gradle-4.9-all/491wbe0x5d54n9cojs2p0zv90/gradle-4.9/lib/plugins/gradle-ide-4.9.jar" />
-                  <option value="$USER_HOME$/.gradle/wrapper/dists/gradle-4.9-all/491wbe0x5d54n9cojs2p0zv90/gradle-4.9/lib/plugins/gradle-resources-gcs-4.9.jar" />
-                  <option value="$USER_HOME$/.gradle/wrapper/dists/gradle-4.9-all/491wbe0x5d54n9cojs2p0zv90/gradle-4.9/lib/plugins/gradle-scala-4.9.jar" />
-                  <option value="$USER_HOME$/.gradle/wrapper/dists/gradle-4.9-all/491wbe0x5d54n9cojs2p0zv90/gradle-4.9/lib/plugins/gradle-resources-http-4.9.jar" />
-                  <option value="$USER_HOME$/.gradle/wrapper/dists/gradle-4.9-all/491wbe0x5d54n9cojs2p0zv90/gradle-4.9/lib/plugins/gradle-ear-4.9.jar" />
-                  <option value="$USER_HOME$/.gradle/wrapper/dists/gradle-4.9-all/491wbe0x5d54n9cojs2p0zv90/gradle-4.9/lib/plugins/gradle-publish-4.9.jar" />
-                  <option value="$USER_HOME$/.gradle/wrapper/dists/gradle-4.9-all/491wbe0x5d54n9cojs2p0zv90/gradle-4.9/lib/plugins/gradle-testing-junit-platform-4.9.jar" />
-                  <option value="$USER_HOME$/.gradle/wrapper/dists/gradle-4.9-all/491wbe0x5d54n9cojs2p0zv90/gradle-4.9/lib/plugins/gradle-composite-builds-4.9.jar" />
-                  <option value="$USER_HOME$/.gradle/wrapper/dists/gradle-4.9-all/491wbe0x5d54n9cojs2p0zv90/gradle-4.9/lib/plugins/gradle-dependency-management-4.9.jar" />
-                  <option value="$USER_HOME$/.gradle/wrapper/dists/gradle-4.9-all/491wbe0x5d54n9cojs2p0zv90/gradle-4.9/lib/plugins/gradle-testing-native-4.9.jar" />
-                  <option value="$USER_HOME$/.gradle/wrapper/dists/gradle-4.9-all/491wbe0x5d54n9cojs2p0zv90/gradle-4.9/lib/plugins/gradle-platform-base-4.9.jar" />
-                  <option value="$USER_HOME$/.gradle/wrapper/dists/gradle-4.9-all/491wbe0x5d54n9cojs2p0zv90/gradle-4.9/lib/plugins/gradle-language-jvm-4.9.jar" />
-                  <option value="$USER_HOME$/.gradle/wrapper/dists/gradle-4.9-all/491wbe0x5d54n9cojs2p0zv90/gradle-4.9/lib/plugins/gradle-plugin-development-4.9.jar" />
-                  <option value="$USER_HOME$/.gradle/wrapper/dists/gradle-4.9-all/491wbe0x5d54n9cojs2p0zv90/gradle-4.9/lib/plugins/gradle-diagnostics-4.9.jar" />
-                  <option value="$USER_HOME$/.gradle/wrapper/dists/gradle-4.9-all/491wbe0x5d54n9cojs2p0zv90/gradle-4.9/lib/plugins/gradle-ide-native-4.9.jar" />
-                  <option value="$USER_HOME$/.gradle/wrapper/dists/gradle-4.9-all/491wbe0x5d54n9cojs2p0zv90/gradle-4.9/lib/plugins/gradle-build-cache-http-4.9.jar" />
-                  <option value="$USER_HOME$/.gradle/wrapper/dists/gradle-4.9-all/491wbe0x5d54n9cojs2p0zv90/gradle-4.9/lib/plugins/gradle-workers-4.9.jar" />
-                  <option value="$USER_HOME$/.gradle/wrapper/dists/gradle-4.9-all/491wbe0x5d54n9cojs2p0zv90/gradle-4.9/lib/plugins/gradle-javascript-4.9.jar" />
-                  <option value="$USER_HOME$/.gradle/wrapper/dists/gradle-4.9-all/491wbe0x5d54n9cojs2p0zv90/gradle-4.9/lib/plugins/gradle-platform-native-4.9.jar" />
-                  <option value="$USER_HOME$/.gradle/wrapper/dists/gradle-4.9-all/491wbe0x5d54n9cojs2p0zv90/gradle-4.9/lib/plugins/gradle-jacoco-4.9.jar" />
-                  <option value="$USER_HOME$/.gradle/wrapper/dists/gradle-4.9-all/491wbe0x5d54n9cojs2p0zv90/gradle-4.9/lib/plugins/gradle-plugins-4.9.jar" />
-                  <option value="$USER_HOME$/.gradle/wrapper/dists/gradle-4.9-all/491wbe0x5d54n9cojs2p0zv90/gradle-4.9/lib/plugins/gradle-build-comparison-4.9.jar" />
-                  <option value="$USER_HOME$/.gradle/wrapper/dists/gradle-4.9-all/491wbe0x5d54n9cojs2p0zv90/gradle-4.9/lib/plugins/gradle-language-native-4.9.jar" />
-                  <option value="$USER_HOME$/.gradle/wrapper/dists/gradle-4.9-all/491wbe0x5d54n9cojs2p0zv90/gradle-4.9/lib/plugins/gradle-version-control-4.9.jar" />
-                  <option value="$USER_HOME$/.gradle/wrapper/dists/gradle-4.9-all/491wbe0x5d54n9cojs2p0zv90/gradle-4.9/lib/plugins/gradle-plugin-use-4.9.jar" />
-                  <option value="$USER_HOME$/.gradle/wrapper/dists/gradle-4.9-all/491wbe0x5d54n9cojs2p0zv90/gradle-4.9/lib/plugins/gradle-language-scala-4.9.jar" />
-                  <option value="$USER_HOME$/.gradle/wrapper/dists/gradle-4.9-all/491wbe0x5d54n9cojs2p0zv90/gradle-4.9/lib/plugins/gradle-ide-play-4.9.jar" />
-                  <option value="$USER_HOME$/.gradle/wrapper/dists/gradle-4.9-all/491wbe0x5d54n9cojs2p0zv90/gradle-4.9/lib/plugins/ivy-2.2.0.jar" />
-                  <option value="$USER_HOME$/.gradle/wrapper/dists/gradle-4.9-all/491wbe0x5d54n9cojs2p0zv90/gradle-4.9/lib/plugins/gradle-tooling-api-builders-4.9.jar" />
-                  <option value="$USER_HOME$/.gradle/wrapper/dists/gradle-4.9-all/491wbe0x5d54n9cojs2p0zv90/gradle-4.9/lib/plugins/gradle-announce-4.9.jar" />
-                </list>
-              </option>
-            </ExternalProjectBuildClasspathPojo>
-          </value>
-        </entry>
-      </map>
-    </option>
-    <option name="projectSyncType">
-      <map>
-        <entry key="$PROJECT_DIR$" value="RE_IMPORT" />
-      </map>
-    </option>
-  </component>
   <component name="IdeDocumentHistory">
     <option name="CHANGED_PATHS">
       <list>
-        <option value="$PROJECT_DIR$/src/api/src/main/java/ski/crunch/utils/ErrorResponse.java" />
-        <option value="$PROJECT_DIR$/src/api/src/main/java/ski/crunch/activity/parser/fit/SessionMessageListener.java" />
-        <option value="$PROJECT_DIR$/src/api/src/main/java/ski/crunch/activity/service/LocationService.java" />
-        <option value="$PROJECT_DIR$/src/api/src/main/java/ski/crunch/activity/ActivityWriter.java" />
-        <option value="$PROJECT_DIR$/src/api/build_deploy.sh" />
-        <option value="$PROJECT_DIR$/src/api/src/main/java/ski/crunch/activity/parser/fit/FitActivityHolderAdapter.java" />
-        <option value="$PROJECT_DIR$/src/api/src/main/java/ski/crunch/activity/processor/summarizer/AvgFunctionDouble.java" />
-        <option value="$PROJECT_DIR$/src/api/src/main/java/ski/crunch/utils/FileUtils.java" />
-        <option value="$PROJECT_DIR$/docs/README.md" />
-        <option value="$PROJECT_DIR$/src/api/src/test/java/GenerateDevAccessKeyTest.java" />
-        <option value="$PROJECT_DIR$/src/api/src/main/java/ski/crunch/activity/service/WeatherService.java" />
-        <option value="$PROJECT_DIR$/src/api/src/main/java/ski/crunch/utils/HttpClientUtil.java" />
-        <option value="$PROJECT_DIR$/src/api/src/test/java/ski/crunch/activity/service/DarkSkyWeatherServiceTests.java" />
-        <option value="$PROJECT_DIR$/src/api/src/main/java/ski/crunch/activity/GetActivityHandler.java" />
-        <option value="$PROJECT_DIR$/src/api/src/main/java/ski/crunch/activity/PutActivityHandler.java" />
         <option value="$PROJECT_DIR$/src/api/src/main/java/ski/crunch/utils/LambdaProxyConfig.java" />
         <option value="$PROJECT_DIR$/docs/setup.md" />
         <option value="$PROJECT_DIR$/src/api/src/main/java/ski/crunch/activity/service/SSMParameterService.java" />
         <option value="$PROJECT_DIR$/src/api/src/test/java/ski/crunch/activity/service/SSMParameterServiceTest.java" />
         <option value="$PROJECT_DIR$/src/api/src/main/scala/scala/ski/crunch/activity/processor/model/ActivitySummary.scala" />
-        <option value="$PROJECT_DIR$/src/api/src/main/java/ski/crunch/activity/processor/model/ActivityHolder.java" />
-        <option value="$PROJECT_DIR$/src/api/src/main/java/ski/crunch/activity/processor/SetInitialMoveHandler.java" />
-        <option value="$PROJECT_DIR$/src/api/src/main/java/ski/crunch/activity/processor/ActivityProcessor.java" />
         <option value="$PROJECT_DIR$/docs/domain_setup.md" />
         <option value="$PROJECT_DIR$/src/api/src/main/java/ski/crunch/activity/service/DarkSkyWeatherService.java" />
         <option value="$PROJECT_DIR$/src/api/src/main/java/ski/crunch/activity/ParseFitActivityLambda.java" />
         <option value="$PROJECT_DIR$/src/api/src/test/java/ski/crunch/activity/service/LocationIqServiceTests.java" />
         <option value="$PROJECT_DIR$/src/api/src/main/java/ski/crunch/activity/service/LocationIqService.java" />
-        <option value="$PROJECT_DIR$/src/api/src/main/resources/Activity.proto" />
         <option value="$PROJECT_DIR$/src/api/src/test/java/ski/crunch/activity/service/DynamoDBServiceTest.java" />
         <option value="$PROJECT_DIR$/src/api/src/main/java/ski/crunch/activity/model/ActivityItem.java" />
         <option value="$PROJECT_DIR$/src/api/serverless.yml" />
@@ -963,38 +335,48 @@
         <option value="$PROJECT_DIR$/src/api/src/test/java/ski/crunch/activity/service/S3ServiceTest.java" />
         <option value="$PROJECT_DIR$/src/api/src/test/java/ski/crunch/activity/service/AbstractIntegrationTest.java" />
         <option value="$PROJECT_DIR$/src/api/src/main/java/ski/crunch/activity/service/ActivityService.java" />
-        <option value="$PROJECT_DIR$/src/api/src/main/java/ski/crunch/activity/ActivityWriterImpl.java" />
-        <option value="$PROJECT_DIR$/src/api/src/test/java/ski/crunch/activity/processor/ActivitySummarizerTest.java" />
         <option value="$PROJECT_DIR$/src/api/src/test/java/ski/crunch/activity/service/ParseLambdaTest.java" />
-        <option value="$PROJECT_DIR$/src/api/src/test/java/ski/crunch/activity/processor/ActivityPipelineTest.java" />
         <option value="$PROJECT_DIR$/src/api/src/main/java/ski/crunch/activity/processor/DetectMotionHandler.java" />
-        <option value="$PROJECT_DIR$/src/api/src/main/java/ski/crunch/activity/processor/DetectLapHandler.java" />
         <option value="$PROJECT_DIR$/src/api/src/main/java/ski/crunch/activity/processor/DetectPauseHandler.java" />
         <option value="$PROJECT_DIR$/src/api/src/main/java/ski/crunch/activity/processor/summarizer/AvgFunctionInteger.java" />
-        <option value="$PROJECT_DIR$/src/api/src/main/java/ski/crunch/activity/processor/summarizer/ActivitySummarizer.java" />
         <option value="$PROJECT_DIR$/src/api/src/main/java/ski/crunch/activity/parser/fit/EventMessageListener.java" />
         <option value="$PROJECT_DIR$/src/api/src/test/java/ski/crunch/activity/parser/FitActivityHolderAdapterTest.java" />
         <option value="$PROJECT_DIR$/src/api/build.gradle" />
-        <option value="$PROJECT_DIR$/src/api/src/main/scala/scala/ski/crunch/activity/processor/EventProcessor.scala" />
-        <option value="$PROJECT_DIR$/src/api/src/test/java/ski/crunch/activity/ActivityTests.java" />
         <option value="$APPLICATION_CONFIG_DIR$/scratches/missing_session_bug.txt" />
+        <option value="$PROJECT_DIR$/src/api/src/main/java/ski/crunch/activity/processor/SetEventIndexHandler.java" />
+        <option value="$PROJECT_DIR$/src/api/src/main/java/ski/crunch/activity/processor/DetectLapHandler.java" />
+        <option value="$PROJECT_DIR$/src/api/src/main/resources/Activity.proto" />
+        <option value="$PROJECT_DIR$/src/api/src/main/java/ski/crunch/activity/processor/model/ActivityHolder.java" />
+        <option value="$PROJECT_DIR$/src/api/src/main/java/ski/crunch/activity/ActivityWriterImpl.java" />
+        <option value="$PROJECT_DIR$/src/api/src/main/java/ski/crunch/activity/processor/summarizer/CalculateTotalStopped.java" />
+        <option value="$PROJECT_DIR$/src/api/src/main/java/ski/crunch/activity/processor/summarizer/AvgFunctionDouble.java" />
+        <option value="$PROJECT_DIR$/src/api/src/main/java/ski/crunch/activity/processor/summarizer/CalculateTotalDistance.java" />
+        <option value="$PROJECT_DIR$/src/api/src/main/java/ski/crunch/activity/processor/summarizer/CalculateTotalDescent.java" />
+        <option value="$PROJECT_DIR$/src/api/src/main/java/ski/crunch/activity/processor/summarizer/CalculateTotalMoving.java" />
+        <option value="$PROJECT_DIR$/src/api/src/main/java/ski/crunch/activity/processor/summarizer/CalculateTotalAscent.java" />
+        <option value="$PROJECT_DIR$/src/api/src/test/java/ski/crunch/activity/processor/ActivitySummarizerTest.java" />
+        <option value="$PROJECT_DIR$/src/api/src/main/java/ski/crunch/activity/processor/summarizer/ActivitySummarizer.java" />
+        <option value="$PROJECT_DIR$/src/api/src/main/java/ski/crunch/activity/processor/FillEmptyHandler.java" />
+        <option value="$PROJECT_DIR$/src/api/src/test/java/ski/crunch/activity/processor/ActivityPipelineTest.java" />
+        <option value="$PROJECT_DIR$/src/api/src/main/java/ski/crunch/activity/processor/ActivityProcessor.java" />
+        <option value="$PROJECT_DIR$/src/api/src/test/java/ski/crunch/activity/processor/SortEventsByTsHandlerTest.java" />
+        <option value="$PROJECT_DIR$/src/api/src/main/scala/scala/ski/crunch/activity/processor/RecordProcessor.scala" />
+        <option value="$PROJECT_DIR$/src/api/src/main/scala/scala/ski/crunch/activity/processor/EventProcessor.scala" />
+        <option value="$PROJECT_DIR$/src/api/src/test/java/ski/crunch/activity/processor/SortRecordsByTsHandlerTest.java" />
+        <option value="$PROJECT_DIR$/src/api/src/main/java/ski/crunch/activity/processor/SortEventsByTsHandler.java" />
+        <option value="$PROJECT_DIR$/src/api/src/main/java/ski/crunch/activity/processor/SortRecordsByTsHandler.java" />
+        <option value="$PROJECT_DIR$/src/api/src/main/scala/scala/ski/crunch/activity/processor/model/ActivityRecord.scala" />
+        <option value="$PROJECT_DIR$/src/api/src/test/java/ski/crunch/activity/processor/SetInitialMoveHandlerTest.java" />
+        <option value="$PROJECT_DIR$/src/api/src/main/java/ski/crunch/activity/processor/SetInitialMoveHandler.java" />
+        <option value="$PROJECT_DIR$/src/api/src/test/java/ski/crunch/activity/ActivityTests.java" />
       </list>
     </option>
   </component>
-  <component name="JsBuildToolGruntFileManager" detection-done="true" sorting="DEFINITION_ORDER" />
-  <component name="JsBuildToolPackageJson" detection-done="true" sorting="DEFINITION_ORDER" />
-  <component name="JsGulpfileManager">
-    <detection-done>true</detection-done>
-    <sorting>DEFINITION_ORDER</sorting>
-  </component>
-  <component name="NodePackageJsonFileManager">
-    <packageJsonPaths>
-      <path value="$PROJECT_DIR$/src/api/node_modules/serverless-apigw-binary/package.json" />
-    </packageJsonPaths>
-  </component>
-  <component name="ProjectFrameBounds" extendedState="6" fullScreen="true">
-    <option name="width" value="1440" />
-    <option name="height" value="900" />
+  <component name="ProjectFrameBounds">
+    <option name="x" value="95" />
+    <option name="y" value="28" />
+    <option name="width" value="1401" />
+    <option name="height" value="824" />
   </component>
   <component name="ProjectInspectionProfilesVisibleTreeState">
     <entry key="Project Default">
@@ -1022,7 +404,6 @@
       <foldersAlwaysOnTop value="true" />
     </navigator>
     <panes>
-      <pane id="PackagesPane" />
       <pane id="ProjectPane">
         <subPane>
           <expand>
@@ -1046,29 +427,6 @@
               <item name="ski-analytics-services" type="8a07ba80:GradleTreeStructureProvider$GradleModuleDirectoryNode" />
               <item name="src" type="462c0819:PsiDirectoryNode" />
               <item name="api" type="8a07ba80:GradleTreeStructureProvider$GradleModuleDirectoryNode" />
-              <item name="out" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="ski-analytics-services" type="b2602c69:ProjectViewProjectNode" />
-              <item name="ski-analytics-services" type="8a07ba80:GradleTreeStructureProvider$GradleModuleDirectoryNode" />
-              <item name="src" type="462c0819:PsiDirectoryNode" />
-              <item name="api" type="8a07ba80:GradleTreeStructureProvider$GradleModuleDirectoryNode" />
-              <item name="out" type="462c0819:PsiDirectoryNode" />
-              <item name="production" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="ski-analytics-services" type="b2602c69:ProjectViewProjectNode" />
-              <item name="ski-analytics-services" type="8a07ba80:GradleTreeStructureProvider$GradleModuleDirectoryNode" />
-              <item name="src" type="462c0819:PsiDirectoryNode" />
-              <item name="api" type="8a07ba80:GradleTreeStructureProvider$GradleModuleDirectoryNode" />
-              <item name="out" type="462c0819:PsiDirectoryNode" />
-              <item name="test" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="ski-analytics-services" type="b2602c69:ProjectViewProjectNode" />
-              <item name="ski-analytics-services" type="8a07ba80:GradleTreeStructureProvider$GradleModuleDirectoryNode" />
-              <item name="src" type="462c0819:PsiDirectoryNode" />
-              <item name="api" type="8a07ba80:GradleTreeStructureProvider$GradleModuleDirectoryNode" />
               <item name="src" type="462c0819:PsiDirectoryNode" />
             </path>
             <path>
@@ -1127,6 +485,48 @@
               <item name="src" type="462c0819:PsiDirectoryNode" />
               <item name="api" type="8a07ba80:GradleTreeStructureProvider$GradleModuleDirectoryNode" />
               <item name="src" type="462c0819:PsiDirectoryNode" />
+              <item name="main" type="8a07ba80:GradleTreeStructureProvider$GradleModuleDirectoryNode" />
+              <item name="scala" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="ski-analytics-services" type="b2602c69:ProjectViewProjectNode" />
+              <item name="ski-analytics-services" type="8a07ba80:GradleTreeStructureProvider$GradleModuleDirectoryNode" />
+              <item name="src" type="462c0819:PsiDirectoryNode" />
+              <item name="api" type="8a07ba80:GradleTreeStructureProvider$GradleModuleDirectoryNode" />
+              <item name="src" type="462c0819:PsiDirectoryNode" />
+              <item name="main" type="8a07ba80:GradleTreeStructureProvider$GradleModuleDirectoryNode" />
+              <item name="scala" type="462c0819:PsiDirectoryNode" />
+              <item name="activity" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="ski-analytics-services" type="b2602c69:ProjectViewProjectNode" />
+              <item name="ski-analytics-services" type="8a07ba80:GradleTreeStructureProvider$GradleModuleDirectoryNode" />
+              <item name="src" type="462c0819:PsiDirectoryNode" />
+              <item name="api" type="8a07ba80:GradleTreeStructureProvider$GradleModuleDirectoryNode" />
+              <item name="src" type="462c0819:PsiDirectoryNode" />
+              <item name="main" type="8a07ba80:GradleTreeStructureProvider$GradleModuleDirectoryNode" />
+              <item name="scala" type="462c0819:PsiDirectoryNode" />
+              <item name="activity" type="462c0819:PsiDirectoryNode" />
+              <item name="processor" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="ski-analytics-services" type="b2602c69:ProjectViewProjectNode" />
+              <item name="ski-analytics-services" type="8a07ba80:GradleTreeStructureProvider$GradleModuleDirectoryNode" />
+              <item name="src" type="462c0819:PsiDirectoryNode" />
+              <item name="api" type="8a07ba80:GradleTreeStructureProvider$GradleModuleDirectoryNode" />
+              <item name="src" type="462c0819:PsiDirectoryNode" />
+              <item name="main" type="8a07ba80:GradleTreeStructureProvider$GradleModuleDirectoryNode" />
+              <item name="scala" type="462c0819:PsiDirectoryNode" />
+              <item name="activity" type="462c0819:PsiDirectoryNode" />
+              <item name="processor" type="462c0819:PsiDirectoryNode" />
+              <item name="model" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="ski-analytics-services" type="b2602c69:ProjectViewProjectNode" />
+              <item name="ski-analytics-services" type="8a07ba80:GradleTreeStructureProvider$GradleModuleDirectoryNode" />
+              <item name="src" type="462c0819:PsiDirectoryNode" />
+              <item name="api" type="8a07ba80:GradleTreeStructureProvider$GradleModuleDirectoryNode" />
+              <item name="src" type="462c0819:PsiDirectoryNode" />
               <item name="test" type="462c0819:PsiDirectoryNode" />
             </path>
             <path>
@@ -1166,7 +566,9 @@
               <item name="api" type="8a07ba80:GradleTreeStructureProvider$GradleModuleDirectoryNode" />
               <item name="src" type="462c0819:PsiDirectoryNode" />
               <item name="test" type="462c0819:PsiDirectoryNode" />
-              <item name="resources" type="462c0819:PsiDirectoryNode" />
+              <item name="java" type="462c0819:PsiDirectoryNode" />
+              <item name="activity" type="462c0819:PsiDirectoryNode" />
+              <item name="service" type="462c0819:PsiDirectoryNode" />
             </path>
             <path>
               <item name="ski-analytics-services" type="b2602c69:ProjectViewProjectNode" />
@@ -1181,6 +583,7 @@
           <select />
         </subPane>
       </pane>
+      <pane id="PackagesPane" />
       <pane id="Scope" />
     </panes>
   </component>
@@ -1188,22 +591,20 @@
     <property name="Git.Branch.Popup.ShowAllRemotes" value="true" />
     <property name="WebServerToolWindowFactoryState" value="false" />
     <property name="aspect.path.notification.shown" value="true" />
-    <property name="com.android.tools.idea.instantapp.provision.ProvisionBeforeRunTaskProvider.myTimeStamp" value="1550550037519" />
+    <property name="com.android.tools.idea.instantapp.provision.ProvisionBeforeRunTaskProvider.myTimeStamp" value="1552799970862" />
     <property name="com.intellij.ide.scratch.LRUPopupBuilder$2/Languages" value="JSON" />
     <property name="extract.method.default.visibility" value="private" />
+    <property name="full.screen.before.presentation.mode" value="false" />
     <property name="last_opened_file_path" value="$PROJECT_DIR$" />
     <property name="project.structure.last.edited" value="Libraries" />
     <property name="project.structure.proportion" value="0.15" />
     <property name="project.structure.side.proportion" value="0.2" />
+    <property name="run.code.analysis.last.selected.profile" value="pProject Default" />
     <property name="settings.editor.selected.configurable" value="configurable.group.language" />
   </component>
   <component name="RecentsManager">
-    <key name="MoveFile.RECENT_KEYS">
-      <recent name="$PROJECT_DIR$/docs/images" />
-      <recent name="$PROJECT_DIR$/src/api/src/test/resources" />
-      <recent name="$PROJECT_DIR$/src/api/src/test/java" />
-      <recent name="$PROJECT_DIR$/src/api/src/test/com.serverless" />
-      <recent name="$PROJECT_DIR$/src/api/src/main/java/com/serverless" />
+    <key name="CreateClassDialog.RecentsKey">
+      <recent name="ski.crunch.utils" />
     </key>
     <key name="MoveClassesOrPackagesDialog.RECENTS_KEY">
       <recent name="scala.ski.crunch.activity" />
@@ -1216,13 +617,17 @@
       <recent name="$PROJECT_DIR$/src/api/src/main/resources" />
     </key>
     <key name="CopyClassDialog.RECENTS_KEY">
-      <recent name="ski.crunch.activity.summarizer" />
       <recent name="ski.crunch.activity.processor" />
+      <recent name="ski.crunch.activity.summarizer" />
       <recent name="scala.ski.crunch.activity.processor.model" />
       <recent name="ski.crunch.activity.model" />
     </key>
-    <key name="CreateClassDialog.RecentsKey">
-      <recent name="ski.crunch.utils" />
+    <key name="MoveFile.RECENT_KEYS">
+      <recent name="$PROJECT_DIR$/docs/images" />
+      <recent name="$PROJECT_DIR$/src/api/src/test/resources" />
+      <recent name="$PROJECT_DIR$/src/api/src/test/java" />
+      <recent name="$PROJECT_DIR$/src/api/src/test/com.serverless" />
+      <recent name="$PROJECT_DIR$/src/api/src/main/java/com/serverless" />
     </key>
   </component>
   <component name="RunDashboard">
@@ -1237,7 +642,7 @@
       </list>
     </option>
   </component>
-  <component name="RunManager" selected="JUnit.ActivityPipelineTest.testSessionCreation">
+  <component name="RunManager" selected="JUnit.ActivityTests">
     <configuration default="true" type="AndroidTestRunConfigurationType" factoryName="Android Tests">
       <module name="" />
       <option name="TESTING_TYPE" value="0" />
@@ -1265,7 +670,7 @@
       </Profilers>
       <method />
     </configuration>
-    <configuration default="true" type="Applet" factoryName="Applet">
+    <configuration default="true" type="Applet">
       <option name="POLICY_FILE" value="$APPLICATION_HOME_DIR$/bin/appletviewer.policy" />
       <method v="2">
         <option name="Make" enabled="true" />
@@ -1303,42 +708,6 @@
         <option name="Make" enabled="true" />
       </method>
     </configuration>
-    <configuration name="ski-analytics-services:src:api [jacocoTestReport]" type="GradleRunConfiguration" factoryName="Gradle" temporary="true">
-      <ExternalSystemSettings>
-        <option name="executionName" />
-        <option name="externalProjectPath" value="$PROJECT_DIR$/src/api" />
-        <option name="externalSystemIdString" value="GRADLE" />
-        <option name="scriptParameters" />
-        <option name="taskDescriptions">
-          <list />
-        </option>
-        <option name="taskNames">
-          <list>
-            <option value="jacocoTestReport" />
-          </list>
-        </option>
-        <option name="vmOptions" />
-      </ExternalSystemSettings>
-      <method v="2" />
-    </configuration>
-    <configuration name="ski-analytics-services:src:api [test]" type="GradleRunConfiguration" factoryName="Gradle" temporary="true">
-      <ExternalSystemSettings>
-        <option name="executionName" />
-        <option name="externalProjectPath" value="$PROJECT_DIR$/src/api" />
-        <option name="externalSystemIdString" value="GRADLE" />
-        <option name="scriptParameters" />
-        <option name="taskDescriptions">
-          <list />
-        </option>
-        <option name="taskNames">
-          <list>
-            <option value="test" />
-          </list>
-        </option>
-        <option name="vmOptions" />
-      </ExternalSystemSettings>
-      <method v="2" />
-    </configuration>
     <configuration default="true" type="GrailsRunConfigurationType" factoryName="Grails">
       <setting name="vmparams" value="" />
       <setting name="cmdLine" value="run-app" />
@@ -1357,7 +726,7 @@
       <setting name="debug" value="false" />
       <method v="2" />
     </configuration>
-    <configuration name="ActivityPipelineTest" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
+    <configuration name="ActivityPipelineTest.testSummary" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
       <module name="src_api_test" />
       <extension name="coverage">
         <pattern>
@@ -1367,22 +736,7 @@
       </extension>
       <option name="PACKAGE_NAME" value="ski.crunch.activity.processor" />
       <option name="MAIN_CLASS_NAME" value="ski.crunch.activity.processor.ActivityPipelineTest" />
-      <option name="WORKING_DIRECTORY" value="$MODULE_DIR$" />
-      <method v="2">
-        <option name="Make" enabled="true" />
-      </method>
-    </configuration>
-    <configuration name="ActivityPipelineTest.testSessionCreation" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
-      <module name="src_api_test" />
-      <extension name="coverage">
-        <pattern>
-          <option name="PATTERN" value="ski.crunch.activity.processor.*" />
-          <option name="ENABLED" value="true" />
-        </pattern>
-      </extension>
-      <option name="PACKAGE_NAME" value="ski.crunch.activity.processor" />
-      <option name="MAIN_CLASS_NAME" value="ski.crunch.activity.processor.ActivityPipelineTest" />
-      <option name="METHOD_NAME" value="testSessionCreation" />
+      <option name="METHOD_NAME" value="testSummary" />
       <option name="TEST_OBJECT" value="method" />
       <option name="WORKING_DIRECTORY" value="$MODULE_DIR$" />
       <method v="2">
@@ -1399,6 +753,51 @@
       </extension>
       <option name="PACKAGE_NAME" value="ski.crunch.activity" />
       <option name="MAIN_CLASS_NAME" value="ski.crunch.activity.ActivityTests" />
+      <option name="WORKING_DIRECTORY" value="$MODULE_DIR$" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="SetInitialMoveHandlerTest" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
+      <module name="src_api_test" />
+      <extension name="coverage">
+        <pattern>
+          <option name="PATTERN" value="ski.crunch.activity.processor.*" />
+          <option name="ENABLED" value="true" />
+        </pattern>
+      </extension>
+      <option name="PACKAGE_NAME" value="ski.crunch.activity.processor" />
+      <option name="MAIN_CLASS_NAME" value="ski.crunch.activity.processor.SetInitialMoveHandlerTest" />
+      <option name="WORKING_DIRECTORY" value="$MODULE_DIR$" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="SortEventsByTsHandlerTest" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
+      <module name="src_api_test" />
+      <extension name="coverage">
+        <pattern>
+          <option name="PATTERN" value="ski.crunch.activity.processor.*" />
+          <option name="ENABLED" value="true" />
+        </pattern>
+      </extension>
+      <option name="PACKAGE_NAME" value="ski.crunch.activity.processor" />
+      <option name="MAIN_CLASS_NAME" value="ski.crunch.activity.processor.SortEventsByTsHandlerTest" />
+      <option name="WORKING_DIRECTORY" value="$MODULE_DIR$" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="SortRecordsByTsHandlerTest" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
+      <module name="src_api_test" />
+      <extension name="coverage">
+        <pattern>
+          <option name="PATTERN" value="ski.crunch.activity.processor.*" />
+          <option name="ENABLED" value="true" />
+        </pattern>
+      </extension>
+      <option name="PACKAGE_NAME" value="ski.crunch.activity.processor" />
+      <option name="MAIN_CLASS_NAME" value="ski.crunch.activity.processor.SortRecordsByTsHandlerTest" />
       <option name="WORKING_DIRECTORY" value="$MODULE_DIR$" />
       <method v="2">
         <option name="Make" enabled="true" />
@@ -1444,7 +843,7 @@
         <option name="Make" enabled="true" />
       </method>
     </configuration>
-    <configuration default="true" type="TestNG" factoryName="TestNG">
+    <configuration default="true" type="TestNG">
       <option name="WORKING_DIRECTORY" value="$MODULE_DIR$" />
       <properties />
       <listeners />
@@ -1452,16 +851,16 @@
         <option name="Make" enabled="true" />
       </method>
     </configuration>
-    <configuration default="true" type="#org.jetbrains.idea.devkit.run.PluginConfigurationType" factoryName="Plugin">
+    <configuration default="true" type="#org.jetbrains.idea.devkit.run.PluginConfigurationType">
       <module name="" />
       <option name="VM_PARAMETERS" value="-Xmx512m -Xms256m -XX:MaxPermSize=250m -ea" />
       <option name="PROGRAM_PARAMETERS" />
-      <predefined_log_file id="idea.log" enabled="true" />
+      <predefined_log_file enabled="true" id="idea.log" />
       <method v="2">
         <option name="Make" enabled="true" />
       </method>
     </configuration>
-    <configuration default="true" type="js.build_tools.gulp" factoryName="Gulp.js">
+    <configuration default="true" type="js.build_tools.gulp">
       <node-interpreter>project</node-interpreter>
       <node-options />
       <gulpfile />
@@ -1472,19 +871,19 @@
     </configuration>
     <list>
       <item itemvalue="Groovy.build (1)" />
-      <item itemvalue="Gradle.ski-analytics-services:src:api [jacocoTestReport]" />
-      <item itemvalue="Gradle.ski-analytics-services:src:api [test]" />
+      <item itemvalue="JUnit.ActivityPipelineTest.testSummary" />
+      <item itemvalue="JUnit.SortEventsByTsHandlerTest" />
+      <item itemvalue="JUnit.SortRecordsByTsHandlerTest" />
+      <item itemvalue="JUnit.SetInitialMoveHandlerTest" />
       <item itemvalue="JUnit.ActivityTests" />
-      <item itemvalue="JUnit.ActivityPipelineTest.testSessionCreation" />
-      <item itemvalue="JUnit.ActivityPipelineTest" />
     </list>
     <recent_temporary>
       <list>
-        <item itemvalue="JUnit.ActivityPipelineTest.testSessionCreation" />
-        <item itemvalue="JUnit.ActivityPipelineTest" />
         <item itemvalue="JUnit.ActivityTests" />
-        <item itemvalue="Gradle.ski-analytics-services:src:api [jacocoTestReport]" />
-        <item itemvalue="Gradle.ski-analytics-services:src:api [test]" />
+        <item itemvalue="JUnit.SetInitialMoveHandlerTest" />
+        <item itemvalue="JUnit.SortRecordsByTsHandlerTest" />
+        <item itemvalue="JUnit.SortEventsByTsHandlerTest" />
+        <item itemvalue="JUnit.ActivityPipelineTest.testSummary" />
       </list>
     </recent_temporary>
   </component>
@@ -1539,7 +938,10 @@
       <workItem from="1547186488184" duration="33619000" />
       <workItem from="1548741527475" duration="67874000" />
       <workItem from="1550440013530" duration="2932000" />
-      <workItem from="1550551080024" duration="89014000" />
+      <workItem from="1550551080024" duration="90235000" />
+      <workItem from="1551893725013" duration="204000" />
+      <workItem from="1551931377333" duration="20102000" />
+      <workItem from="1552200036458" duration="32165000" />
     </task>
     <task id="LOCAL-00001" summary="CF template for domain">
       <created>1533077361072</created>
@@ -1772,43 +1174,50 @@
       <option name="project" value="LOCAL" />
       <updated>1551328543342</updated>
     </task>
-    <option name="localTasksCounter" value="34" />
+    <task id="LOCAL-00034" summary="SKI-157 fixed more bugs in the eventprocessor system.  added coverage tools to build">
+      <created>1551860923669</created>
+      <option name="number" value="00034" />
+      <option name="presentableId" value="LOCAL-00034" />
+      <option name="project" value="LOCAL" />
+      <updated>1551860923669</updated>
+    </task>
+    <option name="localTasksCounter" value="35" />
     <servers />
   </component>
   <component name="TestHistory">
-    <history-entry file="ski-analytics-services_src_api_[test] - 2019.03.05 at 21h 42m 32s.xml">
-      <configuration name="ski-analytics-services:src:api [test]" configurationId="GradleRunConfiguration" />
+    <history-entry file="ActivitySummarizerTest_testSessionIsCreated - 2019.03.15 at 09h 15m 10s.xml">
+      <configuration name="ActivitySummarizerTest.testSessionIsCreated" configurationId="JUnit" />
     </history-entry>
-    <history-entry file="ski-analytics-services_src_api_[test] - 2019.03.05 at 21h 52m 24s.xml">
-      <configuration name="ski-analytics-services:src:api [test]" configurationId="GradleRunConfiguration" />
+    <history-entry file="ActivityPipelineTest_testSummary - 2019.03.15 at 09h 15m 37s.xml">
+      <configuration name="ActivityPipelineTest.testSummary" configurationId="JUnit" />
     </history-entry>
-    <history-entry file="ActivityTests - 2019.03.05 at 21h 53m 16s.xml">
+    <history-entry file="ActivityPipelineTest_testSummary - 2019.03.15 at 09h 16m 15s.xml">
+      <configuration name="ActivityPipelineTest.testSummary" configurationId="JUnit" />
+    </history-entry>
+    <history-entry file="ActivityPipelineTest_testSummary - 2019.03.15 at 09h 23m 51s.xml">
+      <configuration name="ActivityPipelineTest.testSummary" configurationId="JUnit" />
+    </history-entry>
+    <history-entry file="SortEventsByTsHandlerTest - 2019.03.15 at 18h 39m 05s.xml">
+      <configuration name="SortEventsByTsHandlerTest" configurationId="JUnit" />
+    </history-entry>
+    <history-entry file="SortRecordsByTsHandlerTest - 2019.03.15 at 18h 44m 00s.xml">
+      <configuration name="SortRecordsByTsHandlerTest" configurationId="JUnit" />
+    </history-entry>
+    <history-entry file="SetInitialMoveHandlerTest - 2019.03.15 at 19h 02m 41s.xml">
+      <configuration name="SetInitialMoveHandlerTest" configurationId="JUnit" />
+    </history-entry>
+    <history-entry file="SetInitialMoveHandlerTest - 2019.03.15 at 19h 03m 45s.xml">
+      <configuration name="SetInitialMoveHandlerTest" configurationId="JUnit" />
+    </history-entry>
+    <history-entry file="SetInitialMoveHandlerTest - 2019.03.15 at 19h 05m 54s.xml">
+      <configuration name="SetInitialMoveHandlerTest" configurationId="JUnit" />
+    </history-entry>
+    <history-entry file="ActivityTests - 2019.03.16 at 21h 35m 44s.xml">
       <configuration name="ActivityTests" configurationId="JUnit" />
-    </history-entry>
-    <history-entry file="ActivityTests - 2019.03.05 at 21h 54m 04s.xml">
-      <configuration name="ActivityTests" configurationId="JUnit" />
-    </history-entry>
-    <history-entry file="ActivityTests - 2019.03.05 at 21h 55m 03s.xml">
-      <configuration name="ActivityTests" configurationId="JUnit" />
-    </history-entry>
-    <history-entry file="ActivityTests - 2019.03.05 at 22h 59m 43s.xml">
-      <configuration name="ActivityTests" configurationId="JUnit" />
-    </history-entry>
-    <history-entry file="ActivityPipelineTest_testSessionCreation - 2019.03.05 at 23h 47m 29s.xml">
-      <configuration name="ActivityPipelineTest.testSessionCreation" configurationId="JUnit" />
-    </history-entry>
-    <history-entry file="ActivityPipelineTest - 2019.03.05 at 23h 55m 37s.xml">
-      <configuration name="ActivityPipelineTest" configurationId="JUnit" />
-    </history-entry>
-    <history-entry file="ActivityPipelineTest_testSessionCreation - 2019.03.06 at 00h 11m 42s.xml">
-      <configuration name="ActivityPipelineTest.testSessionCreation" configurationId="JUnit" />
-    </history-entry>
-    <history-entry file="ActivityPipelineTest_testSessionCreation - 2019.03.06 at 00h 12m 21s.xml">
-      <configuration name="ActivityPipelineTest.testSessionCreation" configurationId="JUnit" />
     </history-entry>
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="625110000" />
+    <option name="totallyTimeSpent" value="678802000" />
   </component>
   <component name="TodoView">
     <todo-panel id="selected-file">
@@ -1820,10 +1229,9 @@
     </todo-panel>
   </component>
   <component name="ToolWindowManager">
-    <frame x="0" y="0" width="1440" height="900" extended-state="6" />
-    <editor active="true" />
+    <frame x="95" y="28" width="1401" height="824" extended-state="0" />
     <layout>
-      <window_info active="true" content_ui="combo" id="Project" order="0" visible="true" weight="0.24821173" />
+      <window_info content_ui="combo" id="Project" order="0" visible="true" weight="0.29580575" />
       <window_info id="Structure" order="1" weight="0.2531273" />
       <window_info id="Designer" order="2" />
       <window_info id="Image Layers" order="3" />
@@ -1833,21 +1241,21 @@
       <window_info id="Nl-Palette" order="7" />
       <window_info anchor="bottom" id="Message" order="0" />
       <window_info anchor="bottom" id="Find" order="1" sideWeight="0.49742457" weight="0.42736247" />
-      <window_info anchor="bottom" id="Run" order="2" sideWeight="0.69389254" weight="0.30483273" />
-      <window_info anchor="bottom" id="Debug" order="3" sideWeight="0.72921264" visible="true" weight="0.39653036" />
+      <window_info active="true" anchor="bottom" id="Run" order="2" sideWeight="0.69389254" visible="true" weight="0.42172074" />
+      <window_info anchor="bottom" id="Debug" order="3" sideWeight="0.72921264" weight="0.39492244" />
       <window_info anchor="bottom" id="Cvs" order="4" weight="0.25" />
       <window_info anchor="bottom" id="Inspection" order="5" weight="0.4" />
       <window_info anchor="bottom" id="TODO" order="6" sideWeight="0.49816042" weight="0.32863188" />
       <window_info anchor="bottom" id="FindBugs-IDEA" order="7" />
-      <window_info anchor="bottom" x="1827" y="202" width="1217" height="450" id="Terminal" order="8" sideWeight="0.80206037" weight="0.24659231" />
+      <window_info anchor="bottom" x="1827" y="202" width="1217" height="450" id="Terminal" order="8" sideWeight="0.80206037" weight="0.24541607" />
       <window_info anchor="bottom" id="CheckStyle" order="9" />
       <window_info anchor="bottom" id="Event Log" order="10" sideWeight="0.54083884" side_tool="true" weight="0.52468264" />
-      <window_info anchor="bottom" id="Messages" order="11" sideWeight="0.45916116" weight="0.4893617" />
+      <window_info anchor="bottom" id="Messages" order="11" sideWeight="0.45916116" weight="0.3554302" />
       <window_info anchor="bottom" id="Version Control" order="12" sideWeight="0.49816042" weight="0.32863188" />
       <window_info anchor="bottom" id="Build" order="13" sideWeight="0.7880086" weight="0.31917807" />
       <window_info anchor="bottom" id="Database Changes" order="14" show_stripe_button="false" />
       <window_info anchor="bottom" id="Docker" order="15" show_stripe_button="false" />
-      <window_info anchor="bottom" id="Duplicate detector" order="16" weight="0.32863188" />
+      <window_info anchor="bottom" id="Duplicate detector" order="16" weight="0.528914" />
       <window_info anchor="bottom" id="Dependency Viewer" order="17" weight="0.4132581" />
       <window_info anchor="right" id="Commander" order="0" weight="0.4" />
       <window_info anchor="right" id="Ant Build" order="1" weight="0.25" />
@@ -1856,7 +1264,7 @@
       <window_info anchor="right" id="Properties" order="4" />
       <window_info anchor="right" id="Capture Analysis" order="5" />
       <window_info anchor="right" id="Maven Projects" order="6" />
-      <window_info anchor="right" id="Gradle" order="7" weight="0.36480686" />
+      <window_info anchor="right" id="Gradle" order="7" weight="0.2089772" />
       <window_info anchor="right" id="Database" order="8" weight="0.14716704" />
       <window_info anchor="right" id="Palette&#9;" order="9" />
       <window_info anchor="right" id="Theme Preview" order="10" />
@@ -1865,7 +1273,7 @@
       <window_info anchor="right" id="Module Dependencies" order="13" weight="0.11405445" />
     </layout>
     <layout-to-restore>
-      <window_info active="true" content_ui="combo" id="Project" order="0" visible="true" weight="0.33554083" />
+      <window_info active="true" content_ui="combo" id="Project" order="0" visible="true" weight="0.2553348" />
       <window_info id="Structure" order="1" weight="0.2531273" />
       <window_info id="Designer" order="2" />
       <window_info id="Image Layers" order="3" />
@@ -1874,21 +1282,23 @@
       <window_info id="Favorites" order="6" side_tool="true" />
       <window_info id="Nl-Palette" order="7" />
       <window_info anchor="bottom" id="Message" order="0" />
-      <window_info anchor="bottom" id="Find" order="1" sideWeight="0.49742457" weight="0.32863188" />
-      <window_info anchor="bottom" id="Run" order="2" sideWeight="0.6946284" visible="true" weight="0.37376586" />
-      <window_info anchor="bottom" id="Debug" order="3" sideWeight="0.72921264" weight="0.39915374" />
+      <window_info anchor="bottom" id="Find" order="1" sideWeight="0.49742457" weight="0.42736247" />
+      <window_info anchor="bottom" id="Run" order="2" sideWeight="0.69389254" visible="true" weight="0.48660085" />
+      <window_info anchor="bottom" id="Debug" order="3" sideWeight="0.72921264" weight="0.39492244" />
       <window_info anchor="bottom" id="Cvs" order="4" weight="0.25" />
       <window_info anchor="bottom" id="Inspection" order="5" weight="0.4" />
       <window_info anchor="bottom" id="TODO" order="6" sideWeight="0.49816042" weight="0.32863188" />
       <window_info anchor="bottom" id="FindBugs-IDEA" order="7" />
-      <window_info anchor="bottom" x="1827" y="202" width="1217" height="450" id="Terminal" order="8" sideWeight="0.80206037" weight="0.370945" />
+      <window_info anchor="bottom" x="1827" y="202" width="1217" height="450" id="Terminal" order="8" sideWeight="0.80206037" weight="0.24541607" />
       <window_info anchor="bottom" id="CheckStyle" order="9" />
-      <window_info anchor="bottom" id="Event Log" order="10" sideWeight="0.30537158" side_tool="true" visible="true" weight="0.37376586" />
-      <window_info anchor="bottom" id="Messages" order="11" sideWeight="0.45989698" weight="0.52468264" />
+      <window_info anchor="bottom" id="Event Log" order="10" sideWeight="0.54083884" side_tool="true" weight="0.52468264" />
+      <window_info anchor="bottom" id="Messages" order="11" sideWeight="0.45916116" weight="0.3554302" />
       <window_info anchor="bottom" id="Version Control" order="12" sideWeight="0.49816042" weight="0.32863188" />
       <window_info anchor="bottom" id="Build" order="13" sideWeight="0.7880086" weight="0.31917807" />
       <window_info anchor="bottom" id="Database Changes" order="14" show_stripe_button="false" />
       <window_info anchor="bottom" id="Docker" order="15" show_stripe_button="false" />
+      <window_info anchor="bottom" id="Duplicate detector" order="16" weight="0.53090173" />
+      <window_info anchor="bottom" id="Dependency Viewer" order="17" weight="0.4132581" />
       <window_info anchor="right" id="Commander" order="0" weight="0.4" />
       <window_info anchor="right" id="Ant Build" order="1" weight="0.25" />
       <window_info anchor="right" content_ui="combo" id="Hierarchy" order="2" weight="0.25" />
@@ -1896,24 +1306,19 @@
       <window_info anchor="right" id="Properties" order="4" />
       <window_info anchor="right" id="Capture Analysis" order="5" />
       <window_info anchor="right" id="Maven Projects" order="6" />
-      <window_info anchor="right" id="Gradle" order="7" visible="true" weight="0.11626196" />
+      <window_info anchor="right" id="Gradle" order="7" visible="true" weight="0.2030905" />
       <window_info anchor="right" id="Database" order="8" weight="0.14716704" />
       <window_info anchor="right" id="Palette&#9;" order="9" />
       <window_info anchor="right" id="Theme Preview" order="10" />
       <window_info anchor="right" id="SBT" order="11" />
       <window_info anchor="right" id="Maven" order="12" />
+      <window_info anchor="right" id="Module Dependencies" order="13" weight="0.11405445" />
     </layout-to-restore>
   </component>
   <component name="TypeScriptGeneratedFilesManager">
     <option name="version" value="1" />
   </component>
-  <component name="VcsContentAnnotationSettings">
-    <option name="myLimit" value="2678400000" />
-  </component>
   <component name="VcsManagerConfiguration">
-    <MESSAGE value="SKAPI-13 - fixed gradle build setup.  Got basic lambda to retrieve from S3 with a cognito authorizer function working" />
-    <MESSAGE value="SKAPI-13 - working on test harness.  code to call the service and all the usual stuff to create a user, get an access token etc" />
-    <MESSAGE value="SKAPI-13 - working on test harness.  Added code to retrieve parameters from serverless-state and cloudformation outputs" />
     <MESSAGE value="SKAPI-13 - minor updates" />
     <MESSAGE value="SKAPI-14 Added putActivity lambda and done some refactoring" />
     <MESSAGE value="SKAPI-14 SKAPI-13 refactoring and testing" />
@@ -1936,7 +1341,10 @@
     <MESSAGE value="SKAPI-21 location service implementation" />
     <MESSAGE value="SK-157 removed  summary from session" />
     <MESSAGE value="SKI-157 removed  summary from session" />
-    <option name="LAST_COMMIT_MESSAGE" value="SKI-157 removed  summary from session" />
+    <MESSAGE value="SKI-157 fixed more bugs in the eventprocessor system.  added coverage tools to build" />
+    <MESSAGE value="SKI-157 fixed a number of bugs in summarizer" />
+    <MESSAGE value="SKI-157 fixed a bug in writing distance array.  Added tests for handlers" />
+    <option name="LAST_COMMIT_MESSAGE" value="SKI-157 fixed a bug in writing distance array.  Added tests for handlers" />
   </component>
   <component name="WindowStateProjectService">
     <state width="704" height="524" key="Git.Branch.Popup" />
@@ -1951,15 +1359,9 @@
       <breakpoints>
         <line-breakpoint enabled="true" type="scala-line">
           <url>file://$PROJECT_DIR$/src/api/src/main/scala/scala/ski/crunch/activity/processor/RecordProcessor.scala</url>
-          <line>220</line>
+          <line>226</line>
           <properties />
           <option name="timeStamp" value="3" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" type="java-line">
-          <url>file://$PROJECT_DIR$/src/api/src/main/java/ski/crunch/activity/processor/SetEventIndexHandler.java</url>
-          <line>34</line>
-          <properties />
-          <option name="timeStamp" value="24" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="java-line">
           <url>file://$PROJECT_DIR$/src/api/src/test/java/ski/crunch/activity/processor/ActivityPipelineTest.java</url>
@@ -1969,19 +1371,21 @@
         </line-breakpoint>
         <line-breakpoint enabled="true" type="java-line">
           <url>file://$PROJECT_DIR$/src/api/src/main/java/ski/crunch/activity/processor/summarizer/ActivitySummarizer.java</url>
-          <line>310</line>
-          <properties>
-            <option name="lambda-ordinal" value="-1" />
-          </properties>
-          <option name="timeStamp" value="58" />
+          <line>447</line>
+          <properties />
+          <option name="timeStamp" value="57" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>file://$PROJECT_DIR$/src/api/src/test/java/ski/crunch/activity/processor/ActivityPipelineTest.java</url>
+          <line>318</line>
+          <properties />
+          <option name="timeStamp" value="62" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="java-line">
           <url>file://$PROJECT_DIR$/src/api/src/main/java/ski/crunch/activity/processor/summarizer/ActivitySummarizer.java</url>
-          <line>69</line>
-          <properties>
-            <option name="lambda-ordinal" value="-1" />
-          </properties>
-          <option name="timeStamp" value="81" />
+          <line>61</line>
+          <properties />
+          <option name="timeStamp" value="63" />
         </line-breakpoint>
       </breakpoints>
     </breakpoint-manager>
@@ -1991,207 +1395,254 @@
     <option name="FILTER_TARGETS" value="false" />
   </component>
   <component name="editorHistoryManager">
-    <entry file="file://$PROJECT_DIR$/src/api/src/main/java/ski/crunch/activity/service/DynamoDBService.java">
+    <entry file="file://$PROJECT_DIR$/src/api/src/main/resources/Activity.proto">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-251">
-          <caret line="14" column="13" selection-start-line="14" selection-start-column="13" selection-end-line="14" selection-end-column="13" />
+        <state relative-caret-position="1086">
+          <caret line="102" column="1" lean-forward="true" selection-start-line="102" selection-start-column="1" selection-end-line="102" selection-end-column="1" />
         </state>
       </provider>
     </entry>
-    <entry file="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/com.amazonaws/aws-java-sdk-s3/1.11.409/96f209bacbd9660f50312b747c33651669ed2858/aws-java-sdk-s3-1.11.409-sources.jar!/com/amazonaws/services/s3/AmazonS3.java">
+    <entry file="file://$PROJECT_DIR$/src/api/src/main/scala/scala/ski/crunch/activity/processor/model/ActivitySummary.scala">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="212">
-          <caret line="4863" column="12" selection-start-line="4863" selection-start-column="12" selection-end-line="4863" selection-end-column="12" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/api/src/main/java/ski/crunch/activity/GetActivityHandler.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="196">
-          <caret line="39" column="25" selection-start-line="39" selection-start-column="25" selection-end-line="39" selection-end-column="25" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/api/src/main/java/ski/crunch/activity/service/S3Service.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="37">
-          <caret line="95" column="31" selection-start-line="95" selection-start-column="20" selection-end-line="95" selection-end-column="31" />
-          <folding>
-            <element signature="imports" expanded="true" />
-            <element signature="e#3546#3547#0" expanded="true" />
-            <element signature="e#3577#3578#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/api/src/main/java/ski/crunch/activity/PutActivityHandler.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="179">
-          <caret line="59" column="39" selection-start-line="59" selection-start-column="39" selection-end-line="59" selection-end-column="39" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/api/src/main/java/ski/crunch/activity/ParseFitActivityLambda.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="252">
-          <caret line="81" column="44" lean-forward="true" selection-start-line="81" selection-start-column="44" selection-end-line="81" selection-end-column="44" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="jar:///Library/Java/JavaVirtualMachines/jdk1.8.0_31.jdk/Contents/Home/src.zip!/java/lang/String.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="168">
-          <caret line="1944" column="18" selection-start-line="1944" selection-start-column="18" selection-end-line="1944" selection-end-column="18" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/api/src/test/java/ski/crunch/activity/service/DynamoDBServiceTest.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="136">
-          <caret line="13" column="4" selection-start-line="13" selection-start-column="4" selection-end-line="13" selection-end-column="65" />
-          <folding>
-            <element signature="imports" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/api/src/test/java/ski/crunch/activity/service/S3ServiceTest.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="13">
-          <caret line="7" column="13" selection-start-line="7" selection-start-column="13" selection-end-line="7" selection-end-column="13" />
-          <folding>
-            <element signature="imports" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/api/src/test/java/ski/crunch/activity/service/AbstractIntegrationTest.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="255">
-          <caret line="22" selection-start-line="22" selection-end-line="22" />
-          <folding>
-            <element signature="imports" expanded="true" />
-            <element signature="e#623#624#0" expanded="true" />
-            <element signature="e#727#728#0" expanded="true" />
-          </folding>
+        <state relative-caret-position="65">
+          <caret line="5" column="6" selection-start-line="5" selection-start-column="6" selection-end-line="5" selection-end-column="6" />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/src/api/src/main/java/ski/crunch/activity/service/ActivityService.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-107">
-          <caret line="161" column="44" selection-start-line="161" selection-start-column="44" selection-end-line="161" selection-end-column="44" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/api/src/main/java/ski/crunch/activity/processor/model/ActivityHolder.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="376">
-          <caret line="67" selection-start-line="67" selection-end-line="67" />
-          <folding>
-            <element signature="e#2439#2440#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/api/src/main/java/ski/crunch/activity/processor/model/ActivityEvent.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="134">
-          <caret line="47" selection-start-line="47" selection-end-line="47" />
-          <folding>
-            <element signature="e#1303#1304#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/api/src/main/resources/Activity.proto">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-1493">
-          <caret line="14" column="28" selection-start-line="14" selection-start-column="28" selection-end-line="14" selection-end-column="28" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/api/src/test/java/ski/crunch/activity/service/ParseLambdaTest.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="130">
-          <caret line="10" selection-start-line="10" selection-end-line="10" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/api/src/main/java/ski/crunch/activity/processor/CalcGradeHandler.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="169">
-          <caret line="23" selection-start-line="23" selection-end-line="23" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/api/src/test/java/ski/crunch/activity/processor/ActivitySummarizerTest.java">
-      <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="214">
-          <caret line="220" column="7" selection-start-line="216" selection-start-column="6" selection-end-line="220" selection-end-column="7" />
-          <folding>
-            <element signature="imports" expanded="true" />
-          </folding>
+          <caret line="293" column="36" lean-forward="true" selection-start-line="293" selection-start-column="36" selection-end-line="293" selection-end-column="36" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/api/src/main/java/ski/crunch/activity/ActivityWriter.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="78">
+          <caret line="7" column="39" selection-start-line="7" selection-start-column="39" selection-end-line="7" selection-end-column="39" />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/src/api/src/main/java/ski/crunch/activity/ActivityWriterImpl.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="171">
-          <caret line="150" column="79" lean-forward="true" selection-start-line="150" selection-start-column="79" selection-end-line="150" selection-end-column="79" />
+        <state relative-caret-position="464">
+          <caret line="229" column="91" selection-start-line="229" selection-start-column="91" selection-end-line="229" selection-end-column="91" />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/api/src/main/java/com/garmin/fit/Decode.java">
+    <entry file="file://$PROJECT_DIR$/src/api/src/test/java/ski/crunch/activity/parser/FitActivityHolderAdapterTest.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="61">
-          <caret line="342" selection-start-line="342" selection-end-line="342" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/api/src/main/java/com/garmin/fit/MesgBroadcaster.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="126">
-          <caret line="307" selection-start-line="307" selection-end-line="307" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/api/src/main/java/ski/crunch/activity/parser/fit/SessionMessageListener.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="175">
-          <caret line="138" selection-start-line="138" selection-end-line="138" />
+        <state relative-caret-position="-201">
+          <caret line="187" column="29" selection-start-line="187" selection-start-column="29" selection-end-line="187" selection-end-column="29" />
           <folding>
-            <element signature="e#610#611#0" expanded="true" />
-            <element signature="e#639#640#0" expanded="true" />
+            <element signature="e#7228#7229#0" expanded="true" />
+            <element signature="e#7282#7283#0" expanded="true" />
           </folding>
         </state>
       </provider>
     </entry>
-    <entry file="jar:///Library/Java/JavaVirtualMachines/jdk1.8.0_31.jdk/Contents/Home/src.zip!/java/util/List.java">
+    <entry file="file://$PROJECT_DIR$/src/api/src/main/java/ski/crunch/activity/processor/summarizer/StatisticFunc.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="430">
-          <caret line="306" column="12" selection-start-line="306" selection-start-column="12" selection-end-line="306" selection-end-column="12" />
+        <state relative-caret-position="52">
+          <caret line="4" column="17" selection-start-line="4" selection-start-column="17" selection-end-line="4" selection-end-column="17" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/api/src/main/java/ski/crunch/activity/processor/summarizer/AvgFunctionDouble.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="130">
+          <caret line="10" column="1" selection-start-line="10" selection-start-column="1" selection-end-line="10" selection-end-column="1" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/api/src/main/java/ski/crunch/activity/service/DynamoDBService.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="402">
+          <caret line="40" column="8" selection-start-line="40" selection-start-column="8" selection-end-line="41" selection-end-column="25" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/api/build.gradle">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="-83">
+          <caret line="41" column="5" selection-start-line="28" selection-start-column="3" selection-end-line="41" selection-end-column="5" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/api/build/reports/tests/test/index.html">
+      <provider selected="true" editor-type-id="text-editor" />
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/api/src/main/java/ski/crunch/activity/parser/fit/RecordMessageListener.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="104">
+          <caret line="14" column="13" selection-start-line="14" selection-start-column="13" selection-end-line="14" selection-end-column="13" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/log4j/log4j/1.2.17/677abe279b68c5e7490d6d50c6951376238d7d3e/log4j-1.2.17-sources.jar!/org/apache/log4j/Logger.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="284">
+          <caret line="203" column="19" selection-start-line="203" selection-start-column="19" selection-end-line="203" selection-end-column="19" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/api/src/main/java/ski/crunch/activity/processor/summarizer/GetActivityRecordAttributeFunction.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="52">
+          <caret line="4" column="17" selection-start-line="4" selection-start-column="17" selection-end-line="4" selection-end-column="17" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/api/src/main/java/ski/crunch/activity/processor/summarizer/MaxFunctionInteger.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="52">
+          <caret line="4" selection-start-line="4" selection-end-line="4" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/api/src/main/java/ski/crunch/activity/processor/summarizer/CalculateTotalDescent.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="117">
+          <caret line="9" column="41" selection-start-line="9" selection-start-column="41" selection-end-line="9" selection-end-column="41" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/api/src/main/java/ski/crunch/activity/processor/summarizer/CalculateTotalMoving.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="179">
+          <caret line="24" column="40" selection-start-line="24" selection-start-column="40" selection-end-line="24" selection-end-column="40" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/api/src/main/java/ski/crunch/activity/processor/summarizer/CalculateTotalAscent.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="182">
+          <caret line="14" column="41" selection-start-line="14" selection-start-column="41" selection-end-line="14" selection-end-column="41" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/api/src/main/java/ski/crunch/activity/processor/summarizer/CalculateTotalStopped.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="185">
+          <caret line="24" column="59" selection-start-line="24" selection-start-column="59" selection-end-line="24" selection-end-column="59" />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/src/api/src/main/java/ski/crunch/activity/processor/summarizer/AvgFunctionInteger.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="91">
-          <caret line="7" column="136" selection-start-line="7" selection-start-column="136" selection-end-line="7" selection-end-column="136" />
+        <state relative-caret-position="52">
+          <caret line="4" selection-start-line="4" selection-end-line="4" />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/api/src/main/java/ski/crunch/activity/processor/SortEventsByTsHandler.java">
+    <entry file="file://$PROJECT_DIR$/src/api/src/main/java/ski/crunch/activity/processor/model/ActivityEvent.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="82">
+          <caret line="39" selection-start-line="39" selection-end-line="39" />
+          <folding>
+            <element signature="e#1159#1160#0" expanded="true" />
+            <element signature="e#1271#1272#0" expanded="true" />
+            <element signature="e#1303#1304#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/api/src/main/java/ski/crunch/activity/processor/model/ActivityHolder.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="134">
+          <caret line="59" selection-start-line="59" selection-end-line="59" />
+          <folding>
+            <element signature="e#2266#2267#0" expanded="true" />
+            <element signature="e#2410#2411#0" expanded="true" />
+            <element signature="e#2439#2440#0" expanded="true" />
+            <element signature="e#3719#3720#0" expanded="true" />
+            <element signature="e#3757#3758#0" expanded="true" />
+            <element signature="e#3828#3829#0" expanded="true" />
+            <element signature="e#3882#3883#0" expanded="true" />
+            <element signature="e#3936#3937#0" expanded="true" />
+            <element signature="e#3971#3972#0" expanded="true" />
+            <element signature="e#4042#4043#0" expanded="true" />
+            <element signature="e#4090#4091#0" expanded="true" />
+            <element signature="e#4146#4147#0" expanded="true" />
+            <element signature="e#4183#4184#0" expanded="true" />
+            <element signature="e#4258#4259#0" expanded="true" />
+            <element signature="e#4310#4311#0" expanded="true" />
+            <element signature="e#4368#4369#0" expanded="true" />
+            <element signature="e#4407#4408#0" expanded="true" />
+            <element signature="e#4597#4598#0" expanded="true" />
+            <element signature="e#4633#4634#0" expanded="true" />
+            <element signature="e#4706#4707#0" expanded="true" />
+            <element signature="e#4756#4757#0" expanded="true" />
+            <element signature="e#4791#4792#0" expanded="true" />
+            <element signature="e#4825#4826#0" expanded="true" />
+            <element signature="e#4876#4877#0" expanded="true" />
+            <element signature="e#4922#4923#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/api/src/main/java/ski/crunch/activity/processor/summarizer/CalculateTotalDistance.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="104">
+          <caret line="8" selection-start-line="8" selection-end-line="8" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/api/src/main/java/ski/crunch/activity/processor/summarizer/ActivitySummarizer.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="153">
+          <caret line="211" selection-start-line="211" selection-end-line="211" />
+          <folding>
+            <element signature="e#19216#19217#0" expanded="true" />
+            <element signature="e#19279#19280#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/api/src/main/java/ski/crunch/activity/processor/FillEmptyHandler.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="233">
+          <caret line="20" selection-start-line="20" selection-end-line="20" />
+          <folding>
+            <element signature="imports" expanded="true" />
+            <element signature="e#234#235#0" expanded="true" />
+            <element signature="e#302#303#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/api/src/test/java/ski/crunch/activity/processor/ActivityPipelineTest.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="72">
+          <caret line="318" column="59" selection-start-line="318" selection-start-column="59" selection-end-line="318" selection-end-column="59" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/api/src/main/java/ski/crunch/activity/processor/ActivityProcessor.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="363">
+          <caret line="38" column="47" selection-start-line="38" selection-start-column="47" selection-end-line="38" selection-end-column="47" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/api/src/main/java/ski/crunch/activity/processor/CalcGradeHandler.java">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="52">
-          <caret line="7" column="13" selection-start-line="7" selection-start-column="13" selection-end-line="7" selection-end-column="13" />
+          <caret line="12" column="13" selection-start-line="12" selection-start-column="13" selection-end-line="12" selection-end-column="13" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/api/src/main/java/ski/crunch/activity/processor/CalcMovingHandler.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="52">
+          <caret line="12" column="13" selection-start-line="12" selection-start-column="13" selection-end-line="12" selection-end-column="13" />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/src/api/src/main/java/ski/crunch/activity/processor/CloseSegmentsHandler.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-860">
-          <caret line="11" column="11" selection-start-line="11" selection-start-column="11" selection-end-line="11" selection-end-column="11" />
+        <state relative-caret-position="359">
+          <caret line="111" selection-start-line="111" selection-end-line="111" />
           <folding>
             <element signature="e#378#379#0" expanded="true" />
             <element signature="e#446#447#0" expanded="true" />
@@ -2199,199 +1650,184 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/api/src/main/java/ski/crunch/activity/processor/summarizer/CalculateTotal.java">
+    <entry file="file://$PROJECT_DIR$/src/api/src/main/java/ski/crunch/activity/processor/CreateHrvRecordHandler.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="52">
-          <caret line="4" column="17" selection-start-line="4" selection-start-column="17" selection-end-line="4" selection-end-column="17" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/api/src/main/java/ski/crunch/activity/processor/summarizer/CalculateTotalAscent.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="52">
-          <caret line="4" column="13" selection-start-line="4" selection-start-column="13" selection-end-line="4" selection-end-column="13" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/api/src/main/java/ski/crunch/activity/parser/ActivityHolderAdapter.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="39">
-          <caret line="7" column="17" selection-start-line="7" selection-start-column="17" selection-end-line="7" selection-end-column="17" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/api/src/main/java/ski/crunch/activity/parser/fit/FitActivityHolderAdapter.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-114">
-          <caret line="24" column="26" selection-start-line="24" selection-start-column="26" selection-end-line="24" selection-end-column="26" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/api/src/main/java/ski/crunch/activity/parser/fit/EventMessageListener.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="24">
-          <caret line="30" column="6" selection-start-line="30" selection-start-column="6" selection-end-line="30" selection-end-column="6" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/api/src/test/java/ski/crunch/activity/parser/FitActivityHolderAdapterTest.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="130">
-          <caret line="187" column="29" selection-start-line="187" selection-start-column="29" selection-end-line="187" selection-end-column="29" />
-          <folding>
-            <element signature="e#7174#7175#0" expanded="true" />
-            <element signature="e#7228#7229#0" expanded="true" />
-            <element signature="e#7277#7278#0" expanded="true" />
-            <element signature="e#7334#7335#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/api/build_deploy.sh">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="156">
-          <caret line="12" selection-start-line="12" selection-end-line="12" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/api/src/main/java/ski/crunch/utils/ServerlessState.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="573">
-          <caret line="68" selection-start-line="68" selection-end-line="68" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/api/build/reports/tests/test/index.html">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="52">
-          <caret line="4" column="54" selection-start-line="4" selection-start-column="54" selection-end-line="4" selection-end-column="54" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/api/src/main/java/ski/crunch/activity/model/ActivityItem.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="222">
-          <caret line="44" column="51" selection-start-line="44" selection-start-column="51" selection-end-line="44" selection-end-column="51" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/api/src/main/java/ski/crunch/activity/model/ApiGatewayResponse.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="52">
-          <caret line="12" column="13" selection-start-line="12" selection-start-column="13" selection-end-line="12" selection-end-column="13" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/api/build/coverage/index.html">
-      <provider selected="true" editor-type-id="text-editor">
-        <state>
-          <caret column="149" selection-start-column="149" selection-end-column="149" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/api/build.gradle">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="311">
-          <caret line="103" column="19" selection-start-line="103" selection-start-column="19" selection-end-line="103" selection-end-column="19" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/api/src/test/java/ski/crunch/activity/ActivityTests.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="304">
-          <caret line="235" selection-start-line="235" selection-end-line="243" selection-end-column="9" />
-          <folding>
-            <element signature="imports" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/api/src/main/java/ski/crunch/activity/processor/CalcMovingHandler.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="169">
-          <caret line="23" column="50" selection-start-line="23" selection-start-column="50" selection-end-line="23" selection-end-column="50" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/api/src/test/java/ski/crunch/activity/processor/ActivityPipelineTest.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="241">
-          <caret line="299" column="25" selection-start-line="299" selection-start-column="16" selection-end-line="299" selection-end-column="35" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/api/src/main/java/ski/crunch/activity/processor/DetectMotionHandler.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="195">
-          <caret line="19" selection-start-line="19" selection-end-line="19" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/org.junit.platform/junit-platform-commons/1.1.0/39d7c2eec7178ba6e53445a2851e66a966a7472f/junit-platform-commons-1.1.0-sources.jar!/org/junit/platform/commons/util/ReflectionUtils.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="247">
-          <caret line="438" selection-start-line="438" selection-end-line="438" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/api/src/main/java/ski/crunch/activity/processor/ActivityProcessor.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="323">
-          <caret line="51" selection-start-line="51" selection-end-line="51" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/api/src/main/java/ski/crunch/activity/processor/PipelineManager.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="377">
-          <caret line="34" selection-start-line="34" selection-end-line="34" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/api/src/main/java/ski/crunch/activity/processor/DetectPauseHandler.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="143">
-          <caret line="18" selection-start-line="18" selection-end-line="18" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/api/src/main/java/ski/crunch/activity/processor/summarizer/ActivitySummarizer.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="146">
-          <caret line="69" selection-start-line="69" selection-end-line="69" />
-          <folding>
-            <element signature="e#889#890#0" expanded="true" />
-            <element signature="e#957#958#0" expanded="true" />
-            <element signature="method#summarizePauseSegments#0;class#ActivitySummarizer#0" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/api/serverless.yml">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="676">
-          <caret line="52" column="22" lean-forward="true" selection-start-line="52" selection-start-column="22" selection-end-line="52" selection-end-column="22" />
+        <state relative-caret-position="-357">
+          <caret line="14" column="13" selection-start-line="14" selection-start-column="13" selection-end-line="14" selection-end-column="13" />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/src/api/src/main/java/ski/crunch/activity/processor/DetectLapHandler.java">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="169">
-          <caret line="17" column="44" selection-start-line="17" selection-start-column="44" selection-end-line="17" selection-end-column="44" />
+          <caret line="15" column="58" selection-start-line="15" selection-start-column="58" selection-end-line="15" selection-end-column="58" />
+          <folding>
+            <element signature="e#317#318#0" expanded="true" />
+            <element signature="e#385#386#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/api/src/main/java/ski/crunch/activity/processor/DetectMotionHandler.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="169">
+          <caret line="17" column="41" selection-start-line="17" selection-start-column="41" selection-end-line="17" selection-end-column="41" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/api/src/main/java/ski/crunch/activity/processor/DetectPauseHandler.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="117">
+          <caret line="14" column="5" lean-forward="true" selection-start-line="10" selection-start-column="3" selection-end-line="14" selection-end-column="5" />
+          <folding>
+            <element signature="e#407#408#0" expanded="true" />
+            <element signature="e#475#476#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/api/src/main/java/ski/crunch/activity/processor/MergeDuplicateRecordHandler.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="260">
+          <caret line="25" column="49" selection-start-line="25" selection-start-column="49" selection-end-line="25" selection-end-column="49" />
+          <folding>
+            <element signature="e#559#560#0" expanded="true" />
+            <element signature="e#626#627#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/api/src/main/java/ski/crunch/activity/processor/NullReplaceHandler.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="260">
+          <caret line="25" column="49" selection-start-line="25" selection-start-column="49" selection-end-line="25" selection-end-column="49" />
+          <folding>
+            <element signature="e#558#559#0" expanded="true" />
+            <element signature="e#643#644#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/api/src/main/java/ski/crunch/activity/processor/PipelineManager.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="390">
+          <caret line="35" selection-start-line="35" selection-end-line="35" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/api/src/main/java/ski/crunch/activity/processor/RemoveSpikesHandler.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="52">
+          <caret line="9" column="13" selection-start-line="9" selection-start-column="13" selection-end-line="9" selection-end-column="13" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/api/src/main/scala/scala/ski/crunch/activity/processor/model/Processor.scala">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="26">
+          <caret line="2" column="6" selection-start-line="2" selection-start-column="6" selection-end-line="2" selection-end-column="6" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/api/src/test/java/ski/crunch/activity/processor/ActivitySummarizerTest.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="364">
+          <caret line="28" column="44" selection-start-line="28" selection-start-column="25" selection-end-line="28" selection-end-column="44" />
+          <folding>
+            <element signature="imports" expanded="true" />
+          </folding>
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/src/api/src/main/scala/scala/ski/crunch/activity/processor/EventProcessor.scala">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-305">
-          <caret line="109" column="6" selection-start-line="109" selection-start-column="6" selection-end-line="109" selection-end-column="6" />
+        <state relative-caret-position="13">
+          <caret line="8" column="64" selection-start-line="8" selection-start-column="64" selection-end-line="8" selection-end-column="64" />
         </state>
       </provider>
     </entry>
-    <entry file="file://$APPLICATION_CONFIG_DIR$/scratches/missing_session_bug.txt">
+    <entry file="file://$PROJECT_DIR$/src/api/src/main/java/ski/crunch/activity/processor/SortEventsByTsHandler.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="39">
-          <caret line="3" column="22" selection-start-line="3" selection-start-column="22" selection-end-line="3" selection-end-column="22" />
+        <state relative-caret-position="52">
+          <caret line="7" selection-start-line="7" selection-end-line="9" selection-end-column="3" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/api/src/main/java/ski/crunch/activity/processor/SortRecordsByTsHandler.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="65">
+          <caret line="8" column="36" selection-start-line="8" selection-start-column="36" selection-end-line="8" selection-end-column="36" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/api/src/test/java/ski/crunch/activity/processor/SortEventsByTsHandlerTest.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="182">
+          <caret line="14" selection-start-line="14" selection-end-line="14" selection-end-column="47" />
+          <folding>
+            <element signature="imports" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/api/src/main/scala/scala/ski/crunch/activity/processor/RecordProcessor.scala">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="165">
+          <caret line="30" lean-forward="true" selection-start-line="30" selection-end-line="30" />
+          <folding>
+            <element signature="e#45#78#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/api/src/test/java/ski/crunch/activity/processor/SortRecordsByTsHandlerTest.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="221">
+          <caret line="28" column="71" selection-start-line="28" selection-start-column="50" selection-end-line="28" selection-end-column="71" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/api/src/test/java/ski/crunch/activity/processor/SetInitialMoveHandlerTest.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="-455">
+          <caret line="18" selection-start-line="18" selection-end-line="18" />
+          <folding>
+            <element signature="imports" expanded="true" />
+            <element signature="e#1205#1221#0" expanded="true" />
+            <element signature="e#2328#2344#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/api/src/main/java/ski/crunch/activity/processor/SetInitialMoveHandler.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="28">
+          <caret line="9" column="33" selection-start-line="9" selection-start-column="33" selection-end-line="9" selection-end-column="33" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/api/src/main/java/ski/crunch/activity/processor/SetEventIndexHandler.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="311">
+          <caret line="43" column="9" selection-start-line="43" selection-start-column="9" selection-end-line="43" selection-end-column="9" />
+          <folding>
+            <element signature="e#622#623#0" expanded="true" />
+            <element signature="e#690#691#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/api/src/main/scala/scala/ski/crunch/activity/processor/model/ActivityRecord.scala">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="796">
+          <caret line="94" selection-start-line="94" selection-end-line="94" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/api/src/test/java/ski/crunch/activity/ActivityTests.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="103">
+          <caret line="291" selection-start-line="291" selection-end-line="299" selection-end-column="9" />
         </state>
       </provider>
     </entry>

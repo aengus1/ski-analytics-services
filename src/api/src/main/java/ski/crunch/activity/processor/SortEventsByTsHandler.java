@@ -5,6 +5,9 @@ import ski.crunch.activity.processor.model.ActivityHolder;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 
+/**
+ * Sorts the ActivityHolders events in descending order by timestamp
+ */
 public class SortEventsByTsHandler implements Handler<ActivityHolder> {
 
 

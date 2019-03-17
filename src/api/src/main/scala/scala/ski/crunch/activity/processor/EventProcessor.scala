@@ -6,11 +6,11 @@ import ski.crunch.activity.processor.model.{ActivityEvent, ActivityHolder, Event
 
 import scala.annotation.tailrec
 import scala.collection.JavaConversions._
-import scala.ski.crunch.activity.processor.model.ActivityRecord
+import scala.ski.crunch.activity.processor.model.{ActivityRecord}
 import scala.collection.JavaConverters._
 
 
-class EventProcessor(holder: ActivityHolder) {
+class EventProcessor(holder: ActivityHolder){
 
   /**
     * For Suunto devices, pause detection relies on a regular sampling interval between records.  This threshold
@@ -74,6 +74,7 @@ class EventProcessor(holder: ActivityHolder) {
       case "GARMIN" => {
         val index = recordProcessor.buildTsIndex()
         var events = holder.getEvents().toList
+        var eventResult: List[ActivityEvent] = List[ActivityEvent]()
 
         val timerst = events.filter(x => (x.getEventType == EventType.TIMER_START))
         val timeren = events.filter(x => (x.getEventType == EventType.TIMER_STOP))
@@ -86,10 +87,10 @@ class EventProcessor(holder: ActivityHolder) {
         pausePeriods.foreach(x => {
           val st = new ActivityEvent(index.get(x._1.getTs).get, EventType.PAUSE_START, x._1.getTs)
           val en = new ActivityEvent(index.get(x._2.getTs).get, EventType.PAUSE_STOP, x._2.getTs)
-          events = st :: en :: events
+          eventResult = st :: en :: eventResult
         })
 
-        val res: java.util.ArrayList[ActivityEvent] = new java.util.ArrayList[ActivityEvent](events.reverse.asJava)
+        val res: java.util.ArrayList[ActivityEvent] = new java.util.ArrayList[ActivityEvent](eventResult.reverse.asJava)
         // holder.setEvents(res)
         val newHolder = new ActivityHolder(holder)
         newHolder.setEvents(res)
@@ -114,7 +115,7 @@ class EventProcessor(holder: ActivityHolder) {
 
     val records = holder.getRecords.toList
     val events = holder.getEvents.toList
-    val nonLapEvents: List[ActivityEvent] = events.filter(x => !x.getEventType.equals(EventType.LAP_START) && !x.getEventType.equals(EventType.LAP_STOP))
+    //val nonLapEvents: List[ActivityEvent] = events.filter(x => !x.getEventType.equals(EventType.LAP_START) && !x.getEventType.equals(EventType.LAP_STOP))
     val recordProcessor = new RecordProcessor(records)
     val index = recordProcessor.buildTsIndex()
 
@@ -127,7 +128,7 @@ class EventProcessor(holder: ActivityHolder) {
 
         val stopLapEvents = events.filter(x => x.getEventType.equals(EventType.LAP_STOP) && x.getTrigger == "MANUAL")
           .map(x => new ActivityEvent(index.get(x.getTs).getOrElse(-999), EventType.LAP_STOP, x.getTs))
-        val eventResults: List[ActivityEvent] = startLapEvents ++ stopLapEvents ++ nonLapEvents
+        val eventResults: List[ActivityEvent] = startLapEvents ++ stopLapEvents
         val res: java.util.ArrayList[ActivityEvent] = new java.util.ArrayList[ActivityEvent](eventResults.reverse.asJava)
 
         val newHolder = new ActivityHolder(holder)
@@ -148,7 +149,7 @@ class EventProcessor(holder: ActivityHolder) {
         val stopAutoLapEvents = events.filter(x => x.getEventType.equals(EventType.LAP_STOP) && x.getTrigger == "SESSION_END")
           .map(x => new ActivityEvent(index.get(x.getTs).getOrElse(-999), EventType.LAP_STOP, x.getTs, "autolap"))
 
-        val eventResults: List[ActivityEvent] = startLapEvents ++ startAutoLapEvents ++ stopLapEvents ++ stopAutoLapEvents ++nonLapEvents
+        val eventResults: List[ActivityEvent] = startLapEvents ++ startAutoLapEvents ++ stopLapEvents ++ stopAutoLapEvents
         val res: java.util.ArrayList[ActivityEvent] = new java.util.ArrayList[ActivityEvent](eventResults.reverse.asJava)
         //holder.setEvents(res)
         val newHolder = new ActivityHolder(holder)
@@ -156,15 +157,15 @@ class EventProcessor(holder: ActivityHolder) {
         new EventProcessor(newHolder)
 
       }
-      case _ => None
+      case _ => new EventProcessor(holder)
     }
-
-    return new EventProcessor(holder)
+//
+//    return new EventProcessor(holder)
   }
 
   def detectMotionStops(): EventProcessor = {
     val records = holder.getRecords.toList
-    val events = holder.getEvents.toList
+    // val events = holder.getEvents.toList
     val recordProcessor = new RecordProcessor(records)
     val index = recordProcessor.buildTsIndex()
 
@@ -186,10 +187,10 @@ class EventProcessor(holder: ActivityHolder) {
        case 1 => doMap(st zip en :+ records.reverse.head)
        case _ => {
          println("Unexpected state.  Number of motion start/stop events differ by more than one")
-         events
+           List[ActivityEvent]()
        }
      }
-          val res: java.util.ArrayList[ActivityEvent] = new java.util.ArrayList[ActivityEvent](events ++ evts.reverse.asJava)
+          val res: java.util.ArrayList[ActivityEvent] = new java.util.ArrayList[ActivityEvent](evts.reverse.asJava)
 
         val newHolder = new ActivityHolder(holder)
           newHolder.setEvents(res)

@@ -238,6 +238,7 @@ class ActivityTests {
             ActivityOuterClass.Activity finalActivity = ActivityOuterClass.Activity.parseFrom(buffer);
             assertEquals(1, finalActivity.getSessionsCount());
             assertTrue(finalActivity.getSessions(0).getSport()!=null);
+            System.out.println("total distance = " + finalActivity.getSummary().getTotalDistance());
 
         }catch(IOException ex){
             ex.printStackTrace();
