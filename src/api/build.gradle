@@ -2,6 +2,7 @@
 plugins {
     id 'scala'
     id 'java'
+    id 'jacoco'
 }
 
 
@@ -9,7 +10,7 @@ dependencies {
     compile (
             'org.scala-lang:scala-library:2.11.12',
             'com.amazonaws:aws-lambda-java-core:1.1.0',
-            'com.amazonaws:aws-java-sdk-s3:1.11.409',
+            'com.amazonaws:aws-java-sdk-s3:1.11.510',
             'com.amazonaws:aws-java-sdk-dynamodb:1.11.166',
             'com.amazonaws:aws-java-sdk-cloudformation:1.11.166',
             'com.amazonaws:aws-java-sdk-cognitoidp:1.11.442',
@@ -32,6 +33,7 @@ dependencies {
             'org.glassfish.jersey.core:jersey-client:2.5.1',
             'com.fasterxml.jackson.core:jackson-core:2.9.7',
             'org.mockito:mockito-all:1.10.19'
+
 
 
     )
@@ -69,6 +71,8 @@ test {
     onOutput { descriptor, event ->
         logger.lifecycle("Test: " + descriptor + " produced standard out/err: " + event.message )
     }
+
+    // workingDir = new File('src/test/')
 }
 
 sourceSets {
@@ -79,6 +83,27 @@ sourceSets {
         java {
             srcDirs = []
         }
+    }
+}
+
+jacoco {
+    toolVersion = "0.8.2"
+    reportsDir = file("$buildDir/coverage")
+
+}
+
+jacocoTestReport {
+    reports {
+        xml.enabled false
+        csv.enabled false
+        html.destination file("${buildDir}/coverage/")
+    }
+
+    afterEvaluate {
+        classDirectories = files(classDirectories.files.collect {
+            fileTree(dir: it, exclude: '**/com/garmin/*')
+            fileTree(dir: it, exclude: '**/ski/crunch/activity/model/ActivityOuterClass/*')
+        })
     }
 }
 

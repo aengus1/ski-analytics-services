@@ -15,13 +15,13 @@ public class ActivityItem {
     private Date dateOfUpload;
     private S3Link rawActivity;
     private String sourceIp;
+
+    private String rawFileType;
     private String userAgent;
     private String userId;
     //possible states: PENDING, PROCESSED, ERROR
     private String status;  //TODO convert to enum when have time to figure out dynamo mapping
 
-
-    private String rawFileType;
 
 
     @DynamoDBHashKey(attributeName="id")
@@ -42,6 +42,7 @@ public class ActivityItem {
         this.dateOfUpload = dateOfUpload;
     }
 
+    @DynamoDBAttribute(attributeName = "rawActivity")
     public S3Link getRawActivity() {
         return rawActivity;
     }
@@ -50,6 +51,7 @@ public class ActivityItem {
         this.rawActivity = activity;
     }
 
+    @DynamoDBAttribute(attributeName = "sourceIp")
     public String getSourceIp() {
         return sourceIp;
     }
@@ -58,6 +60,7 @@ public class ActivityItem {
         this.sourceIp = sourceIp;
     }
 
+    @DynamoDBAttribute(attributeName = "userAgent")
     public String getUserAgent() {
         return userAgent;
     }
@@ -66,6 +69,8 @@ public class ActivityItem {
         this.userAgent = userAgent;
     }
 
+
+    @DynamoDBAttribute(attributeName = "userId")
     public String getUserId() {
         return userId;
     }
@@ -74,6 +79,7 @@ public class ActivityItem {
         this.userId = userId;
     }
 
+    @DynamoDBAttribute(attributeName = "status")
     public String getStatus() {
         return status;
     }
@@ -82,6 +88,7 @@ public class ActivityItem {
         this.status = status;
     }
 
+    @DynamoDBAttribute(attributeName = "rawFileType")
     public String getRawFileType() {
         return rawFileType;
     }

@@ -16,7 +16,7 @@ public class DetectLapHandler implements Handler<ActivityHolder> {
     public ActivityHolder process(ActivityHolder holder) {
         EventProcessor ep = new EventProcessor(holder);
         EventProcessor events = ep.detectLapEvents();
-        holder.setEvents(events.getEvents());
+        holder.getEvents().addAll(events.getEvents());
         return holder;
     }
 }

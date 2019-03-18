@@ -6,6 +6,9 @@ import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestInstance;
 import scala.ski.crunch.activity.processor.model.ActivityRecord;
+import ski.crunch.activity.ActivityWriter;
+import ski.crunch.activity.ActivityWriterImpl;
+import ski.crunch.activity.model.ActivityOuterClass;
 import ski.crunch.activity.processor.model.ActivityEvent;
 import ski.crunch.activity.processor.model.ActivityHolder;
 import ski.crunch.activity.processor.model.EventType;
@@ -293,6 +296,35 @@ public class ActivityPipelineTest {
 
     }
 
+    @Test
+    public void testSessionCreation(){
+        ActivityHolder holder = setupActivity(pauseTest);
+        ActivityProcessor pipeline = new ActivityProcessor();
+        ActivityHolder processed = pipeline.process(holder);
+        ActivityWriter writer = new ActivityWriterImpl();
+        ActivityOuterClass.Activity result = writer.writeToActivity(processed,"test", null, null);
+
+        assertEquals(1, result.getSessionsCount());
+    }
+
+    /**
+     * todo -> unit test the summarizer code.  something isn't right.  A lot of 0 values when not expected
+     * e.g. totalDistance
+     */
+    @Test
+    public void testSummary(){
+        ActivityHolder activity = setupActivity(testFile);
+
+        ActivityProcessor pipeline = new ActivityProcessor();
+        ActivityHolder result = pipeline.process(activity);
+
+        ActivityWriter writer = new ActivityWriterImpl();
+        ActivityOuterClass.Activity res = writer.writeToActivity(result,"test", null, null);
+
+        assertTrue(result.getActivitySummary().totalDistance() > 0);
+        assertTrue(res.getSummary().getTotalDistance() > 0);
+
+    }
 
     private static Optional<ActivityRecord> findRecord(String ts, List<ActivityRecord> records) {
         ActivityRecord record = null;

@@ -66,6 +66,9 @@ public class ActivitySummarizerTest {
         ActivityEvent overlappingLapStart = new ActivityEvent(1, EventType.LAP_START, "2019-01-01T09:00:01", "");
         ActivityEvent overlappingLapEnd = new ActivityEvent(6, EventType.LAP_STOP, "2019-01-01T09:00:06", "");
 
+        ActivityEvent sessionStart = new ActivityEvent(1, EventType.SESSION_START, "2019-01-01T09:00:00", "sport: XC_SKIING");
+        ActivityEvent sessionStop = new ActivityEvent(6, EventType.SESSION_STOP, "2019-01-01T09:00:11", "");
+
 //        ActivityEvent lapStart = new ActivityEvent(4, EventType.PAUSE_START, "2019-01-01T09:00:03", "");
 //        ActivityEvent lapStop = new ActivityEvent(6, EventType.PAUSE_STOP, "2019-01-01T09:00:06", "");
 
@@ -73,6 +76,9 @@ public class ActivitySummarizerTest {
         events.add(pauseEnd);
         events.add(overlappingLapStart);
         events.add(overlappingLapEnd);
+        events.add(sessionStart);
+        events.add(sessionStop);
+
 //        events.add(lapStart);
 //        events.add(lapStop);
 
@@ -90,10 +96,12 @@ public class ActivitySummarizerTest {
 
             summarizer.process(holder);
 
-
         assertEquals(3,this.holder.getPauseSummaries().get(0).totalElapsed());
 
     }
+
+
+
 
     @Test
     public void testCalcTotalMoving() {
@@ -171,6 +179,9 @@ public class ActivitySummarizerTest {
 
         // lap case
         assertEquals(12, this.holder.getLapSummaries().get(0).totalDistance());
+
+        //activity case
+        assertEquals(67, this.holder.getActivitySummary().totalDistance());
     }
 
 
@@ -180,11 +191,11 @@ public class ActivitySummarizerTest {
             summarizer.process(holder);
 
         //pause case
-        double avg = (141 + 142 + 153) / 3;
+        double avg = (141 + 142 + 153 ) / 3;
         assertEquals(avg, this.holder.getPauseSummaries().get(0).avgHr());
 
         // lap case
-        double avgL = (135 + 140) / 2;
+        double avgL = (135 + 140 ) / 2;
         assertEquals(avgL, this.holder.getLapSummaries().get(0).avgHr());
     }
 
@@ -200,6 +211,19 @@ public class ActivitySummarizerTest {
         // lap case
         assertEquals(140, this.holder.getLapSummaries().get(0).maxHr());
     }
+
+    @Test
+    public void testSessionIsCreated() {
+        summarizer.process(holder);
+        assertEquals(1, this.holder.getSessionSummaries().size());
+    }
+
+
+//    @Test
+//    public void testSessionSportIsSet() {
+//        summarizer.process(holder);
+//        assertEquals(1, this.holder.getSessionSummaries().get(0).)
+//    }
 
 
 

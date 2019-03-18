@@ -22,7 +22,7 @@ public class CalculateTotalStopped implements StatisticFunc<Double> {
     public Double calculate(int startIdx, int endIdx, ActivityHolder holder, GetActivityRecordAttributeFunction attribute) {
       double total = 0;
             for(int i = startIdx; i <= endIdx && i < holder.getRecords().size(); i ++) {
-                if(!holder.getRecords().get(i).moving()) {
+                if(holder.getRecords().get(i).velocity() == 0) {
                     try {
                         total += TARGET_FORMAT.parse(holder.getRecords().get(i+1).ts()).getTime()
                                 - TARGET_FORMAT.parse(holder.getRecords().get(i).ts()).getTime();

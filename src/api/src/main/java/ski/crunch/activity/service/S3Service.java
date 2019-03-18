@@ -1,6 +1,7 @@
 package ski.crunch.activity.service;
 
 import com.amazonaws.SdkClientException;
+import com.amazonaws.auth.AWSCredentialsProvider;
 import com.amazonaws.auth.profile.ProfileCredentialsProvider;
 import com.amazonaws.services.s3.AmazonS3;
 import com.amazonaws.services.s3.AmazonS3ClientBuilder;
@@ -8,6 +9,7 @@ import com.amazonaws.services.s3.model.*;
 import com.amazonaws.util.IOUtils;
 import org.apache.commons.io.FileUtils;
 import org.apache.http.auth.AuthScope;
+import org.apache.http.client.CredentialsProvider;
 import org.apache.log4j.Logger;
 
 import java.io.*;
@@ -22,13 +24,14 @@ public class S3Service {
     private static final Logger LOG = Logger.getLogger(S3Service.class);
 
     public S3Service(String region) {
+        LOG.info("creating S3 service in " + region);
         this.s3Client = AmazonS3ClientBuilder.standard()
                 .withRegion(region)
                 //.withCredentials(new ProfileCredentialsProvider())
                 .build();
     }
 
-    public S3Service(String region, ProfileCredentialsProvider credentialsProvider) {
+    public S3Service(String region, AWSCredentialsProvider credentialsProvider) {
         this.s3Client = AmazonS3ClientBuilder.standard()
                 .withRegion(region)
                 .withCredentials(credentialsProvider)
@@ -36,7 +39,9 @@ public class S3Service {
     }
 
     public boolean doesObjectExist(String bucket, String key) {
-        return this.s3Client.doesObjectExist(bucket, key);
+        boolean exists = this.s3Client.doesObjectExist(bucket, key);;
+        LOG.info("confirmed that " +  key + " in "  + bucket + " exists " + exists);
+        return exists;
     }
 
     public byte[] getObject(String bucket, String key) throws IOException {
@@ -86,6 +91,10 @@ public class S3Service {
 
     public void deleteObject(String bucket, String key) throws IOException {
         this.s3Client.deleteObject(bucket, key);
+    }
+
+    public AmazonS3 getS3Client() {
+        return s3Client;
     }
 
     public void putObject(InputStream is, String bucketName, String objectKey, long length, String metaTitle) throws IOException {

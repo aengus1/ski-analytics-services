@@ -15,6 +15,7 @@ class ActivityRecord(val ts: String, val hr: Int, val lat: Double, val lon: Doub
                      var hrv: Double) {
 
 
+
   //def hrv_= (value:Double): Unit = hrv = value;
   val sourceDateFormat: SimpleDateFormat = new SimpleDateFormat("dd-mm-yyyy hh:mm:ss")
   val targetDateFormat: SimpleDateFormat = new SimpleDateFormat("yyyy-mm-dd'T'hh:mm:ss")

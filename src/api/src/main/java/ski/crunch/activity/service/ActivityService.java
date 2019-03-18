@@ -8,6 +8,7 @@ import com.amazonaws.services.dynamodbv2.document.Table;
 import com.amazonaws.services.dynamodbv2.document.spec.DeleteItemSpec;
 import com.amazonaws.services.dynamodbv2.model.AttributeValue;
 import com.amazonaws.services.lambda.runtime.Context;
+import com.amazonaws.services.s3.model.ObjectListing;
 import com.amazonaws.util.Base64;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -163,7 +164,7 @@ public class ActivityService {
             LOG.info("user: " + email + " attempted to access resource " + id
                     + " that doesn't exist.  Likely it is still queued for processing");
             return ApiGatewayResponse.builder()
-                    .setStatusCode(423)
+                    .setStatusCode(403)
                     .setRawBody(new ErrorResponse(403,
                             "user: " + email + " attempted to access resource " + id
                                     + " that doesn't exist",
@@ -173,9 +174,10 @@ public class ActivityService {
         //4. get resource
         try {
             s3.getObject(this.s3ProcessedActivityBucket, id);
-            byte[] binaryBody = s3.getObject(s3RawActivityBucket, id + ".pbf");
+            byte[] binaryBody = s3.getObject(s3ProcessedActivityBucket, id);
             Map<String, String> headers = new HashMap<>();
             headers.put("Content-Type", "application/json");
+            headers.put("Access-Control-Allow-Origin","*");
             return ApiGatewayResponse.builder()
                     .setStatusCode(200)
                     .setBinaryBody(binaryBody)
@@ -311,7 +313,7 @@ public class ActivityService {
         String id = "";
 
         if (key != null && key.length() > 1 && key.contains(".")) {
-            id = key.substring(0, key.indexOf(".") - 1);
+            id = key.substring(0, key.indexOf("."));
             LOG.debug("extracted id: " + id);
         } else {
             LOG.error("invalid key name: " + key);
@@ -354,18 +356,26 @@ public class ActivityService {
 
 
         Map<String, AttributeValue> eav = new HashMap<String, AttributeValue>();
-        eav.put(":val1", new AttributeValue().withS(activityId));
+        String id = activityId;
+        if(activityId.endsWith(".pbf")){
+            id = activityId.substring(0,activityId.length()-4);
+        }
+        eav.put(":val1", new AttributeValue().withS(id));
 
         DynamoDBQueryExpression<ActivityItem> queryExpression = new DynamoDBQueryExpression<ActivityItem>()
                 .withKeyConditionExpression("id = :val1")
                 .withExpressionAttributeValues(eav);
 
+//        ActivityItem activityItem = dynamo.getMapper().load(ActivityItem.class,activityId);
+//        return activityItem.getUserId().trim().equalsIgnoreCase(email.trim());
+
         List<ActivityItem> items = dynamo.getMapper().query(ActivityItem.class, queryExpression);
         if (!items.isEmpty()) {
             //ActivityItem item = dynamo.getMapper().load(ActivityItem.class, activityId);
+            LOG.info("Activity " + activityId + " belongs to " + items.get(0).getUserId());
             return items.get(0).getUserId().trim().equalsIgnoreCase(email.trim());
         }
-        return false;
+         return false;
     }
 
 

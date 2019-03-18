@@ -3,6 +3,7 @@ package ski.crunch.activity.parser;
 import org.apache.log4j.Level;
 import org.apache.log4j.Logger;
 import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestInstance;
 import ski.crunch.activity.processor.model.ActivityEvent;
@@ -24,7 +25,7 @@ public class FitActivityHolderAdapterTest {
 
     private static final Logger LOG = Logger.getLogger(FitActivityHolderAdapterTest.class);
     public static String testFile = "261217.fit";
-    public static String test2 = "9a8a199d-ff44-465c-99a2-7d662df70e45.fit";
+    //public static String test2 = "9a8a199d-ff44-465c-99a2-7d662df70e45.fit";
     //public static String testFile = "garmin_test.fit";
 
     ActivityHolder activity = null;
@@ -45,22 +46,22 @@ public class FitActivityHolderAdapterTest {
 
     }
 
-    @Test
-    void test2() {
-
-        try {
-            File f = new File(getClass().getClassLoader().getResource(test2).getFile());
-            FileInputStream is = new FileInputStream(f);
-            ActivityHolderAdapter fitParser = new FitActivityHolderAdapter();
-            this.activity = fitParser.convert(is);
-        } catch (IOException e) {
-            e.printStackTrace();
-        } catch (ParseException ex) {
-            ex.printStackTrace();
-        }
-        LOG.setLevel(Level.DEBUG);
-
-    }
+//    @Test
+//    void test2() {
+//
+//        try {
+//            File f = new File(getClass().getClassLoader().getResource(test2).getFile());
+//            FileInputStream is = new FileInputStream(f);
+//            ActivityHolderAdapter fitParser = new FitActivityHolderAdapter();
+//            this.activity = fitParser.convert(is);
+//        } catch (IOException e) {
+//            e.printStackTrace();
+//        } catch (ParseException ex) {
+//            ex.printStackTrace();
+//        }
+//        LOG.setLevel(Level.DEBUG);
+//
+//    }
 
     @Test
     void testFileId() {
@@ -181,9 +182,31 @@ public class FitActivityHolderAdapterTest {
 
     }
 
-    @Test
+    @Disabled
+    @Test()
+    /**
+     * disabled. current testfile does not contain any events
+     */
     public void testEventMessage() {
 
+        ActivityEvent timerStart = null;
+        ActivityEvent timerStop = null;
+        ActivityEvent unknown = null;
+
+        for (ActivityEvent event : activity.getEvents()) {
+
+
+            if (event.getEventType().equals(EventType.TIMER_START)) {
+                timerStart = event;
+            }
+            if (event.getEventType().equals(EventType.TIMER_STOP)) {
+                timerStop = event;
+            }
+            if (event.getEventType().equals(EventType.UNKNOWN)) {
+                unknown = event;
+            }
+        }
+        assert(unknown != null || timerStart != null);
     }
 
     @Test
