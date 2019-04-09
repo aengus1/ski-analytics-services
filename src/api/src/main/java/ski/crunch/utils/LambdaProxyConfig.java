@@ -34,13 +34,19 @@ public class LambdaProxyConfig {
 
             }
             Map<String, String> pathParams = null;
-            Map<String, String> headers = null;
+            final Map<String, String> headersL;
 
             try {
                 pathParams = (Map<String, String>) input.get("pathParameters");
-                headers = (Map<String, String>) input.get("headers");
-                this.getHeaders().setContentType(headers.get("Content-Type"));
-                this.getHeaders().setAccept(headers.get("Accept"));
+                headersL = (Map<String, String>) input.get("headers");
+                headersL.keySet().forEach( x -> {
+                    System.out.println(x + " " + headersL.get(x));
+                });
+                this.getHeaders().setContentType(headersL.get("Content-Type"));
+                if(this.getHeaders().getContentType() == null || this.getHeaders().getContentType().isEmpty()) {
+                    this.getHeaders().setContentType(headersL.get("content-type"));
+                }
+                this.getHeaders().setAccept(headersL.get("Accept"));
             } catch (NullPointerException ex) {
 
             }
@@ -77,7 +83,7 @@ public class LambdaProxyConfig {
     String stageVariables;
     String body;
     boolean isBase64Encoded;
-    Headers headers;
+    Headers headers = null;
     RequestContext requestContext;
 
     public String getResource() {

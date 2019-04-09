@@ -120,7 +120,17 @@ functions:
      - http:
         path: activity
         method: put
-        cors: true
+        cors:
+          origin: '*'
+          headers:
+            - Content-Type
+            - X-Amz-Date
+            - Authorization
+            - X-Api-Key
+            - X-Amz-Security-Token
+            - X-Amz-User-Agent
+            - Access-Control-Allow-Authorization
+            - Access-Control-Allow-Origin
         authorizer:
           arn: arn:aws:cognito-idp:us-west-2:556823078430:userpool/us-west-2_FrH0UdrNz
   ParseFitActivityLambda:
