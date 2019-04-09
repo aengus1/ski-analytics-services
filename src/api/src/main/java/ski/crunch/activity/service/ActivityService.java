@@ -102,7 +102,8 @@ public class ActivityService {
             //return success response
             Map<String, String> headers = new HashMap<>();
             headers.put("Content-Type", "application/json");
-            headers.put("Accept", "application/fit");
+            headers.put("Accept", "application/json");
+            headers.put("Access-Control-Allow-Origin", "*");
 
             String resp = null;
             try {
@@ -118,9 +119,14 @@ public class ActivityService {
 
         } catch (SaveException ex) {
 
+            Map<String, String> headers = new HashMap<>();
+            headers.put("Content-Type", "application/json");
+            headers.put("Accept", "application/json");
+            headers.put("Access-Control-Allow-Origin", "*");
             //return error response
             return ApiGatewayResponse.builder()
                     .setStatusCode(500)
+                    .setHeaders(headers)
                     .setRawBody(new ErrorResponse(500,
                             "Error occurred during save " + ex.getMessage(),
                             "Internal Server Error", "").toJSON())

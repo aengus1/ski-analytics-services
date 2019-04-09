@@ -199,7 +199,7 @@ class ActivityTests {
         WebTarget target = client.target(endpoint).path("activity");
 
 
-        InputStream is = ActivityTests.class.getResourceAsStream("/261217.fit");
+        InputStream is = ActivityTests.class.getResourceAsStream("/interval_test.fit");
         Entity payload = Entity.entity(is, MediaType.valueOf("application/fit"));
 
         Response response = target.request(MediaType.APPLICATION_OCTET_STREAM_TYPE)
@@ -290,7 +290,7 @@ class ActivityTests {
     @AfterAll
     void tearDown() {
         activityService.deleteActivityItemById(activityId);
-        activityService.deleteRawActivityFromS3(activityId + ".fit");
+        //activityService.deleteRawActivityFromS3(activityId + ".fit");
         try {
             Thread.currentThread().sleep(20000);
             LOG.info("deleting from processed bucket " + processedActivityBucket + " for activity: " + activityId + ".pbf");
