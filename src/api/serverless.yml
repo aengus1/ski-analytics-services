@@ -103,13 +103,15 @@ functions:
                 id: true
           authorizer:
             arn: arn:aws:cognito-idp:us-west-2:556823078430:userpool/us-west-2_FrH0UdrNz
-    Tags: ${{self:custom.resourceTags}}
-            ## TODO revisit this. need a way to dynamically reference userpool arn from other stack
-            ## had to hardcode this due to an issue with arns https://github.com/serverless/serverless/issues/3129
-            ### note - to access this function you need to include an Authorizer header on the request, containing the
-            ### Id token - not the access token
+#            authorizer:
+#              Fn::Join: ['arn:aws:cognito-idp:',[ Ref: AWS::Region,':'], [Ref: AWS::AccountId,":/userpool/"], [Fn::ImportValue: !Sub ${{self:custom.authStackName}}-UserPoolArn]]
+              ## TODO revisit this. need a way to dynamically reference userpool arn from other stack
+              ## had to hardcode this due to an issue with arns https://github.com/serverless/serverless/issues/3129
+              ### note - to access this function you need to include an Authorizer header on the request, containing the
+              ### Id token - not the access token
             ### SKIAPI-13 -> the value of ARN field here is now being referenced by ServerlessState class, parsing this for
             ### use in test harness
+    Tags: ${{self:custom.resourceTags}}
   PutActivityLambda:
     handler: ski.crunch.activity.PutActivityHandler
     environment:

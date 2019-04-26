@@ -99,8 +99,11 @@ resources:
     UserPoolArn:
       Value:
         Ref: UserPool
+#      Export:
+#        Name: UserPoolArn-${{self:custom.currentStage}}
       Export:
-        Name: UserPoolArn-${{self:custom.currentStage}}
+        Name:
+          Fn::Join: ['',[ Ref: AWS::StackName,'-UserPoolArn']]
     UserPoolProviderName:
       Value:
         Fn::GetAtt: [UserPool, ProviderName]
@@ -110,3 +113,5 @@ resources:
     UserPoolClientId:
       Value:
         Ref: UserPoolClient
+      Export:
+        Name: UserPoolClient-${{self:custom.currentStage}}
