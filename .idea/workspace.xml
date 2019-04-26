@@ -4,12 +4,28 @@
     <option name="SCOPE_TYPE" value="4" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="e0bdc5bc-f164-460e-911b-964805426644" name="Default" comment="SKI-157 fixed a bug in writing distance array.  Added tests for handlers">
+    <list default="true" id="e0bdc5bc-f164-460e-911b-964805426644" name="Default" comment="SKI-184 - create api resources for graphql endpoint">
+      <change afterPath="$PROJECT_DIR$/src/graphql/.gitignore" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/graphql/build.gradle" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/graphql/gradle/wrapper/gradle-wrapper.properties" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/graphql/gradlew" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/graphql/gradlew.bat" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/graphql/mapping-templates/add-user-settings-request-template.vtl" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/graphql/mapping-templates/generic-response-template.vtl" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/graphql/mapping-templates/get-user-settings-request-template.vtl" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/graphql/mapping-templates/save-gender-request-template.vtl" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/graphql/mapping-templates/save-height-request-template.vtl" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/graphql/mapping-templates/save-hrzones-request-template.vtl" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/graphql/mapping-templates/save-weight-request-template.vtl" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/graphql/schema.graphql" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/graphql/serverless.yml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/package-lock.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/modules/src/api/ski-analytics-services-src_api_test.iml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/modules/src/api/ski-analytics-services-src_api_test.iml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/docs/cloudformation_polyfills.md" beforeDir="false" afterPath="$PROJECT_DIR$/docs/cloudformation_polyfills.md" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/api/serverless.yml" beforeDir="false" afterPath="$PROJECT_DIR$/src/api/serverless.yml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/api/src/main/java/ski/crunch/activity/service/ActivityService.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/api/src/main/java/ski/crunch/activity/service/ActivityService.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/api/src/main/java/ski/crunch/utils/LambdaProxyConfig.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/api/src/main/java/ski/crunch/utils/LambdaProxyConfig.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/api/src/test/java/ski/crunch/activity/ActivityTests.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/api/src/test/java/ski/crunch/activity/ActivityTests.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/auth/serverless.yml" beforeDir="false" afterPath="$PROJECT_DIR$/src/auth/serverless.yml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/frontend/serverless.yml" beforeDir="false" afterPath="$PROJECT_DIR$/src/frontend/serverless.yml" afterDir="false" />
     </list>
     <ignored path="$PROJECT_DIR$/.gradle/" />
     <ignored path="$PROJECT_DIR$/build/" />
@@ -132,21 +148,56 @@
       <file pinned="true" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/api/src/main/java/ski/crunch/activity/service/ActivityService.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="457">
-              <caret line="109" column="67" selection-start-line="109" selection-start-column="67" selection-end-line="109" selection-end-column="67" />
+            <state relative-caret-position="218">
+              <caret line="145" column="51" lean-forward="true" selection-start-line="145" selection-start-column="51" selection-end-line="145" selection-end-column="51" />
+              <folding>
+                <element signature="method#saveRawActivity#0;class#ActivityService#0" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/graphql/serverless.yml">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="149">
+              <caret line="32" column="21" lean-forward="true" selection-start-line="32" selection-start-column="21" selection-end-line="32" selection-end-column="21" />
             </state>
           </provider>
         </entry>
       </file>
       <file pinned="false" current-in-tab="true">
-        <entry file="file://$PROJECT_DIR$/src/api/src/main/java/ski/crunch/activity/model/PutActivityResponse.java">
+        <entry file="file://$PROJECT_DIR$/src/graphql/mapping-templates/generic-response-template.vtl">
+          <provider selected="true" editor-type-id="text-editor">
+            <state>
+              <caret column="5" selection-start-column="5" selection-end-column="5" />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/graphql/mapping-templates/save-hrzones-request-template.vtl">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="130">
+              <caret line="10" lean-forward="true" selection-start-line="10" selection-end-line="10" />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/graphql/mapping-templates/save-weight-request-template.vtl">
           <provider selected="true" editor-type-id="text-editor">
             <state relative-caret-position="91">
-              <caret line="7" column="11" selection-start-line="7" selection-start-column="11" selection-end-line="7" selection-end-column="11" />
-              <folding>
-                <element signature="e#125#126#0" expanded="true" />
-                <element signature="e#169#170#0" expanded="true" />
-              </folding>
+              <caret line="7" column="64" selection-start-line="7" selection-start-column="64" selection-end-line="7" selection-end-column="64" />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/graphql/mapping-templates/save-gender-request-template.vtl">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="130">
+              <caret line="10" lean-forward="true" selection-start-line="10" selection-end-line="10" />
             </state>
           </provider>
         </entry>
@@ -154,8 +205,8 @@
       <file pinned="true" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/api/src/main/java/ski/crunch/utils/LambdaProxyConfig.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="156">
-              <caret line="12" column="11" selection-start-line="12" selection-start-column="11" selection-end-line="12" selection-end-column="11" />
+            <state relative-caret-position="200">
+              <caret line="353" column="40" selection-start-line="353" selection-start-column="19" selection-end-line="353" selection-end-column="40" />
               <folding>
                 <element signature="imports" expanded="true" />
                 <element signature="e#3355#3356#0" expanded="true" />
@@ -204,7 +255,27 @@
                 <element signature="e#5368#5369#0" expanded="true" />
                 <element signature="e#5410#5411#0" expanded="true" />
                 <element signature="e#5444#5445#0" expanded="true" />
+                <element signature="e#8345#8346#0" expanded="true" />
+                <element signature="e#8384#8385#0" expanded="true" />
               </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/graphql/schema.graphql">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="286">
+              <caret line="22" column="1" lean-forward="true" selection-start-line="22" selection-start-column="1" selection-end-line="22" selection-end-column="1" />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/graphql/mapping-templates/add-user-settings-request-template.vtl">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="156">
+              <caret line="12" column="1" lean-forward="true" selection-start-line="12" selection-start-column="1" selection-end-line="12" selection-end-column="1" />
             </state>
           </provider>
         </entry>
@@ -224,15 +295,6 @@
   </component>
   <component name="FindInProjectRecents">
     <findStrings>
-      <find>convert activity</find>
-      <find>resourcetags</find>
-      <find>locationservice</find>
-      <find>activitysegment</find>
-      <find>weather</find>
-      <find>endpoint:</find>
-      <find>DEV ACCESS</find>
-      <find>identity</find>
-      <find>region</find>
       <find>rawActivityBucketName</find>
       <find>sport</find>
       <find>a</find>
@@ -254,6 +316,15 @@
       <find>checking pr</find>
       <find>nullrepla</find>
       <find>activityid</find>
+      <find>CloudFrontDistroForSite</find>
+      <find>UserPoolArn</find>
+      <find>userpool</find>
+      <find>region</find>
+      <find>importvalue</find>
+      <find>domainstac</find>
+      <find>domainStackName</find>
+      <find>getAtt</find>
+      <find>email</find>
     </findStrings>
     <replaceStrings>
       <replace />
@@ -277,27 +348,13 @@
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
     <option name="RECENT_BRANCH_BY_REPOSITORY">
       <map>
-        <entry key="$PROJECT_DIR$" value="SKAPI-22-weather-api" />
+        <entry key="$PROJECT_DIR$" value="SKAPI-21-geocode-api-research" />
       </map>
     </option>
   </component>
   <component name="IdeDocumentHistory">
     <option name="CHANGED_PATHS">
       <list>
-        <option value="$PROJECT_DIR$/docs/setup.md" />
-        <option value="$PROJECT_DIR$/src/api/src/main/java/ski/crunch/activity/service/SSMParameterService.java" />
-        <option value="$PROJECT_DIR$/src/api/src/test/java/ski/crunch/activity/service/SSMParameterServiceTest.java" />
-        <option value="$PROJECT_DIR$/src/api/src/main/scala/scala/ski/crunch/activity/processor/model/ActivitySummary.scala" />
-        <option value="$PROJECT_DIR$/docs/domain_setup.md" />
-        <option value="$PROJECT_DIR$/src/api/src/main/java/ski/crunch/activity/service/DarkSkyWeatherService.java" />
-        <option value="$PROJECT_DIR$/src/api/src/main/java/ski/crunch/activity/ParseFitActivityLambda.java" />
-        <option value="$PROJECT_DIR$/src/api/src/test/java/ski/crunch/activity/service/LocationIqServiceTests.java" />
-        <option value="$PROJECT_DIR$/src/api/src/main/java/ski/crunch/activity/service/LocationIqService.java" />
-        <option value="$PROJECT_DIR$/src/api/src/test/java/ski/crunch/activity/service/DynamoDBServiceTest.java" />
-        <option value="$PROJECT_DIR$/src/api/src/main/java/ski/crunch/activity/model/ActivityItem.java" />
-        <option value="$PROJECT_DIR$/src/api/src/main/java/ski/crunch/activity/service/S3Service.java" />
-        <option value="$PROJECT_DIR$/src/api/src/test/java/ski/crunch/activity/service/S3ServiceTest.java" />
-        <option value="$PROJECT_DIR$/src/api/src/test/java/ski/crunch/activity/service/AbstractIntegrationTest.java" />
         <option value="$PROJECT_DIR$/src/api/src/test/java/ski/crunch/activity/service/ParseLambdaTest.java" />
         <option value="$PROJECT_DIR$/src/api/src/main/java/ski/crunch/activity/processor/DetectMotionHandler.java" />
         <option value="$PROJECT_DIR$/src/api/src/main/java/ski/crunch/activity/processor/DetectPauseHandler.java" />
@@ -331,18 +388,32 @@
         <option value="$PROJECT_DIR$/src/api/src/main/scala/scala/ski/crunch/activity/processor/model/ActivityRecord.scala" />
         <option value="$PROJECT_DIR$/src/api/src/test/java/ski/crunch/activity/processor/SetInitialMoveHandlerTest.java" />
         <option value="$PROJECT_DIR$/src/api/src/main/java/ski/crunch/activity/processor/SetInitialMoveHandler.java" />
-        <option value="$PROJECT_DIR$/src/api/serverless.yml" />
         <option value="$PROJECT_DIR$/src/api/src/main/java/ski/crunch/utils/LambdaProxyConfig.java" />
-        <option value="$PROJECT_DIR$/src/api/src/main/java/ski/crunch/activity/service/ActivityService.java" />
         <option value="$PROJECT_DIR$/src/api/src/test/java/ski/crunch/activity/ActivityTests.java" />
+        <option value="$PROJECT_DIR$/docs/cloudformation_polyfills.md" />
+        <option value="$PROJECT_DIR$/src/graphql/mapping-templates/user-settings-response-template.txt" />
+        <option value="$PROJECT_DIR$/src/graphql/mapping-templates/user-settings-request-template.txt" />
+        <option value="$PROJECT_DIR$/src/auth/serverless.yml" />
+        <option value="$PROJECT_DIR$/src/frontend/serverless.yml" />
+        <option value="$PROJECT_DIR$/src/api/serverless.yml" />
+        <option value="$PROJECT_DIR$/src/graphql/mapping-templates/save-height-request-template.txt" />
+        <option value="$PROJECT_DIR$/src/graphql/mapping-templates/add-user-settings-request-template.vtl" />
+        <option value="$PROJECT_DIR$/src/graphql/mapping-templates/save-height-request-template.vtl" />
+        <option value="$PROJECT_DIR$/src/graphql/mapping-templates/save-weight-request-template.vtl" />
+        <option value="$PROJECT_DIR$/src/graphql/mapping-templates/save-gender-request-template.vtl" />
+        <option value="$PROJECT_DIR$/src/api/src/main/java/ski/crunch/activity/service/ActivityService.java" />
+        <option value="$PROJECT_DIR$/src/graphql/mapping-templates/get-user-settings-response-template.vtl" />
+        <option value="$PROJECT_DIR$/src/graphql/mapping-templates/save-hrzones-request-template.vtl" />
+        <option value="$PROJECT_DIR$/src/graphql/schema.graphql" />
+        <option value="$PROJECT_DIR$/src/graphql/serverless.yml" />
       </list>
     </option>
   </component>
   <component name="ProjectFrameBounds">
-    <option name="x" value="1654" />
-    <option name="y" value="-101" />
-    <option name="width" value="1401" />
-    <option name="height" value="824" />
+    <option name="x" value="-1047" />
+    <option name="y" value="-432" />
+    <option name="width" value="1007" />
+    <option name="height" value="1039" />
   </component>
   <component name="ProjectInspectionProfilesVisibleTreeState">
     <entry key="Project Default">
@@ -370,6 +441,7 @@
       <foldersAlwaysOnTop value="true" />
     </navigator>
     <panes>
+      <pane id="PackagesPane" />
       <pane id="ProjectPane">
         <subPane>
           <expand>
@@ -386,7 +458,13 @@
               <item name="ski-analytics-services" type="b2602c69:ProjectViewProjectNode" />
               <item name="ski-analytics-services" type="8a07ba80:GradleTreeStructureProvider$GradleModuleDirectoryNode" />
               <item name="src" type="462c0819:PsiDirectoryNode" />
-              <item name="api" type="8a07ba80:GradleTreeStructureProvider$GradleModuleDirectoryNode" />
+              <item name="graphql" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="ski-analytics-services" type="b2602c69:ProjectViewProjectNode" />
+              <item name="ski-analytics-services" type="8a07ba80:GradleTreeStructureProvider$GradleModuleDirectoryNode" />
+              <item name="src" type="462c0819:PsiDirectoryNode" />
+              <item name="node_modules" type="462c0819:PsiDirectoryNode" />
             </path>
             <path>
               <item name="ski-analytics-services" type="b2602c69:ProjectViewProjectNode" />
@@ -401,7 +479,6 @@
           <select />
         </subPane>
       </pane>
-      <pane id="PackagesPane" />
       <pane id="Scope" />
     </panes>
   </component>
@@ -409,7 +486,7 @@
     <property name="Git.Branch.Popup.ShowAllRemotes" value="true" />
     <property name="WebServerToolWindowFactoryState" value="false" />
     <property name="aspect.path.notification.shown" value="true" />
-    <property name="com.android.tools.idea.instantapp.provision.ProvisionBeforeRunTaskProvider.myTimeStamp" value="1554516572623" />
+    <property name="com.android.tools.idea.instantapp.provision.ProvisionBeforeRunTaskProvider.myTimeStamp" value="1556256663797" />
     <property name="com.intellij.ide.scratch.LRUPopupBuilder$2/Languages" value="JSON" />
     <property name="extract.method.default.visibility" value="private" />
     <property name="full.screen.before.presentation.mode" value="false" />
@@ -419,20 +496,25 @@
     <property name="project.structure.side.proportion" value="0.2" />
     <property name="run.code.analysis.last.selected.profile" value="pProject Default" />
     <property name="settings.editor.selected.configurable" value="configurable.group.language" />
+    <property name="ts.external.directory.path" value="$APPLICATION_HOME_DIR$/plugins/JavaScriptLanguage/jsLanguageServicesImpl/external" />
   </component>
   <component name="RecentsManager">
-    <key name="CreateClassDialog.RecentsKey">
-      <recent name="ski.crunch.utils" />
+    <key name="MoveFile.RECENT_KEYS">
+      <recent name="$PROJECT_DIR$/docs/images" />
+      <recent name="$PROJECT_DIR$/src/api/src/test/resources" />
+      <recent name="$PROJECT_DIR$/src/api/src/test/java" />
+      <recent name="$PROJECT_DIR$/src/api/src/test/com.serverless" />
+      <recent name="$PROJECT_DIR$/src/api/src/main/java/com/serverless" />
     </key>
     <key name="MoveClassesOrPackagesDialog.RECENTS_KEY">
       <recent name="scala.ski.crunch.activity" />
     </key>
     <key name="CopyFile.RECENT_KEYS">
+      <recent name="$PROJECT_DIR$/src/graphql/mapping-templates" />
       <recent name="$PROJECT_DIR$/src/api/src/test/resources" />
       <recent name="$PROJECT_DIR$/src/api/src/test/scala" />
       <recent name="$PROJECT_DIR$/src/api/src/main/scala/scala/ski/crunch/activity/processor/model" />
       <recent name="$PROJECT_DIR$/src/api/src/main/java/com/garmin" />
-      <recent name="$PROJECT_DIR$/src/api/src/main/resources" />
     </key>
     <key name="CopyClassDialog.RECENTS_KEY">
       <recent name="ski.crunch.activity.processor" />
@@ -440,12 +522,8 @@
       <recent name="scala.ski.crunch.activity.processor.model" />
       <recent name="ski.crunch.activity.model" />
     </key>
-    <key name="MoveFile.RECENT_KEYS">
-      <recent name="$PROJECT_DIR$/docs/images" />
-      <recent name="$PROJECT_DIR$/src/api/src/test/resources" />
-      <recent name="$PROJECT_DIR$/src/api/src/test/java" />
-      <recent name="$PROJECT_DIR$/src/api/src/test/com.serverless" />
-      <recent name="$PROJECT_DIR$/src/api/src/main/java/com/serverless" />
+    <key name="CreateClassDialog.RecentsKey">
+      <recent name="ski.crunch.utils" />
     </key>
   </component>
   <component name="RunDashboard">
@@ -762,6 +840,10 @@
       <workItem from="1554348044305" duration="1279000" />
       <workItem from="1554484311437" duration="7648000" />
       <workItem from="1554779655052" duration="865000" />
+      <workItem from="1555989489025" duration="4821000" />
+      <workItem from="1555994936991" duration="526000" />
+      <workItem from="1556048129927" duration="3962000" />
+      <workItem from="1556170905880" duration="9628000" />
     </task>
     <task id="LOCAL-00001" summary="CF template for domain">
       <created>1533077361072</created>
@@ -1044,7 +1126,7 @@
     </history-entry>
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="693880000" />
+    <option name="totallyTimeSpent" value="713219000" />
   </component>
   <component name="TodoView">
     <todo-panel id="selected-file">
@@ -1056,9 +1138,9 @@
     </todo-panel>
   </component>
   <component name="ToolWindowManager">
-    <frame x="1654" y="-101" width="1401" height="824" extended-state="0" />
+    <frame x="-1047" y="-432" width="1007" height="1039" extended-state="0" />
     <layout>
-      <window_info active="true" content_ui="combo" id="Project" order="0" visible="true" weight="0.31346577" />
+      <window_info content_ui="combo" id="Project" order="0" visible="true" weight="0.33989638" />
       <window_info id="Structure" order="1" weight="0.2531273" />
       <window_info id="Designer" order="2" />
       <window_info id="Image Layers" order="3" />
@@ -1066,24 +1148,26 @@
       <window_info id="Capture Tool" order="5" />
       <window_info id="Favorites" order="6" side_tool="true" />
       <window_info id="Nl-Palette" order="7" />
+      <window_info anchor="bottom" id="TypeScript" />
       <window_info anchor="bottom" id="Message" order="0" />
-      <window_info anchor="bottom" id="Find" order="1" sideWeight="0.49742457" visible="true" weight="0.42736247" />
+      <window_info anchor="bottom" id="Find" order="1" sideWeight="0.49742457" weight="0.42640692" />
       <window_info anchor="bottom" id="Run" order="2" sideWeight="0.69389254" weight="0.42172074" />
       <window_info anchor="bottom" id="Debug" order="3" sideWeight="0.72921264" weight="0.39492244" />
       <window_info anchor="bottom" id="Cvs" order="4" weight="0.25" />
       <window_info anchor="bottom" id="Inspection" order="5" weight="0.4" />
       <window_info anchor="bottom" id="TODO" order="6" sideWeight="0.49816042" weight="0.32863188" />
       <window_info anchor="bottom" id="FindBugs-IDEA" order="7" />
-      <window_info anchor="bottom" x="1827" y="202" width="1217" height="450" id="Terminal" order="8" sideWeight="0.80206037" weight="0.24541607" />
+      <window_info anchor="bottom" x="1827" y="202" width="1217" height="450" id="Terminal" order="8" sideWeight="0.80206037" weight="0.33766234" />
       <window_info anchor="bottom" id="CheckStyle" order="9" />
       <window_info anchor="bottom" id="Event Log" order="10" sideWeight="0.54083884" side_tool="true" weight="0.52468264" />
-      <window_info anchor="bottom" id="Messages" order="11" sideWeight="0.45916116" weight="0.3554302" />
-      <window_info anchor="bottom" id="Version Control" order="12" sideWeight="0.49816042" weight="0.32863188" />
+      <window_info anchor="bottom" id="Messages" order="11" sideWeight="0.45916116" weight="0.35497835" />
+      <window_info active="true" anchor="bottom" id="Version Control" order="12" sideWeight="0.49816042" visible="true" weight="0.32792208" />
       <window_info anchor="bottom" id="Build" order="13" sideWeight="0.7880086" weight="0.31917807" />
       <window_info anchor="bottom" id="Database Changes" order="14" show_stripe_button="false" />
       <window_info anchor="bottom" id="Docker" order="15" show_stripe_button="false" />
       <window_info anchor="bottom" id="Duplicate detector" order="16" weight="0.528914" />
       <window_info anchor="bottom" id="Dependency Viewer" order="17" weight="0.4132581" />
+      <window_info anchor="bottom" id="GraphQL" order="18" />
       <window_info anchor="right" id="Commander" order="0" weight="0.4" />
       <window_info anchor="right" id="Ant Build" order="1" weight="0.25" />
       <window_info anchor="right" content_ui="combo" id="Hierarchy" order="2" weight="0.25" />
@@ -1146,7 +1230,6 @@
     <option name="version" value="1" />
   </component>
   <component name="VcsManagerConfiguration">
-    <MESSAGE value="SKAPI-13 - minor updates" />
     <MESSAGE value="SKAPI-14 Added putActivity lambda and done some refactoring" />
     <MESSAGE value="SKAPI-14 SKAPI-13 refactoring and testing" />
     <MESSAGE value="SKAPI-14 Activity Parsing and Processing" />
@@ -1171,14 +1254,17 @@
     <MESSAGE value="SKI-157 fixed more bugs in the eventprocessor system.  added coverage tools to build" />
     <MESSAGE value="SKI-157 fixed a number of bugs in summarizer" />
     <MESSAGE value="SKI-157 fixed a bug in writing distance array.  Added tests for handlers" />
-    <option name="LAST_COMMIT_MESSAGE" value="SKI-157 fixed a bug in writing distance array.  Added tests for handlers" />
+    <MESSAGE value="SKI-184 - create api resources for graphql endpoint" />
+    <option name="LAST_COMMIT_MESSAGE" value="SKI-184 - create api resources for graphql endpoint" />
   </component>
   <component name="WindowStateProjectService">
     <state width="704" height="524" key="Git.Branch.Popup" />
+    <state width="704" height="524" key="Git.Branch.Popup/1080.1920/3360.2100" />
     <state width="352" height="262" key="Git.Branch.Popup/1440.-180.1920.1080/0.0.1440.900" />
     <state width="704" height="524" key="Git.Branch.Popup/1920.1080/2880.1800" />
     <state width="704" height="524" key="Git.Branch.Popup/2880.1800" />
     <state width="704" height="524" key="Git.Branch.Popup/2880.1800/1920.1080" />
+    <state width="704" height="524" key="Git.Branch.Popup@1080.1920" />
     <state width="704" height="524" key="Git.Branch.Popup@2880.1800@192dpi" />
   </component>
   <component name="XDebuggerManager">
@@ -1222,146 +1308,6 @@
     <option name="FILTER_TARGETS" value="false" />
   </component>
   <component name="editorHistoryManager">
-    <entry file="file://$PROJECT_DIR$/src/api/src/main/java/ski/crunch/activity/processor/summarizer/StatisticFunc.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="52">
-          <caret line="4" column="17" selection-start-line="4" selection-start-column="17" selection-end-line="4" selection-end-column="17" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/api/src/main/java/ski/crunch/activity/processor/summarizer/AvgFunctionDouble.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="130">
-          <caret line="10" column="1" selection-start-line="10" selection-start-column="1" selection-end-line="10" selection-end-column="1" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/api/src/main/java/ski/crunch/activity/service/DynamoDBService.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="402">
-          <caret line="40" column="8" selection-start-line="40" selection-start-column="8" selection-end-line="41" selection-end-column="25" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/api/build.gradle">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-83">
-          <caret line="41" column="5" selection-start-line="28" selection-start-column="3" selection-end-line="41" selection-end-column="5" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/api/build/reports/tests/test/index.html">
-      <provider selected="true" editor-type-id="text-editor" />
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/api/src/main/java/ski/crunch/activity/parser/fit/RecordMessageListener.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="104">
-          <caret line="14" column="13" selection-start-line="14" selection-start-column="13" selection-end-line="14" selection-end-column="13" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/log4j/log4j/1.2.17/677abe279b68c5e7490d6d50c6951376238d7d3e/log4j-1.2.17-sources.jar!/org/apache/log4j/Logger.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="284">
-          <caret line="203" column="19" selection-start-line="203" selection-start-column="19" selection-end-line="203" selection-end-column="19" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/api/src/main/java/ski/crunch/activity/processor/summarizer/GetActivityRecordAttributeFunction.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="52">
-          <caret line="4" column="17" selection-start-line="4" selection-start-column="17" selection-end-line="4" selection-end-column="17" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/api/src/main/java/ski/crunch/activity/processor/summarizer/MaxFunctionInteger.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="52">
-          <caret line="4" selection-start-line="4" selection-end-line="4" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/api/src/main/java/ski/crunch/activity/processor/summarizer/CalculateTotalDescent.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="117">
-          <caret line="9" column="41" selection-start-line="9" selection-start-column="41" selection-end-line="9" selection-end-column="41" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/api/src/main/java/ski/crunch/activity/processor/summarizer/CalculateTotalMoving.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="179">
-          <caret line="24" column="40" selection-start-line="24" selection-start-column="40" selection-end-line="24" selection-end-column="40" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/api/src/main/java/ski/crunch/activity/processor/summarizer/CalculateTotalAscent.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="182">
-          <caret line="14" column="41" selection-start-line="14" selection-start-column="41" selection-end-line="14" selection-end-column="41" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/api/src/main/java/ski/crunch/activity/processor/summarizer/CalculateTotalStopped.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="185">
-          <caret line="24" column="59" selection-start-line="24" selection-start-column="59" selection-end-line="24" selection-end-column="59" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/api/src/main/java/ski/crunch/activity/processor/summarizer/AvgFunctionInteger.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="52">
-          <caret line="4" selection-start-line="4" selection-end-line="4" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/api/src/main/java/ski/crunch/activity/processor/model/ActivityEvent.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="82">
-          <caret line="39" selection-start-line="39" selection-end-line="39" />
-          <folding>
-            <element signature="e#1159#1160#0" expanded="true" />
-            <element signature="e#1271#1272#0" expanded="true" />
-            <element signature="e#1303#1304#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/api/src/main/java/ski/crunch/activity/processor/model/ActivityHolder.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="134">
-          <caret line="59" selection-start-line="59" selection-end-line="59" />
-          <folding>
-            <element signature="e#2266#2267#0" expanded="true" />
-            <element signature="e#2410#2411#0" expanded="true" />
-            <element signature="e#2439#2440#0" expanded="true" />
-            <element signature="e#3719#3720#0" expanded="true" />
-            <element signature="e#3757#3758#0" expanded="true" />
-            <element signature="e#3828#3829#0" expanded="true" />
-            <element signature="e#3882#3883#0" expanded="true" />
-            <element signature="e#3936#3937#0" expanded="true" />
-            <element signature="e#3971#3972#0" expanded="true" />
-            <element signature="e#4042#4043#0" expanded="true" />
-            <element signature="e#4090#4091#0" expanded="true" />
-            <element signature="e#4146#4147#0" expanded="true" />
-            <element signature="e#4183#4184#0" expanded="true" />
-            <element signature="e#4258#4259#0" expanded="true" />
-            <element signature="e#4310#4311#0" expanded="true" />
-            <element signature="e#4368#4369#0" expanded="true" />
-            <element signature="e#4407#4408#0" expanded="true" />
-            <element signature="e#4597#4598#0" expanded="true" />
-            <element signature="e#4633#4634#0" expanded="true" />
-            <element signature="e#4706#4707#0" expanded="true" />
-            <element signature="e#4756#4757#0" expanded="true" />
-            <element signature="e#4791#4792#0" expanded="true" />
-            <element signature="e#4825#4826#0" expanded="true" />
-            <element signature="e#4876#4877#0" expanded="true" />
-            <element signature="e#4922#4923#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/src/api/src/main/java/ski/crunch/activity/processor/summarizer/CalculateTotalDistance.java">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="104">
@@ -1586,13 +1532,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/api/serverless.yml">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="262">
-          <caret line="132" column="41" selection-start-line="132" selection-start-column="41" selection-end-line="132" selection-end-column="41" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/src/api/src/main/java/ski/crunch/activity/parser/fit/FitActivityHolderAdapter.java">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="104">
@@ -1607,6 +1546,31 @@
         </state>
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/src/api/src/main/java/ski/crunch/activity/model/PutActivityResponse.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="91">
+          <caret line="7" column="11" selection-start-line="7" selection-start-column="11" selection-end-line="7" selection-end-column="11" />
+          <folding>
+            <element signature="e#125#126#0" expanded="true" />
+            <element signature="e#169#170#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/api/src/main/java/ski/crunch/activity/service/DarkSkyWeatherService.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="65">
+          <caret line="113" column="17" selection-start-line="113" selection-start-column="17" selection-end-line="113" selection-end-column="17" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/api/src/main/java/ski/crunch/activity/service/WeatherService.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="78">
+          <caret line="6" column="40" selection-start-line="6" selection-start-column="40" selection-end-line="6" selection-end-column="40" />
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/src/api/src/test/java/ski/crunch/activity/ActivityTests.java">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="2314">
@@ -1614,10 +1578,93 @@
         </state>
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/docs/cloudformation_polyfills.md">
+      <provider selected="true" editor-type-id="split-provider[text-editor;markdown-preview-editor]">
+        <state split_layout="SPLIT">
+          <first_editor relative-caret-position="195">
+            <caret line="15" column="22" selection-start-line="15" selection-start-column="22" selection-end-line="15" selection-end-column="22" />
+          </first_editor>
+          <second_editor />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/graphql/.serverless/cloudformation-template-update-stack.json">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="179">
+          <caret line="165" column="21" selection-start-line="165" selection-start-column="21" selection-end-line="165" selection-end-column="21" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/domain/serverless.yml">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="366">
+          <caret line="55" column="10" selection-start-line="55" selection-start-column="10" selection-end-line="55" selection-end-column="61" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/frontend/serverless.yml">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="52">
+          <caret line="4" lean-forward="true" selection-start-line="4" selection-end-line="4" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/api/serverless.yml">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="1456">
+          <caret line="112" column="35" selection-start-line="112" selection-start-column="35" selection-end-line="112" selection-end-column="35" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/auth/serverless.yml">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="1245">
+          <caret line="105" column="62" selection-start-line="105" selection-start-column="10" selection-end-line="105" selection-end-column="62" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/graphql/mapping-templates/get-user-settings-request-template.vtl">
+      <provider selected="true" editor-type-id="text-editor">
+        <state>
+          <caret selection-end-line="6" selection-end-column="1" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/graphql/mapping-templates/save-height-request-template.vtl">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="130">
+          <caret line="10" lean-forward="true" selection-start-line="10" selection-end-line="10" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/graphql/mapping-templates/save-weight-request-template.vtl">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="91">
+          <caret line="7" column="64" selection-start-line="7" selection-start-column="64" selection-end-line="7" selection-end-column="64" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/graphql/mapping-templates/save-gender-request-template.vtl">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="130">
+          <caret line="10" lean-forward="true" selection-start-line="10" selection-end-line="10" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/api/src/main/java/ski/crunch/activity/service/ActivityService.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="218">
+          <caret line="145" column="51" lean-forward="true" selection-start-line="145" selection-start-column="51" selection-end-line="145" selection-end-column="51" />
+          <folding>
+            <element signature="method#saveRawActivity#0;class#ActivityService#0" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/src/api/src/main/java/ski/crunch/utils/LambdaProxyConfig.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="156">
-          <caret line="12" column="11" selection-start-line="12" selection-start-column="11" selection-end-line="12" selection-end-column="11" />
+        <state relative-caret-position="200">
+          <caret line="353" column="40" selection-start-line="353" selection-start-column="19" selection-end-line="353" selection-end-column="40" />
           <folding>
             <element signature="imports" expanded="true" />
             <element signature="e#3355#3356#0" expanded="true" />
@@ -1666,25 +1713,44 @@
             <element signature="e#5368#5369#0" expanded="true" />
             <element signature="e#5410#5411#0" expanded="true" />
             <element signature="e#5444#5445#0" expanded="true" />
+            <element signature="e#8345#8346#0" expanded="true" />
+            <element signature="e#8384#8385#0" expanded="true" />
           </folding>
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/api/src/main/java/ski/crunch/activity/service/ActivityService.java">
+    <entry file="file://$PROJECT_DIR$/src/graphql/mapping-templates/save-hrzones-request-template.vtl">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="457">
-          <caret line="109" column="67" selection-start-line="109" selection-start-column="67" selection-end-line="109" selection-end-column="67" />
+        <state relative-caret-position="130">
+          <caret line="10" lean-forward="true" selection-start-line="10" selection-end-line="10" />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/api/src/main/java/ski/crunch/activity/model/PutActivityResponse.java">
+    <entry file="file://$PROJECT_DIR$/src/graphql/mapping-templates/add-user-settings-request-template.vtl">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="91">
-          <caret line="7" column="11" selection-start-line="7" selection-start-column="11" selection-end-line="7" selection-end-column="11" />
-          <folding>
-            <element signature="e#125#126#0" expanded="true" />
-            <element signature="e#169#170#0" expanded="true" />
-          </folding>
+        <state relative-caret-position="156">
+          <caret line="12" column="1" lean-forward="true" selection-start-line="12" selection-start-column="1" selection-end-line="12" selection-end-column="1" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/graphql/schema.graphql">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="286">
+          <caret line="22" column="1" lean-forward="true" selection-start-line="22" selection-start-column="1" selection-end-line="22" selection-end-column="1" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/graphql/serverless.yml">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="149">
+          <caret line="32" column="21" lean-forward="true" selection-start-line="32" selection-start-column="21" selection-end-line="32" selection-end-column="21" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/graphql/mapping-templates/generic-response-template.vtl">
+      <provider selected="true" editor-type-id="text-editor">
+        <state>
+          <caret column="5" selection-start-column="5" selection-end-column="5" />
         </state>
       </provider>
     </entry>
