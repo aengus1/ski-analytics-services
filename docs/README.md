@@ -40,6 +40,8 @@ Currently have not spun up a prod stack
 
 - Domain Stack <- Frontend Stack
  - Domain Stack <- Auth Stack <- API stack
+ - Auth Stack <- GraphQL Stack (`TODO move user table to graphql stack)`
+ 
 
 
 
@@ -65,6 +67,9 @@ staging-app.crunch.ski: application
 Authentication using Cognito Userpool.  Email signup verification required. 
 Email setup is totally manual - no cloudformation stack.  See [email_setup](email_setup.md)
 
+### GraphQL
+AppSync GraphQL endpoint for reading / writing non binary
+data to user and activity tables.
 
 ## API
 ### Endpoints

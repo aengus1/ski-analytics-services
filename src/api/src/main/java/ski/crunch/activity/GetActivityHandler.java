@@ -9,7 +9,7 @@ import org.apache.log4j.Logger;
 
 import com.amazonaws.services.lambda.runtime.Context;
 import com.amazonaws.services.lambda.runtime.RequestHandler;
-import ski.crunch.activity.model.ApiGatewayResponse;
+import ski.crunch.utils.ApiGatewayResponse;
 import ski.crunch.activity.service.*;
 
 public class GetActivityHandler implements RequestHandler<Map<String, Object>, ApiGatewayResponse> {

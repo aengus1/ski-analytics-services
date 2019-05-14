@@ -8,10 +8,8 @@ import com.amazonaws.services.lambda.runtime.RequestHandler;
 
 
 import org.apache.log4j.Logger;
-import ski.crunch.activity.model.ApiGatewayResponse;
+import ski.crunch.utils.ApiGatewayResponse;
 import ski.crunch.activity.service.*;
-import ski.crunch.utils.LambdaProxyConfig;
-import ski.crunch.utils.ParseException;
 
 import java.util.*;
 

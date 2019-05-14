@@ -1,4 +1,4 @@
-#if($context.result["UserId"] == $context.identity.cognitoIdentityPoolId)
+#if($context.result["id"] == $context.identity.sub)
     $utils.toJson($context.result);
 #else
     $utils.unauthorized()
