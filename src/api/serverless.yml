@@ -112,6 +112,9 @@ functions:
             ### SKIAPI-13 -> the value of ARN field here is now being referenced by ServerlessState class, parsing this for
             ### use in test harness
     Tags: ${{self:custom.resourceTags}}
+    layers:
+      - arn:aws:lambda:ca-central-1:556823078430:layer:staging-layer-model:2
+
   PutActivityLambda:
     handler: ski.crunch.activity.PutActivityHandler
     environment:

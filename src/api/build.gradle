@@ -6,6 +6,7 @@ plugins {
 }
 
 
+
 dependencies {
     compile (
             'org.scala-lang:scala-library:2.11.12',
@@ -23,9 +24,11 @@ dependencies {
             'commons-io:commons-io:2.5',
             "com.vividsolutions:jts:1.13",
             "org.geotools:gt-main:16.1",
-            "org.geotools:gt-epsg-hsql:16.1",
+            "org.geotools:gt-epsg-hsql:16.1"
 
     )
+    compile project(':src/layers')
+
     testImplementation(
             'org.scalatest:scalatest_2.11:3.0.0',
             'org.junit.jupiter:junit-jupiter-api:5.1.0',
@@ -112,6 +115,7 @@ task buildZip(type: Zip) {
     from compileJava
     from compileScala
     from processResources
+    exclude "layers.jar"
     into('lib') {
         from configurations.runtime
     }

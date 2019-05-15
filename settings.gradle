@@ -10,3 +10,5 @@
 rootProject.name = 'ski-analytics-services'
 
 include 'src/api'
+include 'src/auth'
+include 'src/layers'
