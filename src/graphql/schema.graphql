@@ -1,0 +1,29 @@
+type Mutation {
+    addUser(
+        height: Int!,
+        weight: Int!,
+        gender: Int!,
+        hrZones: [Int]!
+    ): User
+    saveHeight(id: ID!, height: Int!): User
+    saveWeight(id: ID!, weight: Int!): User
+    saveGender(id: ID!, gender: String!): User
+    saveHrZones(id: ID!, hrZones: [Int]!): User
+}
+
+type Query {
+    getUser: User
+}
+
+type Schema {
+    query: Query
+    mutation: Mutation
+}
+
+type User {
+    id: ID!
+    gender: String
+    height: Int
+    weight: Int
+    hrZones: [Int]
+}

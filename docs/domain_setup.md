@@ -56,3 +56,8 @@ A convenience script `./deploy.sh` has been added to the frontend stack, simply 
 
 ### Step 5 - Create the Frontend stack (production)
 Repeat step 4 but change the --stage=staging flag in ./deploy.sh to --stage=prod
+
+### Step 6 - Create the API stack (staging)
+
+run the build_deploy.sh script in src/api
+manually add the darksky.io key into staging-weather-api-key SSM store

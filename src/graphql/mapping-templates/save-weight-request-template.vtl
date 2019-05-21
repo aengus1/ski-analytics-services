@@ -1,0 +1,13 @@
+{
+"version": "2017-02-28",
+"operation": "UpdateItem",
+"key": {
+"id": $util.dynamodb.toDynamoDBJson($ctx.identity.sub)
+},
+"update" : {
+"expression" : "SET weight= :weight",
+"expressionValues" : {
+":weight" :  $util.dynamodb.toDynamoDBJson($ctx.args.weight)
+}
+}
+}

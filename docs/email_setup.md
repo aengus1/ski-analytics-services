@@ -41,3 +41,6 @@ add custom policy - like:
      ]
  }`
 `
+Additional manual steps for authentication:
+1. manually set reply-to email address in console. this seems to have taken
+2. set url to be own domain (idp.crunch.ski) had to add an alias record to route53

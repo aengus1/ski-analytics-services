@@ -1,0 +1,242 @@
+service: api
+tenant: aengus
+app: ski-analytics
+
+plugins:
+  - serverless-apigw-binary
+
+# You can pin your service to only deploy with a specific Serverless version
+# Check out our docs for more details
+# frameworkVersion: "=X.X.X"
+
+custom:
+  currentStage: ${{opt:stage, self:provider.stage}}
+  domainName: crunch.ski
+  resourceTags:
+              -
+                Key: "project"
+                Value: "ski-analytics"
+              -
+                Key: "module"
+                Value: "api"
+  activityBucketName: "activity-${{self:custom.currentStage}}.${{self:custom.domainName}}"
+  rawActivityBucketName: "activity-raw-${{self:custom.currentStage}}.${{self:custom.domainName}}"
+  userPoolArn:
+    Fn::ImportValue:
+      Fn::Join: ['', UserPoolArn]
+  activityTable:  ${{self:custom.currentStage}}-crunch-Activity
+#  authStack: ${{self:custom.currentStage}}-ski-analytics-authentication-stack
+  apigwBinary:
+    types:
+      - '*/*'
+
+provider:
+  name: aws
+  runtime: java8
+  variableSyntax: "\\${{([ ~:a-zA-Z0-9._\\'\",\\-\\/\\(\\)]+?)}}" # notice the double quotes for yaml to ignore the escape characters!
+  region: ca-central-1
+  stage: staging
+  stackName: ${{self:custom.currentStage}}-ski-analytics-api-stack
+  iamRoleStatements:
+    - Effect: Allow
+      Action:
+        - s3:ListBucket
+      Resource: "arn:aws:s3:::${{self:custom.activityBucketName}}"
+    - Effect: Allow
+      Action:
+        - s3:PutObject
+        - s3:GetObject
+      Resource: "arn:aws:s3:::${{self:custom.activityBucketName}}/*"
+    - Effect: Allow
+      Action:
+        - s3:PutObject
+        - s3:GetObject
+      Resource: "arn:aws:s3:::${{self:custom.rawActivityBucketName}}/*"
+    - Effect: Allow
+      Action:
+        - s3:ListBucket
+      Resource: "arn:aws:s3:::${{self:custom.rawActivityBucketName}}"
+    - Effect: Allow
+      Action:
+        - dynamodb:Query
+        - dynamodb:Scan
+        - dynamodb:GetItem
+        - dynamodb:PutItem
+        - dynamodb:UpdateItem
+        - dynamodb:DeleteItem
+      Resource: "arn:aws:dynamodb:${{opt:region, self:provider.region}}:*:table/${{self:custom.activityTable}}"
+    - Effect: Allow
+      Action:
+        - ssm:GetParameter
+      Resource: "arn:aws:ssm:${{opt:region, self:provider.region}}:*:parameter/*-*-api-key"
+
+package:
+  artifact: build/distributions/api.zip
+
+functions:
+  GetActivityLambda:
+    handler: ski.crunch.activity.GetActivityHandler
+    environment:
+      s3ActivityBucketName: ${{self:custom.activityBucketName}}
+      activityTable: ${{self:custom.currentStage}}-crunch-Activity
+      currentStage: ${{self:custom.currentStage}}
+    events:
+      - http:
+          path: activity/{id}
+          method: get
+          cors:
+            origin: '*'
+            headers:
+            - Content-Type
+            - X-Amz-Date
+            - Authorization
+            - X-Api-Key
+            - X-Amz-Security-Token
+            - X-Amz-User-Agent
+            - Access-Control-Allow-Authorization
+            - Access-Control-Allow-Origin
+            allowCredentials: false
+            cacheControl: 'max-age=600, s-maxage=600, proxy-revalidate' # Caches on browser and proxy for 10 minutes and doesnt allow proxy to serve out of date content
+          request:
+            parameters:
+              paths:
+                id: true
+          authorizer:
+            arn: arn:aws:cognito-idp:us-west-2:556823078430:userpool/us-west-2_FrH0UdrNz
+#            authorizer:
+#              Fn::Join: ['arn:aws:cognito-idp:',[ Ref: AWS::Region,':'], [Ref: AWS::AccountId,":/userpool/"], [Fn::ImportValue: !Sub ${{self:custom.authStackName}}-UserPoolArn]]
+              ## TODO revisit this. need a way to dynamically reference userpool arn from other stack
+              ## had to hardcode this due to an issue with arns https://github.com/serverless/serverless/issues/3129
+              ### note - to access this function you need to include an Authorizer header on the request, containing the
+              ### Id token - not the access token
+            ### SKIAPI-13 -> the value of ARN field here is now being referenced by ServerlessState class, parsing this for
+            ### use in test harness
+    Tags: ${{self:custom.resourceTags}}
+  PutActivityLambda:
+    handler: ski.crunch.activity.PutActivityHandler
+    environment:
+      s3RawActivityBucketName: ${{self:custom.rawActivityBucketName}}
+      activityTable: ${{self:custom.currentStage}}-crunch-Activity
+      currentStage: ${{self:custom.currentStage}}
+    events:
+     - http:
+        path: activity
+        method: put
+        cors:
+          origin: '*'
+          headers:
+            - Content-Type
+            - X-Amz-Date
+            - Authorization
+            - X-Api-Key
+            - X-Amz-Security-Token
+            - X-Amz-User-Agent
+            - Access-Control-Allow-Authorization
+            - Access-Control-Allow-Origin
+        authorizer:
+          arn: arn:aws:cognito-idp:us-west-2:556823078430:userpool/us-west-2_FrH0UdrNz
+  ParseFitActivityLambda:
+    handler: ski.crunch.activity.ParseFitActivityLambda
+    memorySize: 1256
+    timeout: 20
+    environment:
+      s3ActivityBucketName: ${{self:custom.activityBucketName}}
+      s3rawActivityBucketName: ${{self:custom.rawActivityBucketName}}
+      activityTable: ${{self:custom.currentStage}}-crunch-Activity
+      currentStage: ${{self:custom.currentStage}}
+    events:
+     - s3: ForRawActivity
+       event: s3:ObjectCreated:*
+       rules:
+           - suffix: .fit
+
+resources:
+  Resources:
+    GatewayResponseDefault4XX:
+      Type: 'AWS::ApiGateway::GatewayResponse'
+      Properties:
+        ResponseParameters:
+          gatewayresponse.header.Access-Control-Allow-Origin: "'*'"
+          gatewayresponse.header.Access-Control-Allow-Headers: "'*'"
+        ResponseType: DEFAULT_4XX
+        RestApiId:
+          Ref: 'ApiGatewayRestApi'
+    S3BucketForActivity:
+      Type: AWS::S3::Bucket
+      Properties:
+#        AccessControl: PublicRead
+        BucketName: ${{self:custom.activityBucketName}}
+        Tags: ${{self:custom.resourceTags}}
+    S3BucketForRawActivity:
+      Type: AWS::S3::Bucket
+      Properties:
+#        AccessControl: PublicRead
+        BucketName: ${{self:custom.rawActivityBucketName}}
+        Tags: ${{self:custom.resourceTags}}
+    ParseFitActivityLambdaLambdaPermissionS3BucketForRawActivityS3:
+        Type: "AWS::Lambda::Permission"
+        Properties:
+          FunctionName:
+            "Fn::GetAtt":
+            - ParseFitActivityLambdaLambdaFunction
+            - Arn
+          Principal: "s3.amazonaws.com"
+          Action: "lambda:InvokeFunction"
+          SourceAccount:
+            Ref: AWS::AccountId
+          SourceArn: "arn:aws:s3:::${{self:custom.rawActivityBucketName}}"
+    DynamoTableForActivity:
+      Type: AWS::DynamoDB::Table
+      DeletionPolicy: Retain
+      Properties:
+        AttributeDefinitions:
+          - AttributeName: id
+            AttributeType: S
+          - AttributeName: date
+            AttributeType: S
+#          - AttributeName: user_id
+#            AttributeType: string
+        KeySchema:
+          - AttributeName: id
+            KeyType: HASH
+          - AttributeName: date
+            KeyType: RANGE
+        ProvisionedThroughput:
+          ReadCapacityUnits: 1
+          WriteCapacityUnits: 1
+        TableName: ${{self:custom.currentStage}}-crunch-Activity
+        Tags: ${{self:custom.resourceTags}}
+    SsmParamForWeatherApiKey:
+      Type: "AWS::SSM::Parameter"
+      Properties:
+        Name: "${{self:custom.currentStage}}-weather-api-key"
+        Type: "String"
+        Value: "abc123"
+        Description: "SSM Parameter for storing dark sky weather api key"
+    SsmParamForLocationIqKey:
+      Type: "AWS::SSM::Parameter"
+      Properties:
+        Name: "${{self:custom.currentStage}}-location-api-key"
+        Type: "String"
+        Value: "abc123"
+        Description: "SSM Parameter for storing location iq geocoding api key"
+
+
+# attempt to use solution for referencing cf params: https://github.com/serverless/serverless/issues/3212#issuecomment-307341924
+# commented as can't reference variables across regions.
+#    GetActivityLambdaLambdaFunction:
+#      Properties:
+#        AuthorizationType: COGNITO_USER_POOLS
+#        AuthorizerId:
+#          Ref: CognitoAuthorizer
+#    CognitoAuthorizer:
+#      Type: AWS::ApiGateway::Authorizer
+#      Properties:
+#        IdentitySource: method.request.header.Authorization
+#        Name: cognito-authorizer
+#        RestApiId:
+#          Ref: ApiGatewayRestApi
+#        Type: COGNITO_USER_POOLS
+#        ProviderARNs:
+#          - ${{cf:${{self:custom.authStack}}.UserPool}}
+#

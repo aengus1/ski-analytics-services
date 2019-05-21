@@ -1,0 +1,11 @@
+<component name="libraryTable">
+  <library name="Gradle: org.geotools:gt-opengis:16.1">
+    <CLASSES>
+      <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/org.geotools/gt-opengis/16.1/fc50bd5748a8a516f15eeabc22081b88e9bc283b/gt-opengis-16.1.jar!/" />
+    </CLASSES>
+    <JAVADOC />
+    <SOURCES>
+      <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/org.geotools/gt-opengis/16.1/dbfced52c37a206f24bb6b46617bb1975c2687ae/gt-opengis-16.1-sources.jar!/" />
+    </SOURCES>
+  </library>
+</component>

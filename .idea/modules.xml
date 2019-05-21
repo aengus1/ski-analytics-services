@@ -3,8 +3,13 @@
   <component name="ProjectModuleManager">
     <modules>
       <module fileurl="file://$PROJECT_DIR$/.idea/modules/ski-analytics-services.iml" filepath="$PROJECT_DIR$/.idea/modules/ski-analytics-services.iml" />
-      <module fileurl="file://$PROJECT_DIR$/.idea/modules/ski-analytics-services_main.iml" filepath="$PROJECT_DIR$/.idea/modules/ski-analytics-services_main.iml" group="ski-analytics-services" />
-      <module fileurl="file://$PROJECT_DIR$/.idea/modules/ski-analytics-services_test.iml" filepath="$PROJECT_DIR$/.idea/modules/ski-analytics-services_test.iml" group="ski-analytics-services" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/src/api/ski-analytics-services-src_api_test.iml" filepath="$PROJECT_DIR$/.idea/modules/src/api/ski-analytics-services-src_api_test.iml" group="src/api" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/src/api/src_api.iml" filepath="$PROJECT_DIR$/.idea/modules/src/api/src_api.iml" group="src/api" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/src/api/src_api_main.iml" filepath="$PROJECT_DIR$/.idea/modules/src/api/src_api_main.iml" group="src/api" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/src/api/src_api_test.iml" filepath="$PROJECT_DIR$/.idea/modules/src/api/src_api_test.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/src/auth/src_auth.iml" filepath="$PROJECT_DIR$/.idea/modules/src/auth/src_auth.iml" group="src/auth" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/src/auth/src_auth_main.iml" filepath="$PROJECT_DIR$/.idea/modules/src/auth/src_auth_main.iml" group="src/auth" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/src/auth/src_auth_test.iml" filepath="$PROJECT_DIR$/.idea/modules/src/auth/src_auth_test.iml" group="src/auth" />
     </modules>
   </component>
 </project>
