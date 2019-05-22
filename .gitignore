@@ -18,3 +18,5 @@ src/node_modules
 
 # Idea
 .idea/
+ski-analytics-services.iml
+src/layers/gradle/wrapper/gradle-wrapper.properties
