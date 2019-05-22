@@ -1,0 +1,13 @@
+{
+    "version": "2012-02-28",
+    "operation": "PutItem",
+    "key": {
+        "UserId": $util.dynamodb.toDynamoDBJson($ctx.identity.sub)
+    },
+    "attributeValues": {
+        "gender": $util.dynamodb.toDynamoDBJson($ctx.args.gender),
+        "height": $util.dynamodb.toDynamoDBJson($ctx.args.height)
+        "weight": $util.dynamodb.toDynamoDBJson($ctx.args.weight)
+        "hrZones: $util.dynamodb.toDynamoDBJson($ctx.args.hrZones)
+    }
+}

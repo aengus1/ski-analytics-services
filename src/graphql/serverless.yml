@@ -1,0 +1,145 @@
+## This Stack depends on auth-stack
+service: graphql
+tenant: aengus
+app: ski-analytics
+
+plugins:
+  - serverless-appsync-plugin
+
+custom:
+  currentStage: ${{opt:stage, self:provider.stage}}
+  domainName: crunch.ski
+  userTable:  ${{self:custom.currentStage}}-crunch-User
+  userTableDSName: ${{self:custom.currentStage}}_crunch_UserTable_DS
+  authStackName: ${{self:custom.currentStage}}-ski-analytics-authentication-stack
+  resourceTags:
+    - Key: "project"
+      Value: "ski-analytics"
+    - Key: "module"
+      Value: "graphql"
+  appSync:
+    name: ${{self:custom.currentStage}}-appsync-api
+    authenticationType: "AMAZON_COGNITO_USER_POOLS"
+    userPoolConfig:
+      userPoolId:
+        Fn::ImportValue:
+          Fn::Sub: ${{self:custom.authStackName}}-UserPoolArn
+      awsRegion: ${{self:provider.region}}
+      defaultAction: "ALLOW"
+#    logConfig:
+#      loggingRoleArn: { Fn::GetAtt: [AppSyncLoggingServiceRole, Arn] } # Where AppSyncLoggingServiceRole is a role with CloudWatch Logs write access
+#      level: ERROR # Logging Level: NONE | ERROR | ALL
+    mappingTemplatesLocation: mapping-templates
+    mappingTemplates:
+      - dataSource: ${{self:custom.userTableDSName}}
+        type: Query
+        field: getUser
+        request: get-user-settings-request-template.vtl
+        response: generic-response-template.vtl
+      - dataSource: ${{self:custom.userTableDSName}}
+        type: Mutation
+        field: addUser
+        request: add-user-settings-request-template.vtl
+        response: generic-response-template.vtl
+      - dataSource: ${{self:custom.userTableDSName}}
+        type: Mutation
+        field: saveHeight
+        request: save-height-request-template.vtl
+        response: generic-response-template.vtl
+      - dataSource: ${{self:custom.userTableDSName}}
+        type: Mutation
+        field: saveWeight
+        request: save-weight-request-template.vtl
+        response: generic-response-template.vtl
+      - dataSource: ${{self:custom.userTableDSName}}
+        type: Mutation
+        field: saveGender
+        request: save-gender-request-template.vtl
+        response: generic-response-template.vtl
+      - dataSource: ${{self:custom.userTableDSName}}
+        type: Mutation
+        field: saveHrZones
+        request: save-hrzones-request-template.vtl
+        response: generic-response-template.vtl
+    schema: schema.graphql
+    dataSources:
+      - type: AMAZON_DYNAMODB
+        name: ${{self:custom.userTableDSName}}
+        description: "user settings table"
+        config:
+          tableName: ${{self:custom.userTable}}
+          serviceRoleArn: { Fn::GetAtt: [DynamoDBRole, Arn] } # Where AppSyncDynamoDBServiceRole is an IAM role defined in Resources
+          region: ${{self:provider.region}}
+
+provider:
+  name: aws
+  runtime: java8
+  variableSyntax: "\\${{([ ~:a-zA-Z0-9._\\'\",\\-\\/\\(\\)]+?)}}" # notice the double quotes for yaml to ignore the escape characters!
+  region: us-west-2
+  stage: staging
+  stackName: ${{self:custom.currentStage}}-ski-analytics-graphql-stack
+  iamRoleStatements:
+    - Effect: Allow
+      Action:
+        - dynamodb:Query
+        - dynamodb:Scan
+        - dynamodb:GetItem
+        - dynamodb:PutItem
+        - dynamodb:UpdateItem
+        - dynamodb:DeleteItem
+      Resource: "arn:aws:dynamodb:${{opt:region, self:provider.region}}:*:table/${{self:custom.userTable}}"
+
+resources:
+  Resources:
+    DynamoDBRole:
+      Type: AWS::IAM::Role
+      Properties:
+        AssumeRolePolicyDocument:
+          Version: "2012-10-17"
+          Statement:
+            - Effect: Allow
+              Action:
+                - sts:AssumeRole
+              Principal:
+                Service:
+                  - appsync.amazonaws.com
+        RoleName: ${{self:custom.currentStage}}-appsync-dynamodb-role
+        ManagedPolicyArns:
+          - Ref: AppSyncDynamoDBPolicy
+
+      DependsOn:
+        - AppSyncDynamoDBPolicy
+    AppSyncDynamoDBPolicy:
+      Type: AWS::IAM::ManagedPolicy
+      Properties:
+        Description: "Managed policy to allow AWS AppSync to access the tables created by this template."
+        Path: /appsync/
+        PolicyDocument:
+          Version: "2012-10-17"
+          Statement:
+            - Effect: Allow
+              Action:
+                - dynamodb:GetItem
+                - dynamodb:PutItem
+                - dynamodb:DeleteItem
+                - dynamodb:UpdateItem
+                - dynamodb:Query
+                - dynamodb:Scan
+                - dynamodb:BatchGetItem
+                - dynamodb:BatchWriteItem
+              Resource:  "arn:aws:dynamodb:${{opt:region, self:provider.region}}:*:table/${{self:custom.userTable}}"
+    DynamoTableForUser:
+      Type: AWS::DynamoDB::Table
+      DeletionPolicy: Retain
+      Properties:
+        AttributeDefinitions:
+          - AttributeName: id
+            AttributeType: S
+        KeySchema:
+          - AttributeName: id
+            KeyType: HASH
+        ProvisionedThroughput:
+          ReadCapacityUnits: 1
+          WriteCapacityUnits: 1
+        TableName: ${{self:custom.userTable}}
+        Tags: ${{self:custom.resourceTags}}

@@ -5,6 +5,10 @@
 /.settings/
 .project
 .classpath
+src/node_modules
+src/**/build/*
+src/**/.gradle/*
+src/**/out/*
 
 # Package Files
 *.jar
@@ -14,3 +18,7 @@
 # Serverless directories
 .serverless
 
+# Idea
+.idea/
+ski-analytics-services.iml
+src/layers/gradle/wrapper/gradle-wrapper.properties
