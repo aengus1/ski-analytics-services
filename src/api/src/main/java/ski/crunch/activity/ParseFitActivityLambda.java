@@ -4,24 +4,10 @@ import com.amazonaws.AmazonClientException;
 import com.amazonaws.auth.DefaultAWSCredentialsProviderChain;
 import com.amazonaws.services.lambda.runtime.Context;
 import com.amazonaws.services.lambda.runtime.RequestHandler;
-import org.apache.http.client.CredentialsProvider;
 import org.apache.log4j.Logger;
-import ski.crunch.activity.model.ActivityOuterClass;
-import ski.crunch.activity.model.ApiGatewayResponse;
-import ski.crunch.activity.parser.ActivityHolderAdapter;
-import ski.crunch.activity.parser.fit.FitActivityHolderAdapter;
-import ski.crunch.activity.processor.ActivityProcessor;
-import ski.crunch.activity.processor.model.ActivityHolder;
-import ski.crunch.activity.processor.summarizer.ActivitySummarizer;
+import ski.crunch.utils.ApiGatewayResponse;
 import ski.crunch.activity.service.*;
-import ski.crunch.utils.ConvertibleOutputStream;
-import ski.crunch.utils.ErrorResponse;
-import ski.crunch.utils.LambdaProxyConfig;
-import ski.crunch.utils.ParseException;
 
-
-import java.io.IOException;
-import java.io.InputStream;
 
 import java.util.*;
 

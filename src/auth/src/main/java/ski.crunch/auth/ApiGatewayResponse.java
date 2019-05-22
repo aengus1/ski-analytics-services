@@ -1,4 +1,4 @@
-package ski.crunch.activity.model;
+package ski.crunch.auth;
 
 import java.nio.charset.StandardCharsets;
 import java.util.Base64;

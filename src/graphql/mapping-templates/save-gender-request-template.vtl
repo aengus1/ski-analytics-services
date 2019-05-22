@@ -1,10 +1,13 @@
 {
-    "version": "2012-02-28",
-    "operation": "PutItem",
-    "key": {
-        "UserId": $util.dynamodb.toDynamoDBJson($ctx.identity.sub)
-    },
-    "attributeValues": {
-        "gender": $util.dynamodb.toDynamoDBJson($ctx.args.gebder)
-    }
+"version": "2017-02-28",
+"operation": "UpdateItem",
+"key": {
+"id": $util.dynamodb.toDynamoDBJson($ctx.identity.sub)
+},
+"update" : {
+"expression" : "SET gender= :gender",
+"expressionValues" : {
+":gender" :  $util.dynamodb.toDynamoDBJson($ctx.args.gender)
+}
+}
 }

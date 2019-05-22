@@ -8,7 +8,6 @@ import com.amazonaws.services.dynamodbv2.document.Table;
 import com.amazonaws.services.dynamodbv2.document.spec.DeleteItemSpec;
 import com.amazonaws.services.dynamodbv2.model.AttributeValue;
 import com.amazonaws.services.lambda.runtime.Context;
-import com.amazonaws.services.s3.model.ObjectListing;
 import com.amazonaws.util.Base64;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -19,13 +18,12 @@ import ski.crunch.activity.ActivityWriterImpl;
 //import ski.crunch.activity.model.ActivityItem;
 import ski.crunch.model.ActivityItem;
 import ski.crunch.activity.model.ActivityOuterClass;
-import ski.crunch.activity.model.ApiGatewayResponse;
+import ski.crunch.utils.ApiGatewayResponse;
 import ski.crunch.activity.model.PutActivityResponse;
 import ski.crunch.activity.parser.ActivityHolderAdapter;
 import ski.crunch.activity.parser.fit.FitActivityHolderAdapter;
 import ski.crunch.activity.processor.ActivityProcessor;
 import ski.crunch.activity.processor.model.ActivityHolder;
-import ski.crunch.activity.processor.summarizer.ActivitySummarizer;
 import ski.crunch.utils.*;
 
 
