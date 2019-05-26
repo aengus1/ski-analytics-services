@@ -301,7 +301,6 @@ public class ActivityService {
             ConvertibleOutputStream cos = new ConvertibleOutputStream();
             result.writeTo(cos);
             System.out.println("processed bucket = " + s3ProcessedActivityBucket);
-            //TODO -> getting access denied ex
             s3Service.putObject(s3ProcessedActivityBucket, newKey, cos.toInputStream());
 
             //6. update activity table

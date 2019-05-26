@@ -12,6 +12,7 @@ public class UserSettingsItem {
     private int height;
     private int weight;
     private List<Integer> hrZones;
+    private String connectionId;
 
 
     @DynamoDBHashKey(attributeName = "id")
@@ -58,10 +59,14 @@ public class UserSettingsItem {
         return hrZones;
     }
 
+    @DynamoDBAttribute(attributeName= "connectionId")
+    public String getConnectionId() { return connectionId; }
+
     public void setHrZones(List<Integer> hrZones) {
         this.hrZones = hrZones;
     }
 
+    public void setConnectionId(String connectionId) {this.connectionId = connectionId;}
 
 }
 

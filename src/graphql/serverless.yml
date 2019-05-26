@@ -67,7 +67,10 @@ custom:
         name: ${{self:custom.userTableDSName}}
         description: "user settings table"
         config:
-          tableName: ${{self:custom.userTable}}
+#          tableName: ${{self:custom.userTable}}
+          tableName:
+            Fn::ImportValue:
+              Fn::Sub: ${{self:custom.authStackName}}-UserTableName
           serviceRoleArn: { Fn::GetAtt: [DynamoDBRole, Arn] } # Where AppSyncDynamoDBServiceRole is an IAM role defined in Resources
           region: ${{self:provider.region}}
 
@@ -143,18 +146,4 @@ resources:
                 - dynamodb:BatchGetItem
                 - dynamodb:BatchWriteItem
               Resource:  "arn:aws:dynamodb:${{opt:region, self:provider.region}}:*:table/${{self:custom.userTable}}"
-    DynamoTableForUser:
-      Type: AWS::DynamoDB::Table
-      DeletionPolicy: Retain
-      Properties:
-        AttributeDefinitions:
-          - AttributeName: id
-            AttributeType: S
-        KeySchema:
-          - AttributeName: id
-            KeyType: HASH
-        ProvisionedThroughput:
-          ReadCapacityUnits: 1
-          WriteCapacityUnits: 1
-        TableName: ${{self:custom.userTable}}
-        Tags: ${{self:custom.resourceTags}}
+
