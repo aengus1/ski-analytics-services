@@ -14,6 +14,11 @@ provider:
   iamRoleStatements:
     - Effect: Allow
       Action:
+        - "execute-api:ManageConnections"
+      Resource:
+        - "arn:aws:execute-api:*:*:**/@connections/*"
+    - Effect: Allow
+      Action:
         - dynamodb:Query
         - dynamodb:Scan
         - dynamodb:GetItem
@@ -22,6 +27,9 @@ provider:
         - dynamodb:DeleteItem
       Resource: "arn:aws:dynamodb:${{opt:region, self:provider.region}}:*:table/${{self:custom.userTable}}"
   websocketsApiName: ${{self:custom.currentStage}}-ski-analytics-ws
+  websocketsApiRouteSelectionExpression: $request.body.action
+#  logs:
+#    websocket: true
 
 
 custom:
@@ -47,20 +55,26 @@ functions:
   # web socket connection for client callbacks
   connectionHandler:
     handler: ski.crunch.auth.InitWebSocketHandler
+    environment:
+      userTable: ${{self:custom.userTable}}
     events:
       - websocket:
           route: $connect
           authorizer: wsAuth
           identitySource:
-            - 'route.request.header.Auth'
-            - 'route.request.querystring.Auth'
+            - 'route.request.querystring.token'
       - websocket:
           route: $disconnect
       - websocket:
           route: $default
           handler: ski.crunch.auth.DefaultWebSocketHandler
+    # custom authorizer for websocket (cognito auth not yet supported with apig ws)
   wsAuth:
     handler: ski.crunch.auth.CustomWsAuthorizer
+    environment:
+      appClientId: ${{cf:${{self:provider.stackName}}.UserPoolClientId}}
+      userPoolId: ${{cf:${{self:provider.stackName}}.UserPoolArn}}
+      region: ${{self:provider.region}}
 
 
 

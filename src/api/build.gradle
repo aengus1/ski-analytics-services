@@ -6,7 +6,6 @@ plugins {
 }
 
 
-
 dependencies {
     compile (
             'org.scala-lang:scala-library:2.11.12',
@@ -77,7 +76,15 @@ test {
 
     // workingDir = new File('src/test/')
 }
-
+/**
+ * To get joint compilation, you have to add some Java sources to the “scala” source directory set, 
+ * and at the same time take them away from the “java” source directory set. For example, 
+ * inif you want everything to be joint-compiled, do this:
+ *
+ * sourceSets.main.scala.srcDir "src/main/java"
+ * sourceSets.main.java.srcDirs = []
+ * Now both the Scala and Java code will be compiled by the compileScala task.
+ */
 sourceSets {
     main {
         scala {
