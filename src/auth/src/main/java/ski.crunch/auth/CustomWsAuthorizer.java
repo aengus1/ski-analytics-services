@@ -38,7 +38,6 @@ public class CustomWsAuthorizer implements RequestHandler<Map<String, Object>, M
     private static final ObjectMapper objectMapper = new ObjectMapper();
     private HttpGet httpGet = null;
     private String userPoolId = System.getenv("userPoolId");
-    private String appClientId = System.getenv("appClientId");
     private CloseableHttpClient httpClient = HttpClients.createDefault();
     private String region = System.getenv("region");
     private String effect = "";
@@ -51,7 +50,6 @@ public class CustomWsAuthorizer implements RequestHandler<Map<String, Object>, M
 
     public CustomWsAuthorizer(Map<String, String> environment) {
         this.userPoolId = environment.get("userPoolId");
-        this.appClientId = environment.get("appClientId");
         this.region = environment.get("region");
     }
 
@@ -85,14 +83,14 @@ public class CustomWsAuthorizer implements RequestHandler<Map<String, Object>, M
 
 
         // build the policy response
-        Map<String, Object>  authResponse = buildAuthPolicyResponse(authorizationToken, methodArn);
+        Map<String, Object> authResponse = buildAuthPolicyResponse(authorizationToken, methodArn);
 
 
         return authResponse;
     }
 
 
-    private Map<String, Object> buildAuthPolicyResponse( String authorizationToken, String methodArn) {
+    private Map<String, Object> buildAuthPolicyResponse(String authorizationToken, String methodArn) {
         Map<String, Object> authResponse = new HashMap<>();
         try {
             DecodedJWT jwt = JWT.decode(authorizationToken);
@@ -104,17 +102,11 @@ public class CustomWsAuthorizer implements RequestHandler<Map<String, Object>, M
             String principalId = jwt.getSubject();
 
             String[] arnPartials = methodArn.split(":");
-            //String principalId = arnPartials[4];
             String reg = arnPartials[3];
             String awsAccountId = arnPartials[4];
             String[] apiGatewayArnPartials = arnPartials[5].split("/");
             String restApiId = apiGatewayArnPartials[0];
             String stag = apiGatewayArnPartials[1];
-            String httpMethod = apiGatewayArnPartials[2];
-            String rootResource = ""; // root resource
-            if (apiGatewayArnPartials.length == 4) {
-                rootResource = apiGatewayArnPartials[3];
-            }
 
 
             authResponse.put("principalId", principalId);
@@ -129,9 +121,9 @@ public class CustomWsAuthorizer implements RequestHandler<Map<String, Object>, M
             Map<String, Object> context = new HashMap<>();
             context.put("cognito:username", cognitoId);
             authResponse.put("context", context);
-            
-            
-            if(LOGGER.isDebugEnabled()) {
+
+
+            if (LOGGER.isDebugEnabled()) {
                 LOGGER.debug(authResponse.keySet().stream().collect(Collectors.joining(",")));
                 for (String s : authResponse.keySet()) {
                     LOGGER.debug(s + " : " + authResponse.get(s));
@@ -204,7 +196,7 @@ public class CustomWsAuthorizer implements RequestHandler<Map<String, Object>, M
 
     private String compareLocalKidToPublicKids(String authorizationToken, List<String> publicKeys) {
         // compare the local key id to the public key id
-        String kid =  null;
+        String kid = null;
         try {
             DecodedJWT decodedJwt = JWT.decode(authorizationToken);
             Base64.Decoder decoder = Base64.getUrlDecoder();
@@ -212,9 +204,9 @@ public class CustomWsAuthorizer implements RequestHandler<Map<String, Object>, M
             String decodedPayload = new String(decoder.decode(decodedJwt.getPayload()));
             JsonNode claims = objectMapper.readTree(decodedPayload);
             Iterator claimsIt = claims.fields();
-            while(claimsIt.hasNext()) {
+            while (claimsIt.hasNext()) {
                 Map.Entry next = (Map.Entry) claimsIt.next();
-                if (next.getKey().equals("cognito:username")){
+                if (next.getKey().equals("cognito:username")) {
                     this.cognitoId = ((TextNode) next.getValue()).asText();
                 }
 
@@ -227,12 +219,10 @@ public class CustomWsAuthorizer implements RequestHandler<Map<String, Object>, M
             while (it.hasNext()) {
                 Map.Entry next = ((Map.Entry) it.next());
                 System.out.println(next.getKey() + ": " + next.getValue());
-                if (next.getKey().equals("kid")) {
-                    if (publicKeys.contains(next.getValue())) {
-                        kid = (String) next.getValue();
-                        LOGGER.debug("verified matching kid");
-                        break;
-                    }
+                if (next.getKey().equals("kid") && publicKeys.contains(next.getValue())) {
+                    kid = (String) next.getValue();
+                    LOGGER.debug("verified matching kid");
+                    break;
                 }
             }
         } catch (IOException ex) {
@@ -265,7 +255,7 @@ public class CustomWsAuthorizer implements RequestHandler<Map<String, Object>, M
             }
         } catch (IOException ex) {
             LOGGER.error("IO Exception occurred fetching public key from "
-                    + jwksEndpoint.toString() + "," +  CustomWsAuthorizer.stackTraceToString(ex));
+                    + jwksEndpoint.toString() + "," + CustomWsAuthorizer.stackTraceToString(ex));
             return null;
         }
         return publicKeys;

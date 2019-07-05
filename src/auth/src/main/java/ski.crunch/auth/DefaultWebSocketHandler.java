@@ -1,34 +1,11 @@
 package ski.crunch.auth;
 
 import com.amazonaws.services.lambda.runtime.Context;
-import com.amazonaws.services.lambda.runtime.RequestHandler;
 import com.amazonaws.services.lambda.runtime.RequestStreamHandler;
 
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
-import java.util.Map;
-
-//public class DefaultWebSocketHandler implements RequestHandler<Map<String, Object>, String> {
-//    @Override
-//    public String handleRequest(Map<String, Object> input, Context context) {
-//        String connId = null;
-//        for (String s : input.keySet()) {
-//            System.out.println("key = " + s);
-//
-//            if(s.equals("requestContext")){
-//                Map res = (Map) input.get("requestContext");
-//                for (Object o : res.keySet()) {
-//                    System.out.println("r = " + o);
-//                    if(o.equals("connectionId")){
-//                        connId = (String) res.get("connectionId");
-//                    }
-//                }
-//            }
-//        }
-//        System.out.println("connection id = " + connId);
-//        return null;
-//    }
 
 public class DefaultWebSocketHandler implements RequestStreamHandler {
     @Override
