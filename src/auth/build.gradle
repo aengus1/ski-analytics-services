@@ -15,7 +15,10 @@ dependencies {
             'com.amazonaws:aws-java-sdk-dynamodb:1.11.166',
             'com.fasterxml.jackson.core:jackson-core:2.8.5',
             'com.fasterxml.jackson.core:jackson-databind:2.8.5',
-            'com.fasterxml.jackson.core:jackson-annotations:2.8.5'
+            'com.fasterxml.jackson.core:jackson-annotations:2.8.5',
+            'com.amazonaws:aws-java-sdk-apigatewaymanagementapi:1.11.477',
+            'com.auth0:java-jwt:3.8.0',
+            'com.auth0:jwks-rsa:0.8.2'
     )
 }
 
