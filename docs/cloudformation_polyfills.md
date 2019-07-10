@@ -14,7 +14,8 @@ previous step, adding an identity policy to the email domain that allows cognito
  a custom FROM email in the cognito stack (currently not supported by CF).
 - Had to manually change 'do you want to remember your users devices to 'no' in cognito UI.  Find a way to do this 
 through cloudformation
-
+- Had to manually change the websocket authorizer (wsAuth) identity source to token.  It defaults to header and appears
+to be ignoring the value provided in serverless.yml
 
 ### API Stack
 - reference the cognito user pool ARN from the auth stack, to be used as an authorizer for the getActivityLambda 
