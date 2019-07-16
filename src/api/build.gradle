@@ -1,4 +1,3 @@
-
 plugins {
     id 'scala'
     id 'java'
@@ -6,8 +5,46 @@ plugins {
 }
 
 
+/**
+ * To get joint compilation, you have to add some Java sources to the “scala” source directory set,
+ * and at the same time take them away from the “java” source directory set. For example,
+ * inif you want everything to be joint-compiled, do this:
+ *
+ * sourceSets.main.scala.srcDir "src/main/java"
+ * sourceSets.main.java.srcDirs = []
+ * Now both the Scala and Java code will be compiled by the compileScala task.
+ */
+sourceSets {
+    main {
+        scala {
+            srcDirs = ['src/main/scala', 'src/main/java']
+        }
+        java {
+            srcDirs = []
+        }
+    }
+    integrationTest {
+        scala {
+            compileClasspath += main.output + test.output
+            runtimeClasspath += main.output + test.output
+            srcDirs = ['src/integration-test/scala', 'src/integration-test/java']
+        }
+        java {
+            compileClasspath += sourceSets.main.output + configurations.testCompile
+            runtimeClasspath += sourceSets.main.output + compileClasspath + configurations.testCompile
+            srcDirs = ['src/integration-test/java']
+        }
+        resources.srcDir file('src/integration-test/resources')
+    }
+}
+
+configurations {
+    integrationTestCompile.extendsFrom testCompile
+    integrationTestRuntime.extendsFrom testRuntime
+}
+
 dependencies {
-    compile (
+    compile(
             'org.scala-lang:scala-library:2.11.12',
             'com.amazonaws:aws-lambda-java-core:1.1.0',
             'com.amazonaws:aws-java-sdk-s3:1.11.510',
@@ -23,10 +60,11 @@ dependencies {
             'commons-io:commons-io:2.5',
             "com.vividsolutions:jts:1.13",
             "org.geotools:gt-main:16.1",
-            "org.geotools:gt-epsg-hsql:16.1"
+            "org.geotools:gt-epsg-hsql:16.1",
+            //project(':layers')
 
     )
-    compile project(':src/layers')
+    //compile project(':layers')
 
     testImplementation(
             'org.scalatest:scalatest_2.11:3.0.0',
@@ -35,11 +73,19 @@ dependencies {
             'org.glassfish.jersey.core:jersey-client:2.5.1',
             'com.fasterxml.jackson.core:jackson-core:2.9.7',
             'org.mockito:mockito-all:1.10.19'
-
-
-
     )
     testRuntimeOnly(
+            'org.junit.jupiter:junit-jupiter-engine:5.1.0'
+    )
+    integrationTestCompile(
+            'org.scalatest:scalatest_2.11:3.0.0',
+            'org.junit.jupiter:junit-jupiter-api:5.1.0',
+            // https://mvnrepository.com/artifact/com.sun.jersey/jersey-client
+            'org.glassfish.jersey.core:jersey-client:2.5.1',
+            'com.fasterxml.jackson.core:jackson-core:2.9.7',
+            'org.mockito:mockito-all:1.10.19'
+    )
+    integrationTestRuntime(
             'org.junit.jupiter:junit-jupiter-engine:5.1.0'
     )
 }
@@ -63,7 +109,7 @@ test {
 
     // listen to events in the test execution lifecycle
     beforeTest { descriptor ->
-        logger.lifecycle("Running test: " + descriptor)
+        logger.lifecycle("Running test:  $descriptor")
     }
 
     // Fail the 'test' task on the first test failure
@@ -71,30 +117,12 @@ test {
 
     // listen to standard out and standard error of the test JVM(s)
     onOutput { descriptor, event ->
-        logger.lifecycle("Test: " + descriptor + " produced standard out/err: " + event.message )
+        logger.lifecycle("Test: " + descriptor + " produced standard out/err: " + event.message)
     }
 
     // workingDir = new File('src/test/')
 }
-/**
- * To get joint compilation, you have to add some Java sources to the “scala” source directory set, 
- * and at the same time take them away from the “java” source directory set. For example, 
- * inif you want everything to be joint-compiled, do this:
- *
- * sourceSets.main.scala.srcDir "src/main/java"
- * sourceSets.main.java.srcDirs = []
- * Now both the Scala and Java code will be compiled by the compileScala task.
- */
-sourceSets {
-    main {
-        scala {
-            srcDirs = ['src/main/scala', 'src/main/java']
-        }
-        java {
-            srcDirs = []
-        }
-    }
-}
+
 
 jacoco {
     toolVersion = "0.8.2"
@@ -102,21 +130,77 @@ jacoco {
 
 }
 
+jacocoTestCoverageVerification {
+//    afterEvaluate {
+//        classDirectories = files(classDirectories.files.collect {
+//            fileTree(dir: it, exclude:  [
+//                    'com/garmin/fit/**',
+//                    'ski/crunch/activity/model/*'
+//            ])
+//        })
+//    }
+}
 jacocoTestReport {
     reports {
-        xml.enabled false
-        csv.enabled false
+        xml.enabled = true
+        csv.enabled = false
         html.destination file("${buildDir}/coverage/")
     }
 
+
     afterEvaluate {
         classDirectories = files(classDirectories.files.collect {
-            fileTree(dir: it, exclude: '**/com/garmin/*')
-            fileTree(dir: it, exclude: '**/ski/crunch/activity/model/ActivityOuterClass/*')
+            fileTree(dir: it, exclude: ['com/garmin/**', 'ski/crunch/activity/model/**'])
         })
     }
 }
 
+
+task integrationTest(type: Test) {
+
+    useJUnitPlatform()
+    // explicitly include or exclude tests
+    include 'ski/crunch/**'
+
+
+    // show standard out and standard error of the test JVM(s) on the console
+    testLogging.showStandardStreams = true
+
+    // set heap size for the test JVM(s)
+    minHeapSize = "128m"
+    maxHeapSize = "512m"
+
+    // set JVM arguments for the test JVM(s)
+    jvmArgs '-XX:MaxPermSize=256m'
+
+    // listen to events in the test execution lifecycle
+    beforeTest { descriptor ->
+        logger.lifecycle("Running integration test: " + descriptor)
+    }
+
+    // Fail the 'test' task on the first test failure
+    failFast = true
+
+    // listen to standard out and standard error of the test JVM(s)
+    onOutput { descriptor, event ->
+        logger.lifecycle(event.message)
+    }
+
+
+    description = 'Runs the integration tests.'
+    group = 'verification'
+    testClassesDirs = sourceSets.integrationTest.output
+    classpath = sourceSets.integrationTest.runtimeClasspath
+    outputs.upToDateWhen { false }
+}
+
+check.dependsOn integrationTest
+integrationTest.mustRunAfter test
+test.finalizedBy jacocoTestReport
+
+/**
+ * Builds the zip file for upload to AWS
+ */
 task buildZip(type: Zip) {
     baseName = "api"
     from compileJava
@@ -129,6 +213,16 @@ task buildZip(type: Zip) {
 }
 
 build.dependsOn buildZip
+/**
+ * Deploys the build to the staging environment
+ */
+task deployStaging(type: Exec) {
+    environment 'PATH', "${environment.PATH}:/usr/local/bin"
+
+    commandLine 'sls', 'deploy', '-v'
+}
+deployStaging.dependsOn build
+
 
 task wrapper(type: Wrapper) {
     gradleVersion = '3.5'

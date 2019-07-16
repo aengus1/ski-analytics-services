@@ -1,9 +1,13 @@
 package ski.crunch.activity.service;
 
 
+import com.amazonaws.services.s3.model.Bucket;
 import com.amazonaws.services.s3.model.ObjectListing;
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
+
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 public class S3ServiceTest extends  AbstractIntegrationTest {
 
@@ -16,21 +20,22 @@ public class S3ServiceTest extends  AbstractIntegrationTest {
     }
 
     @Test
-    public void testListBucket(){
-        this.service.getS3Client().listBuckets().stream().map(x -> x.getName()).forEach(System.out::println);
+    void testListBucket(){
+        this.service.getS3Client().listBuckets().stream().map(Bucket::getName).forEach(System.out::println);
     }
 
     @Test
-    public void listActivityBucket(){
+     void listActivityBucket(){
         ObjectListing listing = this.service.getS3Client().listObjects("activity-staging.crunch.ski");
         listing.getObjectSummaries().stream().map(x -> x.getKey()).forEach(System.out::println);
     }
 
+    @Disabled
     @Test
-    public void doesObjectExist(){
+     public void doesObjectExist(){
 
         boolean exists = this.service.getS3Client().doesObjectExist("activity-staging.crunch.ski", "b9a90594-b8aa-4440-8ab0-c786924e1d7.pbf");
-        assert(exists==true);
+        assertTrue(exists);
 
     }
 }

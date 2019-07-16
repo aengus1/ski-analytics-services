@@ -68,7 +68,7 @@ public class RecordMessageListener  extends AbstractMesgListener implements Reco
                 }
                 if (field.getName().equals("cadence")) {
                     cad = (int) ((short) field.getValue());
-                    logger.info("cadence: " + cad);
+                    logger.debug("cadence: " + cad);
                 }
                 if (field.getName().equals("temperature")) {
                     temp = (int) (byte) field.getValue();

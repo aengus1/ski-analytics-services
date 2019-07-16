@@ -1,13 +1,9 @@
 service: api
-tenant: aengus
-app: ski-analytics
+#tenant: aengus
+#app: ski-analytics
 
 plugins:
   - serverless-apigw-binary
-
-# You can pin your service to only deploy with a specific Serverless version
-# Check out our docs for more details
-# frameworkVersion: "=X.X.X"
 
 custom:
   currentStage: ${{opt:stage, self:provider.stage}}
@@ -113,7 +109,9 @@ functions:
             ### use in test harness
     Tags: ${{self:custom.resourceTags}}
     layers:
-      - arn:aws:lambda:ca-central-1:556823078430:layer:staging-layer-model:2
+      Fn::ImportValue:
+        Fn::Join: ['', ModelLambdaLayer]
+    #- arn:aws:lambda:ca-central-1:556823078430:layer:staging-layer-model:3
 
   PutActivityLambda:
     handler: ski.crunch.activity.PutActivityHandler
@@ -138,6 +136,11 @@ functions:
             - Access-Control-Allow-Origin
         authorizer:
           arn: arn:aws:cognito-idp:us-west-2:556823078430:userpool/us-west-2_FrH0UdrNz
+    Tags: ${{self:custom.resourceTags}}
+    layers:
+      Fn::ImportValue:
+        Fn::Join: ['', ModelLambdaLayer]
+
   ParseFitActivityLambda:
     handler: ski.crunch.activity.ParseFitActivityLambda
     memorySize: 1256
@@ -152,6 +155,10 @@ functions:
        event: s3:ObjectCreated:*
        rules:
            - suffix: .fit
+    Tags: ${{self:custom.resourceTags}}
+    layers:
+      Fn::ImportValue:
+        Fn::Join: ['', ModelLambdaLayer]
 
 resources:
   Resources:

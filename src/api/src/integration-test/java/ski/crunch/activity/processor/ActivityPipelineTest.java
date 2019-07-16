@@ -9,36 +9,36 @@ import scala.ski.crunch.activity.processor.model.ActivityRecord;
 import ski.crunch.activity.ActivityWriter;
 import ski.crunch.activity.ActivityWriterImpl;
 import ski.crunch.activity.model.ActivityOuterClass;
+import ski.crunch.activity.parser.ActivityHolderAdapter;
+import ski.crunch.activity.parser.fit.FitActivityHolderAdapter;
 import ski.crunch.activity.processor.model.ActivityEvent;
 import ski.crunch.activity.processor.model.ActivityHolder;
 import ski.crunch.activity.processor.model.EventType;
-import ski.crunch.activity.parser.ActivityHolderAdapter;
-import ski.crunch.activity.parser.fit.FitActivityHolderAdapter;
-
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertTrue;
+import ski.crunch.utils.ParseException;
 
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
-import ski.crunch.utils.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
 public class ActivityPipelineTest {
 
     private static final Logger LOG = Logger.getLogger(ActivityPipelineTest.class);
     private static final SimpleDateFormat targetFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss");
-    ;
-    public static String testFile = "261217.fit";
-    public static String pauseTest = "interval_test.fit";
-    public static String multisport = "multisport.fit";
-    public static String pauseTestGarmin = "garmin_test.fit";
-    public static String lapTestGarmin = "garmin_1.fit";
+
+    private static final String testFile = "261217.fit";
+    private static final String pauseTest = "interval_test.fit";
+    private static final String multisport = "multisport.fit";
+    private static final String pauseTestGarmin = "garmin_test.fit";
+    // private static final String lapTestGarmin = "garmin_1.fit";
     private PipelineManager<ActivityHolder> manager = new PipelineManager<>();
 
     @BeforeAll
@@ -49,7 +49,7 @@ public class ActivityPipelineTest {
     }
 
     @Test
-    public void testIsSorted() {
+    void testIsSorted() {
         ActivityHolder activity = setupActivity(testFile);
         try {
             for (int i = 0; i < activity.getRecords().size() - 1; i++) {
@@ -58,7 +58,7 @@ public class ActivityPipelineTest {
                                 < targetFormat.parse(activity.getRecords().get(i + 1).ts()).getTime()
                 );
             }
-        } catch (java.text.ParseException ex) {
+        } catch (Exception ex) {
             ex.printStackTrace();
             assert (false);
         }
@@ -72,7 +72,7 @@ public class ActivityPipelineTest {
      * 3. assert that new record is created when no matching ts exists
      */
     @Test
-    public void testCreateHrv() {
+    void testCreateHrv() {
         ActivityHolder activity = setupActivity(testFile);
         activity.getRecords().add(ActivityRecord.NullConstructorWithTsAndHrv("2016-12-26T11:59:00", 0.400));
         activity.getRecords().add(ActivityRecord.NullConstructorWithTsAndHrv("2016-12-26T12:00:00", -999));
@@ -99,7 +99,7 @@ public class ActivityPipelineTest {
     }
 
     @Test
-    public void mergeDuplicatesTest() {
+    void mergeDuplicatesTest() {
         ActivityHolder activity = setupActivity(testFile);
 
         activity.getRecords().add(ActivityRecord.NullConstructorWithTsAndHrv("2016-12-26T11:59:00", 0.400));
@@ -107,7 +107,7 @@ public class ActivityPipelineTest {
         activity.getRecords().add(ActivityRecord.NullConstructorWithTsAndHrv("2016-12-26T11:59:00", -999));
 
 
-        List<ActivityRecord> initRecords = new ArrayList<ActivityRecord>();
+        List<ActivityRecord> initRecords = new ArrayList<>();
         for (ActivityRecord record : activity.getRecords()) {
             if (record.ts().equals("2016-12-26T11:59:00")) {
                 initRecords.add(record);
@@ -120,7 +120,7 @@ public class ActivityPipelineTest {
         manager.addHandler(mergeDuplicateRecordHandler);
         manager.doPipeline(activity);
 
-        List<ActivityRecord> records = new ArrayList<ActivityRecord>();
+        List<ActivityRecord> records = new ArrayList<>();
         for (ActivityRecord record : activity.getRecords()) {
             if (record.ts().equals("2016-12-26T11:59:00")) {
                 records.add(record);
@@ -128,7 +128,7 @@ public class ActivityPipelineTest {
         }
 
         assertTrue(records.size() == 1);
-        double expected = (0.4 + 0.7) / 2;
+//        double expected = (0.4 + 0.7) / 2;
 //        System.out.println("expected = " + expected);
 //        System.out.println("actual = " + records.get(0).hrv());
         assertEquals(records.get(0).hrv(), (0.4 + 0.7) / 2);
@@ -136,12 +136,24 @@ public class ActivityPipelineTest {
 
 
     @Test
-    public void replaceNullTest() {
+    void replaceNullTest() {
         ActivityHolder activity = setupActivity(testFile);
 
         // verify the state of activity records before replacing nulls
 //        assertEquals(findRecord("2016-12-26T11:24:50",activity.getRecords()).get().lat(),-999.0);
 //        assertEquals(findRecord("2016-12-26T11:24:50",activity.getRecords()).get().lon(),-999.0);
+        Optional<ActivityRecord> record = findRecord("2016-12-26T11:24:49", activity.getRecords());
+
+        System.out.println("can't find 2016-12-26T11:24:49");
+        for (ActivityRecord activityRecord : activity.getRecords()) {
+            System.out.println(activityRecord.ts());
+        }
+        ActivityRecord rec = record.get();
+        if( rec == null) {
+            System.err.println("record is null");
+        }else {
+            System.err.println(rec.lat());
+        }
         assertEquals(findRecord("2016-12-26T11:24:49", activity.getRecords()).get().lat(), 49.77981196716428);
         assertEquals(findRecord("2016-12-26T11:24:49", activity.getRecords()).get().lon(), -119.17056497186422);
 
@@ -155,7 +167,7 @@ public class ActivityPipelineTest {
     }
 
     @Test
-    public void calculateGradeTest() {
+    void calculateGradeTest() {
 
         PipelineManager<ActivityHolder> localManager = new PipelineManager<>();
         ActivityHolder activity = setupActivity(testFile);
@@ -171,7 +183,7 @@ public class ActivityPipelineTest {
     }
 
     @Test
-    public void calcMovingTest() {
+    void calcMovingTest() {
         PipelineManager<ActivityHolder> localManager = new PipelineManager<>();
         ActivityHolder activity = setupActivity(testFile);
 
@@ -191,7 +203,7 @@ public class ActivityPipelineTest {
     }
 
     @Test
-    public void calcPauseSuuntoTest() {
+    void calcPauseSuuntoTest() {
         PipelineManager<ActivityHolder> localManager = new PipelineManager<>();
         ActivityHolder activity = setupActivity(pauseTest);
 
@@ -221,7 +233,7 @@ public class ActivityPipelineTest {
 
 
     @Test
-    public void calcPauseGarminTest() {
+    void calcPauseGarminTest() {
         PipelineManager<ActivityHolder> localManager = new PipelineManager<>();
         ActivityHolder activity = setupActivity(pauseTestGarmin);
 
@@ -250,7 +262,7 @@ public class ActivityPipelineTest {
     }
 
     @Test
-    public void testCloseSegmentsHandler() {
+    void testCloseSegmentsHandler() {
 
         ActivityHolder holder = setupActivity(multisport);
         PipelineManager localManager = new PipelineManager();
@@ -268,7 +280,7 @@ public class ActivityPipelineTest {
     }
 
     @Test
-    public void setEventIndexTest() {
+    void setEventIndexTest() {
 
 
         ActivityHolder holder = setupActivity(pauseTest);
@@ -281,7 +293,7 @@ public class ActivityPipelineTest {
 
         //ensure all events have their index set
         assertTrue(holder.getEvents().stream().filter(x -> !x.getEventType().equals(EventType.UNKNOWN)
-                && x.getIndex()==-999).collect(Collectors.toList()).isEmpty());
+                && x.getIndex()==-999).count() ==0);
 
 
         //spot check the activity start and stop to ensure they are set to first and last indexes
@@ -297,7 +309,7 @@ public class ActivityPipelineTest {
     }
 
     @Test
-    public void testSessionCreation(){
+    void testSessionCreation(){
         ActivityHolder holder = setupActivity(pauseTest);
         ActivityProcessor pipeline = new ActivityProcessor();
         ActivityHolder processed = pipeline.process(holder);
@@ -307,12 +319,8 @@ public class ActivityPipelineTest {
         assertEquals(1, result.getSessionsCount());
     }
 
-    /**
-     * todo -> unit test the summarizer code.  something isn't right.  A lot of 0 values when not expected
-     * e.g. totalDistance
-     */
     @Test
-    public void testSummary(){
+    void testSummary(){
         ActivityHolder activity = setupActivity(testFile);
 
         ActivityProcessor pipeline = new ActivityProcessor();
@@ -340,9 +348,10 @@ public class ActivityPipelineTest {
     private static ActivityHolder setupActivity(String file) {
         try {
             File f = new File(ActivityPipelineTest.class.getClassLoader().getResource(file).getFile());
-            FileInputStream is = new FileInputStream(f);
-            ActivityHolderAdapter fitParser = new FitActivityHolderAdapter();
-            return fitParser.convert(is);
+            try(FileInputStream is = new FileInputStream(f)) {
+                ActivityHolderAdapter fitParser = new FitActivityHolderAdapter();
+                return fitParser.convert(is);
+            }
         } catch (IOException e) {
             e.printStackTrace();
         } catch (ParseException ex) {

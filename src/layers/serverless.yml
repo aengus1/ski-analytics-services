@@ -1,5 +1,3 @@
-
-
 service: layers # NOTE: update this with your service name
 
 
@@ -23,7 +21,10 @@ layers:
     description: domain classes for object model
     compatibleRuntimes:
       - java8
-    path: build/layer
+    path: build/classes/java/main/
+    # awaiting closure of https://github.com/serverless/serverless/issues/6146
+    # currently old versions of layer are deleted, which breaks lambdas that rely on it..
+    #retain: true
     package:
       include: # Specify the directories and files which should be included in the deployment package
         - src/main/java/ski/crunch/model/*

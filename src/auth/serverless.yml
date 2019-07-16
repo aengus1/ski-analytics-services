@@ -1,7 +1,6 @@
-
 service: authentication
-tenant: aengus
-app: ski-analytics
+#tenant: aengus
+#app: ski-analytics
 
 provider:
   name: aws

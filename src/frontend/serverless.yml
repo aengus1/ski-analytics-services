@@ -1,7 +1,7 @@
 # This stack depends on the domain stack
 service: frontend-stack
-tenant: aengus
-app: ski-analytics
+#tenant: aengus
+#app: ski-analytics
 
 provider:
   name: aws

@@ -1,0 +1,103 @@
+# Java Gradle CircleCI 2.0 configuration file
+#
+# Check https://circleci.com/docs/2.0/language-java/ for more details
+#
+version: 2.1
+
+orbs:
+  aws-cli: circleci/aws-cli@0.1.13
+
+jobs:
+
+  build:
+    docker:
+      - image: circleci/openjdk:8-jdk
+      - image: circleci/python:3.7-stretch
+    executor: aws-cli/default
+    working_directory: ~/repo
+
+    environment:
+      JVM_OPTS: -Xmx3200m
+      TERM: dumb
+
+    steps:
+      - checkout
+      - restore_cache:
+          keys:
+            - v1-dependencies-{{ checksum "build.gradle" }}
+            - v1-dependencies-
+            - node-v1-
+      - run: gradle :api:dependencies
+      - run: gradle :auth:dependencies
+      - run: gradle :layers:dependencies
+      - run:
+          name: "Update Node.js and npm"
+          command: |
+            curl -sSL "https://nodejs.org/dist/v11.10.0/node-v11.10.0-linux-x64.tar.xz" | sudo tar --strip-components=2 -xJ -C /usr/local/bin/ node-v11.10.0-linux-x64/bin/node
+            curl https://www.npmjs.com/install.sh | sudo bash
+      - run:
+          name: Check current version of node
+          command: node -v
+      - run:
+          name: Install serverless
+          command: sudo npm install -g serverless
+      - save_cache:
+          paths:
+            - ~/.gradle
+#            - ~/usr/local/lib/node_modules  # location depends on npm version
+          key: v1-dependencies-{{ checksum "build.gradle" }}
+      - save_cache:
+          paths:
+            - /usr/local/lib/node_modules/
+          key: node-v1-
+      - aws-cli/install
+      - aws-cli/configure:
+          profile-name: backend_dev
+      - run:
+          name: serverless package
+          command: |
+                  gradle :api:build -x check
+                  gradle :auth:build -x check
+                  gradle :layers:build -x check
+                  pwd
+                  cd ~/repo/src/api
+                  sls package
+                  cd ~/repo/src/auth
+                  sls package
+                  cd ~/repo/src/layers
+                  sls package
+      # run tests!
+      - run: gradle :api:integrationTest
+      - run: gradle :api:test
+      - run: gradle :auth:test
+      - run: gradle :layers:test
+      # save test results
+      - run:
+          name: Save test results
+          command: |
+            mkdir -p ~/test-results/junit/
+            find . -type f -regex ".*/build/test-results/.*xml" -exec cp {} ~/test-results/junit/ \;
+          when: always
+      - store_test_results:
+          path: ~/test-results
+      - store_artifacts:
+          path: ~/test-results/junit
+      # store coverage report
+      - store_artifacts:
+          path:  src/api/build/coverage
+      # upload coverage report to codacy
+      - run:
+          name: upload coverage report
+          command: |
+            LATEST_VERSION="$(curl -Ls https://api.bintray.com/packages/codacy/Binaries/codacy-coverage-reporter/versions/_latest | jq -r .name)"
+            curl -Ls -o codacy-coverage-reporter "https://dl.bintray.com/codacy/Binaries/${LATEST_VERSION}/codacy-coverage-reporter-linux"
+            chmod +x codacy-coverage-reporter
+            ./codacy-coverage-reporter report -l Java -r src/api/build/coverage/test/jacocoTestReport.xml
+
+
+workflows:
+  version: 2.1
+  myworkflow:
+    jobs:
+      - build:
+          context: sls-context

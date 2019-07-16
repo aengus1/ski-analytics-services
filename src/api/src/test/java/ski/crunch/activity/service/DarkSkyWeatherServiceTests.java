@@ -12,6 +12,8 @@ import ski.crunch.activity.model.ActivityOuterClass;
 import ski.crunch.utils.HttpClientUtil;
 
 import java.io.IOException;
+import java.math.BigDecimal;
+import java.math.RoundingMode;
 import java.net.URI;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -53,7 +55,7 @@ public class DarkSkyWeatherServiceTests {
 
 
     @BeforeEach
-    public void init() {
+     void init() {
         httpGet = new HttpGet();
         clientUtil = Mockito.mock(HttpClientUtil.class);
         // MockitoAnnotations.initMocks(this);
@@ -68,7 +70,7 @@ public class DarkSkyWeatherServiceTests {
 
 
     @Test()
-    public void testHttpCallIsMade() {
+     void testHttpCallIsMade() {
 
 
         httpGet.setURI(URI.create(DarkSkyWeatherService.DARK_SKY_API_URL + "/" + apiKey + "/"
@@ -86,7 +88,7 @@ public class DarkSkyWeatherServiceTests {
 
 
     @Test()
-    public void testParse() {
+     void testParse() {
 
         httpGet.setURI(URI.create(DarkSkyWeatherService.DARK_SKY_API_URL + "/" + apiKey + "/"
                 + lat + "," + lon + "," + ts));
@@ -98,18 +100,18 @@ public class DarkSkyWeatherServiceTests {
 
             ActivityOuterClass.Activity.Weather weather = service.parseJsonResult(result);
 
-            assertEquals(51.5, weather.getApparentTemperature());
+            assertEquals(51.4, weather.getApparentTemperature());
             assertEquals("Partly Cloudy", weather.getSummary());
             assertEquals(0, weather.getPrecipIntensity());
             assertEquals(51.4, weather.getTemperature());
             assertEquals(37.88,weather.getDewPoint());
-            assertEquals(0.6,weather.getHumidity());
+            assertEquals(0.6, BigDecimal.valueOf(weather.getHumidity()).setScale(1, RoundingMode.HALF_UP).doubleValue());
             assertEquals(1014, weather.getPressure());
-            assertEquals(4.02, weather.getWindSpeed());
-            assertEquals(0.28, weather.getCloudCover());
+            assertEquals(4.02, BigDecimal.valueOf(weather.getWindSpeed()).setScale(2, RoundingMode.HALF_UP).doubleValue());
+            assertEquals(0.28, BigDecimal.valueOf(weather.getCloudCover()).setScale(2,RoundingMode.HALF_UP).doubleValue());
             assertEquals(10, weather.getVisibility());
-            assertEquals(ActivityOuterClass.Activity.PrecipType.NA_PRECIP, weather.getPrecipType());
-            assertEquals(ActivityOuterClass.Activity.WeatherIcon.NA_ICON, weather.getIcon());
+            assertEquals(ActivityOuterClass.Activity.PrecipType.RAIN, weather.getPrecipType());
+            assertEquals(ActivityOuterClass.Activity.WeatherIcon.PARTLY_CLOUDY_DAY, weather.getIcon());
 
         } catch (IOException e) {
             e.printStackTrace();

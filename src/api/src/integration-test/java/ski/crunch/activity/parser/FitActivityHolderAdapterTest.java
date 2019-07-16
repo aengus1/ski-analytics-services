@@ -6,41 +6,38 @@ import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestInstance;
+import ski.crunch.activity.parser.fit.FitActivityHolderAdapter;
 import ski.crunch.activity.processor.model.ActivityEvent;
 import ski.crunch.activity.processor.model.ActivityHolder;
 import ski.crunch.activity.processor.model.EventType;
-import ski.crunch.activity.parser.fit.FitActivityHolderAdapter;
 
 import java.io.File;
 import java.io.FileInputStream;
-import java.io.IOException;
-
-import ski.crunch.utils.ParseException;
-
 import java.text.SimpleDateFormat;
 import java.util.Date;
+
+import static org.junit.jupiter.api.Assertions.*;
+
 
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
 public class FitActivityHolderAdapterTest {
 
-    private static final Logger LOG = Logger.getLogger(FitActivityHolderAdapterTest.class);
-    public static String testFile = "261217.fit";
-    //public static String test2 = "9a8a199d-ff44-465c-99a2-7d662df70e45.fit";
-    //public static String testFile = "garmin_test.fit";
+    private static final Logger LOG = Logger.getLogger(ski.crunch.activity.parser.FitActivityHolderAdapterTest.class);
+    public static final String testFile = "261217.fit";
 
-    ActivityHolder activity = null;
+
+    private ActivityHolder activity = null;
 
     @BeforeAll
-    void setup() {
+    public void setUp() {
         try {
             File f = new File(getClass().getClassLoader().getResource(testFile).getFile());
-            FileInputStream is = new FileInputStream(f);
-            ActivityHolderAdapter fitParser = new FitActivityHolderAdapter();
-            this.activity = fitParser.convert(is);
-        } catch (IOException e) {
+            try (FileInputStream is = new FileInputStream(f)) {
+                ActivityHolderAdapter fitParser = new FitActivityHolderAdapter();
+                this.activity = fitParser.convert(is);
+            }
+        } catch (Exception e) {
             e.printStackTrace();
-        } catch (ParseException ex) {
-            ex.printStackTrace();
         }
         LOG.setLevel(Level.DEBUG);
 
@@ -68,15 +65,15 @@ public class FitActivityHolderAdapterTest {
         String created = activity.getCreatedTs();
         String manufacturer = activity.getManufacturer();
         int product = activity.getProduct();
-        LOG.info(created + " " + manufacturer + " " + product);
+        LOG.debug(created + " " + manufacturer + " " + product);
 
-        assert (created.equals("26-12-2016 11:24:41"));
-        assert (manufacturer.equals("SUUNTO"));
-        assert (product == 20);
+        assertEquals("26-12-2016 11:24:41", created);
+        assertEquals("SUUNTO", manufacturer);
+        assertEquals(20, product);
     }
 
     @Test
-    void testActivityMessage() {
+    void testActivityMessage() throws Exception {
 
         ActivityEvent activityEnd = null;
         for (ActivityEvent event : activity.getEvents()) {
@@ -85,23 +82,23 @@ public class FitActivityHolderAdapterTest {
             }
         }
         // assert that an activity stop event has been captured
-        assert (activityEnd != null);
+        assertNotNull(activityEnd);
         String nSessions = activityEnd.getInfo().split("nSessions:")[1].split(",")[0].trim();
         try {
             int num = Integer.parseInt(nSessions);
             // assert that the number of sessions captured in the activity message equals the number of session messages
-            assert (num == activity.getSessionSummaries().size());
+            assertEquals(num, activity.getSessionSummaries().size());
         } catch (NumberFormatException ex) {
             System.err.println("number of sessions not recorded " + nSessions);
             // assert that the number of sessions has been captured
-            assert (false);
+            throw new Exception(ex);
         }
         //assert that the activity time has been set
-        assert (activityEnd.getTimer() > 0);
+        assertTrue(activityEnd.getTimer() > 0);
     }
 
     @Test
-    void testLapMessage() {
+    void testLapMessage() throws Exception {
         ActivityEvent lapStart1 = null;
         ActivityEvent lapStop1 = null;
         for (ActivityEvent event : activity.getEvents()) {
@@ -113,35 +110,31 @@ public class FitActivityHolderAdapterTest {
             }
         }
         //assert start and end time are set
-        assert (lapStart1 != null);
-        assert (lapStop1 != null);
+        assertNotNull(lapStart1);
+        assertNotNull(lapStop1);
 
-        double moving = 0, timer = 0, elapsed = 0;
+        double moving = 0;
+        double timer = 0;
+        double elapsed = 0;
         String[] timerVals = lapStart1.getInfo().split(",");
         for (String timerVal : timerVals) {
+
             String[] val = timerVal.split(":");
-            if (val[0].equals("timer")) {
-                try {
-                    timer = Double.parseDouble(val[1]);
-                } catch (NumberFormatException ex) {
-                    System.err.println("timer not set");
-                    assert (false);
+            switch (val[0]) {
+                case "timer": {
+                    timer = checkValueSet(val[1]);
+                    break;
                 }
-            }
-            if (val[0].equals("moving")) {
-                try {
-                    moving = Double.parseDouble(val[1]);
-                } catch (NumberFormatException ex) {
-                    System.err.println("moving not set");
-                    assert (false);
+                case "moving": {
+                    moving = checkValueSet(val[1]);
+                    break;
                 }
-            }
-            if (val[0].equals("elapsed")) {
-                try {
-                    elapsed = Double.parseDouble(val[1]);
-                } catch (NumberFormatException ex) {
-                    System.err.println("elapsed not set");
-                    assert (false);
+                case "elapsed": {
+                    elapsed = checkValueSet(val[1]);
+                    break;
+                }
+                default: {
+
                 }
             }
         }
@@ -150,14 +143,25 @@ public class FitActivityHolderAdapterTest {
         try {
             Date s = targetFormat.parse(lapStart1.getTs());
             Date e = targetFormat.parse(lapStop1.getTs());
-            assert (Math.ceil((e.getTime() - s.getTime()) / 1000) == Math.ceil(elapsed));
+            assertEquals(Math.ceil((e.getTime() - s.getTime()) / 1000), Math.ceil(elapsed));
         } catch (java.text.ParseException ex) {
             System.err.println("error parsing start or end time");
-            assert (false);
+            throw ex;
         }
 
-        assert (moving > 0);
-        assert (timer > 0);
+        assertTrue(moving > 0);
+        assertTrue(timer > 0);
+    }
+
+    private double checkValueSet(String value) throws NumberFormatException {
+        double res;
+        try {
+            res = Double.parseDouble(value);
+        } catch (NumberFormatException ex) {
+            LOG.error(value + " not set");
+            throw ex;
+        }
+        return res;
     }
 
     @Test
@@ -174,19 +178,19 @@ public class FitActivityHolderAdapterTest {
             }
         }
 
-        assert (sessionStart != null);
-        assert (sessionStop != null);
-        assert (sessionStart.getInfo().contains("sport"));
+        assertNotNull(sessionStart);
+        assertNotNull(sessionStop);
+        assertTrue(sessionStart.getInfo().contains("sport"));
 
-        assert (!activity.getSessionSummaries().isEmpty());
+        assertFalse(activity.getSessionSummaries().isEmpty());
 
     }
 
-    @Disabled
-    @Test()
     /**
      * disabled. current testfile does not contain any events
      */
+    @Disabled
+    @Test()
     public void testEventMessage() {
 
         ActivityEvent timerStart = null;
@@ -206,18 +210,19 @@ public class FitActivityHolderAdapterTest {
                 unknown = event;
             }
         }
-        assert(unknown != null || timerStart != null);
+        assertTrue(unknown != null || timerStart != null);
     }
 
     @Test
     public void testHrvMessage() {
-        assert (!activity.getHrvs().isEmpty());
+        assertFalse(activity.getHrvs().isEmpty());
     }
 
     @Test
-    public void testRecordMessage() {
-        assert (!activity.getRecords().isEmpty());
+    void testRecordMessage() {
+        assertFalse(activity.getRecords().isEmpty());
     }
 
 
 }
+

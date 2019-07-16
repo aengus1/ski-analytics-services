@@ -9,6 +9,11 @@
 
 rootProject.name = 'ski-analytics-services'
 
-include 'src/api'
-include 'src/auth'
-include 'src/layers'
+include 'api'
+include 'auth'
+include 'layers'
+
+
+project(":api").projectDir = file("src/api")
+project(":auth").projectDir = file("src/auth")
+project(":layers").projectDir = file("src/layers")

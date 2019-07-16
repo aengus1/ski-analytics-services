@@ -1,7 +1,7 @@
 ## This Stack depends on auth-stack
 service: graphql
-tenant: aengus
-app: ski-analytics
+#tenant: aengus
+#app: ski-analytics
 
 plugins:
   - serverless-appsync-plugin

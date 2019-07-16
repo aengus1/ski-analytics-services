@@ -15,8 +15,8 @@ import org.apache.log4j.Logger;
 import scala.ski.crunch.activity.processor.model.ActivityRecord;
 import ski.crunch.activity.ActivityWriter;
 import ski.crunch.activity.ActivityWriterImpl;
-//import ski.crunch.activity.model.ActivityItem;
-import ski.crunch.model.ActivityItem;
+import ski.crunch.activity.model.ActivityItem;
+//import ski.crunch.model.ActivityItem;
 import ski.crunch.activity.model.ActivityOuterClass;
 import ski.crunch.utils.ApiGatewayResponse;
 import ski.crunch.activity.model.PutActivityResponse;
@@ -36,13 +36,13 @@ public class ActivityService {
     private static final Logger LOG = Logger.getLogger(ActivityService.class);
 
 
-    private String s3RawActivityBucket = null;
-    private String s3ProcessedActivityBucket = null;
-    private String region = null;
-    private String activityTable = null;
-    private S3Service s3 = null;
-    private AWSCredentialsProvider credentialsProvider = null;
-    private DynamoDBService dynamo = null;
+    private String s3RawActivityBucket;
+    private String s3ProcessedActivityBucket;
+    private String region;
+    private String activityTable;
+    private S3Service s3;
+    private AWSCredentialsProvider credentialsProvider;
+    private DynamoDBService dynamo;
 
 
     private static final ObjectMapper objectMapper = new ObjectMapper();
@@ -458,7 +458,6 @@ public class ActivityService {
         DynamoDBQueryExpression<ActivityItem> queryExpression = new DynamoDBQueryExpression<ActivityItem>()
                 .withKeyConditionExpression("id = :val1")
                 .withExpressionAttributeValues(eav);
-
         List<ActivityItem> items = this.dynamo.getMapper().query(ActivityItem.class, queryExpression);
         if (!items.isEmpty()) {
             item = items.get(0);
@@ -466,7 +465,7 @@ public class ActivityService {
         }
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd'T'hh:mm:ss.SSS'Z'");
         sdf.setTimeZone(TimeZone.getTimeZone("GMT"));
-        System.out.println("activityTable: " + activityTable + " date: " + sdf.format(item.getDateOfUpload()));
+        //System.out.println("activityTable: " + activityTable + " date: " + sdf.format(item.getDateOfUpload()));
         Table table = dynamo.getTable(this.activityTable);
 
         DeleteItemSpec deleteItemSpec = new DeleteItemSpec()

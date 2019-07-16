@@ -22,7 +22,7 @@ public class DarkSkyWeatherService implements WeatherService {
     public static final String DARK_SKY_API_URL = "https://api.darksky.net/forecast";
     private HttpClientUtil httpClient;
     private HttpGet httpGet;
-    private String apiKey = null;
+    private String apiKey;
 
     public DarkSkyWeatherService(String apiKey) {
         this.apiKey = apiKey;
@@ -108,6 +108,10 @@ public class DarkSkyWeatherService implements WeatherService {
                         }
                         case "precipType": {
                             weatherBuilder.setPrecipType(precipMapper(entry.getValue().asText()));
+                            break;
+                        }
+                        case "pressure": {
+                            weatherBuilder.setPressure(entry.getValue().floatValue());
                             break;
                         }
                     }

@@ -11,7 +11,7 @@ import org.junit.jupiter.api.TestInstance;
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
 public class DynamoDBServiceTest {
 
-    //TODO -> create a test base class with access to credentials
+    //TODO -> create a test base class with access to credentialsn
     public static final String AWS_PROFILE="backend_dev";
     public static final String TABLE_REGION = "ca-central-1"; // this is fragile
     private static final Logger LOG = Logger.getLogger(DynamoDBServiceTest.class);

@@ -6,6 +6,7 @@ import ski.crunch.activity.processor.model.ActivityHolder;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.TimeZone;
 
 public abstract class AbstractMesgListener {
     protected long offset;
@@ -18,7 +19,9 @@ public abstract class AbstractMesgListener {
     public AbstractMesgListener(ActivityHolder holder) {
 
         this.sourceFormat = new SimpleDateFormat("dd-MM-yyyy HH:mm:ss");
+        this.sourceFormat.setTimeZone(TimeZone.getTimeZone("PST"));
         this.targetFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss");
+        this.targetFormat.setTimeZone(TimeZone.getTimeZone("PST"));
 
         Date begin = null;
         Date end = null;

@@ -21,7 +21,7 @@ public class DynamoDBService {
     DynamoDBMapperConfig config;
 
     public DynamoDBService(String region, String tableName) {
-        this.client = AmazonDynamoDBClientBuilder.standard().build();
+        this.client = AmazonDynamoDBClientBuilder.standard().withRegion(region).build();
         config = new DynamoDBMapperConfig.Builder().withTableNameOverride(DynamoDBMapperConfig.TableNameOverride.withTableNameReplacement(tableName))
                 .build();
         this.dynamo = new DynamoDB(client);
@@ -37,7 +37,7 @@ public class DynamoDBService {
      * @param credentialsProvider
      */
     public DynamoDBService(String region, String tableName, AWSCredentialsProvider credentialsProvider) {
-        this.client = AmazonDynamoDBClientBuilder.standard().build();
+        this.client = AmazonDynamoDBClientBuilder.standard().withRegion(region).build();
         config = new DynamoDBMapperConfig.Builder().withTableNameOverride(DynamoDBMapperConfig.TableNameOverride.withTableNameReplacement(tableName))
                 .build();
 
