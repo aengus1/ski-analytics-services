@@ -1,6 +1,5 @@
 package ski.crunch.activity.processor;
 
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestInstance;
 import scala.ski.crunch.activity.processor.model.ActivityRecord;
@@ -14,7 +13,6 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
 public class SetInitialMoveHandlerTest {
 
-    private ActivityHolder holder = null;
     private SetInitialMoveHandler setInitialMoveHandler = new SetInitialMoveHandler();
 
 

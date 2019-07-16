@@ -2,14 +2,11 @@ package ski.crunch.activity.service;
 
 import com.amazonaws.SdkClientException;
 import com.amazonaws.auth.AWSCredentialsProvider;
-import com.amazonaws.auth.profile.ProfileCredentialsProvider;
 import com.amazonaws.services.s3.AmazonS3;
 import com.amazonaws.services.s3.AmazonS3ClientBuilder;
 import com.amazonaws.services.s3.model.*;
 import com.amazonaws.util.IOUtils;
 import org.apache.commons.io.FileUtils;
-import org.apache.http.auth.AuthScope;
-import org.apache.http.client.CredentialsProvider;
 import org.apache.log4j.Logger;
 
 import java.io.*;
@@ -39,7 +36,7 @@ public class S3Service {
     }
 
     public boolean doesObjectExist(String bucket, String key) {
-        boolean exists = this.s3Client.doesObjectExist(bucket, key);;
+        boolean exists = this.s3Client.doesObjectExist(bucket, key);
         LOG.info("confirmed that " +  key + " in "  + bucket + " exists " + exists);
         return exists;
     }

@@ -127,9 +127,9 @@ class ActivityTests {
 
         this.helper = new AuthenticationHelper(userPoolId, clientId, "", region, AWS_PROFILE);
         this.credentialsProvider = new ProfileCredentialsProvider(AWS_PROFILE);
-        helper.PerformAdminSignup(testUserName, testPassword);
+        helper.performAdminSignup(testUserName, testPassword);
 
-        this.accessKey = helper.PerformSRPAuthentication(testUserName, testPassword);
+        this.accessKey = helper.performSRPAuthentication(testUserName, testPassword);
         LOG.info("ACCESS KEY: " + this.accessKey);
         this.s3 = new S3Service(apiStackServerlessState.getRegion(), credentialsProvider);
         this.dynamo = new DynamoDBService(apiStackServerlessState.getRegion(), apiStackServerlessState.getActivityTable(),
@@ -244,9 +244,9 @@ class ActivityTests {
     @Disabled
     @Test
     void generateDevAccessKey() {
-        helper.PerformAdminSignup(devUserName, devPassword);
+        helper.performAdminSignup(devUserName, devPassword);
 
-        String devAccessKey = helper.PerformSRPAuthentication(devUserName, devPassword);
+        String devAccessKey = helper.performSRPAuthentication(devUserName, devPassword);
         LOG.info("DEV ACCESS KEY: " + devAccessKey);
     }
 

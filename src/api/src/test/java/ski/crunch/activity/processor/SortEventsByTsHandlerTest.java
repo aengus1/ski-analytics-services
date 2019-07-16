@@ -20,7 +20,7 @@ public class SortEventsByTsHandlerTest {
     private SimpleDateFormat targetFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss");
 
     @BeforeEach
-    public void setup() {
+    public void setUp() {
         sorter = new SortEventsByTsHandler();
         holder = new ActivityHolder();
         List<ActivityEvent> events = new ArrayList<>();

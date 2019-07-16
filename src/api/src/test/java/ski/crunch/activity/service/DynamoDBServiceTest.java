@@ -7,6 +7,8 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestInstance;
 
+import static org.junit.jupiter.api.Assertions.assertTrue;
+
 
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
 public class DynamoDBServiceTest {
@@ -26,6 +28,6 @@ public class DynamoDBServiceTest {
 
     @Test()
     public void testInsert() {
-
+        assertTrue(true);
     }
 }

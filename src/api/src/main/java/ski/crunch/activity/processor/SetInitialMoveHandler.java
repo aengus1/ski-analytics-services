@@ -1,7 +1,6 @@
 package ski.crunch.activity.processor;
 
 import scala.ski.crunch.activity.processor.model.ActivityRecord;
-import ski.crunch.activity.processor.model.ActivityEvent;
 import ski.crunch.activity.processor.model.ActivityHolder;
 
 import java.util.Iterator;

@@ -1,7 +1,6 @@
 package ski.crunch.utils;
 
 
-import java.util.List;
 import java.util.Map;
 
 /**
@@ -19,9 +18,9 @@ public class LambdaProxyConfig {
             Map<String, Object> requestContext = (Map) input.get("requestContext");
 
 
-            Map<String, Object> identity = null;
-            Map<String, Object> authorizer = null;
-            Map<String, Object> claims = null;
+            Map<String, Object> identity;
+            Map<String, Object> authorizer;
+            Map<String, Object> claims;
             try {
                 identity = (Map) requestContext.get("identity");
                 authorizer = (Map<String, Object>) requestContext.get("authorizer");
@@ -31,7 +30,7 @@ public class LambdaProxyConfig {
                 this.requestContext.getIdentity().setSourceIp((String) identity.get("user"));
                 this.requestContext.getIdentity().setEmail((String) claims.get("email"));
             } catch (NullPointerException ex) {
-
+                ex.printStackTrace();
             }
             Map<String, String> pathParams = null;
             final Map<String, String> headersL;
@@ -48,7 +47,7 @@ public class LambdaProxyConfig {
                 }
                 this.getHeaders().setAccept(headersL.get("Accept"));
             } catch (NullPointerException ex) {
-
+                ex.printStackTrace();
             }
 
             Map<String, Object> s3 = null;
@@ -83,7 +82,7 @@ public class LambdaProxyConfig {
     String stageVariables;
     String body;
     boolean isBase64Encoded;
-    Headers headers = null;
+    Headers headers;
     RequestContext requestContext;
 
     public String getResource() {
