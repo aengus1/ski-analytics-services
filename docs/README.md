@@ -23,10 +23,10 @@
    tool.
   
 - 3rd Party Components
-- Diagramming: [cloudcraft.co](cloudcraft.co)
+- Diagramming: [cloudcraft.co](http://cloudcraft.co)
 - FIT parsing library [garmin](http://www.thisisant.com/resources/fit/)
-- Weather service [darksky.net](darksky.net)
-- Location service [locationiq.com](locationiq.com)
+- Weather service [darksky.net](http://darksky.net)
+- Location service [locationiq.com](http://locationiq.com)
 
 
 ## Build / CI / CD
@@ -39,8 +39,8 @@ Currently have not spun up a prod stack
 ### Stack dependencies
 
 - Domain Stack <- Frontend Stack
- - Domain Stack <- Auth Stack <- API stack
- - Auth Stack <- GraphQL Stack (`TODO move user table to graphql stack)`
+- Domain Stack <- Auth Stack <- API stack
+- Auth Stack <- GraphQL Stack (`TODO move user table to graphql stack)`
  
 
 

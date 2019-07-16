@@ -4,7 +4,7 @@ This is a totally manual setup right now. TODO -> automate this
 
 1. In SES click create domain: crunch.ski
 2. Click verify domain (use route53) and generate DKIM settings
--wait until domain is validated and dkim settings are validated
+- wait until domain is validated and dkim settings are validated
 
 This domain is now set up for sending
 
@@ -14,8 +14,8 @@ For receiving:
 1. create a MX record on the crunch.ski domain:
 crunch.ski 10 inbound-smtp.us-west-2.amazonaws.com
 
-2. create a rule set in SES. choose forward to bucket -> currently this is going to email.ski-analytics.com
-3. set up an SNS topic to notify a mailbox I monitor when the email is forwarded
+2.  create a rule set in SES. choose forward to bucket -> currently this is going to email.ski-analytics.com
+3.  set up an SNS topic to notify a mailbox I monitor when the email is forwarded
 
 
 // to enable sending from cognito
