@@ -31,4 +31,3 @@ function.  This should be possible with some tweaking, despite an outstanding bu
 - Lock down the app and site S3 buckets to only access through cloudformation.  I believe
 this has to be done by changing the buckets from public website to private and then adding a
 cloudformation origin access identity
-
