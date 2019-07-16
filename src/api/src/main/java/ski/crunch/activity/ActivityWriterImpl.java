@@ -1,6 +1,5 @@
 package ski.crunch.activity;
 
-import com.sun.scenario.effect.impl.sw.sse.SSEBlend_SRC_OUTPeer;
 import scala.ski.crunch.activity.processor.model.ActivitySummary;
 import ski.crunch.activity.model.ActivityOuterClass;
 import ski.crunch.activity.processor.model.ActivityEvent;
@@ -19,13 +18,12 @@ public class ActivityWriterImpl implements ActivityWriter {
     public static final int PROTO_VERSION = 1;
     public static final SimpleDateFormat targetFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss");
 
-    private ActivityOuterClass.ActivityOrBuilder activityOrBuilder = null;
-    private ActivityOuterClass.Activity.Builder activityBuilder = null;
-    private ActivityOuterClass.Activity.Values.Builder valueBuilder = null;
-    private ActivityOuterClass.Activity.Meta.Builder metaBuilder = null;
-    private ActivityOuterClass.Activity.Summary.Builder summaryBuilder = null;
-    private ActivityOuterClass.Activity.Segment.Builder segmentBuilder = null;
-    private ActivityOuterClass.Activity.Session.Builder sessionBuilder = null;
+    private ActivityOuterClass.Activity.Builder activityBuilder;
+    private ActivityOuterClass.Activity.Values.Builder valueBuilder;
+    private ActivityOuterClass.Activity.Meta.Builder metaBuilder;
+    private ActivityOuterClass.Activity.Summary.Builder summaryBuilder;
+    private ActivityOuterClass.Activity.Segment.Builder segmentBuilder;
+    private ActivityOuterClass.Activity.Session.Builder sessionBuilder;
     private ActivityHolder holder = null;
     private ActivityOuterClass.Activity.Weather weather;
     private ActivityOuterClass.Activity.Location location;

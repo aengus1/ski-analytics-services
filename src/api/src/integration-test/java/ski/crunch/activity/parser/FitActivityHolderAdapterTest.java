@@ -133,9 +133,6 @@ public class FitActivityHolderAdapterTest {
                     elapsed = checkValueSet(val[1]);
                     break;
                 }
-                default: {
-
-                }
             }
         }
 

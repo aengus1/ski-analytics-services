@@ -42,7 +42,7 @@ public class ActivityPipelineTest {
     private PipelineManager<ActivityHolder> manager = new PipelineManager<>();
 
     @BeforeAll
-    void setup() {
+    void setUp() {
 
         LOG.setLevel(Level.DEBUG);
 
@@ -90,9 +90,9 @@ public class ActivityPipelineTest {
 
         Optional<ActivityRecord> record = activity.getRecords().stream().filter(a -> a.ts().equals("2016-12-26T11:38:56")).findFirst();
         // 1. assert that record without hrv and matching ts is populated
-        assertTrue(record.get().hrv() == 0.371);
+        assertEquals(0.371, record.get().hrv());
         // 2. assert that record with hrv and matching ts is not populated
-        assertTrue(findRecord("2016-12-26T11:59:00", activity.getRecords()).get().hrv() == 0.400);
+        assertEquals(0.400, findRecord("2016-12-26T11:59:00", activity.getRecords()).get().hrv());
         // 3. assert that new record is created when no matching ts exists
         assertTrue(findRecord("2016-12-26T12:01:00", activity.getRecords()).isPresent());
 
@@ -127,7 +127,7 @@ public class ActivityPipelineTest {
             }
         }
 
-        assertTrue(records.size() == 1);
+        assertEquals(1,records.size());
 //        double expected = (0.4 + 0.7) / 2;
 //        System.out.println("expected = " + expected);
 //        System.out.println("actual = " + records.get(0).hrv());

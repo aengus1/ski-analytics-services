@@ -9,7 +9,6 @@ import ski.crunch.activity.processor.model.ActivityHolder;
 import ski.crunch.activity.processor.model.EventType;
 import ski.crunch.activity.processor.summarizer.ActivitySummarizer;
 
-import ski.crunch.utils.ParseException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -22,7 +21,7 @@ public class ActivitySummarizerTest {
     private ActivitySummarizer summarizer = null;
     private ActivityHolder holder = null;
     @BeforeAll
-    void setup() {
+    void setUp() {
         ActivityHolder holder = new ActivityHolder();
         ActivityRecord[] records = new ActivityRecord[]{
                 new ActivityRecord(

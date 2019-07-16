@@ -7,7 +7,6 @@ import ski.crunch.activity.parser.ActivityHolderAdapter;
 
 import java.io.IOException;
 import java.io.InputStream;
-import java.text.ParseException;
 
 
 /**

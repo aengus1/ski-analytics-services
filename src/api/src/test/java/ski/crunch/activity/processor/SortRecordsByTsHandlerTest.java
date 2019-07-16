@@ -4,7 +4,6 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestInstance;
 import scala.ski.crunch.activity.processor.model.ActivityRecord;
-import ski.crunch.activity.processor.model.ActivityEvent;
 import ski.crunch.activity.processor.model.ActivityHolder;
 
 import java.text.SimpleDateFormat;
@@ -16,13 +15,11 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
 public class SortRecordsByTsHandlerTest {
 
-    private SortRecordsByTsHandler sorter = null;
     private ActivityHolder holder = null;
     private SimpleDateFormat targetFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss");
 
     @BeforeEach
-    public void setup() {
-        sorter = new SortRecordsByTsHandler();
+    public void setUp() {
         holder = new ActivityHolder();
         List<ActivityRecord> records = new ArrayList<>();
 

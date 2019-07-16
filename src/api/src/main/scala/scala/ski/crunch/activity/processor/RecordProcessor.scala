@@ -80,7 +80,8 @@ class RecordProcessor(records: List[ActivityRecord]) {
 
     val corruptRecords = corruptDistance ++ corruptAltitude ++ corruptSpeed
 
-    new RecordProcessor(records.zipWithIndex.filter(x => !corruptRecords.contains(x._2)).map(_._1))
+    val zippedRecords = records.zipWithIndex
+    new RecordProcessor(zippedRecords.filter(x => !corruptRecords.contains(x._2)).map(_._1))
 
 
   }
@@ -127,7 +128,7 @@ class RecordProcessor(records: List[ActivityRecord]) {
   }
 
   def fillEmpty(): RecordProcessor = {
-    return null;
+    null
   }
 
   /**
@@ -163,14 +164,6 @@ class RecordProcessor(records: List[ActivityRecord]) {
       // add nulls at beginning and end of list
       smoothGradient = ((-999.0)::(-999.0)::smoothGradient).reverse
       smoothGradient = ((-999.0)::(-999.0)::smoothGradient).reverse
-
-      //debugging traces
-//      println(smoothGradient.max + " " + smoothGradient.min)
-//      println(avgDists.length + " " + dist.length + " " + avgGrads.length + "  " + grad.length +" " +  smoothGradient.length)
-////      println("sum dist = " + dist.drop(1).foldLeft[Double](0)((a, b) => Math.abs(a) + Math.abs(b)))
-//      println("gradient = " + grad)
-//      println("smooth gradient = " + smoothGradient)
-
 
       val tuple = dist zip smoothGradient zip records map {
         case (((a, b), c) ) => (a, b, c)
@@ -208,7 +201,7 @@ class RecordProcessor(records: List[ActivityRecord]) {
 
 
   def calcMoving(): RecordProcessor = {
-    val moving = (records.map(x => x.velocity)).map(x => if(x>0) true else false)
+    val moving = (records.map(x => x.velocity)).map(x => x>0)
     val pairs = records.zip(moving)
     new RecordProcessor(pairs.map(x => new ActivityRecord(x._1.ts, x._1.hr, x._1.lat, x._1.lon, x._1.altitude, x._1.velocity, x._1.grade, x._1.distance, x._1.temperature,
       x._2, x._1.cadence, x._1.verticalSpeed, x._1.hrv)))

@@ -197,7 +197,7 @@ AWSCredentials awsCreds = new ProfileCredentialsProvider(profileName).getCredent
                 .withRegion(Regions.fromName(this.region))
                 .build();
     }
-    public void PerformAdminSignup(String username, String password) {
+    public void performAdminSignup(String username, String password) {
         SignUpRequest request = createSignupRequest(this.clientId, username, password);
         try {
             AWSCognitoIdentityProvider cognitoIdentityProvider = buildIdpWithCreds(profileName);
@@ -239,11 +239,11 @@ AWSCredentials awsCreds = new ProfileCredentialsProvider(profileName).getCredent
      * @param password Password for the SRP request
      * @return the JWT token if the request is successful else null.
      */
-    public String PerformSRPAuthentication(String username, String password) {
+    public String performSRPAuthentication(String username, String password) {
         String authresult = null;
 
         InitiateAuthRequest initiateAuthRequest = initiateUserSrpAuthRequest(username);
-        try { ;
+        try {
             AWSCognitoIdentityProvider cognitoIdentityProvider = buildIdp();
             InitiateAuthResult initiateAuthResult = cognitoIdentityProvider.initiateAuth(initiateAuthRequest);
             if (ChallengeNameType.PASSWORD_VERIFIER.toString().equals(initiateAuthResult.getChallengeName())) {
