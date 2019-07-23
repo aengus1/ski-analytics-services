@@ -1,5 +1,6 @@
-
 allprojects {
+    apply plugin: 'java'
+    apply plugin: 'jacoco'
 
     repositories {
         maven {
@@ -11,18 +12,14 @@ allprojects {
         maven {
             url "https://oss.sonatype.org/content/repositories/releases/"
         }
-        
+
         maven {
             url "http://maven.geotoolkit.org/"
         }
-
-
-//        jcenter()
     }
 }
 
 subprojects {
-    apply plugin: 'java'
 
     dependencies {
         testImplementation(
@@ -40,7 +37,7 @@ subprojects {
     }
 
     test {
-            useJUnitPlatform()
+        useJUnitPlatform()
 
         // show standard out and standard error of the test JVM(s) on the console
         testLogging.showStandardStreams = true
@@ -68,12 +65,31 @@ subprojects {
     }
 
 
-
 }
 
+task codeCoverageReport(type: JacocoReport) {
+    executionData fileTree(project.rootDir.absolutePath).include("**/build/jacoco/*.exec")
 
+    subprojects.each {
+        sourceSets it.sourceSets.main
+    }
 
+    reports {
+        xml.enabled = true
+        csv.enabled = false
+        html.destination file("${buildDir}/reports/coverage/")
+        xml.destination file("${buildDir}/reports/coverage/jacocoTestReport.xml")
 
+    }
+}
+
+codeCoverageReport.dependsOn {
+    subprojects*.test
+}
+
+build.dependsOn {
+    codeCoverageReport
+}
 
 
 

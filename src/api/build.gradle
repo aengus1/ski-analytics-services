@@ -1,7 +1,6 @@
 plugins {
     id 'scala'
     id 'java'
-    id 'jacoco'
 }
 
 
@@ -81,31 +80,6 @@ dependencies {
 }
 
 
-jacoco {
-    toolVersion = "0.8.2"
-    reportsDir = file("$buildDir/coverage")
-
-}
-
-jacocoTestCoverageVerification {
-
-}
-jacocoTestReport {
-    reports {
-        xml.enabled = true
-        csv.enabled = false
-        html.destination file("${buildDir}/coverage/")
-    }
-
-
-    afterEvaluate {
-        classDirectories = files(classDirectories.files.collect {
-            fileTree(dir: it, exclude: ['com/garmin/**', 'ski/crunch/activity/model/**'])
-        })
-    }
-}
-
-
 task integrationTest(type: Test) {
 
     useJUnitPlatform()
@@ -146,7 +120,7 @@ task integrationTest(type: Test) {
 
 check.dependsOn integrationTest
 integrationTest.mustRunAfter test
-test.finalizedBy jacocoTestReport
+//test.finalizedBy jacocoTestReport
 
 /**
  * Builds the zip file for upload to AWS
