@@ -1,9 +1,10 @@
+package ski.crunch.utils;
+
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestInstance;
-import ski.crunch.utils.StreamUtils;
 
 import java.io.ByteArrayInputStream;
 import java.io.FileInputStream;
@@ -16,7 +17,7 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 @TestInstance(TestInstance.Lifecycle.PER_METHOD)
 public class StreamUtilsTest {
 
-    final static String exampleString = "{\n" +
+    private final static String exampleString = "{\n" +
             "    \"glossary\": {\n" +
             "        \"title\": \"example glossary\",\n" +
             "\t\t\"GlossDiv\": {\n" +

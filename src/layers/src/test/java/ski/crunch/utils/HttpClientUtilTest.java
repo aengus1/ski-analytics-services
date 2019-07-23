@@ -1,4 +1,5 @@
-import com.fasterxml.jackson.databind.JsonNode;
+package ski.crunch.utils;
+
 import org.apache.http.HttpEntity;
 import org.apache.http.client.methods.CloseableHttpResponse;
 import org.apache.http.client.methods.HttpGet;
@@ -8,8 +9,6 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestInstance;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
-import ski.crunch.utils.HttpClientUtil;
-import ski.crunch.utils.StreamUtils;
 
 import java.io.IOException;
 
@@ -73,7 +72,7 @@ public class HttpClientUtilTest {
         when(httpClient.execute(httpGet)).thenReturn(closeableHttpResponse);
 
         try {
-            JsonNode result = this.httpClientUtil.getJsonNode(httpGet);
+            this.httpClientUtil.getJsonNode(httpGet);
 
         }catch (IOException ex) {
             fail("IOException thrown attempting to read Json");
