@@ -3,6 +3,7 @@ package ski.crunch.utils;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
+import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
@@ -35,5 +36,10 @@ public class StreamUtils {
         }
         eventObject = eventObjectSb.toString();
         return objectMapper.readTree(eventObject);
+    }
+
+
+    public static InputStream convertStringToInputStream(String string) throws IOException {
+        return new ByteArrayInputStream(string.getBytes());
     }
 }

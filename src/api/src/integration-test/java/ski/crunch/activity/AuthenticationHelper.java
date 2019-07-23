@@ -1,4 +1,4 @@
-package ski.crunch.utils;
+package ski.crunch.activity;
 /*
  *  Copyright 2013-2016 Amazon.com,
  *  Inc. or its affiliates. All Rights Reserved.
@@ -66,16 +66,13 @@ public class AuthenticationHelper {
     private static final int DERIVED_KEY_SIZE = 16;
     private static final String DERIVED_KEY_INFO = "Caldera Derived Key";
     private static final ThreadLocal<MessageDigest> THREAD_MESSAGE_DIGEST =
-            new ThreadLocal<MessageDigest>() {
-                @Override
-                protected MessageDigest initialValue() {
-                    try {
-                        return MessageDigest.getInstance("SHA-256");
-                    } catch (NoSuchAlgorithmException e) {
-                        throw new SecurityException("Exception in authentication", e);
-                    }
+            ThreadLocal.withInitial(() -> {
+                try {
+                    return MessageDigest.getInstance("SHA-256");
+                } catch (NoSuchAlgorithmException e) {
+                    throw new SecurityException("Exception in authentication", e);
                 }
-            };
+            });
     private static final SecureRandom SECURE_RANDOM;
 
     static {
@@ -174,11 +171,10 @@ public class AuthenticationHelper {
             throw new SecurityException(e.getMessage(), e);
         }
         hkdf.init(S.toByteArray(), u.toByteArray());
-        byte[] key = hkdf.deriveKey(DERIVED_KEY_INFO, DERIVED_KEY_SIZE);
-        return key;
+        return hkdf.deriveKey(DERIVED_KEY_INFO, DERIVED_KEY_SIZE);
     }
 
-    AWSCognitoIdentityProvider buildIdp() throws Exception{
+    private AWSCognitoIdentityProvider buildIdp(){
             AnonymousAWSCredentials awsCreds = new AnonymousAWSCredentials();
             return  AWSCognitoIdentityProviderClientBuilder
                     .standard()
@@ -408,7 +404,7 @@ AWSCredentials awsCreds = new ProfileCredentialsProvider(profileName).getCredent
          * @param salt REQUIRED: Random bytes for salt.
          */
         private void init(byte[] ikm, byte[] salt) {
-            byte[] realSalt = salt == null ? EMPTY_ARRAY : (byte[]) salt.clone();
+            byte[] realSalt = salt == null ? EMPTY_ARRAY : salt.clone();
             byte[] rawKeyMaterial = EMPTY_ARRAY;
 
             try {

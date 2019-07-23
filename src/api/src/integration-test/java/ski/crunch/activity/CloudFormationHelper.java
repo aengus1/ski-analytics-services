@@ -1,4 +1,4 @@
-package ski.crunch.utils;
+package ski.crunch.activity;
 
 import com.amazonaws.auth.AWSCredentialsProvider;
 import com.amazonaws.auth.profile.ProfileCredentialsProvider;
@@ -8,6 +8,7 @@ import com.amazonaws.services.cloudformation.AmazonCloudFormationClientBuilder;
 import com.amazonaws.services.cloudformation.model.DescribeStacksResult;
 import com.amazonaws.services.cloudformation.model.Output;
 import com.amazonaws.services.cloudformation.model.Stack;
+import ski.crunch.utils.NotFoundException;
 
 
 import java.util.Optional;
@@ -36,7 +37,7 @@ public class CloudFormationHelper {
 
     }
 
-    public String getStagingUserPoolClientId() throws NotFoundException{
+    public String getStagingUserPoolClientId() throws NotFoundException {
         return getStackOutput(STAGING_AUTH_STACK_NAME, "UserPoolClientId");
     }
 

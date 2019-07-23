@@ -1,5 +1,3 @@
-package ski.crunch.activity.utils;
-
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.BeforeEach;
@@ -75,5 +73,13 @@ public class StreamUtilsTest {
         String invalidString= exampleString.substring(0, exampleString.length() -10);
         testInputStream =  new ByteArrayInputStream( invalidString.getBytes() );
         assertThrows(IOException.class, () -> { StreamUtils.convertStreamToJson(testInputStream);});
+    }
+
+    @Test
+    public void convertStringToInputStream() throws IOException {
+        InputStream is = StreamUtils.convertStringToInputStream(exampleString);
+        String converted = StreamUtils.convertStreamToString(is);
+
+        assertEquals(exampleString, converted);
     }
 }

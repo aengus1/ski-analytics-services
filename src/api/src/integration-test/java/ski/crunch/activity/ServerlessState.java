@@ -1,4 +1,4 @@
-package ski.crunch.utils;
+package ski.crunch.activity;
 
 
 import com.fasterxml.jackson.databind.JsonNode;

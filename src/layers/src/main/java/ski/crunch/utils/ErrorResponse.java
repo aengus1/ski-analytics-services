@@ -3,7 +3,6 @@ package ski.crunch.utils;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.apache.log4j.Logger;
-import ski.crunch.activity.service.ActivityService;
 
 import java.io.PrintWriter;
 import java.io.StringWriter;
@@ -16,7 +15,7 @@ public class ErrorResponse {
     private String errorCode;
 
     private static final ObjectMapper objectMapper = new ObjectMapper();
-    private static final Logger LOG  = Logger.getLogger(ActivityService.class);
+    private static final Logger LOG  = Logger.getLogger(ErrorResponse.class);
 
     public ErrorResponse(int status, String developerMessage, String userMessage, String errorCode){
         this.status = status;
