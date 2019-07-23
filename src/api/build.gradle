@@ -60,7 +60,7 @@ dependencies {
             "com.vividsolutions:jts:1.13",
             "org.geotools:gt-main:16.1",
             "org.geotools:gt-epsg-hsql:16.1",
-            //project(':layers')
+            project(':layers')
 
     )
     //compile project(':layers')
@@ -72,10 +72,12 @@ dependencies {
             // https://mvnrepository.com/artifact/com.sun.jersey/jersey-client
             'org.glassfish.jersey.core:jersey-client:2.5.1',
             'com.fasterxml.jackson.core:jackson-core:2.9.7',
-            'org.mockito:mockito-all:1.10.19'
+            'org.mockito:mockito-all:1.10.19',
+            project(':layers')
     )
     integrationTestRuntime(
-            'org.junit.jupiter:junit-jupiter-engine:5.1.0'
+            'org.junit.jupiter:junit-jupiter-engine:5.1.0',
+            project(':layers')
     )
 }
 

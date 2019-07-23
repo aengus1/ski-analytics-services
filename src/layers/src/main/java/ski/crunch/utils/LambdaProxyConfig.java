@@ -15,14 +15,14 @@ public class LambdaProxyConfig {
             this.requestContext = new RequestContext();
 
             //Parse input parameters
-            Map<String, Object> requestContext = (Map) input.get("requestContext");
+            Map<String, Object> requestContext = (Map<String, Object>) input.get("requestContext");
 
 
             Map<String, Object> identity;
             Map<String, Object> authorizer;
             Map<String, Object> claims;
             try {
-                identity = (Map) requestContext.get("identity");
+                identity = (Map<String, Object>) requestContext.get("identity");
                 authorizer = (Map<String, Object>) requestContext.get("authorizer");
                 claims = (Map<String, Object>) authorizer.get("claims");
                 this.requestContext.getIdentity().setSourceIp((String) identity.get("sourceIp"));

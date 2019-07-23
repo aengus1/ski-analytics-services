@@ -1,11 +1,10 @@
-package ski.crunch.activity.utils;
+package ski.crunch.utils;
 
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestInstance;
-import ski.crunch.utils.StreamUtils;
 
 import java.io.ByteArrayInputStream;
 import java.io.FileInputStream;
@@ -18,7 +17,7 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 @TestInstance(TestInstance.Lifecycle.PER_METHOD)
 public class StreamUtilsTest {
 
-    final static String exampleString = "{\n" +
+    private final static String exampleString = "{\n" +
             "    \"glossary\": {\n" +
             "        \"title\": \"example glossary\",\n" +
             "\t\t\"GlossDiv\": {\n" +
@@ -75,5 +74,13 @@ public class StreamUtilsTest {
         String invalidString= exampleString.substring(0, exampleString.length() -10);
         testInputStream =  new ByteArrayInputStream( invalidString.getBytes() );
         assertThrows(IOException.class, () -> { StreamUtils.convertStreamToJson(testInputStream);});
+    }
+
+    @Test
+    public void convertStringToInputStream() throws IOException {
+        InputStream is = StreamUtils.convertStringToInputStream(exampleString);
+        String converted = StreamUtils.convertStreamToString(is);
+
+        assertEquals(exampleString, converted);
     }
 }

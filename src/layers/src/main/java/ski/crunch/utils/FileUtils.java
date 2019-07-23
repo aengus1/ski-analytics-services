@@ -6,7 +6,7 @@ import java.util.UUID;
 
 public class FileUtils {
 
-    public static java.io.File writeBase64ToFile(String base64) throws IOException {
+    public static File writeBase64ToFile(String base64) {
 
         byte[] data = Base64.getDecoder().decode(base64);
         String name = UUID.randomUUID().toString();
@@ -15,7 +15,7 @@ public class FileUtils {
         } catch (IOException ex) {
             ex.printStackTrace();
         }
-        return new java.io.File("/tmp/" + name);
+        return new File("/tmp/" + name);
     }
 
 

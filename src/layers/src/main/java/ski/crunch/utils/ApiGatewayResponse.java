@@ -1,14 +1,13 @@
-package ski.crunch.auth;
+package ski.crunch.utils;
+
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import org.apache.log4j.Logger;
 
 import java.nio.charset.StandardCharsets;
 import java.util.Base64;
 import java.util.Collections;
 import java.util.Map;
-
-import org.apache.log4j.Logger;
-
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.ObjectMapper;
 
 public class ApiGatewayResponse {
 
@@ -47,7 +46,7 @@ public class ApiGatewayResponse {
 
 	public static class Builder {
 
-		private static final Logger LOG = Logger.getLogger(ApiGatewayResponse.Builder.class);
+		private static final Logger LOG = Logger.getLogger(Builder.class);
 
 		private static final ObjectMapper objectMapper = new ObjectMapper();
 
