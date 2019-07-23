@@ -1,4 +1,4 @@
-package ski.crunch.activity.service;
+package ski.crunch.aws;
 
 import com.amazonaws.SdkClientException;
 import com.amazonaws.auth.AWSCredentialsProvider;
@@ -48,11 +48,11 @@ public class S3Service {
         return IOUtils.toByteArray(object.getObjectContent());
     }
 
-    public InputStream getObjectAsInputStream(String bucket, String key) throws IOException {
+    public InputStream getObjectAsInputStream(String bucket, String key) {
         return this.s3Client.getObject(new GetObjectRequest(bucket, key)).getObjectContent();
     }
 
-    public void saveObjectToTmpDir(String bucket, String key) throws IOException, FileNotFoundException {
+    public void saveObjectToTmpDir(String bucket, String key) throws IOException {
 
             S3Object o = this.s3Client.getObject(bucket, key);
             try(S3ObjectInputStream s3is = o.getObjectContent()) {
@@ -81,7 +81,7 @@ public class S3Service {
 
     }
 
-    public void putObject(String bucket, String key, File f) throws IOException {
+    public void putObject(String bucket, String key, File f) {
         PutObjectRequest putObjectRequest = new PutObjectRequest(bucket, key, f);
         PutObjectResult putObjectResult = this.s3Client.putObject(putObjectRequest);
     }

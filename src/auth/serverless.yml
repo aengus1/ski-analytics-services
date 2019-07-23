@@ -53,7 +53,7 @@ functions:
           trigger: PostConfirmation
   # web socket connection for client callbacks
   connectionHandler:
-    handler: ski.crunch.auth.InitWebSocketHandler
+    handler: ski.crunch.auth.WebSocketHandler
     environment:
       userTable: ${{self:custom.userTable}}
     events:
@@ -66,7 +66,7 @@ functions:
           route: $disconnect
       - websocket:
           route: $default
-          handler: ski.crunch.auth.DefaultWebSocketHandler
+          handler: ski.crunch.auth.WebSocketHandler
     # custom authorizer for websocket (cognito auth not yet supported with apig ws)
   wsAuth:
     handler: ski.crunch.auth.CustomWsAuthorizer

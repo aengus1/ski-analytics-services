@@ -16,20 +16,21 @@ import scala.ski.crunch.activity.processor.model.ActivityRecord;
 import ski.crunch.activity.ActivityWriter;
 import ski.crunch.activity.ActivityWriterImpl;
 import ski.crunch.activity.model.ActivityItem;
-//import ski.crunch.model.ActivityItem;
 import ski.crunch.activity.model.ActivityOuterClass;
-import ski.crunch.utils.ApiGatewayResponse;
 import ski.crunch.activity.model.PutActivityResponse;
 import ski.crunch.activity.parser.ActivityHolderAdapter;
 import ski.crunch.activity.parser.fit.FitActivityHolderAdapter;
 import ski.crunch.activity.processor.ActivityProcessor;
 import ski.crunch.activity.processor.model.ActivityHolder;
+import ski.crunch.aws.DynamoDBService;
+import ski.crunch.aws.S3Service;
 import ski.crunch.utils.*;
-
 
 import java.io.*;
 import java.text.SimpleDateFormat;
 import java.util.*;
+
+//import ski.crunch.model.ActivityItem;
 
 public class ActivityService {
 
@@ -313,7 +314,7 @@ public class ActivityService {
         return null;
     }
 
-    private String extractActivityId(String key) throws ParseException {
+    public String extractActivityId(String key) throws ParseException {
         String id = "";
 
         if (key != null && key.length() > 1 && key.contains(".")) {

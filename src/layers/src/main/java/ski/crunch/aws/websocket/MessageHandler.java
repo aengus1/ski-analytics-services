@@ -1,7 +1,7 @@
-package ski.crunch.auth.service.websocket;
+package ski.crunch.aws.websocket;
 
 import org.apache.log4j.Logger;
-import ski.crunch.auth.DynamoDBService;
+import ski.crunch.aws.DynamoDBService;
 
 public class MessageHandler implements WebSocketHandler {
 

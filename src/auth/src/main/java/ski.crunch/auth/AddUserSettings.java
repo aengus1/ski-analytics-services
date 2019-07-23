@@ -9,6 +9,8 @@ import com.amazonaws.services.lambda.runtime.RequestStreamHandler;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.apache.log4j.Logger;
+import ski.crunch.aws.DynamoDBService;
+import ski.crunch.model.UserSettingsItem;
 
 import java.io.IOException;
 import java.io.InputStream;

@@ -7,9 +7,9 @@ import org.apache.log4j.Logger;
 import org.junit.jupiter.api.*;
 import ski.crunch.activity.model.ActivityOuterClass;
 import ski.crunch.activity.service.ActivityService;
-import ski.crunch.activity.service.DynamoDBService;
-import ski.crunch.activity.service.S3Service;
-import ski.crunch.utils.*;
+import ski.crunch.aws.DynamoDBService;
+import ski.crunch.aws.S3Service;
+import ski.crunch.utils.NotFoundException;
 
 import javax.ws.rs.client.Client;
 import javax.ws.rs.client.ClientBuilder;
@@ -58,7 +58,7 @@ class ActivityTests {
             for (Path path : directoryStream) {
                 fileNames.add(path.toString());
             }
-        } catch (IOException ex) {
+        } catch (IOException ignored) {
         }
         return fileNames;
     }
@@ -103,7 +103,7 @@ class ActivityTests {
             apiStackServerlessState = ServerlessState.readServerlessState(path);
             authStackServerlessState = ServerlessState.readServerlessState(authPath);
         } catch (IOException e) {
-            System.err.println("Failed to read serverless-state.json. Exiting test suite");
+            System.err.println("Failed to read serverless-state.json. Ensure that 'sls package' is run first. Exiting test suite");
             e.printStackTrace();
             throw new Exception("Failed to read serverless-state.json");
         }
@@ -257,23 +257,11 @@ class ActivityTests {
     }
 
 
-    private String extractActivityId(String key) throws ParseException {
-        String id;
-
-        if (key != null && key.length() > 1 && key.contains(".")) {
-            id = key.substring(0, key.indexOf("."));
-            LOG.debug("extracted id: " + id);
-        } else {
-            LOG.error("invalid key name: " + key);
-            throw new ParseException("invalid key name for activity " + key);
-        }
-        return id;
-    }
 
     @Test
     public void testActivityIdExtract() {
         try {
-            String id = this.extractActivityId("029781f1-4eac-453f-91e4-ae44f76c57d0.fit");
+            String id = activityService.extractActivityId("029781f1-4eac-453f-91e4-ae44f76c57d0.fit");
             System.out.println("id = " + id);
             System.out.println(id.concat(".pbf"));
         } catch (Exception ex) {

@@ -1,4 +1,4 @@
-package ski.crunch.auth.service.websocket;
+package ski.crunch.aws.websocket;
 
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
