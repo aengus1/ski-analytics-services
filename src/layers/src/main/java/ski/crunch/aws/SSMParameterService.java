@@ -1,4 +1,4 @@
-package ski.crunch.activity.service;
+package ski.crunch.aws;
 
 import com.amazonaws.auth.AWSCredentialsProvider;
 import com.amazonaws.services.simplesystemsmanagement.AWSSimpleSystemsManagement;

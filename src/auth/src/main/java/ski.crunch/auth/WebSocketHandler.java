@@ -3,16 +3,17 @@ package ski.crunch.auth;
 import com.amazonaws.services.lambda.runtime.Context;
 import com.amazonaws.services.lambda.runtime.RequestStreamHandler;
 import org.apache.log4j.Logger;
-import ski.crunch.auth.service.websocket.ConnectHandler;
-import ski.crunch.auth.service.websocket.DisconnectHandler;
-import ski.crunch.auth.service.websocket.MessageHandler;
-import ski.crunch.auth.service.websocket.WebSocketService;
+import ski.crunch.aws.websocket.ConnectHandler;
+import ski.crunch.aws.websocket.DisconnectHandler;
+import ski.crunch.aws.websocket.MessageHandler;
+import ski.crunch.aws.websocket.WebSocketService;
+import ski.crunch.aws.DynamoDBService;
 
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 
-public class InitWebSocketHandler implements RequestStreamHandler {
+public class WebSocketHandler implements RequestStreamHandler {
 
 
 
@@ -22,7 +23,7 @@ public class InitWebSocketHandler implements RequestStreamHandler {
     private MessageHandler messageHandler  = new MessageHandler();
     private WebSocketService wsService = new WebSocketService(connectHandler, disconnectHandler, messageHandler);
 
-    private static final Logger LOGGER = Logger.getLogger(InitWebSocketHandler.class);
+    private static final Logger LOGGER = Logger.getLogger(WebSocketHandler.class);
 
 
 

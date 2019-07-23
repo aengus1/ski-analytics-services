@@ -5,11 +5,13 @@ import com.amazonaws.auth.DefaultAWSCredentialsProviderChain;
 import com.amazonaws.services.lambda.runtime.Context;
 import com.amazonaws.services.lambda.runtime.RequestHandler;
 import org.apache.log4j.Logger;
-import ski.crunch.utils.ApiGatewayResponse;
 import ski.crunch.activity.service.*;
+import ski.crunch.aws.DynamoDBService;
+import ski.crunch.aws.S3Service;
+import ski.crunch.aws.SSMParameterService;
+import ski.crunch.utils.ApiGatewayResponse;
 
-
-import java.util.*;
+import java.util.Map;
 
 public class ParseFitActivityLambda implements RequestHandler<Map<String, Object>, ApiGatewayResponse> {
 

@@ -1,15 +1,16 @@
-package ski.crunch.activity.service;
+package ski.crunch.aws;
 
 
 import com.amazonaws.services.s3.model.Bucket;
 import com.amazonaws.services.s3.model.ObjectListing;
+import com.amazonaws.services.s3.model.S3ObjectSummary;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
-public class S3ServiceTest extends  AbstractIntegrationTest {
+public class S3ServiceTest extends AbstractAwsTest {
 
     private S3Service service;
 
@@ -27,7 +28,7 @@ public class S3ServiceTest extends  AbstractIntegrationTest {
     @Test
      void listActivityBucket(){
         ObjectListing listing = this.service.getS3Client().listObjects("activity-staging.crunch.ski");
-        listing.getObjectSummaries().stream().map(x -> x.getKey()).forEach(System.out::println);
+        listing.getObjectSummaries().stream().map(S3ObjectSummary::getKey).forEach(System.out::println);
     }
 
     @Disabled

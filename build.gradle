@@ -17,6 +17,7 @@ allprojects {
             url "http://maven.geotoolkit.org/"
         }
     }
+
 }
 
 subprojects {
@@ -74,6 +75,15 @@ task codeCoverageReport(type: JacocoReport) {
         sourceSets it.sourceSets.main
     }
 
+    afterEvaluate {
+        classDirectories = files(classDirectories.files.collect {
+            fileTree(dir: it, exclude: [
+                    'com/garmin/**'
+            ])
+        })
+    }
+
+
     reports {
         xml.enabled = true
         csv.enabled = false
@@ -90,7 +100,6 @@ codeCoverageReport.dependsOn {
 build.dependsOn {
     codeCoverageReport
 }
-
 
 
 //sourceCompatibility = 1.8

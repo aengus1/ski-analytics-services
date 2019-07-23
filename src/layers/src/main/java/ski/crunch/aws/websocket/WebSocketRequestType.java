@@ -1,4 +1,4 @@
-package ski.crunch.auth.service.websocket;
+package ski.crunch.aws.websocket;
 
 public enum WebSocketRequestType {
     CONNECT, DISCONNECT, MESSAGE

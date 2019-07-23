@@ -1,16 +1,19 @@
 package ski.crunch.activity;
 
-import java.util.*;
-
 import com.amazonaws.AmazonClientException;
 import com.amazonaws.auth.AWSCredentialsProvider;
 import com.amazonaws.auth.DefaultAWSCredentialsProviderChain;
-import org.apache.log4j.Logger;
-
 import com.amazonaws.services.lambda.runtime.Context;
 import com.amazonaws.services.lambda.runtime.RequestHandler;
+import org.apache.log4j.Logger;
+import ski.crunch.activity.service.ActivityService;
+import ski.crunch.activity.service.WeatherService;
+import ski.crunch.aws.DynamoDBService;
+import ski.crunch.aws.S3Service;
+import ski.crunch.aws.SSMParameterService;
 import ski.crunch.utils.ApiGatewayResponse;
-import ski.crunch.activity.service.*;
+
+import java.util.Map;
 
 public class GetActivityHandler implements RequestHandler<Map<String, Object>, ApiGatewayResponse> {
 

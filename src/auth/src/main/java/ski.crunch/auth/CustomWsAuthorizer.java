@@ -21,15 +21,16 @@ import org.apache.http.client.methods.HttpGet;
 import org.apache.http.impl.client.CloseableHttpClient;
 import org.apache.http.impl.client.HttpClients;
 import org.apache.log4j.Logger;
+import ski.crunch.utils.StreamUtils;
 
-import java.io.*;
+import java.io.IOException;
+import java.io.PrintWriter;
+import java.io.StringWriter;
 import java.net.MalformedURLException;
 import java.net.URI;
-import java.nio.charset.StandardCharsets;
 import java.security.interfaces.RSAPrivateKey;
 import java.security.interfaces.RSAPublicKey;
 import java.util.*;
-import java.util.stream.Collectors;
 
 
 public class CustomWsAuthorizer implements RequestHandler<Map<String, Object>, Map<String, Object>> {
@@ -83,10 +84,8 @@ public class CustomWsAuthorizer implements RequestHandler<Map<String, Object>, M
 
 
         // build the policy response
-        Map<String, Object> authResponse = buildAuthPolicyResponse(authorizationToken, methodArn);
+       return buildAuthPolicyResponse(authorizationToken, methodArn);
 
-
-        return authResponse;
     }
 
 
@@ -124,25 +123,22 @@ public class CustomWsAuthorizer implements RequestHandler<Map<String, Object>, M
 
 
             if (LOGGER.isDebugEnabled()) {
-                LOGGER.debug(authResponse.keySet().stream().collect(Collectors.joining(",")));
+                LOGGER.debug(String.join(",", authResponse.keySet()));
                 for (String s : authResponse.keySet()) {
                     LOGGER.debug(s + " : " + authResponse.get(s));
                 }
 
-                LOGGER.debug(policyDocument.keySet().stream().collect(Collectors.joining(",")));
+                LOGGER.debug(String.join(",", policyDocument.keySet()));
                 for (String s : policyDocument.keySet()) {
                     LOGGER.debug(s + " : " + policyDocument.get(s));
                 }
 
-                LOGGER.debug(statement1.keySet().stream().collect(Collectors.joining(",")));
+                LOGGER.debug(String.join(",", statement1.keySet()));
                 for (String s : statement1.keySet()) {
                     LOGGER.debug(s + " : " + statement1.get(s));
                 }
             }
 
-        } catch (JWTDecodeException exception) {
-            LOGGER.error(exception.getMessage(), exception);
-            return null;
         } catch (Exception exception) {
             LOGGER.error(exception.getMessage(), exception);
             return null;
@@ -242,7 +238,7 @@ public class CustomWsAuthorizer implements RequestHandler<Map<String, Object>, M
         httpGet.setURI(jwksEndpoint);
         try (CloseableHttpResponse response = httpClient.execute(httpGet)) {
             HttpEntity entity = response.getEntity();
-            String jwks = CustomWsAuthorizer.convertStreamToString(entity.getContent());
+            String jwks = StreamUtils.convertStreamToString(entity.getContent());
             JsonNode jwksJson = objectMapper.readTree(jwks);
             JsonNode keyNode = jwksJson.get("keys");
             Iterator it = keyNode.fields();
@@ -261,15 +257,6 @@ public class CustomWsAuthorizer implements RequestHandler<Map<String, Object>, M
         return publicKeys;
     }
 
-    //TODO -> move ski.crunch.utils package to lambda layer and use this function from there
-    public static String convertStreamToString(InputStream is) throws IOException {
-        StringBuilder sb = new StringBuilder(2048); // Define a size if you have an idea of it.
-        char[] read = new char[128]; // Your buffer size.
-        try (InputStreamReader ir = new InputStreamReader(is, StandardCharsets.UTF_8)) {
-            for (int i; -1 != (i = ir.read(read)); sb.append(read, 0, i)) ;
-        }
-        return sb.toString();
-    }
 
     public static String stackTraceToString(Exception ex) {
         StringWriter sw = new StringWriter();
