@@ -4,8 +4,22 @@ repositories {
     mavenCentral()
 }
 
-sourceCompatibility = 1.8
-targetCompatibility = 1.8
+//sourceCompatibility = 1.8
+//targetCompatibility = 1.8
+
+
+//sourceSets {
+//    main {
+//        java {
+//            srcDirs = ['src/main/java']
+//        }
+//    }
+//    test {
+//        java {
+//            srcDirs = ['src/test/java']
+//        }
+//    }
+//}
 
 dependencies {
     compile(
@@ -20,7 +34,12 @@ dependencies {
             'com.auth0:java-jwt:3.8.0',
             'com.auth0:jwks-rsa:0.8.2'
     )
+
 }
+test {
+    include 'ski/crunch/**'
+}
+
 
 // Task for building the zip file for upload
 task buildZip(type: Zip) {

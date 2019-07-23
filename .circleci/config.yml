@@ -71,6 +71,10 @@ jobs:
       - run: gradle :api:test
       - run: gradle :auth:test
       - run: gradle :layers:test
+
+      # generate coverage report
+      - run: gradle codeCoverageReport
+        
       # save test results
       - run:
           name: Save test results
@@ -84,7 +88,7 @@ jobs:
           path: ~/test-results/junit
       # store coverage report
       - store_artifacts:
-          path:  src/api/build/coverage
+          path:  build/reports/coverage
       # upload coverage report to codacy
       - run:
           name: upload coverage report
@@ -92,7 +96,7 @@ jobs:
             LATEST_VERSION="$(curl -Ls https://api.bintray.com/packages/codacy/Binaries/codacy-coverage-reporter/versions/_latest | jq -r .name)"
             curl -Ls -o codacy-coverage-reporter "https://dl.bintray.com/codacy/Binaries/${LATEST_VERSION}/codacy-coverage-reporter-linux"
             chmod +x codacy-coverage-reporter
-            ./codacy-coverage-reporter report -l Java -r src/api/build/coverage/test/jacocoTestReport.xml
+            ./codacy-coverage-reporter report -l Java -r build/reports/coverage/jacocoTestReport.xml
 
 
 workflows:
