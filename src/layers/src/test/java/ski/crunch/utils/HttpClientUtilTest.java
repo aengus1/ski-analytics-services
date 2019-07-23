@@ -34,7 +34,7 @@ public class HttpClientUtilTest {
     private HttpEntity httpEntity;
 
 
-    final static String exampleString = "{\n" +
+    private final static String exampleString = "{\n" +
             "    \"glossary\": {\n" +
             "        \"title\": \"example glossary\",\n" +
             "\t\t\"GlossDiv\": {\n" +
