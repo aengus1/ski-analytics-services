@@ -8,6 +8,8 @@ plugins:
 custom:
   currentStage: ${{opt:stage, self:provider.stage}}
   domainName: crunch.ski
+  utilLayerVersion: 11 #arn:aws:lambda:ca-central-1:556823078430:layer:staging-layer-utils:2
+  commonLayerVersion: 11 #arn:aws:lambda:ca-central-1:556823078430:layer:staging-layer-common:2
   resourceTags:
               -
                 Key: "project"
@@ -21,6 +23,8 @@ custom:
     Fn::ImportValue:
       Fn::Join: ['', UserPoolArn]
   activityTable:  ${{self:custom.currentStage}}-crunch-Activity
+  ## TODO -> is there really no way to reference a CF output from another stack (auth-stack.WebSocketId) ??
+  wsEndpoint:   wss://c4at2w51lg.execute-api.us-west-2.amazonaws.com/staging
 #  authStack: ${{self:custom.currentStage}}-ski-analytics-authentication-stack
   apigwBinary:
     types:
@@ -109,8 +113,13 @@ functions:
             ### use in test harness
     Tags: ${{self:custom.resourceTags}}
     layers:
-      Fn::ImportValue:
-        Fn::Join: ['', ModelLambdaLayer]
+      - arn:aws:lambda:ca-central-1:556823078430:layer:${{self:custom.currentStage}}-layer-utils:${{self:custom.utilLayerVersion}}
+      - arn:aws:lambda:ca-central-1:556823078430:layer:${{self:custom.currentStage}}-layer-common:${{self:custom.commonLayerVersion}}
+
+#      - Fn::ImportValue:
+#          Fn::Join: ['', CommonLambdaLayer]
+#      - Fn::ImportValue:
+#          Fn::Join: ['', ModelLambdaLayer]
     #- arn:aws:lambda:ca-central-1:556823078430:layer:staging-layer-model:3
 
   PutActivityLambda:
@@ -138,8 +147,8 @@ functions:
           arn: arn:aws:cognito-idp:us-west-2:556823078430:userpool/us-west-2_FrH0UdrNz
     Tags: ${{self:custom.resourceTags}}
     layers:
-      Fn::ImportValue:
-        Fn::Join: ['', ModelLambdaLayer]
+      - arn:aws:lambda:ca-central-1:556823078430:layer:${{self:custom.currentStage}}-layer-utils:${{self:custom.utilLayerVersion}}
+      - arn:aws:lambda:ca-central-1:556823078430:layer:${{self:custom.currentStage}}-layer-common:${{self:custom.commonLayerVersion}}
 
   ParseFitActivityLambda:
     handler: ski.crunch.activity.ParseFitActivityLambda
@@ -150,6 +159,7 @@ functions:
       s3rawActivityBucketName: ${{self:custom.rawActivityBucketName}}
       activityTable: ${{self:custom.currentStage}}-crunch-Activity
       currentStage: ${{self:custom.currentStage}}
+      webSocketId: ${{self:custom.wsEndpoint}}
     events:
      - s3: ForRawActivity
        event: s3:ObjectCreated:*
@@ -157,8 +167,8 @@ functions:
            - suffix: .fit
     Tags: ${{self:custom.resourceTags}}
     layers:
-      Fn::ImportValue:
-        Fn::Join: ['', ModelLambdaLayer]
+      - arn:aws:lambda:ca-central-1:556823078430:layer:${{self:custom.currentStage}}-layer-utils:${{self:custom.utilLayerVersion}}
+      - arn:aws:lambda:ca-central-1:556823078430:layer:${{self:custom.currentStage}}-layer-common:${{self:custom.commonLayerVersion}}
 
 resources:
   Resources:

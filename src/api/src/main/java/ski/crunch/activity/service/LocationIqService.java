@@ -6,7 +6,7 @@ import org.apache.http.client.methods.HttpGet;
 import org.apache.http.impl.client.CloseableHttpClient;
 import org.apache.http.impl.client.HttpClients;
 import org.apache.log4j.Logger;
-import ski.crunch.activity.model.ActivityOuterClass;
+import ski.crunch.model.ActivityOuterClass;
 import ski.crunch.utils.HttpClientUtil;
 
 import java.io.IOException;

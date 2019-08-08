@@ -17,6 +17,7 @@ public class DisconnectHandler<Void> implements WebSocketHandler {
     @Override
     public Void handleMessage(WebSocketService.WebSocketRequestContext requestContext)  {
         //null out connection id
+        LOGGER.debug("username = " + requestContext.getUsername());
         UserSettingsItem userSettings = dynamoDBService.getMapper().load(UserSettingsItem.class, requestContext.getUsername());
         userSettings.setConnectionId("");
         this.dynamoDBService.getMapper().save(userSettings);

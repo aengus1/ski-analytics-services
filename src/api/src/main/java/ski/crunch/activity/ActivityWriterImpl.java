@@ -1,10 +1,10 @@
 package ski.crunch.activity;
 
 import scala.ski.crunch.activity.processor.model.ActivitySummary;
-import ski.crunch.activity.model.ActivityOuterClass;
 import ski.crunch.activity.processor.model.ActivityEvent;
 import ski.crunch.activity.processor.model.ActivityHolder;
 import ski.crunch.activity.processor.model.EventType;
+import ski.crunch.model.ActivityOuterClass;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;

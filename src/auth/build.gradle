@@ -4,23 +4,6 @@ repositories {
     mavenCentral()
 }
 
-//sourceCompatibility = 1.8
-//targetCompatibility = 1.8
-
-
-//sourceSets {
-//    main {
-//        java {
-//            srcDirs = ['src/main/java']
-//        }
-//    }
-//    test {
-//        java {
-//            srcDirs = ['src/test/java']
-//        }
-//    }
-//}
-
 dependencies {
     compile(
             'com.amazonaws:aws-lambda-java-core:1.1.0',
@@ -33,7 +16,7 @@ dependencies {
             'com.amazonaws:aws-java-sdk-apigatewaymanagementapi:1.11.477',
             'com.auth0:java-jwt:3.8.0',
             'com.auth0:jwks-rsa:0.8.2',
-            project(':layers')
+            project(':common')
     )
 
 }

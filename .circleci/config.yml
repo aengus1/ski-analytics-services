@@ -29,7 +29,7 @@ jobs:
             - node-v1-
       - run: gradle :api:dependencies
       - run: gradle :auth:dependencies
-      - run: gradle :layers:dependencies
+      - run: gradle :common:dependencies
       - run:
           name: "Update Node.js and npm"
           command: |
@@ -58,19 +58,19 @@ jobs:
           command: |
                   gradle :api:build -x check
                   gradle :auth:build -x check
-                  gradle :layers:build -x check
+                  gradle :common:build -x check
                   pwd
                   cd ~/repo/src/api
                   sls package
                   cd ~/repo/src/auth
                   sls package
-                  cd ~/repo/src/layers
+                  cd ~/repo/src/common
                   sls package
       # run tests!
       - run: gradle :api:integrationTest
       - run: gradle :api:test
       - run: gradle :auth:test
-      - run: gradle :layers:test
+      - run: gradle :common:test
 
       # generate coverage report
       - run: gradle codeCoverageReport

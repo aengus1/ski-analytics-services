@@ -1,6 +1,6 @@
 package ski.crunch.activity.service;
 
-import ski.crunch.activity.model.ActivityOuterClass;
+import ski.crunch.model.ActivityOuterClass;
 
 public interface LocationService {
 

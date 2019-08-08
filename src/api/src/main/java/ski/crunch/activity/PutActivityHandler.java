@@ -11,6 +11,8 @@ import ski.crunch.aws.DynamoDBService;
 import ski.crunch.aws.S3Service;
 import ski.crunch.utils.ApiGatewayResponse;
 
+import java.net.URL;
+import java.net.URLClassLoader;
 import java.util.Map;
 
 
@@ -50,6 +52,15 @@ public class PutActivityHandler implements RequestHandler<Map<String, Object>, A
 
     @Override
     public ApiGatewayResponse handleRequest(Map<String, Object> input, Context context) {
+
+        //debugging to print classpath for layer issue...
+        ClassLoader cl = ClassLoader.getSystemClassLoader();
+
+        URL[] urls = ((URLClassLoader)cl).getURLs();
+
+        for(URL url: urls){
+            System.out.println(url.getFile());
+        }
 
         LOG.debug("PutActivityHandler called");
         return activityService.saveRawActivity(input,context);

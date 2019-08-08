@@ -27,7 +27,7 @@ public class LambdaProxyConfig {
                 claims = (Map<String, Object>) authorizer.get("claims");
                 this.requestContext.getIdentity().setSourceIp((String) identity.get("sourceIp"));
                 this.requestContext.getIdentity().setUserAgent((String) identity.get("userAgent"));
-                this.requestContext.getIdentity().setSourceIp((String) identity.get("user"));
+                this.requestContext.getIdentity().setUser((String) identity.get("user"));
                 this.requestContext.getIdentity().setEmail((String) claims.get("email"));
             } catch (NullPointerException ex) {
                 ex.printStackTrace();

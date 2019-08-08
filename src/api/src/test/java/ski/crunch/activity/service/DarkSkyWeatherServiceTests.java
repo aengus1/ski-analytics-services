@@ -8,7 +8,7 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestInstance;
 import org.mockito.Mock;
 import org.mockito.Mockito;
-import ski.crunch.activity.model.ActivityOuterClass;
+import ski.crunch.model.ActivityOuterClass;
 import ski.crunch.utils.HttpClientUtil;
 
 import java.io.IOException;

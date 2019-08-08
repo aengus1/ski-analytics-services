@@ -1,0 +1,52 @@
+service: common # NOTE: update this with your service name
+
+
+provider:
+  name: aws
+  runtime: java8
+  region: ca-central-1
+  stage: staging
+  variableSyntax: "\\${{([ ~:a-zA-Z0-9._\\'\",\\-\\/\\(\\)]+?)}}" # notice the double quotes for yaml to ignore the escape characters!
+  stackName: ${{self:custom.currentStage}}-ski-analytics-layer-stack
+
+custom:
+  currentStage: ${{opt:stage, self:provider.stage}}
+
+
+
+
+layers:
+  utils:
+    name: ${{self:custom.currentStage}}-layer-utils
+    description: domain classes for object model and utilities
+    compatibleRuntimes:
+      - java8
+    # awaiting closure of https://github.com/serverless/serverless/issues/6146
+    # currently old versions of layer are deleted, which breaks lambdas that rely on it..
+    retain: true
+    package:
+      include: # Specify the directories and files which should be included in the deployment package
+        - src/main/java/ski/crunch/**
+      artifact: build/distributions/ski-crunch-utils.zip
+  common:
+    name: ${{self:custom.currentStage}}-layer-common
+    description: common dependencies for all services
+    compatibleRuntimes:
+      - java8
+    # awaiting closure of https://github.com/serverless/serverless/issues/6146
+    # currently old versions of layer are deleted, which breaks lambdas that rely on it..
+    retain: true
+    package:
+      include: # Specify the directories and files which should be included in the deployment package
+        - src/main/java/*
+      artifact: build/distributions/ski-crunch-common.zip
+
+
+
+#resources:
+#  Outputs:
+#    UtilsLayerExport:
+#      Value:
+#        Ref: UtilsLambdaLayer
+#      Export:
+#        Name: UtilsLambdaLayer

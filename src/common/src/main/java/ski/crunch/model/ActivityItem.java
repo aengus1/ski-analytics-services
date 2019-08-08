@@ -19,6 +19,7 @@ public class ActivityItem {
     private String rawFileType;
     private String userAgent;
     private String userId;
+    private String cognitoId;
     //possible states: PENDING, PROCESSED, ERROR
     private String status;  //TODO convert to enum when have time to figure out dynamo mapping
 
@@ -97,4 +98,12 @@ public class ActivityItem {
         this.rawFileType = rawFileType;
     }
 
+    @DynamoDBAttribute(attributeName = "cognitoId")
+    public String getCognitoId() {
+        return cognitoId;
+    }
+
+    public void setCognitoId(String cognitoId) {
+        this.cognitoId = cognitoId;
+    }
 }

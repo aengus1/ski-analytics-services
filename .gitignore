@@ -22,4 +22,4 @@ src/**/out/*
 # Idea
 .idea/
 ski-analytics-services.iml
-src/layers/gradle/wrapper/gradle-wrapper.properties
+src/common/gradle/wrapper/gradle-wrapper.properties

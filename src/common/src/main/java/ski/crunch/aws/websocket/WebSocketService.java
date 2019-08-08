@@ -12,6 +12,9 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
 
+/**
+ * Class for processing incoming websocket requests.  Delegates messages to handlers based on request type
+ */
 public class WebSocketService {
 
     private Map<WebSocketRequestType, WebSocketHandler> handlers;
@@ -36,9 +39,10 @@ public class WebSocketService {
         WebSocketRequestContext context = new WebSocketRequestContext();
         JsonNode eventJson = StreamUtils.convertStreamToJson(is);
 
-        is.reset();
-        String request = StreamUtils.convertStreamToString(is);
-        System.out.println("request = " + request);
+        LOGGER.info("parsed json: " + objectMapper.writerWithDefaultPrettyPrinter().writeValueAsString(eventJson));
+//        is.reset();
+//        String request = StreamUtils.convertStreamToString(is);
+//        System.out.println("request = " + request);
 
         String body = eventJson.path(WebSocketRequestContext.body).asText();
         JsonNode reqContext = eventJson.path(WebSocketRequestContext.requestContext);
@@ -74,6 +78,7 @@ public class WebSocketService {
             try {
                 body = body.replace("\\\"", "\"");
                 JsonNode jsonBody = objectMapper.readTree(body);
+                LOGGER.info("parsed body: " + objectMapper.writerWithDefaultPrettyPrinter().writeValueAsString(jsonBody));
                 Iterator bodyIt = jsonBody.fields();
                 while (bodyIt.hasNext()) {
                     Map.Entry next = (Map.Entry) bodyIt.next();

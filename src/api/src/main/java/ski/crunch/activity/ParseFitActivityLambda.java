@@ -50,7 +50,6 @@ public class ParseFitActivityLambda implements RequestHandler<Map<String, Object
         this.s3RawActivityBucket = System.getenv("s3RawActivityBucketName");
 
         this.parameterService = new SSMParameterService(region, credentialsProvider);
-        this.parameterService = new SSMParameterService(region, credentialsProvider);
         this.activityService = new ActivityService(s3, credentialsProvider, dynamo, region,
                 s3RawActivityBucket, s3ActivityBucket, activityTable);
     }
