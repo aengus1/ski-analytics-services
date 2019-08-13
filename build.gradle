@@ -22,15 +22,21 @@ allprojects {
 
 subprojects {
 
+//    sourceSets {
+//
+//    }
+    configurations {
+        integrationTestCompile.extendsFrom testImplementation
+        integrationTestRuntime.extendsFrom testRuntime
+    }
+
     dependencies {
         testImplementation(
                 'org.scalatest:scalatest_2.11:3.0.0',
                 'org.junit.jupiter:junit-jupiter-api:5.1.0',
-                // https://mvnrepository.com/artifact/com.sun.jersey/jersey-client
                 'org.glassfish.jersey.core:jersey-client:2.5.1',
                 'com.fasterxml.jackson.core:jackson-core:2.9.7',
                 'org.mockito:mockito-all:1.10.19',
-//                'com.github.stefanbirkner:system-rules:1.19.0'
         )
         testRuntimeOnly(
                 'org.junit.jupiter:junit-jupiter-engine:5.1.0'

@@ -11,12 +11,11 @@ import com.amazonaws.services.lambda.runtime.Context;
 import com.amazonaws.util.Base64;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.node.ObjectNode;
 import org.apache.log4j.Logger;
 import scala.ski.crunch.activity.processor.model.ActivityRecord;
 import ski.crunch.activity.ActivityWriter;
 import ski.crunch.activity.ActivityWriterImpl;
-import ski.crunch.activity.model.ActivityItem;
-import ski.crunch.activity.model.ActivityOuterClass;
 import ski.crunch.activity.model.PutActivityResponse;
 import ski.crunch.activity.parser.ActivityHolderAdapter;
 import ski.crunch.activity.parser.fit.FitActivityHolderAdapter;
@@ -24,6 +23,10 @@ import ski.crunch.activity.processor.ActivityProcessor;
 import ski.crunch.activity.processor.model.ActivityHolder;
 import ski.crunch.aws.DynamoDBService;
 import ski.crunch.aws.S3Service;
+import ski.crunch.aws.websocket.OutgoingWebSocketService;
+import ski.crunch.model.ActivityItem;
+import ski.crunch.model.ActivityOuterClass;
+import ski.crunch.model.UserSettingsItem;
 import ski.crunch.utils.*;
 
 import java.io.*;
@@ -35,6 +38,9 @@ import java.util.*;
 public class ActivityService {
 
     private static final Logger LOG = Logger.getLogger(ActivityService.class);
+    //TODO -> pull these as an environment variables for parseFit API call
+    public static final String USER_TABLE_REGION = "us-west-2";
+    public static final String USER_TABLE_NAME = "staging-crunch-User";
 
 
     private String s3RawActivityBucket;
@@ -304,9 +310,61 @@ public class ActivityService {
             System.out.println("processed bucket = " + s3ProcessedActivityBucket);
             s3Service.putObject(s3ProcessedActivityBucket, newKey, cos.toInputStream());
 
-            //6. update activity table
+            //6. update status in activity table
+            //7. call back the client
 
-            //TODO -> update activity table
+
+            ActivityItem activityToQuery = new ActivityItem();
+            activityToQuery.setId(id);
+
+            DynamoDBQueryExpression<ActivityItem> queryExpression = new DynamoDBQueryExpression<>();
+            queryExpression.withHashKeyValues(activityToQuery);
+
+
+
+            String connectionId = "";
+            List<ActivityItem> items = dynamo.getMapper().query(ActivityItem.class, queryExpression);
+            LOG.info("found " + items.size() + " activity items with id: " + id);
+            if (!items.isEmpty()) {
+                items.get(0).setStatus("COMPLETE");
+                dynamo.getMapper().save(items.get(0));
+                String cognitoId = items.get(0).getCognitoId();
+                if(cognitoId != null && !cognitoId.isEmpty()){
+                    LOG.info("owner of activity: " + id + " = " + cognitoId);
+                    DynamoDBQueryExpression<UserSettingsItem> userQueryExpression = new DynamoDBQueryExpression<>();
+                    UserSettingsItem userToQuery = new UserSettingsItem();
+                    userToQuery.setId(cognitoId);
+                    userQueryExpression.withHashKeyValues(userToQuery);
+                    DynamoDBService userRegiondynamoService = new DynamoDBService(USER_TABLE_REGION, USER_TABLE_NAME);
+                    List<UserSettingsItem> users = userRegiondynamoService.getMapper().query(UserSettingsItem.class, userQueryExpression);
+                    if(!users.isEmpty()) {
+                        UserSettingsItem user = users.get(0);
+                        connectionId = user.getConnectionId();
+                        LOG.info("connection Id = " + cognitoId);
+                    }
+                }
+
+            }
+
+
+            String apiId = System.getenv("webSocketId");
+
+            LOG.debug("api ID = " + apiId);
+            // lookup the
+            //build the message
+            ObjectNode root = objectMapper.createObjectNode();
+            root.put("message", "activity-id " + id + " successfully uploaded");
+            root.put("activityId", id);
+            root.put("status", "COMPLETE");
+
+            OutgoingWebSocketService outgoingWebSocketService = new OutgoingWebSocketService();
+            outgoingWebSocketService.sendMessage(root.asText(), apiId, connectionId, credentialsProvider);
+
+            // parameters:  activity-id
+            // workflow:   lookup activities user and connectionId
+            //             if connectionId not empty make a call to client containing:
+            //              activityf-id, status
+
         } catch (IOException e) {
             e.printStackTrace();
             return null;
@@ -390,6 +448,7 @@ public class ActivityService {
             ActivityItem activity = new ActivityItem();
             activity.setId(activityId);
             activity.setUserId(identity.getEmail());
+            activity.setCognitoId(identity.getCognitoIdentityId());
             activity.setDateOfUpload(new Date(System.currentTimeMillis()));
             activity.setRawActivity(dynamo.getMapper().createS3Link(region, activityId));
             activity.setUserAgent(identity.getUserAgent());

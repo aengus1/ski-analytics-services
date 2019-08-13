@@ -12,6 +12,9 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
 
+/**
+ * Class for processing incoming websocket requests.  Delegates messages to handlers based on request type
+ */
 public class WebSocketService {
 
     private Map<WebSocketRequestType, WebSocketHandler> handlers;
@@ -36,9 +39,10 @@ public class WebSocketService {
         WebSocketRequestContext context = new WebSocketRequestContext();
         JsonNode eventJson = StreamUtils.convertStreamToJson(is);
 
-        is.reset();
-        String request = StreamUtils.convertStreamToString(is);
-        System.out.println("request = " + request);
+        LOGGER.info("parsed json: " + objectMapper.writerWithDefaultPrettyPrinter().writeValueAsString(eventJson));
+//        is.reset();
+//        String request = StreamUtils.convertStreamToString(is);
+//        System.out.println("request = " + request);
 
         String body = eventJson.path(WebSocketRequestContext.body).asText();
         JsonNode reqContext = eventJson.path(WebSocketRequestContext.requestContext);
@@ -74,18 +78,35 @@ public class WebSocketService {
             try {
                 body = body.replace("\\\"", "\"");
                 JsonNode jsonBody = objectMapper.readTree(body);
-                Iterator bodyIt = jsonBody.fields();
-                while (bodyIt.hasNext()) {
-                    Map.Entry next = (Map.Entry) bodyIt.next();
-                    if (next.getKey().equals(WebSocketRequestContext.message)) {
-                        context.setMessageContent(((TextNode) next.getValue()).asText());
-                        LOGGER.debug("message content set: " + context.getMessageContent());
-                    }
-                    if (next.getKey().equals(WebSocketRequestContext.action)) {
-                        context.setAction(((TextNode) next.getValue()).asText());
-                        LOGGER.debug("message action set: " + context.getAction());
-                    }
+                LOGGER.info("parsed body: " + objectMapper.writerWithDefaultPrettyPrinter().writeValueAsString(jsonBody));
+                try {
+                    context.setMessageContent(jsonBody.at("/message/payload").asText());
+                    LOGGER.debug("message content set: " + context.getMessageContent());
+                }catch(Exception ex) {
+                    LOGGER.error("error parsing message context.  Expecting body/message/payload");
+                    throw ex;
                 }
+                try {
+                    context.setAction(jsonBody.at("/action").asText());
+                    LOGGER.debug("message action set: " + context.getAction());
+                }catch(Exception ex) {
+                    LOGGER.error("error parsing action.  Expecting body/action");
+                    throw ex;
+                }
+//                context.setAction(jsonBody.at("/action").asText());
+//                Iterator bodyIt = jsonBody.fields();
+//                while (bodyIt.hasNext()) {
+//                    Map.Entry next = (Map.Entry) bodyIt.next();
+//                    if (next.getKey().equals(WebSocketRequestContext.message)) {
+//
+//                        context.setMessageContent(((TextNode) next.getValue()).asText());
+//                        LOGGER.debug("message content set: " + context.getMessageContent());
+//                    }
+//                    if (next.getKey().equals(WebSocketRequestContext.action)) {
+//                        context.setAction(((TextNode) next.getValue()).asText());
+//                        LOGGER.debug("message action set: " + context.getAction());
+//                    }
+//                }
             }catch(Exception ex) {
                 LOGGER.error("error obtaining messageBody");
                 throw ex;

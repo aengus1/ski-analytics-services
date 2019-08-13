@@ -1,0 +1,71 @@
+apply plugin: 'java-library'
+
+repositories {
+    mavenCentral()
+}
+
+sourceCompatibility = 1.8
+targetCompatibility = 1.8
+
+dependencies {
+    api(
+            'com.amazonaws:aws-java-sdk-cloudformation:1.11.166',
+            'com.amazonaws:aws-java-sdk-cognitoidp:1.11.442',
+            'com.amazonaws:aws-java-sdk-ssm:1.11.163',
+            'com.amazonaws:aws-lambda-java-core:1.1.0',
+            'com.amazonaws:aws-java-sdk-s3:1.11.510',
+            'com.amazonaws:aws-java-sdk-dynamodb:1.11.166',
+            'com.amazonaws:aws-lambda-java-log4j:1.0.0',
+            'com.fasterxml.jackson.core:jackson-core:2.8.5',
+            'com.fasterxml.jackson.core:jackson-databind:2.8.5',
+            'com.fasterxml.jackson.core:jackson-annotations:2.8.5',
+            'org.apache.httpcomponents:httpclient:4.5.5',
+            'commons-io:commons-io:2.5',
+            'com.google.protobuf:protobuf-java:3.5.0'
+
+    )
+
+//    implementation(
+//            'com.amazonaws:aws-java-sdk-cloudformation:1.11.166',
+//            'com.amazonaws:aws-java-sdk-cognitoidp:1.11.442',
+//            'com.amazonaws:aws-java-sdk-ssm:1.11.163',
+//            'com.amazonaws:aws-lambda-java-core:1.1.0',
+//            'com.amazonaws:aws-java-sdk-s3:1.11.510',
+//            'com.amazonaws:aws-java-sdk-dynamodb:1.11.166',
+//            'com.amazonaws:aws-lambda-java-log4j:1.0.0',
+//            'com.fasterxml.jackson.core:jackson-core:2.8.5',
+//            'com.fasterxml.jackson.core:jackson-databind:2.8.5',
+//            'com.fasterxml.jackson.core:jackson-annotations:2.8.5',
+//            'org.apache.httpcomponents:httpclient:4.5.5',
+//            'commons-io:commons-io:2.5',
+//            'com.google.protobuf:protobuf-java:3.5.0'
+//    )
+
+
+}
+
+// Task for building the zip file for upload
+task buildUtilsZip(type: Zip) {
+    // set the base name of the zip file
+    baseName = "ski-crunch-utils"
+    from (fileTree("build/libs/common.jar")) {
+        into('/java/lib')
+    }
+}
+
+task buildCommonZip(type: Zip) {
+    baseName = "ski-crunch-common"
+    from (configurations.runtimeClasspath) {
+        excludes ['ski/crunch/**']
+        into ('/java/lib')
+    }
+
+}
+
+
+build.dependsOn buildUtilsZip
+build.dependsOn buildCommonZip
+
+task wrapper(type: Wrapper) {
+    gradleVersion = '3.5'
+}

@@ -1,0 +1,49 @@
+service: common # NOTE: update this with your service name
+
+
+provider:
+  name: aws
+  runtime: java8
+  region: ca-central-1
+  stage: staging
+  variableSyntax: "\\${{([ ~:a-zA-Z0-9._\\'\",\\-\\/\\(\\)]+?)}}" # notice the double quotes for yaml to ignore the escape characters!
+  stackName: ${{self:custom.currentStage}}-ski-analytics-common-stack
+
+custom:
+  currentStage: ${{opt:stage, self:provider.stage}}
+
+layers:
+  utils:
+    name: ${{self:custom.currentStage}}-layer-utils
+    description: domain classes for object model and utilities
+    compatibleRuntimes:
+      - java8
+    retain: true
+    package:
+      include: # Specify the directories and files which should be included in the deployment package
+        - src/main/java/ski/crunch/**
+      artifact: build/distributions/ski-crunch-utils.zip
+  common:
+    name: ${{self:custom.currentStage}}-layer-common
+    description: common dependencies for all services
+    compatibleRuntimes:
+      - java8
+    retain: true
+    package:
+      include:
+        - src/main/java/*
+      artifact: build/distributions/ski-crunch-common.zip
+
+
+
+#resources:
+#  Outputs:
+#    UtilsLayerVersion:
+#      Value:  ${{cf:${{self:provider.stackName}}.UtilsLambdaLayerQualifiedArn}}
+#      Export:
+#        Name: UtilsLayerVersion
+#    CommonLayerVersion:
+#      Value:
+#        Ref: CommonLambdaLayer
+#      Export:
+#        Name: CommonLayerVersion

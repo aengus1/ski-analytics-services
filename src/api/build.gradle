@@ -1,6 +1,6 @@
 plugins {
     id 'scala'
-    id 'java'
+    id 'java-library'
 }
 
 
@@ -29,57 +29,47 @@ sourceSets {
             srcDirs = ['src/integration-test/scala', 'src/integration-test/java']
         }
         java {
-            compileClasspath += sourceSets.main.output + configurations.testCompile
-            runtimeClasspath += sourceSets.main.output + compileClasspath + configurations.testCompile
+            compileClasspath += sourceSets.main.output + configurations.testCompileOnly + configurations.integrationTestCompile
+            runtimeClasspath += sourceSets.main.output + configurations.integrationTestRuntime
             srcDirs = ['src/integration-test/java']
         }
         resources.srcDir file('src/integration-test/resources')
     }
 }
 
-configurations {
-    integrationTestCompile.extendsFrom testCompile
-    integrationTestRuntime.extendsFrom testRuntime
-}
 
 dependencies {
-    compile(
-            'org.scala-lang:scala-library:2.11.12',
-            'com.amazonaws:aws-lambda-java-core:1.1.0',
-            'com.amazonaws:aws-java-sdk-s3:1.11.510',
-            'com.amazonaws:aws-java-sdk-dynamodb:1.11.166',
-            'com.amazonaws:aws-java-sdk-cloudformation:1.11.166',
+   compile(
+            'org.scala-lang:scala-library:2.11.12',            
             'com.amazonaws:aws-java-sdk-cognitoidp:1.11.442',
-            'com.amazonaws:aws-lambda-java-log4j:1.0.0',
-            'com.fasterxml.jackson.core:jackson-core:2.8.5',
-            'com.fasterxml.jackson.core:jackson-databind:2.8.5',
-            'com.fasterxml.jackson.core:jackson-annotations:2.8.5',
-            'com.google.protobuf:protobuf-java:3.5.0',
-            'commons-io:commons-io:2.5',
-            "com.vividsolutions:jts:1.13",
-            "org.geotools:gt-main:16.1",
-            "org.geotools:gt-epsg-hsql:16.1",
-            project(':layers')
-
+            'com.amazonaws:aws-java-sdk-ssm:1.11.163',
+            'com.vividsolutions:jts:1.13',
+            'org.geotools:gt-main:16.1',
+            'org.geotools:gt-epsg-hsql:16.1'
     )
-    //compile project(':layers')
+    
+    compileOnly(
+            project(':common')
+    )
 
+    testImplementation(
+            project(':common')
+    )
 
     integrationTestCompile(
+            'com.amazonaws:aws-java-sdk-cloudformation:1.11.166',
             'org.scalatest:scalatest_2.11:3.0.0',
             'org.junit.jupiter:junit-jupiter-api:5.1.0',
-            // https://mvnrepository.com/artifact/com.sun.jersey/jersey-client
             'org.glassfish.jersey.core:jersey-client:2.5.1',
             'com.fasterxml.jackson.core:jackson-core:2.9.7',
             'org.mockito:mockito-all:1.10.19',
-            project(':layers')
+            project(':common')
     )
     integrationTestRuntime(
             'org.junit.jupiter:junit-jupiter-engine:5.1.0',
-            project(':layers')
+            project(':common')
     )
 }
-
 
 
 task integrationTest(type: Test) {
@@ -120,9 +110,11 @@ task integrationTest(type: Test) {
     outputs.upToDateWhen { false }
 }
 
+configurations.implementation.setCanBeResolved(true)
+configurations.api.setCanBeResolved(true)
 check.dependsOn integrationTest
 integrationTest.mustRunAfter test
-//test.finalizedBy jacocoTestReport
+
 
 /**
  * Builds the zip file for upload to AWS
@@ -132,9 +124,11 @@ task buildZip(type: Zip) {
     from compileJava
     from compileScala
     from processResources
-    exclude "layers.jar"
+//    exclude "ski-crunch-utils.jar"
+//    exclude "ski-crunch-common.jar"
     into('lib') {
-        from configurations.runtime
+        from ([ configurations.compile ] - [ configurations.compileOnly ])
+        //from configurations.implementation
     }
 }
 

@@ -5,10 +5,10 @@ import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.apache.log4j.Logger;
 import org.junit.jupiter.api.*;
-import ski.crunch.activity.model.ActivityOuterClass;
 import ski.crunch.activity.service.ActivityService;
 import ski.crunch.aws.DynamoDBService;
 import ski.crunch.aws.S3Service;
+import ski.crunch.model.ActivityOuterClass;
 import ski.crunch.utils.NotFoundException;
 
 import javax.ws.rs.client.Client;
@@ -76,6 +76,7 @@ class ActivityTests {
             //System.setProperty("currentStage", "staging");
 
             //is test being executed from build (test suite) or out (individual) directory
+            // this is kinda nasty because it means CI needs to `sls package` before running integration tests
             String buildPath = ActivityTests.class.getProtectionDomain().getCodeSource().getLocation().getPath();
             System.out.println("build path = " + buildPath);
             String apiPath;

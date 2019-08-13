@@ -8,12 +8,12 @@ import org.junit.jupiter.api.TestInstance;
 import scala.ski.crunch.activity.processor.model.ActivityRecord;
 import ski.crunch.activity.ActivityWriter;
 import ski.crunch.activity.ActivityWriterImpl;
-import ski.crunch.activity.model.ActivityOuterClass;
 import ski.crunch.activity.parser.ActivityHolderAdapter;
 import ski.crunch.activity.parser.fit.FitActivityHolderAdapter;
 import ski.crunch.activity.processor.model.ActivityEvent;
 import ski.crunch.activity.processor.model.ActivityHolder;
 import ski.crunch.activity.processor.model.EventType;
+import ski.crunch.model.ActivityOuterClass;
 import ski.crunch.utils.ParseException;
 
 import java.io.File;

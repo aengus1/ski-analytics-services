@@ -19,7 +19,8 @@ public class WebSocketServiceTest {
     private static final String USERNAME = "0a109298-5b8e-482a-9138-4dcd2802ec53";
     private static final String CONNECTION_ID = "cih0Ge8sPHcCJIA=";
     private static final String ACTION = "test";
-    private static final String MESSAGE = "testmesg";
+    private static final String PAYLOAD = "testmesg";
+    private static final String MESSAGE = "{\\\"payload\\\": \\\""+PAYLOAD+"\\\"}";
     private WebSocketRequestType eventType = WebSocketRequestType.CONNECT;
     private static final String DEFAULT_REGION = "ca-canada-1";
     private static final String USER_TABLE_NAME="userTableName";
@@ -107,7 +108,7 @@ public class WebSocketServiceTest {
             "        \"apiId\": \"c4at2w51lg\"\n" +
             "    },\n" +
 
-            " \"body\": \"{\\\"action\\\":\\\"" + ACTION + "\\\", \\\"message\\\": \\\"" + MESSAGE +"\\\"}\"," +
+            " \"body\": \"{\\\"action\\\":\\\"" + ACTION + "\\\", \\\"message\\\":" + MESSAGE +"}\"," +
             "    \"isBase64Encoded\": false\n" +
             "}\n";
 
@@ -122,7 +123,7 @@ public class WebSocketServiceTest {
         InputStream is = new ByteArrayInputStream(sampleRequest.getBytes());
         WebSocketService.WebSocketRequestContext context = wsService.parseRequest(is);
         assertEquals(USERNAME, context.getUsername());
-        assertEquals(MESSAGE, context.getMessageContent());
+        assertEquals(PAYLOAD, context.getMessageContent());
         assertEquals(ACTION, context.getAction());
         assertEquals(CONNECTION_ID, context.getConnectionId());
         assertEquals(eventType, context.getEventType());

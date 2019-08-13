@@ -8,7 +8,6 @@ import com.auth0.jwk.JwkException;
 import com.auth0.jwk.UrlJwkProvider;
 import com.auth0.jwt.JWT;
 import com.auth0.jwt.algorithms.Algorithm;
-import com.auth0.jwt.exceptions.JWTDecodeException;
 import com.auth0.jwt.exceptions.JWTVerificationException;
 import com.auth0.jwt.interfaces.DecodedJWT;
 import com.auth0.jwt.interfaces.RSAKeyProvider;
@@ -239,6 +238,8 @@ public class CustomWsAuthorizer implements RequestHandler<Map<String, Object>, M
         try (CloseableHttpResponse response = httpClient.execute(httpGet)) {
             HttpEntity entity = response.getEntity();
             String jwks = StreamUtils.convertStreamToString(entity.getContent());
+            LOGGER.info("jwks = " + jwks);
+            LOGGER.info("userPoolId = " + userPoolId);
             JsonNode jwksJson = objectMapper.readTree(jwks);
             JsonNode keyNode = jwksJson.get("keys");
             Iterator it = keyNode.fields();
