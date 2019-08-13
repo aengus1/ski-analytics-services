@@ -4,19 +4,14 @@ repositories {
     mavenCentral()
 }
 
+
 dependencies {
+    
+    compileOnly(project(':common'))  //exclude from packaged artifact -> provided at runtime by lambda container
     compile(
-            'com.amazonaws:aws-lambda-java-core:1.1.0',
-            'com.amazonaws:aws-lambda-java-log4j:1.0.0',
             'com.amazonaws:aws-lambda-java-events:2.2.6',
-            'com.amazonaws:aws-java-sdk-dynamodb:1.11.166',
-            'com.fasterxml.jackson.core:jackson-core:2.8.5',
-            'com.fasterxml.jackson.core:jackson-databind:2.8.5',
-            'com.fasterxml.jackson.core:jackson-annotations:2.8.5',
-            'com.amazonaws:aws-java-sdk-apigatewaymanagementapi:1.11.477',
             'com.auth0:java-jwt:3.8.0',
-            'com.auth0:jwks-rsa:0.8.2',
-            project(':common')
+            'com.auth0:jwks-rsa:0.8.2'
     )
 
 }
@@ -27,19 +22,14 @@ test {
 
 // Task for building the zip file for upload
 task buildZip(type: Zip) {
-    // Using the Zip API from gradle to build a zip file of all the dependencies
-    //
-    // The path to this zip file can be set in the serverless.yml file for the
-    // package/artifact setting for deployment to the S3 bucket
-    //
-    // Link: https://docs.gradle.org/current/dsl/org.gradle.api.tasks.bundling.Zip.html
-
+    
     // set the base name of the zip file
     baseName = "auth"
     from compileJava
     from processResources
     into('lib') {
-        from configurations.runtime
+        from ([ configurations.compile ] - [ configurations.compileOnly ])
+
     }
 }
 

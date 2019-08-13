@@ -79,18 +79,34 @@ public class WebSocketService {
                 body = body.replace("\\\"", "\"");
                 JsonNode jsonBody = objectMapper.readTree(body);
                 LOGGER.info("parsed body: " + objectMapper.writerWithDefaultPrettyPrinter().writeValueAsString(jsonBody));
-                Iterator bodyIt = jsonBody.fields();
-                while (bodyIt.hasNext()) {
-                    Map.Entry next = (Map.Entry) bodyIt.next();
-                    if (next.getKey().equals(WebSocketRequestContext.message)) {
-                        context.setMessageContent(((TextNode) next.getValue()).asText());
-                        LOGGER.debug("message content set: " + context.getMessageContent());
-                    }
-                    if (next.getKey().equals(WebSocketRequestContext.action)) {
-                        context.setAction(((TextNode) next.getValue()).asText());
-                        LOGGER.debug("message action set: " + context.getAction());
-                    }
+                try {
+                    context.setMessageContent(jsonBody.at("/message/payload").asText());
+                    LOGGER.debug("message content set: " + context.getMessageContent());
+                }catch(Exception ex) {
+                    LOGGER.error("error parsing message context.  Expecting body/message/payload");
+                    throw ex;
                 }
+                try {
+                    context.setAction(jsonBody.at("/action").asText());
+                    LOGGER.debug("message action set: " + context.getAction());
+                }catch(Exception ex) {
+                    LOGGER.error("error parsing action.  Expecting body/action");
+                    throw ex;
+                }
+//                context.setAction(jsonBody.at("/action").asText());
+//                Iterator bodyIt = jsonBody.fields();
+//                while (bodyIt.hasNext()) {
+//                    Map.Entry next = (Map.Entry) bodyIt.next();
+//                    if (next.getKey().equals(WebSocketRequestContext.message)) {
+//
+//                        context.setMessageContent(((TextNode) next.getValue()).asText());
+//                        LOGGER.debug("message content set: " + context.getMessageContent());
+//                    }
+//                    if (next.getKey().equals(WebSocketRequestContext.action)) {
+//                        context.setAction(((TextNode) next.getValue()).asText());
+//                        LOGGER.debug("message action set: " + context.getAction());
+//                    }
+//                }
             }catch(Exception ex) {
                 LOGGER.error("error obtaining messageBody");
                 throw ex;

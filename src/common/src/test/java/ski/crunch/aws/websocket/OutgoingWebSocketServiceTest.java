@@ -18,6 +18,7 @@ public class OutgoingWebSocketServiceTest extends AbstractAwsTest {
             "\t\"status\": \"OK\"\n" +
             "}";
 
+    //TODO -> make this an integration test that first opens a socket and tests sending / receiving
     @Disabled()
     @Test()
     public void testSendMessage() throws IOException, URISyntaxException {
@@ -25,8 +26,8 @@ public class OutgoingWebSocketServiceTest extends AbstractAwsTest {
 
 
         outgoingWebSocketService.sendMessage(testPayload,
-                "wss://c4at2w51lg.execute-api.us-west-2.amazonaws.com/staging/",
-                "d7WaZdT-PHcCGMg=",
+                "wss://in6xuk1co5.execute-api.ca-central-1.amazonaws.com/staging/",
+                "eWBI8coYYosCHrw=",
                 super.credentialsProvider );
     }
 

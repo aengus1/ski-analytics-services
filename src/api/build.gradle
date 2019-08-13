@@ -39,7 +39,7 @@ sourceSets {
 
 
 dependencies {
-   implementation(
+   compile(
             'org.scala-lang:scala-library:2.11.12',            
             'com.amazonaws:aws-java-sdk-cognitoidp:1.11.442',
             'com.amazonaws:aws-java-sdk-ssm:1.11.163',
@@ -47,8 +47,7 @@ dependencies {
             'org.geotools:gt-main:16.1',
             'org.geotools:gt-epsg-hsql:16.1'
     )
-
-
+    
     compileOnly(
             project(':common')
     )
@@ -125,10 +124,11 @@ task buildZip(type: Zip) {
     from compileJava
     from compileScala
     from processResources
-    exclude "ski-crunch-utils.jar"
-    exclude "ski-crunch-common.jar"
+//    exclude "ski-crunch-utils.jar"
+//    exclude "ski-crunch-common.jar"
     into('lib') {
-        from configurations.implementation
+        from ([ configurations.compile ] - [ configurations.compileOnly ])
+        //from configurations.implementation
     }
 }
 

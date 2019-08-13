@@ -1,6 +1,7 @@
+# Provisions the API stack, activity rest endpoints
+# Depends on authentication stack, common stack
 service: api
-#tenant: aengus
-#app: ski-analytics
+
 
 plugins:
   - serverless-apigw-binary
@@ -8,8 +9,6 @@ plugins:
 custom:
   currentStage: ${{opt:stage, self:provider.stage}}
   domainName: crunch.ski
-  utilLayerVersion: 11 #arn:aws:lambda:ca-central-1:556823078430:layer:staging-layer-utils:2
-  commonLayerVersion: 11 #arn:aws:lambda:ca-central-1:556823078430:layer:staging-layer-common:2
   resourceTags:
               -
                 Key: "project"
@@ -23,9 +22,7 @@ custom:
     Fn::ImportValue:
       Fn::Join: ['', UserPoolArn]
   activityTable:  ${{self:custom.currentStage}}-crunch-Activity
-  ## TODO -> is there really no way to reference a CF output from another stack (auth-stack.WebSocketId) ??
-  wsEndpoint:   wss://c4at2w51lg.execute-api.us-west-2.amazonaws.com/staging
-#  authStack: ${{self:custom.currentStage}}-ski-analytics-authentication-stack
+  wsEndpoint:   ${{cf:${{self:custom.currentStage}}-ski-analytics-authentication-stack.ServiceEndpointWebsocket}}
   apigwBinary:
     types:
       - '*/*'
@@ -102,10 +99,10 @@ functions:
               paths:
                 id: true
           authorizer:
-            arn: arn:aws:cognito-idp:us-west-2:556823078430:userpool/us-west-2_FrH0UdrNz
-#            authorizer:
-#              Fn::Join: ['arn:aws:cognito-idp:',[ Ref: AWS::Region,':'], [Ref: AWS::AccountId,":/userpool/"], [Fn::ImportValue: !Sub ${{self:custom.authStackName}}-UserPoolArn]]
-              ## TODO revisit this. need a way to dynamically reference userpool arn from other stack
+            arn: arn:aws:cognito-idp:ca-central-1:556823078430:userpool/ca-central-1_bcb6X1Muk
+              #  the ARN issue: https://github.com/serverless/serverless/issues/3212
+              #  should be fixed soon
+
               ## had to hardcode this due to an issue with arns https://github.com/serverless/serverless/issues/3129
               ### note - to access this function you need to include an Authorizer header on the request, containing the
               ### Id token - not the access token
@@ -113,14 +110,8 @@ functions:
             ### use in test harness
     Tags: ${{self:custom.resourceTags}}
     layers:
-      - arn:aws:lambda:ca-central-1:556823078430:layer:${{self:custom.currentStage}}-layer-utils:${{self:custom.utilLayerVersion}}
-      - arn:aws:lambda:ca-central-1:556823078430:layer:${{self:custom.currentStage}}-layer-common:${{self:custom.commonLayerVersion}}
-
-#      - Fn::ImportValue:
-#          Fn::Join: ['', CommonLambdaLayer]
-#      - Fn::ImportValue:
-#          Fn::Join: ['', ModelLambdaLayer]
-    #- arn:aws:lambda:ca-central-1:556823078430:layer:staging-layer-model:3
+      - ${{cf:${{self:custom.currentStage}}-ski-analytics-common-stack.UtilsLambdaLayerQualifiedArn}}
+      - ${{cf:${{self:custom.currentStage}}-ski-analytics-common-stack.CommonLambdaLayerQualifiedArn}}
 
   PutActivityLambda:
     handler: ski.crunch.activity.PutActivityHandler
@@ -144,11 +135,13 @@ functions:
             - Access-Control-Allow-Authorization
             - Access-Control-Allow-Origin
         authorizer:
-          arn: arn:aws:cognito-idp:us-west-2:556823078430:userpool/us-west-2_FrH0UdrNz
+          arn: arn:aws:cognito-idp:ca-central-1:556823078430:userpool/ca-central-1_bcb6X1Muk
+            #Fn::Join: ['', ['arn:aws:cognito-idp:','${{self:provider.region}}-','${{self:custom.accountId}}','${{cf:${{self:custom.currentStage}}-ski-analytics-authentication-stack.UserPoolArn}}']]
+           # arn:aws:cognito-idp:ca-central-1:556823078430:userpool/ca-central-1_bcb6X1Muk
     Tags: ${{self:custom.resourceTags}}
     layers:
-      - arn:aws:lambda:ca-central-1:556823078430:layer:${{self:custom.currentStage}}-layer-utils:${{self:custom.utilLayerVersion}}
-      - arn:aws:lambda:ca-central-1:556823078430:layer:${{self:custom.currentStage}}-layer-common:${{self:custom.commonLayerVersion}}
+      - ${{cf:${{self:custom.currentStage}}-ski-analytics-common-stack.UtilsLambdaLayerQualifiedArn}}
+      - ${{cf:${{self:custom.currentStage}}-ski-analytics-common-stack.CommonLambdaLayerQualifiedArn}}
 
   ParseFitActivityLambda:
     handler: ski.crunch.activity.ParseFitActivityLambda
@@ -167,8 +160,8 @@ functions:
            - suffix: .fit
     Tags: ${{self:custom.resourceTags}}
     layers:
-      - arn:aws:lambda:ca-central-1:556823078430:layer:${{self:custom.currentStage}}-layer-utils:${{self:custom.utilLayerVersion}}
-      - arn:aws:lambda:ca-central-1:556823078430:layer:${{self:custom.currentStage}}-layer-common:${{self:custom.commonLayerVersion}}
+      - ${{cf:${{self:custom.currentStage}}-ski-analytics-common-stack.UtilsLambdaLayerQualifiedArn}}
+      - ${{cf:${{self:custom.currentStage}}-ski-analytics-common-stack.CommonLambdaLayerQualifiedArn}}
 
 resources:
   Resources:
@@ -241,22 +234,3 @@ resources:
         Value: "abc123"
         Description: "SSM Parameter for storing location iq geocoding api key"
 
-
-# attempt to use solution for referencing cf params: https://github.com/serverless/serverless/issues/3212#issuecomment-307341924
-# commented as can't reference variables across regions.
-#    GetActivityLambdaLambdaFunction:
-#      Properties:
-#        AuthorizationType: COGNITO_USER_POOLS
-#        AuthorizerId:
-#          Ref: CognitoAuthorizer
-#    CognitoAuthorizer:
-#      Type: AWS::ApiGateway::Authorizer
-#      Properties:
-#        IdentitySource: method.request.header.Authorization
-#        Name: cognito-authorizer
-#        RestApiId:
-#          Ref: ApiGatewayRestApi
-#        Type: COGNITO_USER_POOLS
-#        ProviderARNs:
-#          - ${{cf:${{self:custom.authStack}}.UserPool}}
-#

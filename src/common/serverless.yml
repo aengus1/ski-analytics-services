@@ -7,13 +7,10 @@ provider:
   region: ca-central-1
   stage: staging
   variableSyntax: "\\${{([ ~:a-zA-Z0-9._\\'\",\\-\\/\\(\\)]+?)}}" # notice the double quotes for yaml to ignore the escape characters!
-  stackName: ${{self:custom.currentStage}}-ski-analytics-layer-stack
+  stackName: ${{self:custom.currentStage}}-ski-analytics-common-stack
 
 custom:
   currentStage: ${{opt:stage, self:provider.stage}}
-
-
-
 
 layers:
   utils:
@@ -21,8 +18,6 @@ layers:
     description: domain classes for object model and utilities
     compatibleRuntimes:
       - java8
-    # awaiting closure of https://github.com/serverless/serverless/issues/6146
-    # currently old versions of layer are deleted, which breaks lambdas that rely on it..
     retain: true
     package:
       include: # Specify the directories and files which should be included in the deployment package
@@ -33,11 +28,9 @@ layers:
     description: common dependencies for all services
     compatibleRuntimes:
       - java8
-    # awaiting closure of https://github.com/serverless/serverless/issues/6146
-    # currently old versions of layer are deleted, which breaks lambdas that rely on it..
     retain: true
     package:
-      include: # Specify the directories and files which should be included in the deployment package
+      include:
         - src/main/java/*
       artifact: build/distributions/ski-crunch-common.zip
 
@@ -45,8 +38,12 @@ layers:
 
 #resources:
 #  Outputs:
-#    UtilsLayerExport:
-#      Value:
-#        Ref: UtilsLambdaLayer
+#    UtilsLayerVersion:
+#      Value:  ${{cf:${{self:provider.stackName}}.UtilsLambdaLayerQualifiedArn}}
 #      Export:
-#        Name: UtilsLambdaLayer
+#        Name: UtilsLayerVersion
+#    CommonLayerVersion:
+#      Value:
+#        Ref: CommonLambdaLayer
+#      Export:
+#        Name: CommonLayerVersion
