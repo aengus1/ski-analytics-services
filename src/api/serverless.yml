@@ -65,7 +65,12 @@ provider:
     - Effect: Allow
       Action:
         - ssm:GetParameter
-      Resource: "arn:aws:ssm:${{opt:region, self:provider.region}}:*:parameter/*-*-api-key"
+      Resource: arn:aws:ssm:${{opt:region, self:provider.region}}:*:parameter/*-*-api-key
+    - Effect: Allow
+      Action:
+        - execute-api:ManageConnections
+        - execute-api:Invoke
+      Resource: arn:aws:execute-api:${{self:provider.region}}:*:*/*
 
 package:
   artifact: build/distributions/api.zip
@@ -151,6 +156,7 @@ functions:
       s3ActivityBucketName: ${{self:custom.activityBucketName}}
       s3rawActivityBucketName: ${{self:custom.rawActivityBucketName}}
       activityTable: ${{self:custom.currentStage}}-crunch-Activity
+      userTable: ${{cf:${{self:custom.currentStage}}-ski-analytics-authentication-stack.UserTableName}}
       currentStage: ${{self:custom.currentStage}}
       webSocketId: ${{self:custom.wsEndpoint}}
     events:

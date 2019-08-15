@@ -7,6 +7,7 @@ import com.amazonaws.services.s3.model.S3ObjectSummary;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
+import ski.crunch.aws.testhelpers.AbstractAwsTest;
 
 import static org.junit.jupiter.api.Assertions.assertTrue;
 

@@ -1,0 +1,69 @@
+service: websocket
+
+
+provider:
+  name: aws
+  runtime: java8
+  variableSyntax: "\\${{([ ~:a-zA-Z0-9._\\'\",\\-\\/\\(\\)]+?)}}" # notice the double quotes for yaml to ignore the escape characters!
+  region: ca-central-1
+  stage: staging
+  stackName: ${{self:custom.currentStage}}-ski-analytics-websocket-stack
+  iamRoleStatements:
+    - Effect: Allow
+      Action:
+        - "execute-api:ManageConnections"
+      Resource: arn:aws:execute-api:${{self:provider.region}}:*:*/*
+  websocketsApiName: ${{self:custom.currentStage}}-ski-analytics-ws
+  websocketsApiRouteSelectionExpression: $request.body.action
+
+custom:
+  currentStage: ${{opt:stage, self:provider.stage}}
+  resourceTags:
+    - Key: "project"
+      Value: "ski-analytics"
+    - Key: "module"
+      Value: "websocket"
+
+package:
+  artifact: build/distributions/websocket.zip
+
+functions:
+   # web socket connection for client callbacks
+  connectionHandler:
+    handler: ski.crunch.websocket.IncomingWebSocketHandler
+    environment:
+      userTable: ${{cf:${{self:custom.currentStage}}-ski-analytics-authentication-stack.UserTableName}}
+    events:
+      - websocket:
+          route: $connect
+          authorizer: wsAuth
+          identitySource:
+            - 'route.request.querystring.token'
+      - websocket:
+          route: $disconnect
+      - websocket:
+          route: $default
+          handler: ski.crunch.websocket.IncomingWebSocketHandler
+    layers:
+      - ${{cf:${{self:custom.currentStage}}-ski-analytics-common-stack.UtilsLambdaLayerQualifiedArn}}
+      - ${{cf:${{self:custom.currentStage}}-ski-analytics-common-stack.CommonLambdaLayerQualifiedArn}}
+
+    # custom authorizer for websocket (cognito auth not yet supported with apig ws)
+  wsAuth:
+    handler: ski.crunch.websocket.CustomWsAuthorizer
+    environment:
+      appClientId:
+        ${{cf:${{self:custom.currentStage}}-ski-analytics-authentication-stack.UserPoolClientId}}
+      userPoolId:
+        ${{cf:${{self:custom.currentStage}}-ski-analytics-authentication-stack.UserPoolArn}}
+      region: ${{self:provider.region}}
+    layers:
+      - ${{cf:${{self:custom.currentStage}}-ski-analytics-common-stack.UtilsLambdaLayerQualifiedArn}}
+      - ${{cf:${{self:custom.currentStage}}-ski-analytics-common-stack.CommonLambdaLayerQualifiedArn}}
+Outputs:
+  WebSocketId:
+    Value:
+      Fn::Join: ['', [Ref: AWS::StackName, '.ServiceEndpointWebsocket']]
+    Export:
+      Name:
+       Fn::Join: ['', [Ref: AWS::StackName, '-WebSocketId']]

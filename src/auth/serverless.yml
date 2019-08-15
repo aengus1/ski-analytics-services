@@ -13,8 +13,7 @@ provider:
     - Effect: Allow
       Action:
         - "execute-api:ManageConnections"
-      Resource:
-        - "arn:aws:execute-api:*:*:**/@connections/*"
+      Resource: arn:aws:execute-api:${{self:provider.region}}:*:*/*
     - Effect: Allow
       Action:
         - dynamodb:Query
