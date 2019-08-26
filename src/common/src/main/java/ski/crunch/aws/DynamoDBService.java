@@ -13,11 +13,10 @@ import com.amazonaws.services.dynamodbv2.document.Table;
  */
 public class DynamoDBService {
 
-    AmazonDynamoDB client;
-    DynamoDB dynamo;
-    DynamoDBMapper mapper;
-//    ActivityItem item;
-    DynamoDBMapperConfig config;
+    private AmazonDynamoDB client;
+    private DynamoDB dynamo;
+    private DynamoDBMapper mapper;
+    private DynamoDBMapperConfig config;
 
     public DynamoDBService(String region, String tableName) {
         this.client = AmazonDynamoDBClientBuilder.standard().withRegion(region).build();
@@ -31,9 +30,9 @@ public class DynamoDBService {
 
     /**
      * Use this constructor if you need to use the S3link
-     * @param region
-     * @param tableName
-     * @param credentialsProvider
+     * @param region String aws region
+     * @param tableName String name of table
+     * @param credentialsProvider AWSCredentialsProvider
      */
     public DynamoDBService(String region, String tableName, AWSCredentialsProvider credentialsProvider) {
         this.client = AmazonDynamoDBClientBuilder.standard().withRegion(region).build();
@@ -54,4 +53,7 @@ public class DynamoDBService {
     }
 
 
+    public DynamoDBMapperConfig getConfig() {
+        return this.config;
+    }
 }

@@ -13,6 +13,15 @@ provider:
       Action:
         - "execute-api:ManageConnections"
       Resource: arn:aws:execute-api:${{self:provider.region}}:*:*/*
+    - Effect: Allow
+      Action:
+        - dynamodb:Query
+        - dynamodb:Scan
+        - dynamodb:GetItem
+        - dynamodb:PutItem
+        - dynamodb:UpdateItem
+        - dynamodb:DeleteItem
+      Resource: arn:aws:dynamodb:${{opt:region, self:provider.region}}:*:table/${{cf:${{self:custom.currentStage}}-ski-analytics-authentication-stack.UserTableName}}
   websocketsApiName: ${{self:custom.currentStage}}-ski-analytics-ws
   websocketsApiRouteSelectionExpression: $request.body.action
 
@@ -50,7 +59,7 @@ functions:
 
     # custom authorizer for websocket (cognito auth not yet supported with apig ws)
   wsAuth:
-    handler: ski.crunch.websocket.CustomWsAuthorizer
+    handler: ski.crunch.websocket.CustomWebSocketAuthorizer
     environment:
       appClientId:
         ${{cf:${{self:custom.currentStage}}-ski-analytics-authentication-stack.UserPoolClientId}}

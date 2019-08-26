@@ -1,4 +1,4 @@
-package ski.crunch.aws.websocket;
+package ski.crunch.services;
 
 import com.amazonaws.*;
 import com.amazonaws.auth.AWS4Signer;
@@ -11,17 +11,12 @@ import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.URI;
-import java.net.URISyntaxException;
 import java.nio.charset.StandardCharsets;
 
-
-//import ski.crunch.utils.HttpClientUtil;
 
 public class OutgoingWebSocketService {
 
     private static final Logger log = Logger.getLogger(OutgoingWebSocketService.class);
-
-//    private HttpClientUtil httpClient;
 
     /**
      * @param message             String The message to send
@@ -29,10 +24,9 @@ public class OutgoingWebSocketService {
      * @param connectionId        String The id of the connected socket to send to
      * @param credentialsProvider AWSCredentialsProvider
      * @return int statusCode
-     * @throws IOException
-     * @throws URISyntaxException
+     *
      */
-    public int sendMessage(String message, String wssEndpoint, String connectionId, AWSCredentialsProvider credentialsProvider) throws IOException {
+    public int sendMessage(String message, String wssEndpoint, String connectionId, AWSCredentialsProvider credentialsProvider) {
         Request<Void> request = createRequest(message, wssEndpoint, connectionId);
         AWS4Signer signer = new AWS4Signer();
         signer.setServiceName(request.getServiceName());

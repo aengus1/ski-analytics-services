@@ -4,11 +4,6 @@ import com.amazonaws.services.lambda.runtime.Context;
 import com.amazonaws.services.lambda.runtime.RequestStreamHandler;
 import org.apache.log4j.Logger;
 import ski.crunch.aws.DynamoDBService;
-import ski.crunch.aws.websocket.ConnectHandler;
-import ski.crunch.aws.websocket.DisconnectHandler;
-import ski.crunch.aws.websocket.MessageHandler;
-import ski.crunch.aws.websocket.WebSocketService;
-
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;

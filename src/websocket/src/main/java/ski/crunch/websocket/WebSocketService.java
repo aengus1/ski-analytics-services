@@ -1,4 +1,4 @@
-package ski.crunch.aws.websocket;
+package ski.crunch.websocket;
 
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -40,9 +40,6 @@ public class WebSocketService {
         JsonNode eventJson = StreamUtils.convertStreamToJson(is);
 
         LOGGER.info("parsed json: " + objectMapper.writerWithDefaultPrettyPrinter().writeValueAsString(eventJson));
-//        is.reset();
-//        String request = StreamUtils.convertStreamToString(is);
-//        System.out.println("request = " + request);
 
         String body = eventJson.path(WebSocketRequestContext.body).asText();
         JsonNode reqContext = eventJson.path(WebSocketRequestContext.requestContext);
@@ -93,20 +90,7 @@ public class WebSocketService {
                     LOGGER.error("error parsing action.  Expecting body/action");
                     throw ex;
                 }
-//                context.setAction(jsonBody.at("/action").asText());
-//                Iterator bodyIt = jsonBody.fields();
-//                while (bodyIt.hasNext()) {
-//                    Map.Entry next = (Map.Entry) bodyIt.next();
-//                    if (next.getKey().equals(WebSocketRequestContext.message)) {
-//
-//                        context.setMessageContent(((TextNode) next.getValue()).asText());
-//                        LOGGER.debug("message content set: " + context.getMessageContent());
-//                    }
-//                    if (next.getKey().equals(WebSocketRequestContext.action)) {
-//                        context.setAction(((TextNode) next.getValue()).asText());
-//                        LOGGER.debug("message action set: " + context.getAction());
-//                    }
-//                }
+
             }catch(Exception ex) {
                 LOGGER.error("error obtaining messageBody");
                 throw ex;
@@ -124,7 +108,7 @@ public class WebSocketService {
 
 
 
-   public  class WebSocketRequestContext {
+    static class WebSocketRequestContext {
 
        private static final String body = "body";
        private static final String requestContext = "requestContext";

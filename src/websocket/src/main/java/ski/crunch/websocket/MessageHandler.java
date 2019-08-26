@@ -1,4 +1,4 @@
-package ski.crunch.aws.websocket;
+package ski.crunch.websocket;
 
 import org.apache.log4j.Logger;
 import ski.crunch.aws.DynamoDBService;
@@ -16,7 +16,7 @@ public class MessageHandler implements WebSocketHandler {
         return null;
     }
 
-    public void setDynamoDBService(DynamoDBService dynamoDBService) {
+     void setDynamoDBService(DynamoDBService dynamoDBService) {
         this.dynamoDBService = dynamoDBService;
     }
 }

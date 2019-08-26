@@ -7,6 +7,7 @@ repositories {
 sourceCompatibility = 1.8
 targetCompatibility = 1.8
 
+
 dependencies {
 
     compileOnly(project(':common'))  //exclude from packaged artifact -> provided at runtime by lambda container
@@ -14,6 +15,25 @@ dependencies {
             'com.amazonaws:aws-lambda-java-events:2.2.6',
             'com.auth0:java-jwt:3.8.0',
             'com.auth0:jwks-rsa:0.8.2'
+    )
+
+    integrationTestCompile(
+            'com.amazonaws:aws-java-sdk-cloudformation:1.11.166',
+            'org.junit.jupiter:junit-jupiter-api:5.1.0',
+            'org.glassfish.jersey.core:jersey-client:2.5.1',
+            'com.fasterxml.jackson.core:jackson-core:2.9.7',
+            'org.mockito:mockito-all:1.10.19',
+            'org.java-websocket:Java-WebSocket:1.4.0',
+            project(':common')
+    )
+    integrationTestRuntime(
+            'org.junit.jupiter:junit-jupiter-engine:5.1.0',
+            project(':common')
+
+    )
+
+    testCompile(
+            project(':common')
     )
 
 }
@@ -30,7 +50,7 @@ task buildZip(type: Zip) {
     from compileJava
     from processResources
     into('lib') {
-        from ([ configurations.compile ] - [ configurations.compileOnly ])
+        from([configurations.compile] - [configurations.compileOnly])
 
     }
 }

@@ -1,4 +1,4 @@
-package ski.crunch.aws.websocket;
+package ski.crunch.websocket;
 
 
 import org.junit.jupiter.api.Test;
@@ -13,7 +13,7 @@ import static org.mockito.Mockito.verify;
 
 
 @TestInstance(TestInstance.Lifecycle.PER_METHOD)
-public class WebSocketServiceTest {
+ class WebSocketServiceTest {
 
 
     private static final String USERNAME = "0a109298-5b8e-482a-9138-4dcd2802ec53";
@@ -113,7 +113,7 @@ public class WebSocketServiceTest {
             "}\n";
 
     @Test
-    public void testParseRequest() throws Exception {
+     void testParseRequest() throws Exception {
 
         ConnectHandler connect = new ConnectHandler();
         DisconnectHandler disconnect = new DisconnectHandler();
@@ -132,7 +132,7 @@ public class WebSocketServiceTest {
 
 
     @Test
-    public void testProcessRequest() throws Exception {
+     void testProcessRequest() throws Exception {
 
         ConnectHandler mockedConnectHandler = mock(ConnectHandler.class);
         DisconnectHandler mockedDisconnectHandler = mock(DisconnectHandler.class);

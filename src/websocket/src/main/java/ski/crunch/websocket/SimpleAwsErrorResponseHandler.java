@@ -1,4 +1,4 @@
-package ski.crunch.aws.websocket;
+package ski.crunch.websocket;
 
 import com.amazonaws.AmazonServiceException;
 import com.amazonaws.http.HttpResponse;

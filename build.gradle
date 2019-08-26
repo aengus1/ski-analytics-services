@@ -24,11 +24,12 @@ subprojects {
     sourceSets {
         integrationTest {
             java {
-                compileClasspath += sourceSets.main.output + configurations.testCompileOnly + configurations.integrationTestCompile
-                runtimeClasspath += sourceSets.main.output + configurations.integrationTestRuntime
+                compileClasspath += sourceSets.main.output + sourceSets.test.output + configurations.testCompileOnly + configurations.integrationTestCompile
+                runtimeClasspath += sourceSets.main.output + sourceSets.test.output + configurations.integrationTestRuntime
                 srcDirs = ['src/integration-test/java']
             }
             resources.srcDir file('src/integration-test/resources')
+
         }
     }
 
@@ -54,10 +55,20 @@ subprojects {
         additionalSourceDirs = files(sourceSets.main.allSource.srcDirs)
         sourceDirectories = files(sourceSets.main.allSource.srcDirs)
         classDirectories =  files(sourceSets.main.output)
+        executionData = fileTree(buildDir).include("jacoco/*.exec")
         reports {
             html.enabled = true
             xml.enabled = true
             csv.enabled = false
+        }
+
+        afterEvaluate {
+            classDirectories = files(classDirectories.files.collect {
+                fileTree(dir: it,
+                        exclude: ['**/com/garmin/**',
+                                  '**/ski/crunch/model/**']
+                )
+            })
         }
     }
 
@@ -108,7 +119,7 @@ subprojects {
 
         // listen to events in the test execution lifecycle
         beforeTest { descriptor ->
-            logger.lifecycle("Running integration test: " + descriptor)
+            logger.lifecycle("Running integration test: $descriptor")
         }
 
         // Fail the 'test' task on the first test failure
@@ -125,6 +136,7 @@ subprojects {
         testClassesDirs = sourceSets.integrationTest.output
         classpath = sourceSets.integrationTest.runtimeClasspath
         outputs.upToDateWhen { false }
+
     }
 
 
@@ -171,21 +183,19 @@ task jacocoRootReport(type: JacocoReport) {
         })
     }
 
-    //todo -> this isn't doing the exclusion properly
-    afterEvaluate {
-        classDirectories = files(classDirectories.files.collect {
-            fileTree(dir: it,
-                    exclude: ['com/garmin/**'])
-        })
-    }
 }
 
 jacocoRootReport.dependsOn {
     subprojects*.test
+    subprojects*.integrationTest
 }
 
 build.dependsOn {
     jacocoRootReport
+}
+
+clean.dependsOn {
+    subprojects*.clean
 }
 
 

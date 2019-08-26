@@ -49,35 +49,6 @@ functions:
       - cognitoUserPool:
           pool: ${{self:custom.currentStage}}-crunch-ski-userpool
           trigger: PostConfirmation
-  # web socket connection for client callbacks
-  connectionHandler:
-    handler: ski.crunch.auth.WebSocketHandler
-    environment:
-      userTable: ${{self:custom.userTable}}
-    events:
-      - websocket:
-          route: $connect
-          authorizer: wsAuth
-          identitySource:
-            - 'route.request.querystring.token'
-      - websocket:
-          route: $disconnect
-      - websocket:
-          route: $default
-          handler: ski.crunch.auth.WebSocketHandler
-    layers:
-      - ${{cf:${{self:custom.currentStage}}-ski-analytics-common-stack.UtilsLambdaLayerQualifiedArn}}
-      - ${{cf:${{self:custom.currentStage}}-ski-analytics-common-stack.CommonLambdaLayerQualifiedArn}}
-
-    # custom authorizer for websocket (cognito auth not yet supported with apig ws)
-  wsAuth:
-    handler: ski.crunch.auth.CustomWsAuthorizer
-    environment:
-      appClientId:
-        ${{cf:${{self:provider.stackName}}.UserPoolClientId}}
-      userPoolId:
-        ${{cf:${{self:provider.stackName}}.UserPoolArn}}
-      region: ${{self:provider.region}}
     layers:
       - ${{cf:${{self:custom.currentStage}}-ski-analytics-common-stack.UtilsLambdaLayerQualifiedArn}}
       - ${{cf:${{self:custom.currentStage}}-ski-analytics-common-stack.CommonLambdaLayerQualifiedArn}}

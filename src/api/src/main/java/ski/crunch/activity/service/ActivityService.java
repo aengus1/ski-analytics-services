@@ -23,10 +23,10 @@ import ski.crunch.activity.processor.ActivityProcessor;
 import ski.crunch.activity.processor.model.ActivityHolder;
 import ski.crunch.aws.DynamoDBService;
 import ski.crunch.aws.S3Service;
-import ski.crunch.aws.websocket.OutgoingWebSocketService;
 import ski.crunch.model.ActivityItem;
 import ski.crunch.model.ActivityOuterClass;
 import ski.crunch.model.UserSettingsItem;
+import ski.crunch.services.OutgoingWebSocketService;
 import ski.crunch.utils.*;
 
 import java.io.*;
@@ -63,10 +63,6 @@ public class ActivityService {
 
     /**
      * Insert raw activity into S3 bucket and save metadata to dynamodb.
-     *
-     * @param input
-     * @param context
-     * @return activityId
      */
     public ApiGatewayResponse saveRawActivity(Map<String, Object> input, Context context) {
 
