@@ -75,7 +75,7 @@ jobs:
       - run: gradle :auth:test
       - run: gradle :common:test
       - run: gradle :websocket:test
-      - run: gradle: websocket:integrationTest
+      - run: gradle :websocket:integrationTest
 
       # generate coverage report
       - run: gradle jacocoTestReport
