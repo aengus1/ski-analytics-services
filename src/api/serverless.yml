@@ -22,7 +22,7 @@ custom:
     Fn::ImportValue:
       Fn::Join: ['', UserPoolArn]
   activityTable:  ${{self:custom.currentStage}}-crunch-Activity
-  wsEndpoint:   ${{cf:${{self:custom.currentStage}}-ski-analytics-authentication-stack.ServiceEndpointWebsocket}}
+  wsEndpoint:   ${{cf:${{self:custom.currentStage}}-ski-analytics-websocket-stack.ServiceEndpointWebsocket}}
   apigwBinary:
     types:
       - '*/*'
