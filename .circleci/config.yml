@@ -94,13 +94,13 @@ jobs:
           path: ~/test-results/junit
       # store coverage report
       - store_artifacts:
-          path:  build/reports/jacoco
+          path:  build/reports/jacoco/jacocoRootReport/jacocoRootReport.xml
       # upload coverage report to codacy
       - run:
           name: upload coverage report
           command: |
             curl -Ls -o codacy-coverage-reporter-assembly.jar $(curl -Ls https://api.github.com/repos/codacy/codacy-coverage-reporter/releases/latest | jq -r '.assets | map({content_type, browser_download_url} | select(.content_type | contains("java-archive"))) | .[0].browser_download_url')
-            java -jar codacy-coverage-reporter-assembly.jar report -l Java -r jacocoRootReport/jacocoRootReport.xml
+            java -jar codacy-coverage-reporter-assembly.jar report -l Java -r ~/repo/build/reports/jacoco/jacocoRootReport/jacocoRootReport.xml
 
 
 workflows:
