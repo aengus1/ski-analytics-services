@@ -1,4 +1,4 @@
-package ski.crunch.aws;
+package ski.crunch.aws.testhelpers;
 
 import com.amazonaws.auth.AWSCredentialsProvider;
 import com.amazonaws.auth.profile.ProfileCredentialsProvider;

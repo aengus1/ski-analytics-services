@@ -2,12 +2,12 @@ package ski.crunch.utils;
 
 
 import java.util.Map;
+import java.util.stream.Collectors;
 
 /**
  * Model class to avoid having to custom convert the input map for every lambda proxy request
  */
 public class LambdaProxyConfig {
-
 
     public LambdaProxyConfig(Map<String, Object> input) throws ParseException {
         try {
@@ -23,12 +23,15 @@ public class LambdaProxyConfig {
             Map<String, Object> claims;
             try {
                 identity = (Map<String, Object>) requestContext.get("identity");
+                String identityKeys = identity.keySet().stream().collect((Collectors.joining(",")));
+                System.out.println("IDENTITY KEYS: " + identityKeys);
                 authorizer = (Map<String, Object>) requestContext.get("authorizer");
                 claims = (Map<String, Object>) authorizer.get("claims");
                 this.requestContext.getIdentity().setSourceIp((String) identity.get("sourceIp"));
                 this.requestContext.getIdentity().setUserAgent((String) identity.get("userAgent"));
                 this.requestContext.getIdentity().setUser((String) identity.get("user"));
                 this.requestContext.getIdentity().setEmail((String) claims.get("email"));
+                this.requestContext.getIdentity().setCognitoIdentityId( (String) identity.get("cognitoIdentity"));
             } catch (NullPointerException ex) {
                 ex.printStackTrace();
             }

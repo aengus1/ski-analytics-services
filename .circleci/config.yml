@@ -59,6 +59,7 @@ jobs:
                   gradle :api:build -x check
                   gradle :auth:build -x check
                   gradle :common:build -x check
+                  gradle :websocket:build -x check
                   pwd
                   cd ~/repo/src/api
                   sls package
@@ -66,21 +67,26 @@ jobs:
                   sls package
                   cd ~/repo/src/common
                   sls package
+                  cd ~/repo/src/websocket
+                  sls package
       # run tests!
       - run: gradle :api:integrationTest
       - run: gradle :api:test
       - run: gradle :auth:test
       - run: gradle :common:test
+      - run: gradle :websocket:test
+      - run: gradle :websocket:integrationTest
 
+      - run: gradle jacocoTestReport
       # generate coverage report
-      - run: gradle codeCoverageReport
+      - run: gradle jacocoRootReport
 
       # save test results
       - run:
           name: Save test results
           command: |
             mkdir -p ~/test-results/junit/
-            find . -type f -regex ".*/build/test-results/.*xml" -exec cp {} ~/test-results/junit/ \;
+            find . -type f -regex "./build/test-results/.*xml" -exec cp {} ~/test-results/junit/ \;
           when: always
       - store_test_results:
           path: ~/test-results
@@ -88,13 +94,13 @@ jobs:
           path: ~/test-results/junit
       # store coverage report
       - store_artifacts:
-          path:  build/reports/coverage
+          path:  build/reports/jacoco/jacocoRootReport/jacocoRootReport.xml
       # upload coverage report to codacy
       - run:
           name: upload coverage report
           command: |
             curl -Ls -o codacy-coverage-reporter-assembly.jar $(curl -Ls https://api.github.com/repos/codacy/codacy-coverage-reporter/releases/latest | jq -r '.assets | map({content_type, browser_download_url} | select(.content_type | contains("java-archive"))) | .[0].browser_download_url')
-            java -jar codacy-coverage-reporter-assembly.jar report -l Java -r build/reports/coverage/jacocoTestReport.xml
+            java -jar codacy-coverage-reporter-assembly.jar report -l Java -r ~/repo/build/reports/jacoco/jacocoRootReport/jacocoRootReport.xml
 
 
 workflows:

@@ -1,4 +1,4 @@
-package ski.crunch.auth;
+package ski.crunch.websocket;
 
 import com.amazonaws.services.lambda.runtime.Context;
 import com.amazonaws.services.lambda.runtime.RequestHandler;
@@ -32,9 +32,9 @@ import java.security.interfaces.RSAPublicKey;
 import java.util.*;
 
 
-public class CustomWsAuthorizer implements RequestHandler<Map<String, Object>, Map<String, Object>> {
+public class CustomWebSocketAuthorizer implements RequestHandler<Map<String, Object>, Map<String, Object>> {
 
-    private static final Logger LOGGER = Logger.getLogger(CustomWsAuthorizer.class);
+    private static final Logger LOGGER = Logger.getLogger(CustomWebSocketAuthorizer.class);
     private static final ObjectMapper objectMapper = new ObjectMapper();
     private HttpGet httpGet = null;
     private String userPoolId = System.getenv("userPoolId");
@@ -44,11 +44,11 @@ public class CustomWsAuthorizer implements RequestHandler<Map<String, Object>, M
     private URI jwksEndpoint = null;
     private String cognitoId = null;
 
-    public CustomWsAuthorizer() {
+    public CustomWebSocketAuthorizer() {
 
     }
 
-    public CustomWsAuthorizer(Map<String, String> environment) {
+    public CustomWebSocketAuthorizer(Map<String, String> environment) {
         this.userPoolId = environment.get("userPoolId");
         this.region = environment.get("region");
     }
@@ -155,7 +155,7 @@ public class CustomWsAuthorizer implements RequestHandler<Map<String, Object>, M
                         Jwk jwk = provider.get(keyId);
                         return (RSAPublicKey) jwk.getPublicKey();
                     } catch (JwkException ex) {
-                        LOGGER.error("Invalid public key from jwks " + CustomWsAuthorizer.stackTraceToString(ex));
+                        LOGGER.error("Invalid public key from jwks " + CustomWebSocketAuthorizer.stackTraceToString(ex));
                         return null;
                     }
                 }
@@ -178,10 +178,10 @@ public class CustomWsAuthorizer implements RequestHandler<Map<String, Object>, M
             effect = "Allow";
         } catch (MalformedURLException ex) {
             ex.printStackTrace();
-            LOGGER.error("JWKS URL is invalid" + CustomWsAuthorizer.stackTraceToString(ex));
+            LOGGER.error("JWKS URL is invalid" + CustomWebSocketAuthorizer.stackTraceToString(ex));
             return false;
         } catch (JWTVerificationException ex) {
-            LOGGER.error("error verifying jwt.  Token is not valid.. " + CustomWsAuthorizer.stackTraceToString(ex));
+            LOGGER.error("error verifying jwt.  Token is not valid.. " + CustomWebSocketAuthorizer.stackTraceToString(ex));
             ex.printStackTrace();
             effect = "Deny";
             return false;
@@ -221,7 +221,7 @@ public class CustomWsAuthorizer implements RequestHandler<Map<String, Object>, M
                 }
             }
         } catch (IOException ex) {
-            LOGGER.error("Error parsing jwt " + CustomWsAuthorizer.stackTraceToString(ex));
+            LOGGER.error("Error parsing jwt " + CustomWebSocketAuthorizer.stackTraceToString(ex));
             return null;
         }
         return kid;
@@ -252,14 +252,14 @@ public class CustomWsAuthorizer implements RequestHandler<Map<String, Object>, M
             }
         } catch (IOException ex) {
             LOGGER.error("IO Exception occurred fetching public key from "
-                    + jwksEndpoint.toString() + "," + CustomWsAuthorizer.stackTraceToString(ex));
+                    + jwksEndpoint.toString() + "," + CustomWebSocketAuthorizer.stackTraceToString(ex));
             return null;
         }
         return publicKeys;
     }
 
 
-    public static String stackTraceToString(Exception ex) {
+     static String stackTraceToString(Exception ex) {
         StringWriter sw = new StringWriter();
         PrintWriter pw = new PrintWriter(sw);
         ex.printStackTrace(pw);

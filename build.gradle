@@ -21,10 +21,18 @@ allprojects {
 }
 
 subprojects {
+    sourceSets {
+        integrationTest {
+            java {
+                compileClasspath += sourceSets.main.output + sourceSets.test.output + configurations.testCompileOnly + configurations.integrationTestCompile
+                runtimeClasspath += sourceSets.main.output + sourceSets.test.output + configurations.integrationTestRuntime
+                srcDirs = ['src/integration-test/java']
+            }
+            resources.srcDir file('src/integration-test/resources')
 
-//    sourceSets {
-//
-//    }
+        }
+    }
+
     configurations {
         integrationTestCompile.extendsFrom testImplementation
         integrationTestRuntime.extendsFrom testRuntime
@@ -41,6 +49,27 @@ subprojects {
         testRuntimeOnly(
                 'org.junit.jupiter:junit-jupiter-engine:5.1.0'
         )
+    }
+
+    jacocoTestReport {
+        additionalSourceDirs = files(sourceSets.main.allSource.srcDirs)
+        sourceDirectories = files(sourceSets.main.allSource.srcDirs)
+        classDirectories =  files(sourceSets.main.output)
+        executionData = fileTree(buildDir).include("jacoco/*.exec")
+        reports {
+            html.enabled = true
+            xml.enabled = true
+            csv.enabled = false
+        }
+
+        afterEvaluate {
+            classDirectories = files(classDirectories.files.collect {
+                fileTree(dir: it,
+                        exclude: ['**/com/garmin/**',
+                                  '**/ski/crunch/model/**']
+                )
+            })
+        }
     }
 
     test {
@@ -69,42 +98,109 @@ subprojects {
             logger.lifecycle("Test:  $descriptor  produced standard out/err: ${event.message}")
         }
 
+        reports {
+            junitXml.enabled = true
+            html.enabled = true
+        }
+
     }
 
+    task integrationTest(type: Test) {
+
+        useJUnitPlatform()
+        // explicitly include or exclude tests
+        include 'ski/crunch/**'
+
+
+        // show standard out and standard error of the test JVM(s) on the console
+        testLogging.showStandardStreams = true
+
+        // set heap size for the test JVM(s)
+        minHeapSize = "128m"
+        maxHeapSize = "512m"
+
+        // set JVM arguments for the test JVM(s)
+        jvmArgs '-XX:MaxPermSize=256m'
+
+        // listen to events in the test execution lifecycle
+        beforeTest { descriptor ->
+            logger.lifecycle("Running integration test: $descriptor")
+        }
+
+        // Fail the 'test' task on the first test failure
+        failFast = true
+
+        // listen to standard out and standard error of the test JVM(s)
+        onOutput { descriptor, event ->
+            logger.lifecycle(event.message)
+        }
+
+
+        description = 'Runs the integration tests.'
+        group = 'verification'
+        testClassesDirs = sourceSets.integrationTest.output
+        classpath = sourceSets.integrationTest.runtimeClasspath
+        outputs.upToDateWhen { false }
+
+    }
+
+
+    /**
+     * Deploys the build to the staging environment
+     */
+    task deployStaging(type: Exec) {
+        environment 'PATH', "${environment.PATH}:/usr/local/bin"
+
+        commandLine 'sls', 'deploy', '-v'
+    }
+    deployStaging.dependsOn build
 
 }
 
-task codeCoverageReport(type: JacocoReport) {
-    executionData fileTree(project.rootDir.absolutePath).include("**/build/jacoco/*.exec")
 
-    subprojects.each {
-        sourceSets it.sourceSets.main
+task jacocoRootReport(type: JacocoReport) {
+    dependsOn = subprojects.test
+    additionalSourceDirs = files(subprojects.sourceSets.main.allSource.srcDirs)
+    sourceDirectories = files(subprojects.sourceSets.main.allSource.srcDirs)
+    classDirectories = files(subprojects.sourceSets.main.output)
+    executionData = files(subprojects.jacocoTestReport.executionData)
+    reports {
+        html.enabled = true
+        xml.enabled = true
+        csv.enabled = false
     }
+    onlyIf = {
+        true
+    }
+    doFirst {
+        subprojects.findAll { subproject ->
+            subproject.pluginManager.hasPlugin('java') || subproject.pluginManager.hasPlugin('scala') || subproject.pluginManager.hasPlugin('java-library')
+        }.each { subproject ->
+            additionalSourceDirs files((Set<File>) subproject.sourceSets.main.allSource.srcDirs)
+            additionalClassDirs ((FileCollection) subproject.sourceSets.main.output)
+            if (subproject.pluginManager.hasPlugin('jacoco')) {
+                executionData subproject.tasks.jacocoTestReport.executionData
+            }
+        }
 
-    afterEvaluate {
-        classDirectories = files(classDirectories.files.collect {
-            fileTree(dir: it, exclude: [
-                    'com/garmin/**'
-            ])
+        executionData = files(executionData.findAll {
+            it.exists()
         })
     }
 
-
-    reports {
-        xml.enabled = true
-        csv.enabled = false
-        html.destination file("${buildDir}/reports/coverage/")
-        xml.destination file("${buildDir}/reports/coverage/jacocoTestReport.xml")
-
-    }
 }
 
-codeCoverageReport.dependsOn {
+jacocoRootReport.dependsOn {
     subprojects*.test
+    subprojects*.integrationTest
 }
 
 build.dependsOn {
-    codeCoverageReport
+    jacocoRootReport
+}
+
+clean.dependsOn {
+    subprojects*.clean
 }
 
 

@@ -13,8 +13,7 @@ provider:
     - Effect: Allow
       Action:
         - "execute-api:ManageConnections"
-      Resource:
-        - "arn:aws:execute-api:*:*:**/@connections/*"
+      Resource: arn:aws:execute-api:${{self:provider.region}}:*:*/*
     - Effect: Allow
       Action:
         - dynamodb:Query
@@ -24,11 +23,6 @@ provider:
         - dynamodb:UpdateItem
         - dynamodb:DeleteItem
       Resource: arn:aws:dynamodb:${{opt:region, self:provider.region}}:*:table/${{self:custom.userTable}}
-  websocketsApiName: ${{self:custom.currentStage}}-ski-analytics-ws
-  websocketsApiRouteSelectionExpression: $request.body.action
-#  logs:
-#    websocket: true
-
 
 custom:
   currentStage: ${{opt:stage, self:provider.stage}}
@@ -50,35 +44,6 @@ functions:
       - cognitoUserPool:
           pool: ${{self:custom.currentStage}}-crunch-ski-userpool
           trigger: PostConfirmation
-  # web socket connection for client callbacks
-  connectionHandler:
-    handler: ski.crunch.auth.WebSocketHandler
-    environment:
-      userTable: ${{self:custom.userTable}}
-    events:
-      - websocket:
-          route: $connect
-          authorizer: wsAuth
-          identitySource:
-            - 'route.request.querystring.token'
-      - websocket:
-          route: $disconnect
-      - websocket:
-          route: $default
-          handler: ski.crunch.auth.WebSocketHandler
-    layers:
-      - ${{cf:${{self:custom.currentStage}}-ski-analytics-common-stack.UtilsLambdaLayerQualifiedArn}}
-      - ${{cf:${{self:custom.currentStage}}-ski-analytics-common-stack.CommonLambdaLayerQualifiedArn}}
-
-    # custom authorizer for websocket (cognito auth not yet supported with apig ws)
-  wsAuth:
-    handler: ski.crunch.auth.CustomWsAuthorizer
-    environment:
-      appClientId:
-        ${{cf:${{self:provider.stackName}}.UserPoolClientId}}
-      userPoolId:
-        ${{cf:${{self:provider.stackName}}.UserPoolArn}}
-      region: ${{self:provider.region}}
     layers:
       - ${{cf:${{self:custom.currentStage}}-ski-analytics-common-stack.UtilsLambdaLayerQualifiedArn}}
       - ${{cf:${{self:custom.currentStage}}-ski-analytics-common-stack.CommonLambdaLayerQualifiedArn}}
@@ -220,9 +185,3 @@ resources:
       Export:
         Name:
           Fn::Join: ['',[Ref: AWS::StackName, '-UserTableName']]
-    WebSocketId:
-      Value:
-        Fn::Join: ['', [Ref: AWS::StackName, '.ServiceEndpointWebsocket']]
-      Export:
-        Name:
-          Fn::Join: ['', [Ref: AWS::StackName, '-WebSocketId']]

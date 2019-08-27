@@ -23,10 +23,10 @@ import ski.crunch.activity.processor.ActivityProcessor;
 import ski.crunch.activity.processor.model.ActivityHolder;
 import ski.crunch.aws.DynamoDBService;
 import ski.crunch.aws.S3Service;
-import ski.crunch.aws.websocket.OutgoingWebSocketService;
 import ski.crunch.model.ActivityItem;
 import ski.crunch.model.ActivityOuterClass;
 import ski.crunch.model.UserSettingsItem;
+import ski.crunch.services.OutgoingWebSocketService;
 import ski.crunch.utils.*;
 
 import java.io.*;
@@ -38,10 +38,6 @@ import java.util.*;
 public class ActivityService {
 
     private static final Logger LOG = Logger.getLogger(ActivityService.class);
-    //TODO -> pull these as an environment variables for parseFit API call
-    public static final String USER_TABLE_REGION = "us-west-2";
-    public static final String USER_TABLE_NAME = "staging-crunch-User";
-
 
     private String s3RawActivityBucket;
     private String s3ProcessedActivityBucket;
@@ -67,10 +63,6 @@ public class ActivityService {
 
     /**
      * Insert raw activity into S3 bucket and save metadata to dynamodb.
-     *
-     * @param input
-     * @param context
-     * @return activityId
      */
     public ApiGatewayResponse saveRawActivity(Map<String, Object> input, Context context) {
 
@@ -321,10 +313,11 @@ public class ActivityService {
             queryExpression.withHashKeyValues(activityToQuery);
 
 
-
+            String userTableName = System.getenv("userTable");
             String connectionId = "";
             List<ActivityItem> items = dynamo.getMapper().query(ActivityItem.class, queryExpression);
             LOG.info("found " + items.size() + " activity items with id: " + id);
+
             if (!items.isEmpty()) {
                 items.get(0).setStatus("COMPLETE");
                 dynamo.getMapper().save(items.get(0));
@@ -335,7 +328,7 @@ public class ActivityService {
                     UserSettingsItem userToQuery = new UserSettingsItem();
                     userToQuery.setId(cognitoId);
                     userQueryExpression.withHashKeyValues(userToQuery);
-                    DynamoDBService userRegiondynamoService = new DynamoDBService(USER_TABLE_REGION, USER_TABLE_NAME);
+                    DynamoDBService userRegiondynamoService = new DynamoDBService(region, userTableName);
                     List<UserSettingsItem> users = userRegiondynamoService.getMapper().query(UserSettingsItem.class, userQueryExpression);
                     if(!users.isEmpty()) {
                         UserSettingsItem user = users.get(0);
@@ -348,6 +341,7 @@ public class ActivityService {
 
 
             String apiId = System.getenv("webSocketId");
+
 
             LOG.debug("api ID = " + apiId);
             // lookup the
