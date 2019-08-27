@@ -98,6 +98,11 @@ subprojects {
             logger.lifecycle("Test:  $descriptor  produced standard out/err: ${event.message}")
         }
 
+        reports {
+            junitXml.enabled = true
+            html.enabled = true
+        }
+
     }
 
     task integrationTest(type: Test) {
@@ -169,7 +174,7 @@ task jacocoRootReport(type: JacocoReport) {
     }
     doFirst {
         subprojects.findAll { subproject ->
-            subproject.pluginManager.hasPlugin('java') || subproject.pluginManager.hasPlugin('scala')
+            subproject.pluginManager.hasPlugin('java') || subproject.pluginManager.hasPlugin('scala') || subproject.pluginManager.hasPlugin('java-library')
         }.each { subproject ->
             additionalSourceDirs files((Set<File>) subproject.sourceSets.main.allSource.srcDirs)
             additionalClassDirs ((FileCollection) subproject.sourceSets.main.output)
