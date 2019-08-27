@@ -23,11 +23,6 @@ provider:
         - dynamodb:UpdateItem
         - dynamodb:DeleteItem
       Resource: arn:aws:dynamodb:${{opt:region, self:provider.region}}:*:table/${{self:custom.userTable}}
-  websocketsApiName: ${{self:custom.currentStage}}-ski-analytics-ws
-  websocketsApiRouteSelectionExpression: $request.body.action
-#  logs:
-#    websocket: true
-
 
 custom:
   currentStage: ${{opt:stage, self:provider.stage}}
@@ -190,9 +185,3 @@ resources:
       Export:
         Name:
           Fn::Join: ['',[Ref: AWS::StackName, '-UserTableName']]
-    WebSocketId:
-      Value:
-        Fn::Join: ['', [Ref: AWS::StackName, '.ServiceEndpointWebsocket']]
-      Export:
-        Name:
-          Fn::Join: ['', [Ref: AWS::StackName, '-WebSocketId']]
