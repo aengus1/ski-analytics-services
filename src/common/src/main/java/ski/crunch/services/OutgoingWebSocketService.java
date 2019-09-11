@@ -43,8 +43,11 @@ public class OutgoingWebSocketService {
                                 new StringBuilder()
                                         .append(" error sending message ")
                                         .append(wssEndpoint)
-                                        .append(rsp.getStatusCode())
+                                        .append(System.lineSeparator())
+                                        .append("status: ").append(rsp.getStatusCode())
+                                        .append(" ->")
                                         .append(rsp.getStatusText())
+                                        .append(System.lineSeparator())
                                         .append(readError(rsp.getContent())).toString());
                     }
 
@@ -66,8 +69,8 @@ public class OutgoingWebSocketService {
             }
         });
 
-        log.info("status: + " + response.getHttpResponse().getStatusCode());
-        log.info("text: + " + response.getHttpResponse().getStatusText());
+        log.info("status:  " + response.getHttpResponse().getStatusCode());
+        log.info("text:  " + response.getHttpResponse().getStatusText());
 
         return response.getHttpResponse().getStatusCode();
 
@@ -85,6 +88,8 @@ public class OutgoingWebSocketService {
                 .toString();
 
         log.info(" target = " + targetUrl);
+        log.info(" message = " + message);
+
 
         Request<Void> request = new DefaultRequest<>("execute-api");
         request.setHttpMethod(HttpMethodName.POST);

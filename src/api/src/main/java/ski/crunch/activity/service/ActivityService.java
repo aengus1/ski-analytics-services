@@ -322,6 +322,7 @@ public class ActivityService {
                 items.get(0).setStatus("COMPLETE");
                 dynamo.getMapper().save(items.get(0));
                 String cognitoId = items.get(0).getCognitoId();
+                LOG.info("cognitoId: " + cognitoId);
                 if(cognitoId != null && !cognitoId.isEmpty()){
                     LOG.info("owner of activity: " + id + " = " + cognitoId);
                     DynamoDBQueryExpression<UserSettingsItem> userQueryExpression = new DynamoDBQueryExpression<>();
@@ -333,7 +334,7 @@ public class ActivityService {
                     if(!users.isEmpty()) {
                         UserSettingsItem user = users.get(0);
                         connectionId = user.getConnectionId();
-                        LOG.info("connection Id = " + cognitoId);
+                        LOG.info("connection Id = " + connectionId);
                     }
                 }
 
@@ -351,8 +352,12 @@ public class ActivityService {
             root.put("activityId", id);
             root.put("status", "COMPLETE");
 
+            // TODO HANDLE THE CASE WHERE CONNECTIONID IS NULL (due to unexpected error or 10 min timeout disconnect
+
             OutgoingWebSocketService outgoingWebSocketService = new OutgoingWebSocketService();
-            outgoingWebSocketService.sendMessage(root.asText(), apiId, connectionId, credentialsProvider);
+            String jsonString = objectMapper.writerWithDefaultPrettyPrinter().writeValueAsString(root);
+            System.out.println("sending: " + jsonString);
+            outgoingWebSocketService.sendMessage(jsonString, apiId, connectionId, credentialsProvider);
 
             // parameters:  activity-id
             // workflow:   lookup activities user and connectionId
