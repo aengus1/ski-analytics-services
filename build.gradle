@@ -62,6 +62,9 @@ subprojects {
             csv.enabled = false
         }
 
+        onlyIf = {
+            true
+        }
         afterEvaluate {
             classDirectories = files(classDirectories.files.collect {
                 fileTree(dir: it,

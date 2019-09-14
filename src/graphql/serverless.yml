@@ -22,7 +22,7 @@ provider:
         - dynamodb:PutItem
         - dynamodb:UpdateItem
         - dynamodb:DeleteItem
-      Resource: "arn:aws:dynamodb:${{opt:region, self:provider.region}}:*:table/${{self:custom.userTable}}"
+      Resource: "arn:aws:dynamodb:ca-central-1:*:table/${{self:custom.userTable}}"
 
 custom:
   currentStage: ${{opt:stage, self:provider.stage}}
@@ -42,7 +42,7 @@ custom:
       userPoolId:
         Fn::ImportValue:
           Fn::Sub: ${{self:custom.authStackName}}-UserPoolArn
-      awsRegion: ${{self:provider.region}}
+      awsRegion: ca-central-1 #${{self:provider.region}}
       defaultAction: "ALLOW"
     logConfig:
       loggingRoleArn: { Fn::GetAtt: [DynamoDBRole, Arn] } # Where AppSyncLoggingServiceRole is a role with CloudWatch Logs write access
@@ -90,7 +90,7 @@ custom:
             Fn::ImportValue:
               Fn::Sub: ${{self:custom.authStackName}}-UserTableName
           serviceRoleArn: { Fn::GetAtt: [DynamoDBRole, Arn] } # Where AppSyncDynamoDBServiceRole is an IAM role defined in Resources
-          region: ${{self:provider.region}}
+          region: ca-central-1 # ${{self:provider.region}}
 
 resources:
   Resources:
@@ -145,5 +145,5 @@ resources:
                 - dynamodb:Scan
                 - dynamodb:BatchGetItem
                 - dynamodb:BatchWriteItem
-              Resource:  "arn:aws:dynamodb:${{opt:region, self:provider.region}}:*:table/${{self:custom.userTable}}"
+              Resource:  "arn:aws:dynamodb:ca-central-1:*:table/${{self:custom.userTable}}"
 
