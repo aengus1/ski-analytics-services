@@ -50,6 +50,7 @@ public class ActivityService {
 
     private static final ObjectMapper objectMapper = new ObjectMapper();
 
+
     public ActivityService(S3Service s3Service, AWSCredentialsProvider credentialsProvider, DynamoDBService dynamo,
                            String region, String s3RawActivityBucket, String s3ProcessedActivityBucket, String activityTable) {
         this.s3RawActivityBucket = s3RawActivityBucket;
@@ -348,9 +349,9 @@ public class ActivityService {
             // lookup the
             //build the message
             ObjectNode root = objectMapper.createObjectNode();
-            root.put("message", "activity-id " + id + " successfully uploaded");
-            root.put("activityId", id);
-            root.put("status", "COMPLETE");
+            root.put("key", "ACTIVITY_READY");
+            root.put("payload", "activity " + id + " successfully uploaded");
+            root.put("url", "/activity/"+id);
 
             // TODO HANDLE THE CASE WHERE CONNECTIONID IS NULL (due to unexpected error or 10 min timeout disconnect
 
