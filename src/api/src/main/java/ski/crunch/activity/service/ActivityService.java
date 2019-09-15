@@ -47,7 +47,6 @@ public class ActivityService {
     private AWSCredentialsProvider credentialsProvider;
     private DynamoDBService dynamo;
 
-    private static final SimpleDateFormat activityDateFormat = new SimpleDateFormat("dd-MM-yyyy HH:mm:ss");
 
     private static final ObjectMapper objectMapper = new ObjectMapper();
 
@@ -546,9 +545,7 @@ public class ActivityService {
     }
 
     private boolean writeActivitySearchFieldsToDynamodb(ActivityOuterClass.Activity  activity) throws java.text.ParseException {
-
-        SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss");
-
+        
         LOG.info("activity id = " + activity.getId());
         ActivityItem item = null;
         Optional<ActivityItem> itemo = retrieveActivityFromDynamo(activity.getId());
