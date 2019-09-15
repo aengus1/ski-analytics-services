@@ -8,6 +8,7 @@ import org.junit.jupiter.api.*;
 import ski.crunch.activity.service.ActivityService;
 import ski.crunch.aws.DynamoDBService;
 import ski.crunch.aws.S3Service;
+import ski.crunch.model.ActivityItem;
 import ski.crunch.model.ActivityOuterClass;
 import ski.crunch.utils.NotFoundException;
 
@@ -26,6 +27,7 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -238,6 +240,24 @@ class ActivityTests {
 
     }
 
+    @Test
+    void testSearchFieldsAreSet() {
+        Optional<ActivityItem> item = activityService.retrieveActivityFromDynamo(this.activityId);
+        assertEquals(item.isPresent(), true);
+
+        assertEquals("RUNNING",item.get().getActivityType());
+        assertEquals("GENERIC_SUBSPORT",item.get().getActivitySubType());
+        assertEquals(new Double(5459), item.get().getDistance());
+        assertEquals(new Double(2052), item.get().getDuration());
+        assertEquals(new Double(231), item.get().getDescent());
+        assertEquals(new Double(179), item.get().getAscent());
+        assertEquals(new Integer(-998), item.get().getAvHr());
+        assertEquals(new Integer(0), item.get().getMaxHr());
+        assertNotEquals("", item.get().getLastUpdateTimestamp());
+
+    }
+
+
     /**
      * Helper to generate an access key for debugging
      * Uncomment to run individually - not a part of the test suite
@@ -274,7 +294,7 @@ class ActivityTests {
     void tearDown() {
 
         activityService.deleteActivityItemById(activityId);
-        //activityService.deleteRawActivityFromS3(activityId + ".fit");
+        activityService.deleteRawActivityFromS3(activityId + ".fit");
         try {
             Thread.currentThread().sleep(20000);
             LOG.info("deleting from processed bucket " + processedActivityBucket + " for activity: " + activityId + ".pbf");

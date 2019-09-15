@@ -47,6 +47,7 @@ public class ActivityService {
     private AWSCredentialsProvider credentialsProvider;
     private DynamoDBService dynamo;
 
+    private static final SimpleDateFormat activityDateFormat = new SimpleDateFormat("dd-MM-yyyy HH:mm:ss");
 
     private static final ObjectMapper objectMapper = new ObjectMapper();
 
@@ -303,9 +304,13 @@ public class ActivityService {
             System.out.println("processed bucket = " + s3ProcessedActivityBucket);
             s3Service.putObject(s3ProcessedActivityBucket, newKey, cos.toInputStream());
 
-            //6. update status in activity table
+            //6. summarize in activity table
+            try {
+                writeActivitySearchFieldsToDynamodb(result);
+            }catch(java.text.ParseException ex) {
+                LOG.error("error writing search fields to dynamo", ex);
+            }
             //7. call back the client
-
 
             ActivityItem activityToQuery = new ActivityItem();
             activityToQuery.setId(id);
@@ -320,7 +325,7 @@ public class ActivityService {
             LOG.info("found " + items.size() + " activity items with id: " + id);
 
             if (!items.isEmpty()) {
-                items.get(0).setStatus("COMPLETE");
+                items.get(0).setStatus(ActivityItem.Status.COMPLETE);
                 dynamo.getMapper().save(items.get(0));
                 String cognitoId = items.get(0).getCognitoId();
                 LOG.info("cognitoId: " + cognitoId);
@@ -384,90 +389,6 @@ public class ActivityService {
         }
         return id;
     }
-
-    private ApiGatewayResponse errorResponse(String message, Throwable t) {
-        return ApiGatewayResponse.builder()
-                .setStatusCode(400)
-                .setRawBody(new ErrorResponse(400,
-                        message + ErrorResponse.getStackTrace(t),
-                        message, "400").toJSON())
-                .build();
-    }
-
-
-    /**
-     * @param bodyStr
-     * @param activityId
-     * @param extension
-     * @throws SaveException
-     */
-    private void writeRawFileToS3(String bodyStr, String activityId, String extension) throws SaveException {
-        try {
-            byte[] body = null;
-            body = Base64.decode(bodyStr);
-            LOG.debug("decoded raw activity base64 to binary");
-            ByteArrayInputStream bais = new ByteArrayInputStream(body);
-            s3.putObject(bais, s3RawActivityBucket, activityId + "." + extension, body.length, "rawActivity");
-        } catch (IOException e) {
-            LOG.error("error writing object to S3", e);
-            throw new SaveException("failed to save raw activity file", e);
-        }
-    }
-
-
-    private boolean confirmActivityOwner(String activityId, String email) {
-
-
-        Map<String, AttributeValue> eav = new HashMap<String, AttributeValue>();
-        String id = activityId;
-        if(activityId.endsWith(".pbf")){
-            id = activityId.substring(0,activityId.length()-4);
-        }
-        eav.put(":val1", new AttributeValue().withS(id));
-
-        DynamoDBQueryExpression<ActivityItem> queryExpression = new DynamoDBQueryExpression<ActivityItem>()
-                .withKeyConditionExpression("id = :val1")
-                .withExpressionAttributeValues(eav);
-
-//        ActivityItem activityItem = dynamo.getMapper().load(ActivityItem.class,activityId);
-//        return activityItem.getUserId().trim().equalsIgnoreCase(email.trim());
-
-        List<ActivityItem> items = dynamo.getMapper().query(ActivityItem.class, queryExpression);
-        if (!items.isEmpty()) {
-            //ActivityItem item = dynamo.getMapper().load(ActivityItem.class, activityId);
-            LOG.info("Activity " + activityId + " belongs to " + items.get(0).getUserId());
-            return items.get(0).getUserId().trim().equalsIgnoreCase(email.trim());
-        }
-         return false;
-    }
-
-
-    private void writeMetadataToActivityTable(LambdaProxyConfig config, String activityId) throws SaveException {
-        try {
-            LambdaProxyConfig.RequestContext.Identity identity = config.getRequestContext().getIdentity();
-            ActivityItem activity = new ActivityItem();
-            activity.setId(activityId);
-            activity.setUserId(identity.getEmail());
-            activity.setCognitoId(identity.getCognitoIdentityId());
-            activity.setDateOfUpload(new Date(System.currentTimeMillis()));
-            activity.setRawActivity(dynamo.getMapper().createS3Link(region, activityId));
-            activity.setUserAgent(identity.getUserAgent());
-            activity.setSourceIp(identity.getSourceIp());
-            activity.setStatus("PENDING");
-            activity.setRawFileType(config.getHeaders().getContentType());
-            dynamo.getMapper().save(activity);
-        } catch (Exception e) {
-            LOG.error("Error writing metadata to activity table. Rolling back", e);
-            try {
-                s3.deleteObject(s3RawActivityBucket, activityId);
-            } catch (IOException e1) {
-                LOG.error("Error deleting S3 object", e);
-            } finally {
-                throw new SaveException("Error writing metadata to activity table");
-            }
-        }
-    }
-
 
     /**
      * method hard deletes raw activity from s3
@@ -541,6 +462,130 @@ public class ActivityService {
             return false;
         }
     }
+
+    private ApiGatewayResponse errorResponse(String message, Throwable t) {
+        return ApiGatewayResponse.builder()
+                .setStatusCode(400)
+                .setRawBody(new ErrorResponse(400,
+                        message + ErrorResponse.getStackTrace(t),
+                        message, "400").toJSON())
+                .build();
+    }
+
+
+    /**
+     * @param bodyStr
+     * @param activityId
+     * @param extension
+     * @throws SaveException
+     */
+    private void writeRawFileToS3(String bodyStr, String activityId, String extension) throws SaveException {
+        try {
+            byte[] body = null;
+            body = Base64.decode(bodyStr);
+            LOG.debug("decoded raw activity base64 to binary");
+            ByteArrayInputStream bais = new ByteArrayInputStream(body);
+            s3.putObject(bais, s3RawActivityBucket, activityId + "." + extension, body.length, "rawActivity");
+        } catch (IOException e) {
+            LOG.error("error writing object to S3", e);
+            throw new SaveException("failed to save raw activity file", e);
+        }
+    }
+
+
+    public Optional<ActivityItem> retrieveActivityFromDynamo(String activityId) {
+        Map<String, AttributeValue> eav = new HashMap<String, AttributeValue>();
+        String id = activityId;
+        if(activityId.endsWith(".pbf")){
+            id = activityId.substring(0,activityId.length()-4);
+        }
+        eav.put(":val1", new AttributeValue().withS(id));
+
+        DynamoDBQueryExpression<ActivityItem> queryExpression = new DynamoDBQueryExpression<ActivityItem>()
+                .withKeyConditionExpression("id = :val1")
+                .withExpressionAttributeValues(eav);
+        List<ActivityItem> items =  dynamo.getMapper().query(ActivityItem.class, queryExpression);
+        return items.isEmpty() ? Optional.empty() : Optional.of(items.get(0));
+
+    }
+    private boolean confirmActivityOwner(String activityId, String email) {
+
+        Optional<ActivityItem> item = retrieveActivityFromDynamo(activityId);
+        if( item.isPresent()) {
+            return item.get().getUserId().trim().equalsIgnoreCase(email.trim());
+        } else {
+            return false;
+        }
+    }
+
+
+    private void writeMetadataToActivityTable(LambdaProxyConfig config, String activityId) throws SaveException {
+        try {
+            LambdaProxyConfig.RequestContext.Identity identity = config.getRequestContext().getIdentity();
+            ActivityItem activity = new ActivityItem();
+            activity.setId(activityId);
+            activity.setUserId(identity.getEmail());
+            activity.setCognitoId(identity.getCognitoIdentityId());
+            activity.setDateOfUpload(new Date(System.currentTimeMillis()));
+            activity.setRawActivity(dynamo.getMapper().createS3Link(region, activityId));
+            activity.setUserAgent(identity.getUserAgent());
+            activity.setSourceIp(identity.getSourceIp());
+            activity.setStatus(ActivityItem.Status.PENDING);
+            activity.setRawFileType(config.getHeaders().getContentType());
+            dynamo.getMapper().save(activity);
+        } catch (Exception e) {
+            LOG.error("Error writing metadata to activity table. Rolling back", e);
+            try {
+                s3.deleteObject(s3RawActivityBucket, activityId);
+            } catch (IOException e1) {
+                LOG.error("Error deleting S3 object", e);
+            } finally {
+                throw new SaveException("Error writing metadata to activity table");
+            }
+        }
+    }
+
+    private boolean writeActivitySearchFieldsToDynamodb(ActivityOuterClass.Activity  activity) throws java.text.ParseException {
+
+        SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss");
+
+        LOG.info("activity id = " + activity.getId());
+        ActivityItem item = null;
+        Optional<ActivityItem> itemo = retrieveActivityFromDynamo(activity.getId());
+
+        if(!itemo.isPresent()) {
+            LOG.error("activity item " + activity.getId() + " not found");
+            return false;
+        }else {
+            item = itemo.get();
+        }
+
+        item.setActivityType(activity.getSessions(0).getSport().toString());
+        item.setActivitySubType(activity.getSessions(0).getSubSport().toString());
+        item.setDevice(activity.getMeta().getManufacturer().toString()+" " + activity.getMeta().getProduct());
+        item.setDistance(activity.getSummary().getTotalDistance());
+        item.setDuration(activity.getSummary().getTotalElapsed());
+        item.setAvHr(activity.getSummary().getAvgHr());
+        item.setMaxHr(activity.getSummary().getMaxHr());
+        item.setAvSpeed(activity.getSummary().getAvgSpeed());
+        item.setMaxSpeed(activity.getSummary().getMaxSpeed());
+        item.setAscent(activity.getSummary().getTotalAscent());
+        item.setDescent(activity.getSummary().getTotalDescent());
+        item.setLastUpdateTimestamp(new Date(System.currentTimeMillis()));
+
+
+        try {
+
+            LOG.info("Updated activity " + activity.getId() + "search fields in dynamo");
+            dynamo.getMapper().save(item);
+            return true;
+        } catch (Exception ex) {
+            LOG.error("Error updating  activityitem: " + activity.getId() + " from dynamo", ex);
+            return false;
+        }
+
+    }
+
 
 
 }
