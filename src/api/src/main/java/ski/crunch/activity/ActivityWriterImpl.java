@@ -82,6 +82,7 @@ public class ActivityWriterImpl implements ActivityWriter {
         if(weather != null) {
             this.metaBuilder.setWeather(weather);
         }
+        this.metaBuilder.setCreatedTs(holder.getCreatedTs());
         return this.metaBuilder.build();
 
     }
