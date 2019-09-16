@@ -4,6 +4,7 @@ import com.amazonaws.services.dynamodbv2.datamodeling.DynamoDBAttribute;
 import com.amazonaws.services.dynamodbv2.datamodeling.DynamoDBHashKey;
 import com.amazonaws.services.dynamodbv2.datamodeling.DynamoDBTable;
 
+import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
@@ -102,6 +103,13 @@ public class UserSettingsItem {
 
     public void setDevices(Set<String> devices) {
         this.devices = devices;
+    }
+
+    public void addDevice(String device) {
+        if(this.devices == null) {
+            this.devices = new HashSet<String>();
+        }
+        this.devices.add(device);
     }
 }
 

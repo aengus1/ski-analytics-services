@@ -24,6 +24,7 @@ public class ParseFitActivityLambda implements RequestHandler<Map<String, Object
     private DynamoDBService dynamo;
     private ActivityService activityService;
     private String activityTable;
+    private String userTable;
     private DefaultAWSCredentialsProviderChain credentialsProvider;
     private WeatherService weatherService;
     private LocationService locationService;
@@ -37,6 +38,7 @@ public class ParseFitActivityLambda implements RequestHandler<Map<String, Object
 
         this.region = System.getenv("AWS_DEFAULT_REGION");
         this.activityTable = System.getenv("activityTable");
+        this.userTable =  System.getenv("userTable");
         this.s3 = new S3Service(region);
 
         try {
@@ -51,7 +53,7 @@ public class ParseFitActivityLambda implements RequestHandler<Map<String, Object
 
         this.parameterService = new SSMParameterService(region, credentialsProvider);
         this.activityService = new ActivityService(s3, credentialsProvider, dynamo, region,
-                s3RawActivityBucket, s3ActivityBucket, activityTable);
+                s3RawActivityBucket, s3ActivityBucket, activityTable, userTable);
     }
 
     @Override

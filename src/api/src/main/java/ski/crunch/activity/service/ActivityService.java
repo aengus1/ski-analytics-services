@@ -1,12 +1,6 @@
 package ski.crunch.activity.service;
 
 import com.amazonaws.auth.AWSCredentialsProvider;
-import com.amazonaws.services.dynamodbv2.datamodeling.DynamoDBQueryExpression;
-import com.amazonaws.services.dynamodbv2.document.DeleteItemOutcome;
-import com.amazonaws.services.dynamodbv2.document.PrimaryKey;
-import com.amazonaws.services.dynamodbv2.document.Table;
-import com.amazonaws.services.dynamodbv2.document.spec.DeleteItemSpec;
-import com.amazonaws.services.dynamodbv2.model.AttributeValue;
 import com.amazonaws.services.lambda.runtime.Context;
 import com.amazonaws.util.Base64;
 import com.fasterxml.jackson.core.JsonProcessingException;
@@ -23,6 +17,8 @@ import ski.crunch.activity.processor.ActivityProcessor;
 import ski.crunch.activity.processor.model.ActivityHolder;
 import ski.crunch.aws.DynamoDBService;
 import ski.crunch.aws.S3Service;
+import ski.crunch.dao.ActivityDAO;
+import ski.crunch.dao.UserDAO;
 import ski.crunch.model.ActivityItem;
 import ski.crunch.model.ActivityOuterClass;
 import ski.crunch.model.UserSettingsItem;
@@ -30,8 +26,8 @@ import ski.crunch.services.OutgoingWebSocketService;
 import ski.crunch.utils.*;
 
 import java.io.*;
-import java.text.SimpleDateFormat;
 import java.util.*;
+import java.util.stream.Collectors;
 
 //import ski.crunch.model.ActivityItem;
 
@@ -43,16 +39,19 @@ public class ActivityService {
     private String s3ProcessedActivityBucket;
     private String region;
     private String activityTable;
+    private String userTable;
     private S3Service s3;
     private AWSCredentialsProvider credentialsProvider;
     private DynamoDBService dynamo;
+    private ActivityDAO activityDAO;
+    private UserDAO userDAO;
 
 
     private static final ObjectMapper objectMapper = new ObjectMapper();
 
 
     public ActivityService(S3Service s3Service, AWSCredentialsProvider credentialsProvider, DynamoDBService dynamo,
-                           String region, String s3RawActivityBucket, String s3ProcessedActivityBucket, String activityTable) {
+                           String region, String s3RawActivityBucket, String s3ProcessedActivityBucket, String activityTable, String userTable) {
         this.s3RawActivityBucket = s3RawActivityBucket;
         this.s3ProcessedActivityBucket = s3ProcessedActivityBucket;
         this.region = region;
@@ -60,6 +59,9 @@ public class ActivityService {
         this.dynamo = dynamo;
         this.s3 = s3Service;
         this.activityTable = activityTable;
+        this.userTable = userTable;
+        this.activityDAO = new ActivityDAO(dynamo, activityTable);
+        this.userDAO = new UserDAO(dynamo, userTable);
     }
 
     /**
@@ -87,16 +89,30 @@ public class ActivityService {
             LOG.info("Creating Activity with ID: " + activityId);
 
             //Write to S3
-            String[] contentType = config.getHeaders().getContentType().split("application/");
-            if (contentType.length > 1) {
-                writeRawFileToS3(config.getBody(), activityId, contentType[1]);
+            String[] contentTypeArray = config.getHeaders().getContentType().split("application/");
+            String contentType = "";
+            if (contentTypeArray.length > 1) {
+                writeRawFileToS3(config.getBody(), activityId, contentTypeArray[1]);
+                contentType = contentTypeArray[1];
             } else {
                 writeRawFileToS3(config.getBody(), activityId, "null");
             }
 
 
             //Write metadata to dynamo
-            writeMetadataToActivityTable(config, activityId);
+            LambdaProxyConfig.RequestContext.Identity identity = config.getRequestContext().getIdentity();
+            try {
+                activityDAO.saveMetadata(activityId, identity, contentType, region);
+            } catch (SaveException ex) {
+                try {
+                    LOG.error("Error occurred saving activity metadata. Rolling back..");
+                    s3.deleteObject(s3RawActivityBucket, activityId);
+                } catch (IOException e1) {
+                    LOG.error("Error deleting S3 object", e1);
+                } finally {
+                    throw ex;
+                }
+            }
 
             //return success response
             Map<String, String> headers = new HashMap<>();
@@ -182,7 +198,7 @@ public class ActivityService {
             byte[] binaryBody = s3.getObject(s3ProcessedActivityBucket, id);
             Map<String, String> headers = new HashMap<>();
             headers.put("Content-Type", "application/json");
-            headers.put("Access-Control-Allow-Origin","*");
+            headers.put("Access-Control-Allow-Origin", "*");
             return ApiGatewayResponse.builder()
                     .setStatusCode(200)
                     .setBinaryBody(binaryBody)
@@ -303,71 +319,79 @@ public class ActivityService {
             System.out.println("processed bucket = " + s3ProcessedActivityBucket);
             s3Service.putObject(s3ProcessedActivityBucket, newKey, cos.toInputStream());
 
-            //6. summarize in activity table
+            //6. add search fields to activity table
+            activityDAO.saveActivitySearchFields(result);
+
+
+            //7. update user settings with possible new devices / activityTypes
+            Optional<ActivityItem> activityItemOptional = activityDAO.getActivityItem(id);
+            if (!activityItemOptional.isPresent()) {
+                LOG.error("Activity Item " + id + " not present");
+                return ApiGatewayResponse.builder()
+                        .setStatusCode(400)
+                        .setRawBody(new ErrorResponse(400,
+                                "Error occurred activity item not found in dynamo:" + id,
+                                "Error processing activity", "").toJSON())
+                        .build();
+            }
+            ActivityItem activityItem = activityItemOptional.get();
+            String device = result.getMeta().getManufacturer() + " " + result.getMeta().getProduct();
+            Set<String> activityTypes = result.getSessionsList().stream().map(x -> x.getSport().toString()).collect(Collectors.toSet());
             try {
-                writeActivitySearchFieldsToDynamodb(result);
-            }catch(java.text.ParseException ex) {
-                LOG.error("error writing search fields to dynamo", ex);
+                userDAO.addDeviceAndActivityType(
+                        activityItem.getCognitoId(),
+                        device,
+                        activityTypes
+                );
+            } catch (Exception ex) {
+                LOG.error("error updating activity types and devices in user settings", ex);
             }
-            //7. call back the client
 
-            ActivityItem activityToQuery = new ActivityItem();
-            activityToQuery.setId(id);
+            //8. mark activity as complete
+            activityDAO.updateStatus(activityItem, ActivityItem.Status.COMPLETE);
 
-            DynamoDBQueryExpression<ActivityItem> queryExpression = new DynamoDBQueryExpression<>();
-            queryExpression.withHashKeyValues(activityToQuery);
+            //9. call back the client
 
-
-            String userTableName = System.getenv("userTable");
             String connectionId = "";
-            List<ActivityItem> items = dynamo.getMapper().query(ActivityItem.class, queryExpression);
-            LOG.info("found " + items.size() + " activity items with id: " + id);
-
-            if (!items.isEmpty()) {
-                items.get(0).setStatus(ActivityItem.Status.COMPLETE);
-                dynamo.getMapper().save(items.get(0));
-                String cognitoId = items.get(0).getCognitoId();
-                LOG.info("cognitoId: " + cognitoId);
-                if(cognitoId != null && !cognitoId.isEmpty()){
-                    LOG.info("owner of activity: " + id + " = " + cognitoId);
-                    DynamoDBQueryExpression<UserSettingsItem> userQueryExpression = new DynamoDBQueryExpression<>();
-                    UserSettingsItem userToQuery = new UserSettingsItem();
-                    userToQuery.setId(cognitoId);
-                    userQueryExpression.withHashKeyValues(userToQuery);
-                    DynamoDBService userRegiondynamoService = new DynamoDBService(region, userTableName);
-                    List<UserSettingsItem> users = userRegiondynamoService.getMapper().query(UserSettingsItem.class, userQueryExpression);
-                    if(!users.isEmpty()) {
-                        UserSettingsItem user = users.get(0);
-                        connectionId = user.getConnectionId();
-                        LOG.info("connection Id = " + connectionId);
-                    }
-                }
-
-            }
+            String cognitoId = activityItem.getCognitoId();
+            Optional<UserSettingsItem> user = userDAO.getUserSettings(cognitoId);
+            connectionId = user.orElseThrow(() -> new NotFoundException(("User " + cognitoId + " not found"))).getConnectionId();
+            LOG.info("connection Id = " + connectionId);
 
 
             String apiId = System.getenv("webSocketId");
-
-
             LOG.debug("api ID = " + apiId);
-            // lookup the
-            //build the message
-            ObjectNode root = objectMapper.createObjectNode();
-            root.put("key", "ACTIVITY_READY");
-            root.put("payload", "activity " + id + " successfully uploaded");
-            root.put("url", "/activity/"+id);
+
+            OutgoingWebSocketService outgoingWebSocketService = new OutgoingWebSocketService();
+
+            //build and send the activity ready message
+            ObjectNode activityReadyMessage = objectMapper.createObjectNode();
+            activityReadyMessage.put("key", "ACTIVITY_READY");
+            activityReadyMessage.put("payload", "activity " + id + " successfully uploaded");
+            activityReadyMessage.put("url", "/activity/" + id);
 
             // TODO HANDLE THE CASE WHERE CONNECTIONID IS NULL (due to unexpected error or 10 min timeout disconnect
 
-            OutgoingWebSocketService outgoingWebSocketService = new OutgoingWebSocketService();
-            String jsonString = objectMapper.writerWithDefaultPrettyPrinter().writeValueAsString(root);
-            System.out.println("sending: " + jsonString);
-            outgoingWebSocketService.sendMessage(jsonString, apiId, connectionId, credentialsProvider);
+            String activityReadyJson = objectMapper.writerWithDefaultPrettyPrinter().writeValueAsString(activityReadyMessage);
+            System.out.println("sending activity ready message: " + activityReadyJson);
+            outgoingWebSocketService.sendMessage(activityReadyJson, apiId, connectionId, credentialsProvider);
 
-            // parameters:  activity-id
-            // workflow:   lookup activities user and connectionId
-            //             if connectionId not empty make a call to client containing:
-            //              activityf-id, status
+            //build and send the new device / activity types message
+            ObjectNode newDeviceActivityTypesMessage = objectMapper.createObjectNode();
+            newDeviceActivityTypesMessage.put("key", "NEW_DEVICE_ACTIVITY_TYPE");
+            newDeviceActivityTypesMessage.put("payload",
+                    "{" +
+                            "\"device\": " + device + "," +
+                            "\"activityTypes\": [ " + activityTypes.stream().collect(Collectors.joining(",")) + "]" +
+                            "}");
+            newDeviceActivityTypesMessage.put("url", "");//
+            newDeviceActivityTypesMessage.put("url", "/activity/" + id);
+
+            String newDeviceActivityTypeJson = objectMapper.writerWithDefaultPrettyPrinter().writeValueAsString(newDeviceActivityTypesMessage);
+            System.out.println("sending new device / activity type : " + newDeviceActivityTypeJson);
+            outgoingWebSocketService.sendMessage(newDeviceActivityTypeJson, apiId, connectionId, credentialsProvider);
+
+
 
         } catch (IOException e) {
             e.printStackTrace();
@@ -424,43 +448,7 @@ public class ActivityService {
         }
     }
 
-    /**
-     * Method hard deletes activity record from table
-     *
-     * @param id
-     * @return
-     */
-    public boolean deleteActivityItemById(String id) {
-        ActivityItem item = null;
-        Map<String, AttributeValue> eav = new HashMap<String, AttributeValue>();
-        eav.put(":val1", new AttributeValue().withS(id));
 
-        DynamoDBQueryExpression<ActivityItem> queryExpression = new DynamoDBQueryExpression<ActivityItem>()
-                .withKeyConditionExpression("id = :val1")
-                .withExpressionAttributeValues(eav);
-        List<ActivityItem> items = this.dynamo.getMapper().query(ActivityItem.class, queryExpression);
-        if (!items.isEmpty()) {
-            item = items.get(0);
-
-        }
-        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd'T'hh:mm:ss.SSS'Z'");
-        sdf.setTimeZone(TimeZone.getTimeZone("GMT"));
-        //System.out.println("activityTable: " + activityTable + " date: " + sdf.format(item.getDateOfUpload()));
-        Table table = dynamo.getTable(this.activityTable);
-
-        DeleteItemSpec deleteItemSpec = new DeleteItemSpec()
-                .withPrimaryKey(new PrimaryKey("id", id, "date", sdf.format(item.getDateOfUpload())));
-
-        try {
-            DeleteItemOutcome outcome = table.deleteItem(deleteItemSpec);
-            LOG.info("outcome= " + outcome.toString());
-            LOG.info("Deleted activity " + id + " from dynamo");
-            return true;
-        } catch (Exception ex) {
-            LOG.error("Error deleting  activityitem: " + id + " from dynamo", ex);
-            return false;
-        }
-    }
 
     private ApiGatewayResponse errorResponse(String message, Throwable t) {
         return ApiGatewayResponse.builder()
@@ -492,97 +480,14 @@ public class ActivityService {
     }
 
 
-    public Optional<ActivityItem> retrieveActivityFromDynamo(String activityId) {
-        Map<String, AttributeValue> eav = new HashMap<String, AttributeValue>();
-        String id = activityId;
-        if(activityId.endsWith(".pbf")){
-            id = activityId.substring(0,activityId.length()-4);
-        }
-        eav.put(":val1", new AttributeValue().withS(id));
-
-        DynamoDBQueryExpression<ActivityItem> queryExpression = new DynamoDBQueryExpression<ActivityItem>()
-                .withKeyConditionExpression("id = :val1")
-                .withExpressionAttributeValues(eav);
-        List<ActivityItem> items =  dynamo.getMapper().query(ActivityItem.class, queryExpression);
-        return items.isEmpty() ? Optional.empty() : Optional.of(items.get(0));
-
-    }
     private boolean confirmActivityOwner(String activityId, String email) {
 
-        Optional<ActivityItem> item = retrieveActivityFromDynamo(activityId);
-        if( item.isPresent()) {
+        Optional<ActivityItem> item = activityDAO.getActivityItem(activityId);
+        if (item.isPresent()) {
             return item.get().getUserId().trim().equalsIgnoreCase(email.trim());
         } else {
             return false;
         }
     }
-
-
-    private void writeMetadataToActivityTable(LambdaProxyConfig config, String activityId) throws SaveException {
-        try {
-            LambdaProxyConfig.RequestContext.Identity identity = config.getRequestContext().getIdentity();
-            ActivityItem activity = new ActivityItem();
-            activity.setId(activityId);
-            activity.setUserId(identity.getEmail());
-            activity.setCognitoId(identity.getCognitoIdentityId());
-            activity.setDateOfUpload(new Date(System.currentTimeMillis()));
-            activity.setRawActivity(dynamo.getMapper().createS3Link(region, activityId));
-            activity.setUserAgent(identity.getUserAgent());
-            activity.setSourceIp(identity.getSourceIp());
-            activity.setStatus(ActivityItem.Status.PENDING);
-            activity.setRawFileType(config.getHeaders().getContentType());
-            dynamo.getMapper().save(activity);
-        } catch (Exception e) {
-            LOG.error("Error writing metadata to activity table. Rolling back", e);
-            try {
-                s3.deleteObject(s3RawActivityBucket, activityId);
-            } catch (IOException e1) {
-                LOG.error("Error deleting S3 object", e);
-            } finally {
-                throw new SaveException("Error writing metadata to activity table");
-            }
-        }
-    }
-
-    private boolean writeActivitySearchFieldsToDynamodb(ActivityOuterClass.Activity  activity) throws java.text.ParseException {
-
-        LOG.info("activity id = " + activity.getId());
-        ActivityItem item = null;
-        Optional<ActivityItem> itemo = retrieveActivityFromDynamo(activity.getId());
-
-        if(!itemo.isPresent()) {
-            LOG.error("activity item " + activity.getId() + " not found");
-            return false;
-        }else {
-            item = itemo.get();
-        }
-
-        item.setActivityType(activity.getSessions(0).getSport().toString());
-        item.setActivitySubType(activity.getSessions(0).getSubSport().toString());
-        item.setDevice(activity.getMeta().getManufacturer().toString()+" " + activity.getMeta().getProduct());
-        item.setDistance(activity.getSummary().getTotalDistance());
-        item.setDuration(activity.getSummary().getTotalElapsed());
-        item.setAvHr(activity.getSummary().getAvgHr());
-        item.setMaxHr(activity.getSummary().getMaxHr());
-        item.setAvSpeed(activity.getSummary().getAvgSpeed());
-        item.setMaxSpeed(activity.getSummary().getMaxSpeed());
-        item.setAscent(activity.getSummary().getTotalAscent());
-        item.setDescent(activity.getSummary().getTotalDescent());
-        item.setLastUpdateTimestamp(new Date(System.currentTimeMillis()));
-
-
-        try {
-
-            LOG.info("Updated activity " + activity.getId() + "search fields in dynamo");
-            dynamo.getMapper().save(item);
-            return true;
-        } catch (Exception ex) {
-            LOG.error("Error updating  activityitem: " + activity.getId() + " from dynamo", ex);
-            return false;
-        }
-
-    }
-
-
 
 }

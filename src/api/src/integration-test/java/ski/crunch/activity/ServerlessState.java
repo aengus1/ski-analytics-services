@@ -53,6 +53,9 @@ return "";
         return rootNode.path("service").path("custom").path("activityTable").asText();
     }
 
+    public String getUserTable(){
+        return rootNode.path("service").path("custom").path("userTable").asText();
+    }
     public String getRawActivityBucketName(){
         return rootNode.path("service").path("custom").path("rawActivityBucketName").asText();
     }
