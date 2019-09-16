@@ -22,6 +22,7 @@ public class GetActivityHandler implements RequestHandler<Map<String, Object>, A
     private String s3Bucket = null;
     private String region = null;
     private String activityTable = null;
+    private String userTable = null;
     private S3Service s3 = null;
     private AWSCredentialsProvider credentialsProvider = null;
     private DynamoDBService dynamo = null;
@@ -39,6 +40,7 @@ public class GetActivityHandler implements RequestHandler<Map<String, Object>, A
         this.s3Bucket = System.getenv("s3ActivityBucketName");
         this.region = System.getenv("AWS_DEFAULT_REGION");
         this.activityTable = System.getenv("activityTable");
+        this.userTable = System.getenv("userTable");
         this.stage = System.getenv("currentStage");
         this.s3 = new S3Service(region);
 
@@ -52,7 +54,7 @@ public class GetActivityHandler implements RequestHandler<Map<String, Object>, A
         this.dynamo = new DynamoDBService(region, activityTable, credentialsProvider);
         this.parameterService = new SSMParameterService(region, credentialsProvider);
         this.activityService = new ActivityService( s3, credentialsProvider, dynamo, region,
-                s3RawActivityBucket, s3Bucket, activityTable);
+                s3RawActivityBucket, s3Bucket, activityTable, userTable);
     }
 
 

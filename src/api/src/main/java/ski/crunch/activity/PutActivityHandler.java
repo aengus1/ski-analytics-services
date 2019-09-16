@@ -22,6 +22,7 @@ public class PutActivityHandler implements RequestHandler<Map<String, Object>, A
     private String s3ActivityBucket;
     private String region;
     private String activityTable;
+    private String userTable;
     private S3Service s3;
     private AWSCredentialsProvider credentialsProvider;
     private DynamoDBService dynamo;
@@ -33,6 +34,7 @@ public class PutActivityHandler implements RequestHandler<Map<String, Object>, A
         this.s3ActivityBucket = System.getenv("s3ActivityBucketName");
         this.region = System.getenv("AWS_DEFAULT_REGION");
         this.activityTable = System.getenv("activityTable");
+        this.userTable = System.getenv("userTable");
         this.s3 = new S3Service(region);
 
         try {
@@ -44,7 +46,7 @@ public class PutActivityHandler implements RequestHandler<Map<String, Object>, A
         }
         this.dynamo = new DynamoDBService(region,activityTable, credentialsProvider );
         this.activityService = new ActivityService( s3, credentialsProvider, dynamo, region,
-                s3RawActivityBucket,s3ActivityBucket, activityTable);
+                s3RawActivityBucket,s3ActivityBucket, activityTable, userTable);
     }
 
     private static final Logger LOG = Logger.getLogger(PutActivityHandler.class);

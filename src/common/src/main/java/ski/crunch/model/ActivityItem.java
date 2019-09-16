@@ -104,6 +104,7 @@ public class ActivityItem {
         return status;
     }
 
+    @DynamoDBTypeConvertedEnum
     public void setStatus(Status status) {
         this.status = status;
     }

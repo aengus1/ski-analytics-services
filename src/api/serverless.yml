@@ -90,6 +90,7 @@ functions:
     environment:
       s3ActivityBucketName: ${{self:custom.activityBucketName}}
       activityTable: ${{self:custom.currentStage}}-crunch-Activity
+      userTable: ${{cf:${{self:custom.currentStage}}-ski-analytics-authentication-stack.UserTableName}}
       currentStage: ${{self:custom.currentStage}}
     events:
       - http:
@@ -132,6 +133,7 @@ functions:
     environment:
       s3RawActivityBucketName: ${{self:custom.rawActivityBucketName}}
       activityTable: ${{self:custom.currentStage}}-crunch-Activity
+      userTable: ${{cf:${{self:custom.currentStage}}-ski-analytics-authentication-stack.UserTableName}}
       currentStage: ${{self:custom.currentStage}}
     events:
      - http:

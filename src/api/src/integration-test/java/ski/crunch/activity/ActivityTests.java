@@ -8,6 +8,7 @@ import org.junit.jupiter.api.*;
 import ski.crunch.activity.service.ActivityService;
 import ski.crunch.aws.DynamoDBService;
 import ski.crunch.aws.S3Service;
+import ski.crunch.dao.ActivityDAO;
 import ski.crunch.model.ActivityItem;
 import ski.crunch.model.ActivityOuterClass;
 import ski.crunch.utils.NotFoundException;
@@ -47,6 +48,7 @@ class ActivityTests {
     private ActivityService activityService = null;
     private S3Service s3 = null;
     private DynamoDBService dynamo = null;
+    private ActivityDAO activityDAO = null;
     private String processedActivityBucket = null;
 
     private ProfileCredentialsProvider credentialsProvider = null;
@@ -137,10 +139,11 @@ class ActivityTests {
         this.s3 = new S3Service(apiStackServerlessState.getRegion(), credentialsProvider);
         this.dynamo = new DynamoDBService(apiStackServerlessState.getRegion(), apiStackServerlessState.getActivityTable(),
                 this.credentialsProvider);
+        this.activityDAO =  new ActivityDAO(dynamo, apiStackServerlessState.getActivityTable());
         this.activityService = new ActivityService(s3, this.credentialsProvider, dynamo
                 , apiStackServerlessState.getRegion(),
                 apiStackServerlessState.getRawActivityBucketName(), apiStackServerlessState.getActivityBucketName(),
-                apiStackServerlessState.getActivityTable());
+                apiStackServerlessState.getActivityTable(), authStackServerlessState.getUserTable());
 
         this.processedActivityBucket = apiStackServerlessState.getActivityBucketName();
         //this.rawActivityBucket = apiStackServerlessState.getRawActivityBucketName();
@@ -242,8 +245,9 @@ class ActivityTests {
 
     @Test
     void testSearchFieldsAreSet() {
-        Optional<ActivityItem> item = activityService.retrieveActivityFromDynamo(this.activityId);
-        assertEquals(item.isPresent(), true);
+
+        Optional<ActivityItem> item = activityDAO.getActivityItem(this.activityId);
+        assertEquals(true, item.isPresent());
 
         assertEquals("RUNNING",item.get().getActivityType());
         assertEquals("GENERIC_SUBSPORT",item.get().getActivitySubType());
@@ -292,8 +296,7 @@ class ActivityTests {
 
     @AfterAll
     void tearDown() {
-
-        activityService.deleteActivityItemById(activityId);
+        activityDAO.deleteActivityItemById(activityId);
         activityService.deleteRawActivityFromS3(activityId + ".fit");
         try {
             Thread.currentThread().sleep(20000);
