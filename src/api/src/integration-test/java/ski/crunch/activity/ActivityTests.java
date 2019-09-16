@@ -139,7 +139,7 @@ class ActivityTests {
         this.s3 = new S3Service(apiStackServerlessState.getRegion(), credentialsProvider);
         this.dynamo = new DynamoDBService(apiStackServerlessState.getRegion(), apiStackServerlessState.getActivityTable(),
                 this.credentialsProvider);
-        this.activityDAO =  new ActivityDAO(dynamo, authStackServerlessState.getUserTable());
+        this.activityDAO =  new ActivityDAO(dynamo, apiStackServerlessState.getActivityTable());
         this.activityService = new ActivityService(s3, this.credentialsProvider, dynamo
                 , apiStackServerlessState.getRegion(),
                 apiStackServerlessState.getRawActivityBucketName(), apiStackServerlessState.getActivityBucketName(),

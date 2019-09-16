@@ -21,16 +21,16 @@ public class ActivityDAO extends AbstractDAO {
         dynamoDBService.updateTableName(tableName);
         System.out.println("attempting to fetch " + activityId + " from " + tableName);
         Map<String, AttributeValue> eav = new HashMap<String, AttributeValue>();
-        String id = activityId;
         if (activityId.endsWith(".pbf")) {
-            id = activityId.substring(0, activityId.length() - 4);
+            activityId = activityId.substring(0, activityId.length() - 4);
         }
-        eav.put(":val1", new AttributeValue().withS(id));
+        eav.put(":val1", new AttributeValue().withS(activityId));
 
         DynamoDBQueryExpression<ActivityItem> queryExpression = new DynamoDBQueryExpression<ActivityItem>()
                 .withKeyConditionExpression("id = :val1")
                 .withExpressionAttributeValues(eav);
         List<ActivityItem> items = dynamoDBService.getMapper().query(ActivityItem.class, queryExpression);
+        System.out.println("returned " + items.size());
         return items.isEmpty() ? Optional.empty() : Optional.of(items.get(0));
 
     }
