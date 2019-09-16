@@ -545,7 +545,7 @@ public class ActivityService {
     }
 
     private boolean writeActivitySearchFieldsToDynamodb(ActivityOuterClass.Activity  activity) throws java.text.ParseException {
-        
+
         LOG.info("activity id = " + activity.getId());
         ActivityItem item = null;
         Optional<ActivityItem> itemo = retrieveActivityFromDynamo(activity.getId());

@@ -79,6 +79,21 @@ custom:
         field: saveHrZones
         request: save-hrzones-request-template.vtl
         response: generic-response-template.vtl
+      - dataSource: ${{self:custom.userTableDSName}}
+        type: Mutation
+        field: addTag
+        request: add-tag-request-template.vtl
+        response: generic-response-template.vtl
+      - dataSource: ${{self:custom.userTableDSName}}
+        type: Mutation
+        field: renameTag
+        request: rename-tag-request-template.vtl
+        response: generic-response-template.vtl
+      - dataSource: ${{self:custom.userTableDSName}}
+        type: Mutation
+        field: deleteTag
+        request: delete-tag-request-template.vtl
+        response: generic-response-template.vtl
     schema: schema.graphql
     dataSources:
       - type: AMAZON_DYNAMODB

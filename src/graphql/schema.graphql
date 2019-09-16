@@ -9,6 +9,9 @@ type Mutation {
     saveWeight(id: ID!, weight: Int!): User
     saveGender(id: ID!, gender: String!): User
     saveHrZones(id: ID!, hrZones: [Int]!): User
+    addTag(id: ID!, tag: String!): String
+    deleteTag(id: ID!, tag: String!): String
+    renameTag(id: ID!, tag: String!, newName: String!): String
 }
 
 type Query {
@@ -26,4 +29,7 @@ type User {
     height: Int
     weight: Int
     hrZones: [Int]
+    tags: [String]
+    devices: [String]
+    activityTypes: [String]
 }
