@@ -50,22 +50,27 @@ dependencies {
             'com.google.protobuf:protobuf-java:3.5.0'
     )
 
+    integrationTestRuntime(
+            'org.junit.jupiter:junit-jupiter-engine:5.1.0'
+    )
+
+
 }
 
 // Task for building the zip file for upload
 task buildUtilsZip(type: Zip) {
     // set the base name of the zip file
     baseName = "ski-crunch-utils"
-    from (fileTree("build/libs/common.jar")) {
+    from(fileTree("build/libs/common.jar")) {
         into('/java/lib')
     }
 }
 
 task buildCommonZip(type: Zip) {
     baseName = "ski-crunch-common"
-    from (configurations.runtimeClasspath) {
-        excludes ['ski/crunch/**']
-        into ('/java/lib')
+    from(configurations.runtimeClasspath) {
+        excludes['ski/crunch/**']
+        into('/java/lib')
     }
 
 }
