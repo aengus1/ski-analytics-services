@@ -50,17 +50,17 @@ class ActivityTests {
         LOG.info("ACCESS KEY: " + this.accessKey);
 
 
-        String authRegion = helper.getServerlessState(IntegrationTestHelper.IncludeModules.AUTH.getStackName()).getRegion();
+        String authRegion = helper.getServerlessState(IntegrationTestHelper.IncludeModules.auth.getStackName()).getRegion();
         ProfileCredentialsProvider profileCredentialsProvider = helper.getCredentialsProvider();
         System.out.println("auth region = " + authRegion);
         System.out.println("profile creds = " + profileCredentialsProvider.toString());
         this.s3 = new S3Service(authRegion, profileCredentialsProvider);
-        this.dynamo = new DynamoDBService(helper.getServerlessState(IntegrationTestHelper.IncludeModules.API.getStackName()).getRegion(), helper.getActivityTable(),
+        this.dynamo = new DynamoDBService(helper.getServerlessState(IntegrationTestHelper.IncludeModules.api.getStackName()).getRegion(), helper.getActivityTable(),
                 helper.getCredentialsProvider());
 
         this.activityDAO =  new ActivityDAO(dynamo, helper.getActivityTable());
         this.activityService = new ActivityService(s3, helper.getCredentialsProvider(), dynamo
-                , helper.getServerlessState(IntegrationTestHelper.IncludeModules.API.getStackName()).getRegion(),
+                , helper.getServerlessState(IntegrationTestHelper.IncludeModules.api.getStackName()).getRegion(),
                 helper.getRawActivityBucketName(), helper.getActivityBucketName(),
                 helper.getActivityTable(), helper.getUserTable());
 

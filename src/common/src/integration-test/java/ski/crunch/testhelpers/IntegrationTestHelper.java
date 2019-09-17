@@ -16,10 +16,10 @@ public class IntegrationTestHelper {
 
     //todo -> read these from a properties file in resources folder
     public enum IncludeModules {
-        API("staging-ski-analytics-api-stack"),
-        AUTH("staging-ski-analytics-authentication-stack"),
-        WEBSOCKET("staging-ski-analytics-websocket-stack"),
-        COMMON("staging-ski-analytics-common-stack");
+        api("staging-ski-analytics-api-stack"),
+        auth("staging-ski-analytics-authentication-stack"),
+        websocket("staging-ski-analytics-websocket-stack"),
+        common("staging-ski-analytics-common-stack");
 
         private String name;
 
@@ -44,13 +44,13 @@ public class IntegrationTestHelper {
 
     public IntegrationTestHelper() throws IOException {
         readServerlessState();
-        String region = serverlessStateMap.get(IncludeModules.AUTH.getStackName()).getRegion();
+        String region = serverlessStateMap.get(IncludeModules.auth.getStackName()).getRegion();
 
         credentialsProvider = new ProfileCredentialsProvider(AWS_PROFILE);
         cfHelper = new CloudFormationHelper(credentialsProvider, region);
         authHelper = new AuthenticationHelper(
-                cfHelper.getStackOutput(IncludeModules.AUTH.getStackName(), "UserPoolArn"),
-                cfHelper.getStackOutput(IncludeModules.AUTH.getStackName(), "UserPoolClientId"),
+                cfHelper.getStackOutput(IncludeModules.auth.getStackName(), "UserPoolArn"),
+                cfHelper.getStackOutput(IncludeModules.auth.getStackName(), "UserPoolClientId"),
                 region,
                 AWS_PROFILE);
 
@@ -63,11 +63,11 @@ public class IntegrationTestHelper {
 
     public String getWebsocketEndpoint() {
         //return serverlessStateMap.get("websocket").getWebsocketEndpoint();
-        return cfHelper.getStackOutput(IncludeModules.WEBSOCKET.getStackName(), "ServiceEndpointWebsocket");
+        return cfHelper.getStackOutput(IncludeModules.websocket.getStackName(), "ServiceEndpointWebsocket");
     }
 
     public String getApiEndpoint() {
-        return cfHelper.getStackOutput(IncludeModules.API.getStackName(), "ServiceEndpoint");
+        return cfHelper.getStackOutput(IncludeModules.api.getStackName(), "ServiceEndpoint");
     }
 
     public Optional<String> signup() {
@@ -85,7 +85,7 @@ public class IntegrationTestHelper {
     public void insertUserSettings(String userId) {
         DynamoDBService dynamo = new DynamoDBService(
                 serverlessStateMap.get("auth").getRegion(),
-                cfHelper.getStackOutput(IncludeModules.AUTH.getStackName(), "UserTableName"),
+                cfHelper.getStackOutput(IncludeModules.auth.getStackName(), "UserTableName"),
                 credentialsProvider
         );
 
@@ -109,7 +109,7 @@ public class IntegrationTestHelper {
     public void removeUserSettings(String userId) {
         DynamoDBService dynamo = new DynamoDBService(
                 serverlessStateMap.get("auth").getRegion(),
-                cfHelper.getStackOutput(IncludeModules.AUTH.getStackName(), "UserTableName"),
+                cfHelper.getStackOutput(IncludeModules.auth.getStackName(), "UserTableName"),
                 credentialsProvider
         );
 
@@ -127,7 +127,7 @@ public class IntegrationTestHelper {
     public String getUsersWebsocketConnectionId(String userId) {
         DynamoDBService dynamo = new DynamoDBService(
                 serverlessStateMap.get("auth").getRegion(),
-                cfHelper.getStackOutput(IncludeModules.AUTH.getStackName(), "UserTableName"),
+                cfHelper.getStackOutput(IncludeModules.auth.getStackName(), "UserTableName"),
                 credentialsProvider
         );
 
@@ -180,9 +180,9 @@ public class IntegrationTestHelper {
 
             for (IncludeModules includeModule : IncludeModules.values()) {
                 File serverlessStateForModule = new File(srcDirFile
-                        + (executedFromTestSuite ? "" : "/" + includeModule.getStackName())
+                        + (executedFromTestSuite ? "" : "/" + includeModule)
                         + "/.serverless/", "serverless-state.json");
-                LOG.debug("serverless-state.json for " + includeModule.getStackName() + " = " + serverlessStateForModule.getPath());
+                LOG.debug("serverless-state.json for " + includeModule + " = " + serverlessStateForModule.getPath());
 
                 serverlessStateMap.put(includeModule.getStackName(), ServerlessState.readServerlessState(serverlessStateForModule.getPath()));
             }
@@ -194,19 +194,19 @@ public class IntegrationTestHelper {
 
 
     public String getActivityTable() {
-        return getServerlessState(IncludeModules.API.getStackName()).getRootNode().path("service").path("custom").path("activityTable").asText();
+        return getServerlessState(IncludeModules.api.getStackName()).getRootNode().path("service").path("custom").path("activityTable").asText();
     }
 
     public String getUserTable() {
-        return getServerlessState(IncludeModules.API.getStackName()).getRootNode().path("service").path("custom").path("userTable").asText();
+        return getServerlessState(IncludeModules.api.getStackName()).getRootNode().path("service").path("custom").path("userTable").asText();
     }
 
     public String getRawActivityBucketName() {
-        return getServerlessState(IncludeModules.API.getStackName()).getRootNode().path("service").path("custom").path("rawActivityBucketName").asText();
+        return getServerlessState(IncludeModules.api.getStackName()).getRootNode().path("service").path("custom").path("rawActivityBucketName").asText();
     }
 
     public String getActivityBucketName() {
-        return getServerlessState(IncludeModules.API.getStackName()).getRootNode().path("service").path("custom").path("activityBucketName").asText();
+        return getServerlessState(IncludeModules.api.getStackName()).getRootNode().path("service").path("custom").path("activityBucketName").asText();
     }
 
     public void deleteUser(String username) {
