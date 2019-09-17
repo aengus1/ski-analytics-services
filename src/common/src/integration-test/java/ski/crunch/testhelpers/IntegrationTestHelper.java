@@ -154,37 +154,42 @@ public class IntegrationTestHelper {
 
     private void readServerlessState() throws IOException {
 
-        //is test being executed from build (test suite) or out (individual) directory
-        // this is kinda nasty because it means CI needs to `sls package` before running integration tests
-        String buildPath = IntegrationTestHelper.class.getProtectionDomain().getCodeSource().getLocation().getPath();
-        LOG.debug("build path = " + buildPath);
-        int i = 0;
-        File srcDirFile = new File(IntegrationTestHelper.class.getResource("../").getFile());
+        try {
+            //is test being executed from build (test suite) or out (individual) directory
+            // this is kinda nasty because it means CI needs to `sls package` before running integration tests
+            String buildPath = IntegrationTestHelper.class.getProtectionDomain().getCodeSource().getLocation().getPath();
+            LOG.debug("build path = " + buildPath);
+            int i = 0;
+            File srcDirFile = new File(IntegrationTestHelper.class.getResource("../").getFile());
 
-        while (srcDirFile.getParent() != null && !srcDirFile.getParent().endsWith("/src") && i < 20) {
-            i++;
+            while (srcDirFile.getParent() != null && !srcDirFile.getParent().endsWith("/src") && i < 20) {
+                i++;
+                srcDirFile = srcDirFile.getParentFile();
+            }
+            if (i == 20 || srcDirFile.getPath().equals("/")) {
+                LOG.error("can't find source directory");
+                throw new NotFoundException("Error locating module source directory");
+            }
+
             srcDirFile = srcDirFile.getParentFile();
-        }
-        if (i == 20 || srcDirFile.getPath().equals("/")) {
-            LOG.error("can't find source directory");
-            throw new NotFoundException("Error locating module source directory");
-        }
-
-        srcDirFile = srcDirFile.getParentFile();
-        LOG.debug("src dir file: " + srcDirFile.getPath());
+            LOG.debug("src dir file: " + srcDirFile.getPath());
 
 
-        boolean executedFromTestSuite = (buildPath.contains("/*/build/classes/java/test/")
-                || buildPath.contains("/*/build/classes/java/integration-test/"));
+            boolean executedFromTestSuite = (buildPath.contains("/*/build/classes/java/test/")
+                    || buildPath.contains("/*/build/classes/java/integration-test/"));
 
 
-        for (IncludeModules includeModule : IncludeModules.values()) {
-            File serverlessStateForModule = new File(srcDirFile
-                    + (executedFromTestSuite ? "" : "/" + includeModule)
-                    + "/.serverless/", "serverless-state.json");
-            LOG.debug("serverless-state.json for " + includeModule + " = " + serverlessStateForModule.getPath());
+            for (IncludeModules includeModule : IncludeModules.values()) {
+                File serverlessStateForModule = new File(srcDirFile
+                        + (executedFromTestSuite ? "" : "/" + includeModule)
+                        + "/.serverless/", "serverless-state.json");
+                LOG.debug("serverless-state.json for " + includeModule + " = " + serverlessStateForModule.getPath());
 
-            serverlessStateMap.put(includeModule.getStackName(), ServerlessState.readServerlessState(serverlessStateForModule.getPath()));
+                serverlessStateMap.put(includeModule.getStackName(), ServerlessState.readServerlessState(serverlessStateForModule.getPath()));
+            }
+        }catch(Exception ex ){
+            LOG.error("error reading serverless state ", ex);
+            ex.printStackTrace();
         }
     }
 
