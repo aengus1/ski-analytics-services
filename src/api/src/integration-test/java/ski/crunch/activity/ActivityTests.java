@@ -141,7 +141,7 @@ class ActivityTests {
 
         // appears to be an eventual consistency issue here. S3 returning not found
         try {
-            Thread.currentThread().sleep(10000);
+            Thread.currentThread().sleep(20000);
             LOG.info("checking processed bucket " + processedActivityBucket + " for activity: " + activityId + ".pbf");
             assertTrue(s3.doesObjectExist(processedActivityBucket, activityId + ".pbf"));
         } catch (InterruptedException ex) {
