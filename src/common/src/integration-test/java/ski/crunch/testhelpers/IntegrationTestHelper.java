@@ -11,11 +11,26 @@ import java.io.IOException;
 import java.util.*;
 
 public class IntegrationTestHelper {
+
+    public static final String AWS_PROFILE = "backend_dev";
+
     //todo -> read these from a properties file in resources folder
-    private static final String[] INCLUDE_MODULES = {"api", "auth", "common", "websocket"};
-    private static final String AWS_PROFILE = "backend_dev";
-    private static final String AUTH_STACK_NAME = "staging-ski-analytics-authentication-stack";
-    private static final String WEBSOCKET_STACK_NAME = "staging-ski-analytics-websocket-stack";
+    public enum IncludeModules {
+        API("staging-ski-analytics-api-stack"),
+        AUTH("staging-ski-analytics-authentication-stack"),
+        WEBSOCKET("staging-ski-analytics-websocket-stack"),
+        COMMON("staging-ski-analytics-common-stack");
+
+        IncludeModules(String name) {
+            this.name = name;
+        }
+
+        private String name;
+
+        public String getStackName() {
+            return this.name;
+        }
+    }
 
     private static final Logger LOG = Logger.getLogger(IntegrationTestHelper.class);
     private static final String INTEGRATION_TEST_USERNAME = "integration_test_user@crunch.ski";
@@ -29,27 +44,39 @@ public class IntegrationTestHelper {
 
     public IntegrationTestHelper() throws IOException {
         readServerlessState();
-        String region = serverlessStateMap.get("auth").getRegion();
+        String region = serverlessStateMap.get(IncludeModules.AUTH.getStackName()).getRegion();
 
         credentialsProvider = new ProfileCredentialsProvider(AWS_PROFILE);
         cfHelper = new CloudFormationHelper(credentialsProvider, region);
         authHelper = new AuthenticationHelper(
-                cfHelper.getStackOutput(AUTH_STACK_NAME, "UserPoolArn"),
-                cfHelper.getStackOutput(AUTH_STACK_NAME, "UserPoolClientId"),
+                cfHelper.getStackOutput(IncludeModules.AUTH.getStackName(), "UserPoolArn"),
+                cfHelper.getStackOutput(IncludeModules.AUTH.getStackName(), "UserPoolClientId"),
                 "",
                 region,
                 AWS_PROFILE);
 
     }
 
+
+    public ProfileCredentialsProvider getCredentialsProvider() {
+        return this.credentialsProvider;
+    }
+
     public String getWebsocketEndpoint() {
         //return serverlessStateMap.get("websocket").getWebsocketEndpoint();
-        return cfHelper.getStackOutput(WEBSOCKET_STACK_NAME, "ServiceEndpointWebsocket");
+        return cfHelper.getStackOutput(IncludeModules.WEBSOCKET.getStackName(), "ServiceEndpointWebsocket");
+    }
+
+    public String getApiEndpoint() {
+        return cfHelper.getStackOutput(IncludeModules.API.getStackName(), "ServiceEndpoint");
     }
 
     public Optional<String> signup() {
         return authHelper.performAdminSignup(INTEGRATION_TEST_USERNAME, INTEGRATION_TEST_PASSWORD);
+    }
 
+    public String getDevAccessKey(String username, String password) {
+        return authHelper.performSRPAuthentication(username, password);
     }
 
     public String retrieveAccessToken() {
@@ -59,7 +86,7 @@ public class IntegrationTestHelper {
     public void insertUserSettings(String userId) {
         DynamoDBService dynamo = new DynamoDBService(
                 serverlessStateMap.get("auth").getRegion(),
-                cfHelper.getStackOutput(AUTH_STACK_NAME, "UserTableName"),
+                cfHelper.getStackOutput(IncludeModules.AUTH.getStackName(), "UserTableName"),
                 credentialsProvider
         );
 
@@ -83,7 +110,7 @@ public class IntegrationTestHelper {
     public void removeUserSettings(String userId) {
         DynamoDBService dynamo = new DynamoDBService(
                 serverlessStateMap.get("auth").getRegion(),
-                cfHelper.getStackOutput(AUTH_STACK_NAME, "UserTableName"),
+                cfHelper.getStackOutput(IncludeModules.AUTH.getStackName(), "UserTableName"),
                 credentialsProvider
         );
 
@@ -101,10 +128,9 @@ public class IntegrationTestHelper {
     public String getUsersWebsocketConnectionId(String userId) {
         DynamoDBService dynamo = new DynamoDBService(
                 serverlessStateMap.get("auth").getRegion(),
-                cfHelper.getStackOutput(AUTH_STACK_NAME, "UserTableName"),
+                cfHelper.getStackOutput(IncludeModules.AUTH.getStackName(), "UserTableName"),
                 credentialsProvider
         );
-
 
 
         UserSettingsItem userSettings = new UserSettingsItem();
@@ -121,6 +147,10 @@ public class IntegrationTestHelper {
         authHelper.deleteUser(INTEGRATION_TEST_USERNAME);
     }
 
+
+    public ServerlessState getServerlessState(String stackName) {
+        return serverlessStateMap.get(stackName);
+    }
 
     private void readServerlessState() throws IOException {
 
@@ -148,14 +178,35 @@ public class IntegrationTestHelper {
                 || buildPath.contains("/*/build/classes/java/integration-test/"));
 
 
-        for (String includeModule : INCLUDE_MODULES) {
+        for (IncludeModules includeModule : IncludeModules.values()) {
             File serverlessStateForModule = new File(srcDirFile
                     + (executedFromTestSuite ? "" : "/" + includeModule)
                     + "/.serverless/", "serverless-state.json");
             LOG.debug("serverless-state.json for " + includeModule + " = " + serverlessStateForModule.getPath());
 
-            serverlessStateMap.put(includeModule, ServerlessState.readServerlessState(serverlessStateForModule.getPath()));
+            serverlessStateMap.put(includeModule.getStackName(), ServerlessState.readServerlessState(serverlessStateForModule.getPath()));
         }
+    }
+
+
+    public String getActivityTable() {
+        return getServerlessState(IncludeModules.API.getStackName()).getRootNode().path("service").path("custom").path("activityTable").asText();
+    }
+
+    public String getUserTable() {
+        return getServerlessState(IncludeModules.API.getStackName()).getRootNode().path("service").path("custom").path("userTable").asText();
+    }
+
+    public String getRawActivityBucketName() {
+        return getServerlessState(IncludeModules.API.getStackName()).getRootNode().path("service").path("custom").path("rawActivityBucketName").asText();
+    }
+
+    public String getActivityBucketName() {
+        return getServerlessState(IncludeModules.API.getStackName()).getRootNode().path("service").path("custom").path("activityBucketName").asText();
+    }
+
+    public void deleteUser(String username) {
+        authHelper.deleteUser(username);
     }
 
 }

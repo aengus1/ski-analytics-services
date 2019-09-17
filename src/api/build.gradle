@@ -64,11 +64,12 @@ dependencies {
             'org.glassfish.jersey.core:jersey-client:2.5.1',
             'com.fasterxml.jackson.core:jackson-core:2.9.7',
             'org.mockito:mockito-all:1.10.19',
-            project(':common')
+            project(path: ':common', configuration: 'testClasses')
     )
     integrationTestRuntime(
             'org.junit.jupiter:junit-jupiter-engine:5.1.0',
-            project(':common')
+            project(':common'),
+            project(path: ':common', configuration: 'testClasses')
     )
 }
 

@@ -7,6 +7,12 @@ repositories {
     mavenCentral()
 }
 
+configurations {
+    testClasses {
+        extendsFrom(integrationTestRuntime)
+    }
+}
+
 sourceCompatibility = 1.8
 targetCompatibility = 1.8
 
@@ -65,9 +71,17 @@ task buildCommonZip(type: Zip) {
 
 }
 
+task testJar(type: Jar) {
+    classifier = 'test'
+    from sourceSets.integrationTest.output
+}
 
+artifacts {
+    testClasses testJar
+}
 build.dependsOn buildUtilsZip
 build.dependsOn buildCommonZip
+build.dependsOn testJar
 
 task wrapper(type: Wrapper) {
     gradleVersion = '3.5'
