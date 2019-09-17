@@ -11,6 +11,7 @@ import ski.crunch.aws.S3Service;
 import ski.crunch.dao.ActivityDAO;
 import ski.crunch.model.ActivityItem;
 import ski.crunch.model.ActivityOuterClass;
+import ski.crunch.testhelpers.IntegrationTestHelper;
 import ski.crunch.utils.NotFoundException;
 
 import javax.ws.rs.client.Client;
@@ -19,15 +20,8 @@ import javax.ws.rs.client.Entity;
 import javax.ws.rs.client.WebTarget;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
-import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
-import java.nio.file.DirectoryStream;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.nio.file.Paths;
-import java.util.ArrayList;
-import java.util.List;
 import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -36,121 +30,46 @@ import static org.junit.jupiter.api.Assertions.*;
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
 class ActivityTests {
     private String accessKey = null;
-    private AuthenticationHelper helper = null;
-    private final String testUserName = "testUser@test.com";
-    private final String testPassword = "testPassword123";
     private final String devUserName = "testDevUser@test.com";
     private final String devPassword = "testDevPassword123";
-    //private String rawActivityBucket = null;
     private String activityId = null;
-    private CloudFormationHelper authStackCfHelper = null;
-    private CloudFormationHelper apiStackCfHelper = null;
+    private IntegrationTestHelper helper;
     private ActivityService activityService = null;
     private S3Service s3 = null;
     private DynamoDBService dynamo = null;
     private ActivityDAO activityDAO = null;
     private String processedActivityBucket = null;
-
-    private ProfileCredentialsProvider credentialsProvider = null;
-
-    private final static String AWS_PROFILE = "backend_dev";
     private static final Logger LOG = Logger.getLogger(ActivityTests.class);
-
-    public static List<String> fileList(String directory) {
-        List<String> fileNames = new ArrayList<>();
-        try (DirectoryStream<Path> directoryStream = Files.newDirectoryStream(Paths.get(directory))) {
-            for (Path path : directoryStream) {
-                fileNames.add(path.toString());
-            }
-        } catch (IOException ignored) {
-        }
-        return fileNames;
-    }
 
 
     @BeforeAll
     void retrieveAccessKey() throws Exception {
-
-        // convert serverless-state output to retrieve userpool variables
-        ServerlessState apiStackServerlessState;
-        ServerlessState authStackServerlessState;
-
-        try {
-
-            //System.setProperty("currentStage", "staging");
-
-            //is test being executed from build (test suite) or out (individual) directory
-            // this is kinda nasty because it means CI needs to `sls package` before running integration tests
-            String buildPath = ActivityTests.class.getProtectionDomain().getCodeSource().getLocation().getPath();
-            System.out.println("build path = " + buildPath);
-            String apiPath;
-            String authPath;
-            String path;
-            String ss = ActivityTests.class.getResource("../../../").getPath();
-            File f = new File(ss);
-            apiPath = f.getParentFile().getParentFile().getParentFile().getParentFile().getPath();
-
-            if (buildPath.contains("/api/build/classes/java/test/")
-                    || buildPath.contains("/api/build/classes/java/integrationTest/")) {
-                LOG.debug("Searching for serverless-state from test suite build path");
-                //test suite
-                apiPath = f.getParentFile().getParentFile().getParentFile().getParentFile().getPath();
-                System.out.println("API path  = " + apiPath);
-                path = new File(apiPath + "/.serverless", "serverless-state.json").getPath();
-                authPath = new File(apiPath + "/../auth/.serverless", "serverless-state.json").getPath();
-            } else {
-                //individual
-                LOG.debug("Searching for serverless-state from individual test execution path");
-                path = new File(apiPath + "/api/.serverless", "serverless-state.json").getPath();
-                authPath = new File(apiPath + "/auth/.serverless", "serverless-state.json").getPath();
-            }
-
-            apiStackServerlessState = ServerlessState.readServerlessState(path);
-            authStackServerlessState = ServerlessState.readServerlessState(authPath);
-        } catch (IOException e) {
-            System.err.println("Failed to read serverless-state.json. Ensure that 'sls package' is run first. Exiting test suite");
-            e.printStackTrace();
-            throw new Exception("Failed to read serverless-state.json");
-        }
-
-        // retrieve clientID from cloudformation outputs
-        String clientId = null;
-        try {
-            authStackCfHelper = new CloudFormationHelper(authStackServerlessState);
-            apiStackCfHelper = new CloudFormationHelper(apiStackServerlessState);
-            clientId = authStackCfHelper.getStagingUserPoolClientId();
-
-        } catch (NotFoundException | IllegalArgumentException ex) {
-            ex.printStackTrace();
-            System.exit(1);
-        }
-
-
-        String userPoolId = apiStackServerlessState.getUserPoolId();
-        String region = apiStackServerlessState.getUserPoolRegion();
-        LOG.info("region = " + region);
-
-        this.helper = new AuthenticationHelper(userPoolId, clientId, "", region, AWS_PROFILE);
-        this.credentialsProvider = new ProfileCredentialsProvider(AWS_PROFILE);
-        helper.performAdminSignup(testUserName, testPassword);
-
-        this.accessKey = helper.performSRPAuthentication(testUserName, testPassword);
+        this.helper = new IntegrationTestHelper();
+        helper.signup();
+        this.accessKey = helper.retrieveAccessToken();
         LOG.info("ACCESS KEY: " + this.accessKey);
-        this.s3 = new S3Service(apiStackServerlessState.getRegion(), credentialsProvider);
-        this.dynamo = new DynamoDBService(apiStackServerlessState.getRegion(), apiStackServerlessState.getActivityTable(),
-                this.credentialsProvider);
-        this.activityDAO =  new ActivityDAO(dynamo, apiStackServerlessState.getActivityTable());
-        this.activityService = new ActivityService(s3, this.credentialsProvider, dynamo
-                , apiStackServerlessState.getRegion(),
-                apiStackServerlessState.getRawActivityBucketName(), apiStackServerlessState.getActivityBucketName(),
-                apiStackServerlessState.getActivityTable(), authStackServerlessState.getUserTable());
 
-        this.processedActivityBucket = apiStackServerlessState.getActivityBucketName();
-        //this.rawActivityBucket = apiStackServerlessState.getRawActivityBucketName();
+
+        String authRegion = helper.getServerlessState(IntegrationTestHelper.IncludeModules.auth.getStackName()).getRegion();
+        ProfileCredentialsProvider profileCredentialsProvider = helper.getCredentialsProvider();
+        System.out.println("auth region = " + authRegion);
+        System.out.println("profile creds = " + profileCredentialsProvider.toString());
+        this.s3 = new S3Service(authRegion, profileCredentialsProvider);
+        this.dynamo = new DynamoDBService(helper.getServerlessState(IntegrationTestHelper.IncludeModules.api.getStackName()).getRegion(), helper.getActivityTable(),
+                helper.getCredentialsProvider());
+
+        this.activityDAO =  new ActivityDAO(dynamo, helper.getActivityTable());
+        this.activityService = new ActivityService(s3, helper.getCredentialsProvider(), dynamo
+                , helper.getServerlessState(IntegrationTestHelper.IncludeModules.api.getStackName()).getRegion(),
+                helper.getRawActivityBucketName(), helper.getActivityBucketName(),
+                helper.getActivityTable(), helper.getUserTable());
+
+        this.processedActivityBucket = helper.getActivityBucketName();
+
         System.out.println("printing variables...");
-        System.out.println(apiStackServerlessState.getRawActivityBucketName());
-        System.out.println(apiStackServerlessState.getActivityBucketName());
-        System.out.println(apiStackServerlessState.getActivityTable());
+        System.out.println(helper.getRawActivityBucketName());
+        System.out.println(helper.getActivityBucketName());
+        System.out.println(helper.getActivityTable());
 
     }
 
@@ -158,7 +77,7 @@ class ActivityTests {
     @Test
     void putActivityAuthFailureTest() throws NotFoundException {
 
-        String endpoint = apiStackCfHelper.getApiEndpoint();
+        String endpoint = helper.getApiEndpoint();
         LOG.info("ENDPOINT: " + endpoint);
 
         Client client = ClientBuilder.newClient();
@@ -175,12 +94,11 @@ class ActivityTests {
                 .header("Authorization", "12345invalidAuthKey")
                 .buildPut(payload).invoke();
 
-        System.out.println(response.getStatus());
-        System.out.println(response.getStatusInfo().getStatusCode());
+       LOG.debug(response.getStatus());
+        LOG.debug(response.getStatusInfo().getStatusCode());
 
         String result = response.readEntity(String.class);
-        System.out.println("res = " + result);
-
+        LOG.debug("res = " + result);
 
         assertEquals(401, response.getStatus());
     }
@@ -189,7 +107,7 @@ class ActivityTests {
     @Test
     void putActivitySuccessTest() throws NotFoundException {
 
-        String endpoint = apiStackCfHelper.getApiEndpoint();
+        String endpoint = helper.getApiEndpoint();
         LOG.info("ENDPOINT: " + endpoint);
 
         Client client = ClientBuilder.newClient();
@@ -269,9 +187,9 @@ class ActivityTests {
     @Disabled
     @Test
     void generateDevAccessKey() {
-        helper.performAdminSignup(devUserName, devPassword);
+        helper.signup();
 
-        String devAccessKey = helper.performSRPAuthentication(devUserName, devPassword);
+        String devAccessKey = helper.getDevAccessKey(devUserName, devPassword);
         LOG.info("DEV ACCESS KEY: " + devAccessKey);
     }
 
@@ -296,17 +214,19 @@ class ActivityTests {
 
     @AfterAll
     void tearDown() {
-        activityDAO.deleteActivityItemById(activityId);
-        activityService.deleteRawActivityFromS3(activityId + ".fit");
+
         try {
+            activityDAO.deleteActivityItemById(activityId);
+            activityService.deleteRawActivityFromS3(activityId + ".fit");
             Thread.currentThread().sleep(20000);
             LOG.info("deleting from processed bucket " + processedActivityBucket + " for activity: " + activityId + ".pbf");
             activityService.deleteProcessedActivityFromS3(activityId + ".pbf");
         } catch (InterruptedException ex) {
             System.err.println("Interrupted Thread");
+        } finally {
+            LOG.info("destroying signup user ");
+            helper.destroySignupUser();
         }
-
-        helper.deleteUser(this.testUserName);
     }
 
 }

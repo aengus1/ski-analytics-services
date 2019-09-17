@@ -24,6 +24,7 @@ dependencies {
             'com.fasterxml.jackson.core:jackson-core:2.9.7',
             'org.mockito:mockito-all:1.10.19',
             'org.java-websocket:Java-WebSocket:1.4.0',
+            project(path: ':common', configuration: 'testClasses'),
             project(':common')
     )
     integrationTestRuntime(

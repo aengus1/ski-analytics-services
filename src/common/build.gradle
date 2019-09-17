@@ -7,6 +7,12 @@ repositories {
     mavenCentral()
 }
 
+configurations {
+    testClasses {
+        extendsFrom(integrationTestRuntime)
+    }
+}
+
 sourceCompatibility = 1.8
 targetCompatibility = 1.8
 
@@ -44,6 +50,10 @@ dependencies {
             'com.google.protobuf:protobuf-java:3.5.0'
     )
 
+    integrationTestRuntime(
+            'org.junit.jupiter:junit-jupiter-engine:5.1.0'
+    )
+
 
 }
 
@@ -51,23 +61,31 @@ dependencies {
 task buildUtilsZip(type: Zip) {
     // set the base name of the zip file
     baseName = "ski-crunch-utils"
-    from (fileTree("build/libs/common.jar")) {
+    from(fileTree("build/libs/common.jar")) {
         into('/java/lib')
     }
 }
 
 task buildCommonZip(type: Zip) {
     baseName = "ski-crunch-common"
-    from (configurations.runtimeClasspath) {
-        excludes ['ski/crunch/**']
-        into ('/java/lib')
+    from(configurations.runtimeClasspath) {
+        excludes['ski/crunch/**']
+        into('/java/lib')
     }
 
 }
 
+task testJar(type: Jar) {
+    classifier = 'test'
+    from sourceSets.integrationTest.output
+}
 
+artifacts {
+    testClasses testJar
+}
 build.dependsOn buildUtilsZip
 build.dependsOn buildCommonZip
+build.dependsOn testJar
 
 task wrapper(type: Wrapper) {
     gradleVersion = '3.5'

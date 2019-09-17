@@ -39,12 +39,14 @@ import java.util.*;
 
 import static com.amazonaws.util.Base64.decode;
 import static com.amazonaws.util.Base64.encode;
-import static java.util.Base64.*;
+import static java.util.Base64.getEncoder;
+
+;
 
 /**
  * Private class for SRP client side math.
  */
- class AuthenticationHelper {
+ public class AuthenticationHelper {
     private static final String HEX_N =
             "FFFFFFFFFFFFFFFFC90FDAA22168C234C4C6628B80DC1CD1"
                       + "29024E088A67CC74020BBEA63B139B22514A08798E3404DD"
@@ -96,11 +98,10 @@ import static java.util.Base64.*;
     private BigInteger A;
     private String userPoolID;
     private String clientId;
-    private String secretKey;
     private String region;
     private String profileName;
 
-     AuthenticationHelper(String userPoolID, String userPoolClientId, String secretKey, String region, String profileName) {
+     AuthenticationHelper(String userPoolID, String userPoolClientId, String region, String profileName) {
         do {
             a = new BigInteger(EPHEMERAL_KEY_LENGTH, SECURE_RANDOM).mod(N);
             A = g.modPow(a, N);
@@ -109,7 +110,6 @@ import static java.util.Base64.*;
         this.userPoolID = userPoolID;
         this.clientId = userPoolClientId;
         this.region = region;
-        this.secretKey = secretKey;
         this.profileName = profileName;
 
     }

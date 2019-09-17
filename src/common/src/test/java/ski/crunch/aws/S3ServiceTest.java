@@ -1,24 +1,26 @@
 package ski.crunch.aws;
 
 
+import com.amazonaws.auth.profile.ProfileCredentialsProvider;
 import com.amazonaws.services.s3.model.Bucket;
 import com.amazonaws.services.s3.model.ObjectListing;
 import com.amazonaws.services.s3.model.S3ObjectSummary;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
-import ski.crunch.aws.testhelpers.AbstractAwsTest;
 
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
-public class S3ServiceTest extends AbstractAwsTest {
+public class S3ServiceTest  {
 
     private S3Service service;
+    public static final String REGION = "ca-central-1"; // this is fragile
+    private static final String AWS_PROFILE="backend_dev";
 
     @BeforeEach()
     public void setup(){
-        super.setup();
-        this.service = new S3Service(REGION, super.credentialsProvider);
+        ProfileCredentialsProvider credentialsProvider = new ProfileCredentialsProvider(AWS_PROFILE);
+        this.service = new S3Service(REGION, credentialsProvider);
     }
 
     @Test
