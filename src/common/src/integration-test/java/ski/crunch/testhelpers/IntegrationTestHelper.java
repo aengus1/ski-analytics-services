@@ -181,9 +181,9 @@ public class IntegrationTestHelper {
 
             for (IncludeModules includeModule : IncludeModules.values()) {
                 File serverlessStateForModule = new File(srcDirFile
-                        + (executedFromTestSuite ? "" : "/" + includeModule)
+                        + (executedFromTestSuite ? "" : "/" + includeModule.getStackName())
                         + "/.serverless/", "serverless-state.json");
-                LOG.debug("serverless-state.json for " + includeModule + " = " + serverlessStateForModule.getPath());
+                LOG.debug("serverless-state.json for " + includeModule.getStackName() + " = " + serverlessStateForModule.getPath());
 
                 serverlessStateMap.put(includeModule.getStackName(), ServerlessState.readServerlessState(serverlessStateForModule.getPath()));
             }
