@@ -11,13 +11,11 @@ import java.nio.file.Paths;
 import java.util.stream.Collectors;
 
 public class ServerlessState {
-   private final String json;
    private final ObjectMapper objectMapper = new ObjectMapper();
    private JsonNode rootNode;
 
 
    private ServerlessState(String body) {
-       this.json = body;
        try {
            rootNode = objectMapper.readTree(body);
        } catch (IOException e) {
@@ -35,7 +33,7 @@ public class ServerlessState {
     }
 
 
-     static ServerlessState readServerlessState(String filePath) throws IOException {
+     protected static ServerlessState readServerlessState(String filePath) throws IOException {
        String body = Files.lines(Paths.get(filePath),
                StandardCharsets.UTF_8).collect(Collectors.joining("\n"));
        return new ServerlessState(body);

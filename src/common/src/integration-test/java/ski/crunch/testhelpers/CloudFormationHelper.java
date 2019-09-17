@@ -1,6 +1,5 @@
 package ski.crunch.testhelpers;
 
-import com.amazonaws.auth.AWSCredentialsProvider;
 import com.amazonaws.auth.profile.ProfileCredentialsProvider;
 import com.amazonaws.regions.Regions;
 import com.amazonaws.services.cloudformation.AmazonCloudFormation;
@@ -14,16 +13,15 @@ import java.util.Optional;
 
 public class CloudFormationHelper {
 
-   private AWSCredentialsProvider awsCreds;
+
    private AmazonCloudFormation amazonCloudFormation;
 
 
    public CloudFormationHelper(ProfileCredentialsProvider credentialsProvider, String region) {
-       this.awsCreds = credentialsProvider;
 
        this.amazonCloudFormation = AmazonCloudFormationClientBuilder
                .standard()
-               .withCredentials(awsCreds)
+               .withCredentials(credentialsProvider)
                .withRegion(Regions.fromName(region))
                .build();
    }

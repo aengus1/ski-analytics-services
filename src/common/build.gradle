@@ -50,11 +50,6 @@ dependencies {
             'com.google.protobuf:protobuf-java:3.5.0'
     )
 
-    testImplementation(
-            project(path: ':common', configuration: 'testClasses')
-    )
-
-
 }
 
 // Task for building the zip file for upload

@@ -41,6 +41,8 @@ import static com.amazonaws.util.Base64.decode;
 import static com.amazonaws.util.Base64.encode;
 import static java.util.Base64.getEncoder;
 
+;
+
 /**
  * Private class for SRP client side math.
  */
@@ -96,11 +98,10 @@ import static java.util.Base64.getEncoder;
     private BigInteger A;
     private String userPoolID;
     private String clientId;
-    private String secretKey;
     private String region;
     private String profileName;
 
-     AuthenticationHelper(String userPoolID, String userPoolClientId, String secretKey, String region, String profileName) {
+     AuthenticationHelper(String userPoolID, String userPoolClientId, String region, String profileName) {
         do {
             a = new BigInteger(EPHEMERAL_KEY_LENGTH, SECURE_RANDOM).mod(N);
             A = g.modPow(a, N);
@@ -109,7 +110,6 @@ import static java.util.Base64.getEncoder;
         this.userPoolID = userPoolID;
         this.clientId = userPoolClientId;
         this.region = region;
-        this.secretKey = secretKey;
         this.profileName = profileName;
 
     }

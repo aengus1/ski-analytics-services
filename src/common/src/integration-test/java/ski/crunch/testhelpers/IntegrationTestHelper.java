@@ -21,11 +21,11 @@ public class IntegrationTestHelper {
         WEBSOCKET("staging-ski-analytics-websocket-stack"),
         COMMON("staging-ski-analytics-common-stack");
 
+        private String name;
+
         IncludeModules(String name) {
             this.name = name;
         }
-
-        private String name;
 
         public String getStackName() {
             return this.name;
@@ -51,7 +51,6 @@ public class IntegrationTestHelper {
         authHelper = new AuthenticationHelper(
                 cfHelper.getStackOutput(IncludeModules.AUTH.getStackName(), "UserPoolArn"),
                 cfHelper.getStackOutput(IncludeModules.AUTH.getStackName(), "UserPoolClientId"),
-                "",
                 region,
                 AWS_PROFILE);
 

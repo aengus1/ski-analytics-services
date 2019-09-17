@@ -1,3 +1,5 @@
+package ski.crunch.activity;
+
 import ski.crunch.testhelpers.IntegrationTestHelper;
 
 import javax.ws.rs.client.Client;
