@@ -74,6 +74,7 @@ jobs:
       - run: gradle :api:test
       - run: gradle :auth:test
       - run: gradle :common:test
+      - run: gradle :common:integrationTest
       - run: gradle :websocket:test
       - run: gradle :websocket:integrationTest
 

@@ -32,6 +32,13 @@
                  "logs:FilterLogEvents",
                  "s3:DeleteObject",
                  "iam:GetRole",
+                 "iam:CreateRole",
+                 "iam:DeleteRole",
+                 "iam:CreateRolePolicies",
+                 "iam:DeleteRolePolicies",
+                 "im:CreatePolicy",
+                 "iam:DeletePolicy"
+                 "iam:ListRolePolicies",
                  "events:DescribeRule",
                  "dynamodb:UpdateTimeToLive",
                  "sns:ListSubscriptionsByTopic",

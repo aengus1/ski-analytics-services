@@ -64,15 +64,16 @@ public class IAMFacadeTest extends AbstractAwsTest {
                     "                ]"
                 +"}";
 
-    @BeforeEach()
-    public void setup() {
+
+    @BeforeAll()
+    public void setUp() {
         super.setup();
         try {
             integrationTestHelper = new IntegrationTestHelper();
              iam = new IAMFacade(integrationTestHelper.getApiRegion());
         }catch(Exception ex ){
             LOG.error("error setting up test", ex);
-            assertTrue(false);
+            fail("error setting up test");
         }
     }
 
