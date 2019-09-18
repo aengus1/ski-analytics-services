@@ -6,9 +6,9 @@ import com.amazonaws.services.lambda.runtime.Context;
 import com.amazonaws.services.lambda.runtime.RequestHandler;
 import org.apache.log4j.Logger;
 import ski.crunch.activity.service.*;
-import ski.crunch.aws.DynamoDBService;
-import ski.crunch.aws.S3Service;
-import ski.crunch.aws.SSMParameterService;
+import ski.crunch.aws.DynamoFacade;
+import ski.crunch.aws.S3Facade;
+import ski.crunch.aws.SSMParameterFacade;
 import ski.crunch.utils.ApiGatewayResponse;
 
 import java.util.Map;
@@ -20,15 +20,15 @@ public class ParseFitActivityLambda implements RequestHandler<Map<String, Object
     private String region;
     private String s3ActivityBucket;
     private String s3RawActivityBucket;
-    private S3Service s3;
-    private DynamoDBService dynamo;
+    private S3Facade s3;
+    private DynamoFacade dynamo;
     private ActivityService activityService;
     private String activityTable;
     private String userTable;
     private DefaultAWSCredentialsProviderChain credentialsProvider;
     private WeatherService weatherService;
     private LocationService locationService;
-    private SSMParameterService parameterService;
+    private SSMParameterFacade parameterService;
 
     private static final Logger LOG = Logger.getLogger(ParseFitActivityLambda.class);
 
@@ -39,7 +39,7 @@ public class ParseFitActivityLambda implements RequestHandler<Map<String, Object
         this.region = System.getenv("AWS_DEFAULT_REGION");
         this.activityTable = System.getenv("activityTable");
         this.userTable =  System.getenv("userTable");
-        this.s3 = new S3Service(region);
+        this.s3 = new S3Facade(region);
 
         try {
             this.credentialsProvider = DefaultAWSCredentialsProviderChain.getInstance();
@@ -48,10 +48,10 @@ public class ParseFitActivityLambda implements RequestHandler<Map<String, Object
         } catch (AmazonClientException e) {
             LOG.error("Unable to obtain default aws credentials", e);
         }
-        this.dynamo = new DynamoDBService(region, activityTable, credentialsProvider);
+        this.dynamo = new DynamoFacade(region, activityTable, credentialsProvider);
         this.s3RawActivityBucket = System.getenv("s3RawActivityBucketName");
 
-        this.parameterService = new SSMParameterService(region, credentialsProvider);
+        this.parameterService = new SSMParameterFacade(region, credentialsProvider);
         this.activityService = new ActivityService(s3, credentialsProvider, dynamo, region,
                 s3RawActivityBucket, s3ActivityBucket, activityTable, userTable);
     }

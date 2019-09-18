@@ -9,15 +9,15 @@ import org.junit.jupiter.api.TestInstance;
 
 
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
-public class SSMParameterServiceTest {
-    private static final Logger logger = Logger.getLogger(SSMParameterServiceTest.class);
+public class SSMParameterFacadeTest {
+    private static final Logger logger = Logger.getLogger(SSMParameterFacadeTest.class);
 
     @Test
     public void testGetParameter() {
 
         final String  AWS_PROFILE = "backend_dev";
         AWSCredentialsProvider credentialsProvider = new ProfileCredentialsProvider(AWS_PROFILE);
-        SSMParameterService service = new SSMParameterService("ca-central-1",credentialsProvider);
+        SSMParameterFacade service = new SSMParameterFacade("ca-central-1",credentialsProvider);
         String response = service.getParameter("staging-weather-api-key");
         logger.info("parameter response: " + response);
         assert(response != null);

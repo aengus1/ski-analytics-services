@@ -11,16 +11,16 @@ import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
-public class S3ServiceTest  {
+public class S3FacadeTest {
 
-    private S3Service service;
+    private S3Facade service;
     public static final String REGION = "ca-central-1"; // this is fragile
     private static final String AWS_PROFILE="backend_dev";
 
     @BeforeEach()
     public void setup(){
         ProfileCredentialsProvider credentialsProvider = new ProfileCredentialsProvider(AWS_PROFILE);
-        this.service = new S3Service(REGION, credentialsProvider);
+        this.service = new S3Facade(REGION, credentialsProvider);
     }
 
     @Test

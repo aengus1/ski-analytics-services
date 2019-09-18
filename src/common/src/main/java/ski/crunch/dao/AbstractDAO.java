@@ -1,16 +1,16 @@
 package ski.crunch.dao;
 
 import org.apache.log4j.Logger;
-import ski.crunch.aws.DynamoDBService;
+import ski.crunch.aws.DynamoFacade;
 
 public abstract class AbstractDAO {
 
-    DynamoDBService dynamoDBService;
+    DynamoFacade dynamoDBService;
     protected String tableName;
 
     protected static final Logger LOG = Logger.getLogger(AbstractDAO.class);
 
-    public AbstractDAO(DynamoDBService dynamo, String tableName) {
+    public AbstractDAO(DynamoFacade dynamo, String tableName) {
 
         this.dynamoDBService = dynamo;
         this.tableName = tableName;

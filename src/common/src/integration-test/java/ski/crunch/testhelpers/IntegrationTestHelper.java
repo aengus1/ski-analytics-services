@@ -2,7 +2,7 @@ package ski.crunch.testhelpers;
 
 import com.amazonaws.auth.profile.ProfileCredentialsProvider;
 import org.apache.log4j.Logger;
-import ski.crunch.aws.DynamoDBService;
+import ski.crunch.aws.DynamoFacade;
 import ski.crunch.model.UserSettingsItem;
 import ski.crunch.utils.NotFoundException;
 
@@ -61,6 +61,9 @@ public class IntegrationTestHelper {
         return this.credentialsProvider;
     }
 
+    public String getApiRegion() {
+        return serverlessStateMap.get(IncludeModules.api.getStackName()).getRegion();
+    }
     public String getWebsocketEndpoint() {
         //return serverlessStateMap.get("websocket").getWebsocketEndpoint();
         return cfHelper.getStackOutput(IncludeModules.websocket.getStackName(), "ServiceEndpointWebsocket");
@@ -83,8 +86,8 @@ public class IntegrationTestHelper {
     }
 
     public void insertUserSettings(String userId) {
-        DynamoDBService dynamo = new DynamoDBService(
-                serverlessStateMap.get("auth").getRegion(),
+        DynamoFacade dynamo = new DynamoFacade(
+                serverlessStateMap.get(IncludeModules.auth.getStackName()).getRegion(),
                 cfHelper.getStackOutput(IncludeModules.auth.getStackName(), "UserTableName"),
                 credentialsProvider
         );
@@ -107,8 +110,8 @@ public class IntegrationTestHelper {
     }
 
     public void removeUserSettings(String userId) {
-        DynamoDBService dynamo = new DynamoDBService(
-                serverlessStateMap.get("auth").getRegion(),
+        DynamoFacade dynamo = new DynamoFacade(
+                serverlessStateMap.get(IncludeModules.auth.getStackName()).getRegion(),
                 cfHelper.getStackOutput(IncludeModules.auth.getStackName(), "UserTableName"),
                 credentialsProvider
         );
@@ -125,8 +128,8 @@ public class IntegrationTestHelper {
     }
 
     public String getUsersWebsocketConnectionId(String userId) {
-        DynamoDBService dynamo = new DynamoDBService(
-                serverlessStateMap.get("auth").getRegion(),
+        DynamoFacade dynamo = new DynamoFacade(
+                serverlessStateMap.get(IncludeModules.auth.getStackName()).getRegion(),
                 cfHelper.getStackOutput(IncludeModules.auth.getStackName(), "UserTableName"),
                 credentialsProvider
         );

@@ -3,7 +3,7 @@ package ski.crunch.dao;
 import com.amazonaws.services.dynamodbv2.datamodeling.DynamoDBMapperConfig;
 import com.amazonaws.services.dynamodbv2.datamodeling.DynamoDBQueryExpression;
 import com.amazonaws.services.dynamodbv2.model.AttributeValue;
-import ski.crunch.aws.DynamoDBService;
+import ski.crunch.aws.DynamoFacade;
 import ski.crunch.model.ActivityItem;
 import ski.crunch.model.ActivityOuterClass;
 import ski.crunch.utils.LambdaProxyConfig;
@@ -13,7 +13,7 @@ import java.util.*;
 
 public class ActivityDAO extends AbstractDAO {
 
-    public ActivityDAO(DynamoDBService dynamo, String tableName) {
+    public ActivityDAO(DynamoFacade dynamo, String tableName) {
         super(dynamo, tableName);
     }
 

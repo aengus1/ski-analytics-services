@@ -9,7 +9,7 @@ import com.amazonaws.services.lambda.runtime.RequestStreamHandler;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.apache.log4j.Logger;
-import ski.crunch.aws.DynamoDBService;
+import ski.crunch.aws.DynamoFacade;
 import ski.crunch.model.UserSettingsItem;
 
 import java.io.IOException;
@@ -24,7 +24,7 @@ public class AddUserSettings implements RequestStreamHandler {
     private static final Logger LOG = Logger.getLogger(AddUserSettings.class);
 
     private static final ObjectMapper objectMapper = new ObjectMapper();
-    private DynamoDBService dynamo;
+    private DynamoFacade dynamo;
     private AWSCredentialsProvider credentialsProvider = null;
     private String stage = "";
 
@@ -50,7 +50,7 @@ public class AddUserSettings implements RequestStreamHandler {
             } catch (AmazonClientException e) {
                 LOG.error("Unable to obtain default aws credentials", e);
             }
-            this.dynamo = new DynamoDBService(
+            this.dynamo = new DynamoFacade(
                     eventNode.path("region").asText(),
                     tableName,
                     credentialsProvider

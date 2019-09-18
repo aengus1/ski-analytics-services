@@ -6,8 +6,8 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import org.apache.log4j.Logger;
 import org.junit.jupiter.api.*;
 import ski.crunch.activity.service.ActivityService;
-import ski.crunch.aws.DynamoDBService;
-import ski.crunch.aws.S3Service;
+import ski.crunch.aws.DynamoFacade;
+import ski.crunch.aws.S3Facade;
 import ski.crunch.dao.ActivityDAO;
 import ski.crunch.model.ActivityItem;
 import ski.crunch.model.ActivityOuterClass;
@@ -35,8 +35,8 @@ class ActivityTests {
     private String activityId = null;
     private IntegrationTestHelper helper;
     private ActivityService activityService = null;
-    private S3Service s3 = null;
-    private DynamoDBService dynamo = null;
+    private S3Facade s3 = null;
+    private DynamoFacade dynamo = null;
     private ActivityDAO activityDAO = null;
     private String processedActivityBucket = null;
     private static final Logger LOG = Logger.getLogger(ActivityTests.class);
@@ -54,8 +54,8 @@ class ActivityTests {
         ProfileCredentialsProvider profileCredentialsProvider = helper.getCredentialsProvider();
         System.out.println("auth region = " + authRegion);
         System.out.println("profile creds = " + profileCredentialsProvider.toString());
-        this.s3 = new S3Service(authRegion, profileCredentialsProvider);
-        this.dynamo = new DynamoDBService(helper.getServerlessState(IntegrationTestHelper.IncludeModules.api.getStackName()).getRegion(), helper.getActivityTable(),
+        this.s3 = new S3Facade(authRegion, profileCredentialsProvider);
+        this.dynamo = new DynamoFacade(helper.getServerlessState(IntegrationTestHelper.IncludeModules.api.getStackName()).getRegion(), helper.getActivityTable(),
                 helper.getCredentialsProvider());
 
         this.activityDAO =  new ActivityDAO(dynamo, helper.getActivityTable());

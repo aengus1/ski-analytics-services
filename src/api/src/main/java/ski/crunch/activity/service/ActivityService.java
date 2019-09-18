@@ -15,8 +15,8 @@ import ski.crunch.activity.parser.ActivityHolderAdapter;
 import ski.crunch.activity.parser.fit.FitActivityHolderAdapter;
 import ski.crunch.activity.processor.ActivityProcessor;
 import ski.crunch.activity.processor.model.ActivityHolder;
-import ski.crunch.aws.DynamoDBService;
-import ski.crunch.aws.S3Service;
+import ski.crunch.aws.DynamoFacade;
+import ski.crunch.aws.S3Facade;
 import ski.crunch.dao.ActivityDAO;
 import ski.crunch.dao.UserDAO;
 import ski.crunch.model.ActivityItem;
@@ -40,9 +40,9 @@ public class ActivityService {
     private String region;
     private String activityTable;
     private String userTable;
-    private S3Service s3;
+    private S3Facade s3;
     private AWSCredentialsProvider credentialsProvider;
-    private DynamoDBService dynamo;
+    private DynamoFacade dynamo;
     private ActivityDAO activityDAO;
     private UserDAO userDAO;
 
@@ -50,7 +50,7 @@ public class ActivityService {
     private static final ObjectMapper objectMapper = new ObjectMapper();
 
 
-    public ActivityService(S3Service s3Service, AWSCredentialsProvider credentialsProvider, DynamoDBService dynamo,
+    public ActivityService(S3Facade s3Service, AWSCredentialsProvider credentialsProvider, DynamoFacade dynamo,
                            String region, String s3RawActivityBucket, String s3ProcessedActivityBucket, String activityTable, String userTable) {
         this.s3RawActivityBucket = s3RawActivityBucket;
         this.s3ProcessedActivityBucket = s3ProcessedActivityBucket;
@@ -267,7 +267,7 @@ public class ActivityService {
 
         //3. read in raw file from s3
         try {
-            S3Service s3Service = new S3Service(region);
+            S3Facade s3Service = new S3Facade(region);
             ActivityHolder activity = null;
             //saving to tmpdir first as had problems reading directly from inputstream
             //per aws docs, should read data and close stream asap

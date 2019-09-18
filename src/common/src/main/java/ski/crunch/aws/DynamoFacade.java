@@ -11,7 +11,7 @@ import com.amazonaws.services.dynamodbv2.document.Table;
 /**
  * Created by aengusmccullough on 2018-09-19.
  */
-public class DynamoDBService {
+public class DynamoFacade {
 
     private AmazonDynamoDB client;
     private DynamoDB dynamo;
@@ -19,7 +19,7 @@ public class DynamoDBService {
     private DynamoDBMapperConfig config;
     private AWSCredentialsProvider credentialsProvider;
 
-    public DynamoDBService(String region, String tableName) {
+    public DynamoFacade(String region, String tableName) {
         this.client = AmazonDynamoDBClientBuilder.standard().withRegion(region).build();
         config = new DynamoDBMapperConfig.Builder().withTableNameOverride(DynamoDBMapperConfig.TableNameOverride.withTableNameReplacement(tableName))
                 .build();
@@ -35,7 +35,7 @@ public class DynamoDBService {
      * @param tableName String name of table
      * @param credentialsProvider AWSCredentialsProvider
      */
-    public DynamoDBService(String region, String tableName, AWSCredentialsProvider credentialsProvider) {
+    public DynamoFacade(String region, String tableName, AWSCredentialsProvider credentialsProvider) {
         this.client = AmazonDynamoDBClientBuilder.standard().withRegion(region).build();
         config = new DynamoDBMapperConfig.Builder().withTableNameOverride(DynamoDBMapperConfig.TableNameOverride.withTableNameReplacement(tableName))
                 .build();

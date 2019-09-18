@@ -11,18 +11,18 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 
 
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
-public class DynamoDBServiceTest {
+public class DynamoFacadeTest {
 
     //TODO -> create a test base class with access to credentialsn
     public static final String AWS_PROFILE="backend_dev";
     public static final String TABLE_REGION = "ca-central-1"; // this is fragile
-    private static final Logger LOG = Logger.getLogger(DynamoDBServiceTest.class);
-    private DynamoDBService service = null;
+    private static final Logger LOG = Logger.getLogger(DynamoFacadeTest.class);
+    private DynamoFacade service = null;
 
     @BeforeEach()
     public void setup() {
         AWSCredentialsProvider credentialsProvider = new ProfileCredentialsProvider(AWS_PROFILE);
-        this.service = new DynamoDBService(TABLE_REGION, "staging-crunch-Activity",credentialsProvider);
+        this.service = new DynamoFacade(TABLE_REGION, "staging-crunch-Activity",credentialsProvider);
     }
 
 

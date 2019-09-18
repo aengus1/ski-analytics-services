@@ -24,6 +24,7 @@ dependencies {
             'com.amazonaws:aws-lambda-java-core:1.1.0',
             'com.amazonaws:aws-java-sdk-s3:1.11.510',
             'com.amazonaws:aws-java-sdk-dynamodb:1.11.166',
+            'com.amazonaws:aws-java-sdk-iam:1.11.631',
             'com.amazonaws:aws-lambda-java-log4j:1.0.0',
             'com.fasterxml.jackson.core:jackson-core:2.8.5',
             'com.fasterxml.jackson.core:jackson-databind:2.8.5',
@@ -41,6 +42,7 @@ dependencies {
             'com.amazonaws:aws-lambda-java-core:1.1.0',
             'com.amazonaws:aws-java-sdk-s3:1.11.510',
             'com.amazonaws:aws-java-sdk-dynamodb:1.11.166',
+            'com.amazonaws:aws-java-sdk-iam:1.11.631',
             'com.amazonaws:aws-lambda-java-log4j:1.0.0',
             'com.fasterxml.jackson.core:jackson-core:2.8.5',
             'com.fasterxml.jackson.core:jackson-databind:2.8.5',
@@ -51,7 +53,7 @@ dependencies {
     )
 
     integrationTestRuntime(
-            'org.junit.jupiter:junit-jupiter-engine:5.1.0'
+            'org.junit.jupiter:junit-jupiter-engine:5.4.0'
     )
 
 

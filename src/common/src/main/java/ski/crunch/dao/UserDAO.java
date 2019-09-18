@@ -3,14 +3,14 @@ package ski.crunch.dao;
 import com.amazonaws.services.dynamodbv2.datamodeling.DynamoDBMapperConfig;
 import com.amazonaws.services.dynamodbv2.datamodeling.DynamoDBQueryExpression;
 import com.amazonaws.services.dynamodbv2.model.AttributeValue;
-import ski.crunch.aws.DynamoDBService;
+import ski.crunch.aws.DynamoFacade;
 import ski.crunch.model.UserSettingsItem;
 
 import java.util.*;
 
 public class UserDAO extends AbstractDAO {
 
-    public UserDAO(DynamoDBService dynamo, String tableName) {
+    public UserDAO(DynamoFacade dynamo, String tableName) {
         super(dynamo, tableName);
     }
 
