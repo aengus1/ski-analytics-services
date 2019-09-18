@@ -150,11 +150,17 @@ public class IAMFacadeTest extends AbstractAwsTest {
     @AfterAll()
     public void tearDown() {
         try {
-            iam.deleteRole(ROLE_NAME);
+            if(iam.getRole(ROLE_NAME).getRole() != null) {
+                LOG.info("deleting role");
+                iam.deleteRole(ROLE_NAME);
+            }
         }catch(Exception ignored ) {}
 
         try {
-            iam.deletePolicy(policyArn);
+            if(iam.getPolicy(policyArn).getPolicy() != null) {
+                LOG.info("deleting policy");
+                iam.deletePolicy(policyArn);
+            }
         }catch (Exception ignored) { }
     }
 }
