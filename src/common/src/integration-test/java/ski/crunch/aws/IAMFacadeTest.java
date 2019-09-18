@@ -146,4 +146,15 @@ public class IAMFacadeTest extends AbstractAwsTest {
         assertThrows(NoSuchEntityException.class, () -> iam.getRole(ROLE_NAME).getRole().getRoleName());
 
     }
+
+    @AfterAll()
+    public void tearDown() {
+        try {
+            iam.deleteRole(ROLE_NAME);
+        }catch(Exception ignored ) {}
+
+        try {
+            iam.deletePolicy(policyArn);
+        }catch (Exception ignored) { }
+    }
 }

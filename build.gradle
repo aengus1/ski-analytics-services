@@ -68,8 +68,8 @@ subprojects {
         afterEvaluate {
             classDirectories = files(classDirectories.files.collect {
                 fileTree(dir: it,
-                        exclude: ['**/com/garmin/**',
-                                  '**/ski/crunch/model/**']
+                        exclude: ['com/garmin/**',
+                                  'ski/crunch/model/**']
                 )
             })
         }
