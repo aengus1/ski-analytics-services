@@ -19,6 +19,7 @@
                  "iam:PutRolePolicy",
                  "dynamodb:DeleteTable",
                  "dynamodb:Query",
+                 "dynamodb:GetItem",
                  "dynamodb:DeleteItem",
                  "dynamodb:UpdateItem",
                  "ec2:DeleteRouteTable",

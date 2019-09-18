@@ -111,7 +111,7 @@ public class IntegrationTestHelper {
 
     public void removeUserSettings(String userId) {
         DynamoFacade dynamo = new DynamoFacade(
-                serverlessStateMap.get("auth").getRegion(),
+                serverlessStateMap.get(IncludeModules.auth.getStackName()).getRegion(),
                 cfHelper.getStackOutput(IncludeModules.auth.getStackName(), "UserTableName"),
                 credentialsProvider
         );
