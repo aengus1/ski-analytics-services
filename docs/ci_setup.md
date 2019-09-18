@@ -20,6 +20,7 @@
                  "dynamodb:DeleteTable",
                  "dynamodb:Query",
                  "dynamodb:DeleteItem",
+                 "dynamodb:UpdateItem",
                  "ec2:DeleteRouteTable",
                  "ssm:GetParameter",
                  "ec2:CreateInternetGateway",
