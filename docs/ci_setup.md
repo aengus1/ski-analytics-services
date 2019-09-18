@@ -32,8 +32,15 @@
                  "logs:FilterLogEvents",
                  "s3:DeleteObject",
                  "iam:GetRole",
+                 "iam"GetPolicy",
+                 "iam:DeletePolicy",
                  "iam:CreateRole",
                  "iam:DeleteRole",
+                 "iam:UpdateRole",
+                 "iam:AttachRolePolicy"
+                 "iam:PutRolePolicy",
+                 "iam:DeleteRolePolicy",
+                 "iam:DetachRolePolicy"
                  "iam:CreateRolePolicies",
                  "iam:DeleteRolePolicies",
                  "im:CreatePolicy",
