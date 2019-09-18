@@ -15,12 +15,12 @@ import java.io.*;
 /**
  * Created by aengusmccullough on 2018-09-14.
  */
-public class S3Service {
+public class S3Facade {
 
     private AmazonS3 s3Client;
-    private static final Logger LOG = Logger.getLogger(S3Service.class);
+    private static final Logger LOG = Logger.getLogger(S3Facade.class);
 
-    public S3Service(String region) {
+    public S3Facade(String region) {
         LOG.info("creating S3 service in " + region);
         this.s3Client = AmazonS3ClientBuilder.standard()
                 .withRegion(region)
@@ -28,7 +28,7 @@ public class S3Service {
                 .build();
     }
 
-    public S3Service(String region, AWSCredentialsProvider credentialsProvider) {
+    public S3Facade(String region, AWSCredentialsProvider credentialsProvider) {
         this.s3Client = AmazonS3ClientBuilder.standard()
                 .withRegion(region)
                 .withCredentials(credentialsProvider)

@@ -7,12 +7,12 @@ import com.amazonaws.services.simplesystemsmanagement.model.GetParameterRequest;
 import com.amazonaws.services.simplesystemsmanagement.model.GetParameterResult;
 import org.apache.log4j.Logger;
 
-public class SSMParameterService {
+public class SSMParameterFacade {
     AWSSimpleSystemsManagement ssmClient;
     String region;
-    private static final Logger LOG = Logger.getLogger(SSMParameterService.class);
+    private static final Logger LOG = Logger.getLogger(SSMParameterFacade.class);
 
-    public SSMParameterService(String region, AWSCredentialsProvider credentialsProvider) {
+    public SSMParameterFacade(String region, AWSCredentialsProvider credentialsProvider) {
         this.region = region;
         this.ssmClient = AWSSimpleSystemsManagementClientBuilder.standard().withRegion(region).withCredentials(credentialsProvider).build();
     }

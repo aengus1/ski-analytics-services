@@ -3,7 +3,7 @@ package ski.crunch.websocket;
 import com.amazonaws.services.lambda.runtime.Context;
 import com.amazonaws.services.lambda.runtime.RequestStreamHandler;
 import org.apache.log4j.Logger;
-import ski.crunch.aws.DynamoDBService;
+import ski.crunch.aws.DynamoFacade;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
@@ -12,7 +12,7 @@ public class IncomingWebSocketHandler implements RequestStreamHandler {
 
 
 
-    private DynamoDBService dynamoService;
+    private DynamoFacade dynamo;
     private ConnectHandler connectHandler = new ConnectHandler();
     private DisconnectHandler disconnectHandler = new DisconnectHandler();
     private MessageHandler messageHandler  = new MessageHandler();
@@ -29,11 +29,11 @@ public class IncomingWebSocketHandler implements RequestStreamHandler {
 
         WebSocketService.WebSocketRequestContext wsContext = wsService.parseRequest(inputStream);
         // init dynamo
-        dynamoService = new DynamoDBService(wsContext.getRegion(), wsContext.getUserTable());
+        dynamo = new DynamoFacade(wsContext.getRegion(), wsContext.getUserTable());
 
-        connectHandler.setDynamoDBService(dynamoService);
-        disconnectHandler.setDynamoDBService(dynamoService);
-        messageHandler.setDynamoDBService(dynamoService);
+        connectHandler.setDynamo(dynamo);
+        disconnectHandler.setDynamo(dynamo);
+        messageHandler.setDynamo(dynamo);
 
         try {
             wsService.processRequest(wsContext);

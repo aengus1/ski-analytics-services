@@ -7,8 +7,8 @@ import com.amazonaws.services.lambda.runtime.Context;
 import com.amazonaws.services.lambda.runtime.RequestHandler;
 import org.apache.log4j.Logger;
 import ski.crunch.activity.service.ActivityService;
-import ski.crunch.aws.DynamoDBService;
-import ski.crunch.aws.S3Service;
+import ski.crunch.aws.DynamoFacade;
+import ski.crunch.aws.S3Facade;
 import ski.crunch.utils.ApiGatewayResponse;
 
 import java.net.URL;
@@ -23,9 +23,9 @@ public class PutActivityHandler implements RequestHandler<Map<String, Object>, A
     private String region;
     private String activityTable;
     private String userTable;
-    private S3Service s3;
+    private S3Facade s3;
     private AWSCredentialsProvider credentialsProvider;
-    private DynamoDBService dynamo;
+    private DynamoFacade dynamo;
     private ActivityService activityService;
 
 
@@ -35,7 +35,7 @@ public class PutActivityHandler implements RequestHandler<Map<String, Object>, A
         this.region = System.getenv("AWS_DEFAULT_REGION");
         this.activityTable = System.getenv("activityTable");
         this.userTable = System.getenv("userTable");
-        this.s3 = new S3Service(region);
+        this.s3 = new S3Facade(region);
 
         try {
             this.credentialsProvider = DefaultAWSCredentialsProviderChain.getInstance();
@@ -44,7 +44,7 @@ public class PutActivityHandler implements RequestHandler<Map<String, Object>, A
         } catch (AmazonClientException e) {
             LOG.error("Unable to obtain default aws credentials", e);
         }
-        this.dynamo = new DynamoDBService(region,activityTable, credentialsProvider );
+        this.dynamo = new DynamoFacade(region,activityTable, credentialsProvider );
         this.activityService = new ActivityService( s3, credentialsProvider, dynamo, region,
                 s3RawActivityBucket,s3ActivityBucket, activityTable, userTable);
     }

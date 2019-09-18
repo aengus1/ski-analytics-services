@@ -23,15 +23,12 @@ import static org.junit.jupiter.api.Assertions.*;
 /**
  * Integration test.  Generates a WS client and tests two-way communication between client and server
  */
-@Disabled()
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
  class WebSocketIntegrationTest extends AbstractAwsTest {
     private static final Logger LOG = Logger.getLogger(WebSocketIntegrationTest.class);
     private   String endpoint;
     private String userId;
     private String connectionId;
-
-
 
     private TestClient testClient;
     private IntegrationTestHelper helper;
