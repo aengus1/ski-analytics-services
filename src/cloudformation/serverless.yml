@@ -1,0 +1,52 @@
+service: cloudformation
+
+custom:
+  currentStage: ${{opt:stage, self:provider.stage}}
+  domainName: crunch.ski
+  resourceTags:
+    -
+      Key: "project"
+      Value: "ski-analytics"
+    -
+      Key: "module"
+      Value: "cloudformation"
+
+provider:
+  name: aws
+  runtime: java8
+  variableSyntax: "\\${{([ ~:a-zA-Z0-9._\\'\",\\-\\/\\(\\)]+?)}}" # notice the double quotes for yaml to ignore the escape characters!
+  region: ca-central-1
+  stage: staging
+  stackName: ${{self:custom.currentStage}}-ski-analytics-cloudformation-stack
+  Tags: ${{self:custom.resourceTags}}
+  iamRoleStatements:
+    - Effect: Allow
+      Action:
+          - logs:CreateLogGroup
+          - logs:CreateLogStream
+          - logs:PutLogEvents
+      Resource: arn:aws:logs:*:*:*
+
+
+package:
+  artifact: build/distributions/cloudformation.zip
+
+functions:
+  RocksetIntegrationLambda:
+    name: RocksetIntegration
+    handler: ski.crunch.cloudformation.RocksetIntegrationHandler
+    memorySize:  256
+    timeout: 60
+    Tags: ${{self:custom.resourceTags}}
+    layers:
+      - ${{cf:${{self:custom.currentStage}}-ski-analytics-common-stack.UtilsLambdaLayerQualifiedArn}}
+      - ${{cf:${{self:custom.currentStage}}-ski-analytics-common-stack.CommonLambdaLayerQualifiedArn}}
+
+resources:
+  Outputs:
+    RocksetIntegrationFunctionArn:
+      Description: Rockset Integration Lambda Function ARN
+      Value: !GetAtt 'RocksetIntegrationLambdaLambdaFunction.Arn'
+      Export:
+        Name:
+          Fn::Join: ['',[ Ref: AWS::StackName,'-RocksetIntegrationFunction']]
