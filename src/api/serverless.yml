@@ -182,6 +182,12 @@ functions:
 
 resources:
   Resources:
+    ## Search Endpoint
+    RocksetIntegration:
+      Type: Custom::RocksetIntegration
+      Properties:
+        ServiceToken: ${{cf:${{self:custom.currentStage}}-ski-analytics-cloudformation-stack.RocksetIntegrationFunctionArn}}
+        RocksetAPIKey: '123abc'
     GatewayResponseDefault4XX:
       Type: 'AWS::ApiGateway::GatewayResponse'
       Properties:
