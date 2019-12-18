@@ -12,7 +12,15 @@ dependencies {
 
     compileOnly(project(':common'))  //exclude from packaged artifact -> provided at runtime by lambda container
     compile(
-            'com.rockset:rockset-java:0.5.11'
+            'com.rockset:rockset-java:0.6.1',
+            'com.amazonaws:aws-java-sdk-kinesis:1.11.166',
+            'com.amazonaws:aws-java-sdk-redshift:1.11.166',
+            'com.amazonaws:aws-java-sdk-iam:1.11.631',
+            'com.fasterxml.jackson.core:jackson-core:2.10.0',
+            'com.fasterxml.jackson.core:jackson-databind:2.10.0',
+            'com.fasterxml.jackson.core:jackson-annotations:2.10.0',
+            'org.apache.httpcomponents:httpclient:4.5.5',
+            'com.amazonaws:aws-lambda-java-log4j:1.0.0'
     )
 
     integrationTestCompile(
@@ -20,7 +28,6 @@ dependencies {
             'org.junit.jupiter:junit-jupiter-api:5.4.0',
             'org.glassfish.jersey.core:jersey-client:2.5.1',
             'com.fasterxml.jackson.core:jackson-core:2.9.7',
-            'org.mockito:mockito-all:1.10.19',
             project(path: ':common', configuration: 'testClasses'),
             project(':common')
     )
@@ -31,7 +38,8 @@ dependencies {
     )
 
     testCompile(
-            project(':common')
+            project(':common'),
+            'org.mockito:mockito-junit-jupiter:2.23.0'
     )
 
 }

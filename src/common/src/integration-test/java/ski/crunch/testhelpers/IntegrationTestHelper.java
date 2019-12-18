@@ -19,7 +19,8 @@ public class IntegrationTestHelper {
         api("staging-ski-analytics-api-stack"),
         auth("staging-ski-analytics-authentication-stack"),
         websocket("staging-ski-analytics-websocket-stack"),
-        common("staging-ski-analytics-common-stack");
+        common("staging-ski-analytics-common-stack"),
+        cloudformation("staging-ski-analytics-cloudformation-stack");
 
         private String name;
 

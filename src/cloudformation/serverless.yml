@@ -3,6 +3,8 @@ service: cloudformation
 custom:
   currentStage: ${{opt:stage, self:provider.stage}}
   domainName: crunch.ski
+  rocksetAccountId: 318212636800
+  rocksetExternalId: 7f8a915dfc74e3b5aea8f37f34f1d869726a8aca5c6a8e14d36a4825db25d628
   resourceTags:
     -
       Key: "project"
@@ -22,11 +24,52 @@ provider:
   iamRoleStatements:
     - Effect: Allow
       Action:
-          - logs:CreateLogGroup
-          - logs:CreateLogStream
-          - logs:PutLogEvents
+        - logs:CreateLogGroup
+        - logs:CreateLogStream
+        - logs:PutLogEvents
       Resource: arn:aws:logs:*:*:*
-
+    - Effect: Allow
+      Action:
+        - ssm:GetParameter
+      Resource: arn:aws:ssm:${{opt:region, self:provider.region}}:*:parameter/*-*-api-key
+    - Effect: Allow
+      Action:
+        - iam:DeleteAccessKey
+        - iam:TagRole
+        - iam:DeletePolicy
+        - iam:CreateRole
+        - iam:AttachRolePolicy
+        - iam:CreateUser
+        - iam:CreateAccessKey
+        - iam:DetachRolePolicy
+        - iam:DeleteRolePolicy
+        - iam:ListAttachedRolePolicies
+        - iam:ListAttachedUserPolicies
+        - iam:ListRolePolicies
+        - iam:DetachUserPolicy
+        - iam:ListAccessKeys
+        - iam:GetRole
+        - iam:GetPolicy
+        - iam:DeleteUserPolicy
+        - iam:AttachUserPolicy
+        - iam:DeleteRole
+        - iam:DeleteUser
+        - iam:ListUserPolicies
+        - iam:TagUser
+        - iam:CreatePolicy
+        - iam:GetUserPolicy
+        - iam:GetUser
+        - iam:GetRolePolicy
+      Resource:
+        - arn:aws:iam::*:policy/*
+        - arn:aws:iam::*:user/*
+        - arn:aws:iam::*:role/*
+    - Effect: Allow
+      Action:
+        - iam:ListPolicies
+      Resource:
+        - arn:aws:iam::*:user/*
+        - arn:aws:iam::*:role/*
 
 package:
   artifact: build/distributions/cloudformation.zip
@@ -34,15 +77,43 @@ package:
 functions:
   RocksetIntegrationLambda:
     name: RocksetIntegration
-    handler: ski.crunch.cloudformation.RocksetIntegrationHandler
-    memorySize:  256
-    timeout: 60
+    handler: ski.crunch.cloudformation.rockset.RocksetIntegrationLambda
+    memorySize:  512
+    timeout: 240
     Tags: ${{self:custom.resourceTags}}
     layers:
       - ${{cf:${{self:custom.currentStage}}-ski-analytics-common-stack.UtilsLambdaLayerQualifiedArn}}
       - ${{cf:${{self:custom.currentStage}}-ski-analytics-common-stack.CommonLambdaLayerQualifiedArn}}
 
 resources:
+  Resources:
+    RocksetUser:
+      Type: AWS::IAM::User
+      Properties:
+        UserName: ${{self:custom.currentStage}}-rockset-user
+        Policies:
+          - PolicyName: "${{self:custom.currentStage}}-RocksetXAccountPolicy"
+            PolicyDocument:
+              Version: "2012-10-17"
+              Statement:
+                - Effect: "Allow"
+                  Action:
+                    - "dynamodb:Scan"
+                    - "dynamodb:DescribeStream"
+                    - "dynamodb:GetRecords"
+                    - "dynamodb:GetShardIterator"
+                    - "dynamodb:DescribeTable"
+                    - "dynamodb:UpdateTable"
+                  Resource:
+                    - "arn:aws:dynamodb:${{self:provider.region}}:*:table/*"
+                    - "arn:aws:dynamodb:${{self:provider.region}}:*:table/*/stream/*"
+    SsmParamForRocksetApiKey:
+      Type: "AWS::SSM::Parameter"
+      Properties:
+        Name: "${{self:custom.currentStage}}-rockset-api-key"
+        Type: "String"
+        Value: "abc123"
+        Description: "SSM Parameter for storing rockset api key"
   Outputs:
     RocksetIntegrationFunctionArn:
       Description: Rockset Integration Lambda Function ARN

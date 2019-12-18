@@ -1,0 +1,17 @@
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Effect": "Allow",
+      "Action": [
+        "kinesis:ListShards",
+        "kinesis:DescribeStream",
+        "kinesis:GetRecords",
+        "kinesis:GetShardIterator"
+      ],
+      "Resource": [
+        "${accessibleResource}"
+      ]
+    }
+  ]
+}

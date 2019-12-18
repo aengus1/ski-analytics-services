@@ -44,7 +44,7 @@ subprojects {
                 'org.junit.jupiter:junit-jupiter-api:5.4.0',
                 'org.glassfish.jersey.core:jersey-client:2.5.1',
                 'com.fasterxml.jackson.core:jackson-core:2.9.7',
-                'org.mockito:mockito-all:1.10.19',
+                'org.mockito:mockito-junit-jupiter:2.23.0'
         )
         testRuntimeOnly(
                 'org.junit.jupiter:junit-jupiter-engine:5.4.0'
