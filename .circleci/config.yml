@@ -27,6 +27,7 @@ jobs:
             - v1-dependencies-{{ checksum "build.gradle" }}
             - v1-dependencies-
             - node-v1-
+      - run: gradle :clean
       - run: gradle :api:dependencies
       - run: gradle :auth:dependencies
       - run: gradle :common:dependencies
