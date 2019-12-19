@@ -39,7 +39,7 @@ sourceSets {
 
 
 dependencies {
-   compile(
+   implementation(
             'org.scala-lang:scala-library:2.11.12',            
             'com.amazonaws:aws-java-sdk-cognitoidp:1.11.442',
             'com.amazonaws:aws-java-sdk-ssm:1.11.163',
@@ -56,7 +56,7 @@ dependencies {
             project(':common')
     )
 
-    integrationTestCompile(
+    integrationTestImplementation(
             'com.amazonaws:aws-java-sdk-cloudformation:1.11.166',
             'com.amazonaws:aws-java-sdk-core:1.11.510',
             'org.scalatest:scalatest_2.11:3.0.0',
@@ -66,7 +66,7 @@ dependencies {
             'org.mockito:mockito-all:1.10.19',
             project(path: ':common', configuration: 'testClasses')
     )
-    integrationTestRuntime(
+    integrationTestRuntimeOnly(
             'org.junit.jupiter:junit-jupiter-engine:5.1.0',
             project(':common'),
             project(path: ':common', configuration: 'testClasses')
@@ -85,7 +85,7 @@ integrationTest.mustRunAfter test
  * Builds the zip file for upload to AWS
  */
 task buildZip(type: Zip) {
-    baseName = "api"
+    archiveBaseName = "api"
     from compileJava
     from compileScala
     from processResources

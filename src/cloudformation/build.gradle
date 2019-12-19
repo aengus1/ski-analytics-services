@@ -37,7 +37,7 @@ dependencies {
 
     )
 
-    testCompile(
+    testImplementation(
             project(':common'),
             'org.mockito:mockito-junit-jupiter:2.23.0'
     )
