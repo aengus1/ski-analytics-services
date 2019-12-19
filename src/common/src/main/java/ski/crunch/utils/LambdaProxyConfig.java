@@ -9,6 +9,19 @@ import java.util.stream.Collectors;
  */
 public class LambdaProxyConfig {
 
+    private String resource;
+    private String path;
+    private String httpMethod;
+    private String stage;
+    private Map<String, String> queryStringParameters;
+    private Map<String, String> pathParameters;
+    private Map<String, Object> s3Parameters;
+    private String stageVariables;
+    private String body;
+    private boolean isBase64Encoded;
+    private Headers headers;
+    private RequestContext requestContext;
+
     public LambdaProxyConfig(Map<String, Object> input) throws ParseException {
         try {
             this.headers = new Headers();
@@ -84,18 +97,6 @@ public class LambdaProxyConfig {
         }
     }
 
-    String resource;
-    String path;
-    String httpMethod;
-    private String stage;
-    Map<String, String> queryStringParameters;
-    Map<String, String> pathParameters;
-    private Map<String, Object> s3Parameters;
-    String stageVariables;
-    String body;
-    boolean isBase64Encoded;
-    Headers headers;
-    RequestContext requestContext;
 
     public String getResource() {
         return resource;
@@ -195,8 +196,15 @@ public class LambdaProxyConfig {
 
 
     public class Headers {
-        String accept;
-        String acceptEncoding;
+        private String accept;
+        private String acceptEncoding;
+        private String acceptLanguage;
+        private String cacheControl;
+        private String origin;
+        private String referer;
+        private String userAgent;
+        private String contentType;
+        private String host;
 
         public String getAcceptLanguage() {
             return acceptLanguage;
@@ -254,14 +262,6 @@ public class LambdaProxyConfig {
             this.host = host;
         }
 
-        String acceptLanguage;
-        String cacheControl;
-        String origin;
-        String referer;
-        String userAgent;
-        String contentType;
-        String host;
-
         public String getAccept() {
             return accept;
         }
@@ -272,15 +272,15 @@ public class LambdaProxyConfig {
     }
 
     public class RequestContext {
-        String path;
-        String accountId;
-        String resourceId;
-        String stage;
-        String requestId;
-        Identity identity;
-        String resourcePath;
-        String httpMethod;
-        String apiId;
+        private String path;
+        private String accountId;
+        private String resourceId;
+        private String stage;
+        private String requestId;
+        private Identity identity;
+        private String resourcePath;
+        private String httpMethod;
+        private String apiId;
 
         public String getPath() {
             return path;
@@ -361,19 +361,19 @@ public class LambdaProxyConfig {
 
         public class Identity {
 
-
-            String cognitoIdentityPoolId;
-            String accountId;
-            String cognitoIdentityId;
-            String caller;
-            String apiKey;
-            String sourceIp;
-            String accessKey;
-            String cognitoAuthenticationType;
-            String cognitoAuthenticationProvider;
-            String userArn;
-            String userAgent;
-            String user;
+            private String cognitoIdentityPoolId;
+            private String accountId;
+            private String cognitoIdentityId;
+            private String caller;
+            private String apiKey;
+            private String sourceIp;
+            private String accessKey;
+            private String cognitoAuthenticationType;
+            private String cognitoAuthenticationProvider;
+            private String userArn;
+            private String userAgent;
+            private String user;
+            private String email;
 
             public String getEmail() {
                 return email;
@@ -383,7 +383,7 @@ public class LambdaProxyConfig {
                 this.email = email;
             }
 
-            String email;
+
 
             public String getCognitoIdentityPoolId() {
                 return cognitoIdentityPoolId;

@@ -22,12 +22,11 @@
    endpoint that will be used.  Service code is written in Java / Scala, with gradle build 
    tool.
   
-- 3rd Party Components
-- Diagramming: [cloudcraft.co](http://cloudcraft.co)
-- FIT parsing library [garmin](http://www.thisisant.com/resources/fit/)
-- Weather service [darksky.net](http://darksky.net)
-- Location service [locationiq.com](http://locationiq.com)
-
+  - 3rd Party Components
+  - Diagramming: [cloudcraft.co](http://cloudcraft.co)
+  - FIT parsing library [garmin](http://www.thisisant.com/resources/fit/)
+  - Weather service [darksky.net](http://darksky.net)
+  - Location service [locationiq.com](http://locationiq.com)
 
 ## Build / CI / CD
 
@@ -38,12 +37,10 @@ Currently have not spun up a prod stack
 
 ### Stack dependencies
 
-- Domain Stack <- Frontend Stack
-- Domain Stack <- Auth Stack <- API stack
-- Auth Stack <- GraphQL Stack (`TODO move user table to graphql stack)`
+  - Domain Stack <- Frontend Stack
+  - Domain Stack <- Auth Stack <- API stack
+  - Auth Stack <- GraphQL Stack (`TODO move user table to graphql stack)`
  
-
-
 
 ## Module / Stacks
 ### Domain Stack
@@ -81,7 +78,6 @@ GET /activity/{id}  returns a binary Activity protobuf object
 PUT /activity/   currently takes a binary FIT file and returns the activity id
 
 ![PutActivity Cloud Diagram](images/PutActivity.png)
-
 
 #### Processing workflow
 
@@ -122,7 +118,6 @@ other functions
  as an array.  Can guarantee that each array will be of the same size.  
  `-999` used as a placeholder where no data is available.  Attempts will be
  made by the processor to interpolate missing values if appropriate.
- 
  
  ` FitEvent` list of events and their index (deprecated)
  

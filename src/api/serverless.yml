@@ -74,6 +74,7 @@ provider:
     - Effect: Allow
       Action:
         - ssm:GetParameter
+        - ssm:GetParameters
       Resource: arn:aws:ssm:${{opt:region, self:provider.region}}:*:parameter/*-*-api-key
     - Effect: Allow
       Action:
@@ -182,6 +183,23 @@ functions:
 
 resources:
   Resources:
+    ## Search Endpoint
+#    RocksetIntegration:
+#      Type: Custom::RocksetIntegration
+#      Properties:
+#        ServiceToken: ${{cf:${{self:custom.currentStage}}-ski-analytics-cloudformation-stack.RocksetIntegrationFunctionArn}}
+#        Name: ${{self:custom.currentStage}}-search
+#        Region: ${{self:provider.region}}
+#        Stage: ${{self:custom.currentStage}}
+#        RocksetUserName: ${{self:custom.currentStage}}-rockset-userz
+#        ApiKeySSM: ${{self:custom.currentStage}}-rockset-api-key
+#        ExternalId: "7f8a915dfc74e3b5aea8f37f34f1d869726a8aca5c6a8e14d36a4825db25d628"
+#        RocksetAccountId: "318212636800"
+#        IntegrationType: "dynamodb"
+#        AccessibleResources:
+#          - "arn:aws:dynamodb:*:*:table/*"
+#          - "arn:aws:dynamodb:*:*:table/*/stream/*"
+#        Tags: ${{self:custom.resourceTags}}
     GatewayResponseDefault4XX:
       Type: 'AWS::ApiGateway::GatewayResponse'
       Properties:

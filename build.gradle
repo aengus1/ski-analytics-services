@@ -44,7 +44,7 @@ subprojects {
                 'org.junit.jupiter:junit-jupiter-api:5.4.0',
                 'org.glassfish.jersey.core:jersey-client:2.5.1',
                 'com.fasterxml.jackson.core:jackson-core:2.9.7',
-                'org.mockito:mockito-all:1.10.19',
+                'org.mockito:mockito-junit-jupiter:2.23.0'
         )
         testRuntimeOnly(
                 'org.junit.jupiter:junit-jupiter-engine:5.4.0'
@@ -52,10 +52,10 @@ subprojects {
     }
 
     jacocoTestReport {
-        additionalSourceDirs = files(sourceSets.main.allSource.srcDirs)
-        sourceDirectories = files(sourceSets.main.allSource.srcDirs)
-        classDirectories =  files(sourceSets.main.output)
-        executionData = fileTree(buildDir).include("jacoco/*.exec")
+        additionalSourceDirs.from = files(sourceSets.main.allSource.srcDirs)
+        sourceDirectories.from = files(sourceSets.main.allSource.srcDirs)
+        classDirectories.from =  files(sourceSets.main.output)
+        executionData.from = fileTree(buildDir).include("jacoco/*.exec")
         reports {
             html.enabled = true
             xml.enabled = true
@@ -66,7 +66,7 @@ subprojects {
             true
         }
         afterEvaluate {
-            classDirectories = files(classDirectories.files.collect {
+            classDirectories.from = files(classDirectories.files.collect {
                 fileTree(dir: it,
                         exclude: ['com/garmin/**',
                                   'ski/crunch/model/**']
@@ -163,10 +163,10 @@ subprojects {
 
 task jacocoRootReport(type: JacocoReport) {
     dependsOn = subprojects.test
-    additionalSourceDirs = files(subprojects.sourceSets.main.allSource.srcDirs)
-    sourceDirectories = files(subprojects.sourceSets.main.allSource.srcDirs)
-    classDirectories = files(subprojects.sourceSets.main.output)
-    executionData = files(subprojects.jacocoTestReport.executionData)
+    additionalSourceDirs.from = files(subprojects.sourceSets.main.allSource.srcDirs)
+    sourceDirectories.from = files(subprojects.sourceSets.main.allSource.srcDirs)
+    classDirectories.from = files(subprojects.sourceSets.main.output)
+    executionData.from = files(subprojects.jacocoTestReport.executionData)
     reports {
         html.enabled = true
         xml.enabled = true
@@ -186,13 +186,31 @@ task jacocoRootReport(type: JacocoReport) {
             }
         }
 
-        executionData = files(executionData.findAll {
+        executionData.from = files(executionData.findAll {
             it.exists()
         })
     }
 
 }
 
+
+configurations { codacy }
+
+dependencies {
+    codacy 'com.codacy:codacy-coverage-reporter:latest.release'
+}
+
+task sendCoverageToCodacy(type: JavaExec, dependsOn: jacocoTestReport) {
+    main = "com.codacy.CodacyCoverageReporter"
+    classpath = configurations.codacy
+    args = [
+            "report",
+            "-l",
+            "Java",
+            "-r",
+            "${buildDir}/reports/jacoco/jacocoRootReport/jacocoRootReport.xml"
+    ]
+}
 jacocoRootReport.dependsOn {
     subprojects*.test
     subprojects*.integrationTest

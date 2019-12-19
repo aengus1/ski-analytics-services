@@ -1,6 +1,6 @@
 # Domain Setup
 
-##  Goal
+## Goal
 The goal of this work is to setup the DNS configuration for a statically hosted (S3 / CloudFront) site.  The configuration needs
 to handle both http and https.  The site registrar is not on AWS.  The goal is to automate / script as much of this as possible with
  cloudformation so the same setup can be easily reproduced on another account or in another context.
@@ -19,11 +19,10 @@ Staging Environment:
 `staging-app.crunch.ski` - application
 
 ### Step 1 - Create the Domain Stack for the Hosted Zone
-1. `cd domain`
-2. `sls deploy -v` note you may need to login first `sls login`
+ 1. `cd domain`
+ 2. `sls deploy -v` note you may need to login first `sls login`
 
 This will create a hosted zone in Route 53 and output a list of nameservers
-
 
 ### Step 2 - Update Nameservers on site registrar
 Go to your site registrar and find your registered domain name, in my case `crunch.ski`
@@ -43,7 +42,6 @@ included `*.crunch.ski` as an alternate name.
 3. Once created, you will have the option to export your DNS Validation CNAME records.  download the csv file
 4. Before leaving ACM make a note of the certificate ARN in the details section on this page
 5. Go to Route 53 and click on your hosted zone.  Add a CNAME record using the record name and record value given in the csv file
-
 
 ### Step 4 - Create the Frontend stack (staging)
 The frontend stack contains all of the infrastructure required to host and deploy the site, including S3 buckets, CloudFront distributions,

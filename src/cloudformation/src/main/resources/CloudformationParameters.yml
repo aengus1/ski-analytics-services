@@ -1,0 +1,18 @@
+## Example of using this integration in a stack
+
+RocksetIntegration:
+  Type: Custom::RocksetIntegration
+  Version: 1.0
+  Properties:
+    ServiceToken: service token returned by cloudformation stack
+    Name: <<name of integration on rockset>>
+    Region: <<aws region>>
+    Stage: <<deployment stage>>
+    ApiKeySSM: <<name of ssm parameter containing api key>>
+    ExternalId: <<string obtained from rockset>>
+    RocksetAccountId: <<rocket AWS account id for integrations>>
+    IntegrationType: <<type of integration>> "dynamodb, redshift, kinesis"
+    AccessibleResources:  <<list of arn's the rockset role will have access to>>
+    - arn:aws:dynamodb:*:*:table/*
+    - arn:aws:dynamodb:*:*:table/*/stream/*
+    Tags: <<list of tags to apply to rockset role and policy>>

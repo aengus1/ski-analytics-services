@@ -14,7 +14,7 @@ import static org.junit.jupiter.api.Assertions.*;
 
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
 @TestMethodOrder(MethodOrderer.OrderAnnotation.class)
-public class IAMFacadeTest extends AbstractAwsTest {
+public class IAMFacadeRolePolicyTest extends AbstractAwsTest {
 
     private IntegrationTestHelper integrationTestHelper;
     private IAMFacade iam;
