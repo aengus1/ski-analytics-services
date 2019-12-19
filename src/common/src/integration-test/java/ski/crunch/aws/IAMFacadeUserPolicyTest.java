@@ -47,24 +47,6 @@ public class IAMFacadeUserPolicyTest extends AbstractAwsTest {
                     "   ]" +
                     "}";
 
-    private static String ASSUME_ROLE_POLICY_DOCUMENT =
-                "{" +
-                    "                \"Version\": \"2012-10-17\"," +
-                    "                \"Statement\": [" +
-                    "                    {" +
-                    "                        \"Effect\": \"Allow\"," +
-                    "                        \"Principal\": {" +
-                    "                            \"Service\": [" +
-                    "                                \"lambda.amazonaws.com\"" +
-                    "                            ]" +
-                    "                        }," +
-                    "                        \"Action\": [" +
-                    "                            \"sts:AssumeRole\"" +
-                    "                        ]" +
-                    "                    }" +
-                    "                ]"
-                +"}";
-
 
     @BeforeAll()
     public void setUp() {
@@ -108,7 +90,7 @@ public class IAMFacadeUserPolicyTest extends AbstractAwsTest {
     @Test
     @Order(3)
     public void testAttachPolicyToUser() {
-        AttachUserPolicyResult result = iam.attachPolicyToUser(policyArn, USER_NAME);
+        iam.attachPolicyToUser(policyArn, USER_NAME);
         String foundArn = iam.getUserPolicies(USER_NAME).getAttachedPolicies().stream()
                 .map( x -> x.getPolicyArn())
                 .filter( x -> x.equals(policyArn))
@@ -119,7 +101,7 @@ public class IAMFacadeUserPolicyTest extends AbstractAwsTest {
     @Test
     @Order(4)
     public void testDetachPolicyFromRole() {
-        DetachUserPolicyResult result = iam.detachPolicyFromUser(policyArn, USER_NAME);
+        iam.detachPolicyFromUser(policyArn, USER_NAME);
         Optional<String> foundArn= iam.getUserPolicies(USER_NAME).getAttachedPolicies().stream()
                 .map( x -> x.getPolicyArn())
                 .filter( x -> x.equals(policyArn))

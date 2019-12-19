@@ -15,15 +15,16 @@ import org.mockito.MockitoAnnotations;
 import ski.crunch.utils.StreamUtils;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.mockito.Mockito.*;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
+import static org.mockito.Mockito.any;
+import static org.mockito.Mockito.times;
 
 @TestInstance(TestInstance.Lifecycle.PER_METHOD)
 public class RocksetRestClientTest {
 
     @Mock
     private CloseableHttpClient httpClient = Mockito.mock(CloseableHttpClient.class);
-
-
 
     private RocksetRestClient rocksetRestClient = null;
 
@@ -40,7 +41,7 @@ public class RocksetRestClientTest {
     }
 
     @Test()
-    void testHttpCallIsMadeOnCreateIntegration() throws Exception{
+    public void testHttpCallIsMadeOnCreateIntegration() throws Exception{
         CloseableHttpResponse mockResponse = Mockito.mock(CloseableHttpResponse.class);
         HttpEntity mockEntity = Mockito.mock(HttpEntity.class);
         when(mockEntity.getContent()).thenReturn(StreamUtils.convertStringToInputStream("test_response"));
@@ -53,7 +54,7 @@ public class RocksetRestClientTest {
     }
 
     @Test()
-    void testCreateIntegrationJsonPayload() throws Exception{
+    public void testCreateIntegrationJsonPayload() throws Exception{
         String expectedPayload = "{" +
                 "\"name\":\"testIntegration\"," +
                 "\"description\":\"testdescription\"," +
@@ -71,7 +72,7 @@ public class RocksetRestClientTest {
     }
 
     @Test
-    void testHttpCallIsMadeOnDeleteIntegration() throws Exception{
+    public void testHttpCallIsMadeOnDeleteIntegration() throws Exception{
         CloseableHttpResponse mockResponse = Mockito.mock(CloseableHttpResponse.class);
         HttpEntity mockEntity = Mockito.mock(HttpEntity.class);
         when(mockEntity.getContent()).thenReturn(StreamUtils.convertStringToInputStream("test_response"));

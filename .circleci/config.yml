@@ -30,6 +30,8 @@ jobs:
       - run: gradle :api:dependencies
       - run: gradle :auth:dependencies
       - run: gradle :common:dependencies
+      - run: gradle :websocket:dependencies
+      - run: gradle :cloudformation:dependencies
       - run:
           name: "Update Node.js and npm"
           command: |
@@ -60,6 +62,7 @@ jobs:
                   gradle :auth:build -x check
                   gradle :common:build -x check
                   gradle :websocket:build -x check
+                  gradle :cloudformation:build -x check
                   pwd
                   cd ~/repo/src/api
                   sls package
@@ -69,6 +72,8 @@ jobs:
                   sls package
                   cd ~/repo/src/websocket
                   sls package
+                  cd ~/repo/src/cloudformation
+                  sls package
       # run tests!
       - run: gradle :api:integrationTest
       - run: gradle :api:test
@@ -77,6 +82,7 @@ jobs:
       - run: gradle :common:integrationTest
       - run: gradle :websocket:test
       - run: gradle :websocket:integrationTest
+      - run: gradle :cloudformation:test
 
       - run: gradle jacocoTestReport
       # generate coverage report

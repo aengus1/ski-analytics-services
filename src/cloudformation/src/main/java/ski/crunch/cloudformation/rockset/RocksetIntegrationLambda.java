@@ -1,7 +1,6 @@
 package ski.crunch.cloudformation.rockset;
 
 import com.google.common.annotations.VisibleForTesting;
-import org.apache.log4j.Logger;
 import ski.crunch.aws.SSMParameterFacade;
 import ski.crunch.cloudformation.AbstractCustomResourceLambda;
 import ski.crunch.cloudformation.CloudformationRequest;
@@ -10,9 +9,6 @@ import ski.crunch.cloudformation.CloudformationResponse;
 import java.util.UUID;
 
 public class RocksetIntegrationLambda extends AbstractCustomResourceLambda {
-
-    private static final Logger logger = Logger.getLogger(RocksetIntegrationLambda.class);
-
 
     @Override
     public CloudformationResponse doCreate(CloudformationRequest request) {

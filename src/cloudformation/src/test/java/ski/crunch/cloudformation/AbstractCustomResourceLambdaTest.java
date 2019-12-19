@@ -1,7 +1,6 @@
 package ski.crunch.cloudformation;
 
 import com.amazonaws.services.lambda.runtime.Context;
-import com.amazonaws.services.lambda.runtime.LambdaLogger;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -29,6 +28,14 @@ public class AbstractCustomResourceLambdaTest {
     @Mock
     private Context context = mock(Context.class);
 
+    @Mock
+    CustomResourceLambda customResourceLambda = mock(CustomResourceLambda.class);
+
+
+    @Captor()
+    private ArgumentCaptor<CloudformationRequest> createArgCaptor;
+
+    private Map<String, Object> testInput;
 
     class CustomResourceLambda extends AbstractCustomResourceLambda {
         @Override
@@ -45,19 +52,9 @@ public class AbstractCustomResourceLambdaTest {
         public CloudformationResponse doDelete(CloudformationRequest request) throws Exception {
             return CloudformationResponse.successResponse(request);
         }
-    };
+    }
 
-    @Mock
-    CustomResourceLambda customResourceLambda = mock(CustomResourceLambda.class);
 
-    @Mock
-    LambdaLogger lambdaLogger = mock(LambdaLogger.class);
-
-    @Captor()
-    ArgumentCaptor<CloudformationRequest> createArgCaptor;
-
-    private Map<String, Object> testInput;
-    private Map<String, Object> resourceProperties;
 
     @BeforeAll()
     public void init() {
@@ -66,7 +63,7 @@ public class AbstractCustomResourceLambdaTest {
 
     @BeforeEach()
     public void setUp() {
-
+        Map<String, Object> resourceProperties;
         testInput = new HashMap<>();
         resourceProperties = new HashMap<>();
         resourceProperties.put("Name", "MyIntegration");
@@ -92,7 +89,7 @@ public class AbstractCustomResourceLambdaTest {
     }
 
     @Test()
-    void testHandlerCallCreateMethod() throws Exception {
+    public void testHandlerCallCreateMethod() throws Exception {
         CloudformationRequest expected = new CloudformationRequest(testInput);
 
 
@@ -105,13 +102,12 @@ public class AbstractCustomResourceLambdaTest {
         assertEquals(expected, createArgCaptor.getValue());
     }
 
-    ;
 
     @Test()
-    void testHandlerFailsOnMissingParam() throws Exception {
+    public void testHandlerFailsOnMissingParam() throws Exception {
         testInput.remove("ResourceType");
-        CloudformationRequest expected = new CloudformationRequest(testInput);
         assertThrows(MissingRequiredParameterException.class, () -> {
+            new CloudformationRequest(testInput);
         });
     }
 

@@ -96,6 +96,7 @@ public abstract class AbstractCustomResourceLambda implements RequestHandler<Map
                     LOG.info("Failure: Request type " + request.getRequestType() + " not supported. Use CREATE, UPDATE or DELETE");
                     response = CloudformationResponse.errorResponse(request);
                     response.getData().put("Message", "FAILURE! Request type " + request.getRequestType() + " not supported. Use CREATE, UPDATE or DELETE");
+                    break;
                 }
             }
         } catch (Exception ex) {

@@ -16,10 +16,8 @@ import static org.junit.jupiter.api.Assertions.fail;
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
 public class RocksetLambdaIntegrationTest {
 
-    private IntegrationTestHelper testHelper;
+
     private ServerlessState cfStackSS;
-    private String userName;
-    private String apiSSM;
     private Map<String, Object> parameters;
     private final static String INTEGRATION_NAME = "integration-test-integration";
 
@@ -28,10 +26,10 @@ public class RocksetLambdaIntegrationTest {
      * @throws IOException
      */
     public RocksetLambdaIntegrationTest() throws IOException {
-        this.testHelper = new IntegrationTestHelper();
+        IntegrationTestHelper testHelper = new IntegrationTestHelper();
         this.cfStackSS = testHelper.getServerlessState(IntegrationTestHelper.IncludeModules.cloudformation.getStackName());
 
-        apiSSM = cfStackSS.getRootNode()
+        String apiSSM = cfStackSS.getRootNode()
                 .path("service")
                 .path("resources")
                 .path("Resources")
@@ -39,14 +37,7 @@ public class RocksetLambdaIntegrationTest {
                 .path("Properties")
                 .path("Name").asText();
 
-        userName = cfStackSS.getRootNode()
-                .path("service")
-                .path("resources")
-                .path("Resources")
-                .path("RocksetUser")
-                .path("Properties")
-                .path("UserName").asText();
-        
+
         parameters = new HashMap<>();
         parameters.put("Region", cfStackSS.getRegion());
         parameters.put("Stage", "staging");
@@ -86,6 +77,7 @@ public class RocksetLambdaIntegrationTest {
     }
 
 
+    @Disabled()
     @Order(1)
     @Test()
     public void testRocksetCreation() throws Exception {
@@ -160,6 +152,8 @@ public class RocksetLambdaIntegrationTest {
 //
 //    }
 //
+
+    @Disabled()
     @Order(4)
     @Test()
     public void testRocksetDeletion() throws IOException {
