@@ -6,7 +6,7 @@ allprojects {
         maven {
             url "http://download.osgeo.org/webdav/geotools/"
         }
-        
+
         mavenCentral()
 
         maven {
@@ -193,6 +193,24 @@ task jacocoRootReport(type: JacocoReport) {
 
 }
 
+
+configurations { codacy }
+
+dependencies {
+    codacy 'com.codacy:codacy-coverage-reporter:latest.release'
+}
+
+task sendCoverageToCodacy(type: JavaExec, dependsOn: jacocoTestReport) {
+    main = "com.codacy.CodacyCoverageReporter"
+    classpath = configurations.codacy
+    args = [
+            "report",
+            "-l",
+            "Java",
+            "-r",
+            "${buildDir}/reports/jacoco/jacocoRootReport/jacocoRootReport.xml"
+    ]
+}
 jacocoRootReport.dependsOn {
     subprojects*.test
     subprojects*.integrationTest
