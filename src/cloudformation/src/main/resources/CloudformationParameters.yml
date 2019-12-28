@@ -9,6 +9,7 @@ RocksetIntegration:
     Region: <<aws region>>
     Stage: <<deployment stage>>
     ApiKeySSM: <<name of ssm parameter containing api key>>
+    ApiServer: <<override of api server name>> //optional
     ExternalId: <<string obtained from rockset>>
     RocksetAccountId: <<rocket AWS account id for integrations>>
     IntegrationType: <<type of integration>> "dynamodb, redshift, kinesis"
@@ -16,3 +17,57 @@ RocksetIntegration:
     - arn:aws:dynamodb:*:*:table/*
     - arn:aws:dynamodb:*:*:table/*/stream/*
     Tags: <<list of tags to apply to rockset role and policy>>
+
+RocksetWorkspace:
+  Type: Custom::RocksetWorkspace
+  Version: 1.0
+  Properties:
+    ServiceToken: service token returned by cloudformation stack
+    Name: workspace name
+    Description: description of workspace (optional)
+    Region:
+    ApiKeySSM:
+    ApiServer:
+
+RocksetCollection:
+  Type: Custom::RocksetCollection
+  Version: 1.0
+  Properties:
+    ServiceToken: service token returned by cloudformation stack
+    Name: <<name of collection on rockset>>
+    Description: <<description of collection>>  optional
+    Workspace: << name of rockset workspace>>  // will create if doesn't exist //optional - default to commons
+    Region: <<aws region>>
+    Stage: <<deployment stage>>
+    IntegrationName: <<name of integration>>
+    ApiKeySSM: <<name of ssm parameter containing api key>>
+    RocksetAccountId: <<rocket AWS account id for integrations>>
+    S3DataSource:
+      S3Prefix:
+      S3Pattern:
+      S3Bucket:
+    KinesisDataSource:
+      KinesisStreamName:
+      KinesisAwsRegion:
+    DynamoDbDataSource:
+      DynamoDbAwsRegion:
+      DynamoDbTableName:
+      DynamoDbRcu:
+    EventTimeInfo:
+      Field:
+      Format:
+      TimeZone:
+    RetentionTime:  <<retention time (seconds) >>
+    FieldMappings:
+      - Name:
+        InputFields:
+            - FieldName:
+              IfMissing:
+              IsDrop:
+              Param:
+          Output:
+            FieldName:
+            Value:
+            OnError:
+
+

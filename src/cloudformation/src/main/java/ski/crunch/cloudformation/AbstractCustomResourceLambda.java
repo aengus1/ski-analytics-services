@@ -59,7 +59,7 @@ public abstract class AbstractCustomResourceLambda implements RequestHandler<Map
             e.printStackTrace();
             LOG.info("FAILURE!", e);
             CloudformationResponse errorResponse = CloudformationResponse.errorResponse(request);
-            errorResponse.getData().put("Message", "Execution exception occurred. " + StackTraceUtil.getStackTrace(e));
+            errorResponse.withOutput("Message", "Execution exception occurred. " + StackTraceUtil.getStackTrace(e));
             sendResponse(errorResponse, context, input);
             // Took too long!
         } finally {
@@ -95,14 +95,14 @@ public abstract class AbstractCustomResourceLambda implements RequestHandler<Map
                 default: {
                     LOG.info("Failure: Request type " + request.getRequestType() + " not supported. Use CREATE, UPDATE or DELETE");
                     response = CloudformationResponse.errorResponse(request);
-                    response.getData().put("Message", "FAILURE! Request type " + request.getRequestType() + " not supported. Use CREATE, UPDATE or DELETE");
+                    response.withOutput("Message", "FAILURE! Request type " + request.getRequestType() + " not supported. Use CREATE, UPDATE or DELETE");
                     break;
                 }
             }
         } catch (Exception ex) {
             LOG.info("Failure: exception occurred", ex);
             response = CloudformationResponse.errorResponse(request);
-            response.getData().put("Message", "FAILURE! Request type " + request.getRequestType() + " not supported. Use CREATE, UPDATE or DELETE");
+            response.withOutput("Message", "FAILURE! Request type " + request.getRequestType() + " not supported. Use CREATE, UPDATE or DELETE");
 
         } finally {
             sendResponse(response, context, input);
