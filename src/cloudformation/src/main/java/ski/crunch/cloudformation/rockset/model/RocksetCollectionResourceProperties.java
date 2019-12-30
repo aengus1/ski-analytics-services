@@ -62,18 +62,6 @@ public class RocksetCollectionResourceProperties extends ResourceProperties {
                     dataSources.add(ds);
                 }
             }
-//            this.dynamoDbDataSource = (input.containsKey("DynamoDbDataSource") ?
-//                    Optional.of(new DynamoDbDataSource((Map<String, Object> ) input.get("DynamoDbDataSource"))) :
-//                    Optional.empty());
-//
-//
-//            this.s3DataSource = (input.containsKey("S3DataSource") ?
-//                    Optional.of(new S3DataSource((Map<String, Object>) input.get("S3DataSource"))) :
-//                    Optional.empty());
-//
-//            this.kinesisDataSource = (input.containsKey("KinesisDataSource") ?
-//                    Optional.of(new KinesisDataSource((Map<String, Object>) input.get("KinesisDataSource"))):
-//                    Optional.empty());
 
             this.fieldMappingList = ( input.containsKey("FieldMappings") ?
                     Optional.of(FieldMapping.parse((List) input.get("FieldMappings"))) :

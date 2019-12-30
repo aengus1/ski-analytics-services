@@ -139,7 +139,7 @@ public class RocksetRestClientTest {
 
     @Test
     public void testHttpCallIsMadeOnDeleteCollection() throws Exception {
-        CloseableHttpResponse mockResponse = Mockito.mock(CloseableHttpResponse.class);
+        CloseableHttpResponse mockResponse = mock(CloseableHttpResponse.class);
         HttpEntity mockEntity = Mockito.mock(HttpEntity.class);
         when(mockEntity.getContent()).thenReturn(StreamUtils.convertStringToInputStream("success"));
         when(mockResponse.getEntity()).thenReturn(mockEntity);
@@ -150,7 +150,7 @@ public class RocksetRestClientTest {
     @Test
     public void testHttpCallIsMadeOnDeleteWorkspace() throws Exception {
         CloseableHttpResponse mockResponse = Mockito.mock(CloseableHttpResponse.class);
-        HttpEntity mockEntity = Mockito.mock(HttpEntity.class);
+        HttpEntity mockEntity = mock(HttpEntity.class);
         when(mockEntity.getContent()).thenReturn(StreamUtils.convertStringToInputStream("testWorkspace"));
         when(mockResponse.getEntity()).thenReturn(mockEntity);
         when(httpClient.execute(any())).thenReturn(mockResponse);
