@@ -185,21 +185,52 @@ resources:
   Resources:
     ## Search Endpoint
 #    RocksetIntegration:
-#      Type: Custom::RocksetIntegration
+#    Type: Custom::RocksetIntegration
+#    Version: 1.0
+#    Properties:
+#      ServiceToken: ${{cf:${{self:custom.currentStage}}-ski-analytics-cloudformation-stack.RocksetIntegrationFunctionArn}}
+#      Name: ${{self:custom.currentStage}}-searchIntegration
+#      Region: ${{self:provider.region}}
+#      Stage: ${{self:custom.currentStage}}
+#      ApiKeySSM: ${{self:custom.currentStage}}-rockset-api-key
+#      ExternalId: "7f8a915dfc74e3b5aea8f37f34f1d869726a8aca5c6a8e14d36a4825db25d628"
+#      RocksetAccountId: "318212636800"
+#      IntegrationType: "dynamodb"
+#      AccessibleResources:
+#        - "arn:aws:dynamodb:*:*:table/*"
+#        - "arn:aws:dynamodb:*:*:table/*/stream/*"
+#      Tags: ${{self:custom.resourceTags}}
+#    RocksetWorkspace:
+#      Type: Custom::RocksetWorkspace
+#      Version: 1.0
 #      Properties:
-#        ServiceToken: ${{cf:${{self:custom.currentStage}}-ski-analytics-cloudformation-stack.RocksetIntegrationFunctionArn}}
-#        Name: ${{self:custom.currentStage}}-search
+#        ServiceToken: ${{cf:${{self:custom.currentStage}}-ski-analytics-cloudformation-stack.RocksetWorkspaceFunctionArn}}
+#        Name: activity_workspace
+#        Description: crunch.ski activity table search
+#        Region:  ${{self:provider.region}}
+#        ApiKeySSM:  ${{self:custom.currentStage}}-rockset-api-key
+#    RocksetCollection:
+#      Type: Custom::RocksetCollection
+#      Version: 1.0
+#      Properties:
+#        ServiceToken: ${{cf:${{self:custom.currentStage}}-ski-analytics-cloudformation-stack.RocksetCollectionFunctionArn}}
+#        Name: ActivityCollection
+#        Description: searchable version of Activity table
+#        Workspace:
+#          Fn::GetAtt:
+#            - RocksetWorkspace
+#            - WorkspaceName
 #        Region: ${{self:provider.region}}
 #        Stage: ${{self:custom.currentStage}}
-#        RocksetUserName: ${{self:custom.currentStage}}-rockset-userz
+#        IntegrationName:
+#          Fn::GetAtt:
+#            - RocksetIntegration
+#            - IntegrationName
 #        ApiKeySSM: ${{self:custom.currentStage}}-rockset-api-key
-#        ExternalId: "7f8a915dfc74e3b5aea8f37f34f1d869726a8aca5c6a8e14d36a4825db25d628"
-#        RocksetAccountId: "318212636800"
-#        IntegrationType: "dynamodb"
-#        AccessibleResources:
-#          - "arn:aws:dynamodb:*:*:table/*"
-#          - "arn:aws:dynamodb:*:*:table/*/stream/*"
-#        Tags: ${{self:custom.resourceTags}}
+#        DynamoDbDataSource:
+#          DynamoDbAwsRegion:  ${{self:provider.region}}
+#          DynamoDbTableName:  ${{self:custom.currentStage}}-crunch-Activity
+#          DynamoDbRcu: 1
     GatewayResponseDefault4XX:
       Type: 'AWS::ApiGateway::GatewayResponse'
       Properties:
@@ -268,4 +299,40 @@ resources:
         Type: "String"
         Value: "abc123"
         Description: "SSM Parameter for storing location iq geocoding api key"
-
+#  Outputs:
+#    CreateIntegrationMessage:
+#      Value:
+#        Fn::GetAtt:
+#          - RocksetIntegration
+#          - Message
+#    IntegrationName:
+#      Value:
+#        Fn::GetAtt:
+#          - RocksetIntegration
+#          - IntegrationName
+#      Export:
+#        Name: 'RocksetIntegrationName'
+#    CreateWorkspaceMessage:
+#      Value:
+#        Fn::GetAtt:
+#          - RocksetWorkspace
+#          - Message
+#    WorkspaceName:
+#      Value:
+#        Fn::GetAtt:
+#          - RocksetWorkspace
+#          - WorkspaceName
+#      Export:
+#        Name:  'RocksetWorkspaceName'
+#    CreateCollectionMessage:
+#      Value:
+#        Fn::GetAtt:
+#          - RocksetCollection
+#          - Message
+#    CollectionName:
+#      Value:
+#        Fn::GetAtt:
+#          - RocksetCollection
+#          - CollectionName
+#      Export:
+#        Name:  'RocksetCollectionName'

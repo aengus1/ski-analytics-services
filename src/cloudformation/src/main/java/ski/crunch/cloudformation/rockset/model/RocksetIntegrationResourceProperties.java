@@ -1,14 +1,17 @@
-package ski.crunch.cloudformation.rockset;
+package ski.crunch.cloudformation.rockset.model;
 
 import com.amazonaws.services.identitymanagement.model.Tag;
+import ski.crunch.cloudformation.ResourceProperties;
 import ski.crunch.utils.MissingRequiredParameterException;
 
 import java.util.*;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 /**
  * Data structure for cloudformation template parameters
  */
-public class RocksetIntegrationResourceProperties {
+public class RocksetIntegrationResourceProperties extends ResourceProperties {
 
     private String name;
     private String region;
@@ -19,13 +22,24 @@ public class RocksetIntegrationResourceProperties {
     private Optional<String> externalId;
     private Optional<String> rocksetAwsAccount;
     private Optional<List<Tag>> tags;
+    private String awsAccountId;
 
-    private static final String DEFAULT_ROCKSET_API_SERVER = "api.rs2.usw2.rockset.com";
+    public static final String DEFAULT_ROCKSET_API_SERVER = "api.rs2.usw2.rockset.com";
 
 
     public RocksetIntegrationResourceProperties(Map<String, Object> input) {
 
-        checkRequiredParameters(input);
+        List<String> requiredParameters = Stream.of(
+                "Name",
+                "Region",
+                "ApiKeySSM",
+                "AccessibleResources",
+                "RocksetAccountId",
+                "IntegrationType",
+                "ExternalId"
+        ).collect(Collectors.toList());
+        this.awsAccountId = System.getenv("awsAccountId");
+        checkRequiredParameters(input, requiredParameters);
         try {
             this.name = (String) input.get("Name");
             this.region = (String) input.get("Region");
@@ -50,27 +64,6 @@ public class RocksetIntegrationResourceProperties {
         } catch (Exception ex) {
             ex.printStackTrace();
             throw new MissingRequiredParameterException("Parameter missing in resourceProperties", ex);
-        }
-    }
-
-
-    private void checkRequiredParameters(Map<String, Object> input) throws MissingRequiredParameterException {
-        if (input == null) {
-            throw new MissingRequiredParameterException("No ResourceProperties found");
-        }
-        checkParameter("Name", input);
-        checkParameter("Region", input);
-        checkParameter("ApiKeySSM", input);
-        checkParameter("AccessibleResources", input);
-        checkParameter("ExternalId", input);
-        checkParameter("RocksetAccountId", input);
-        checkParameter("IntegrationType", input);
-    }
-
-
-    private void checkParameter(String parameter, Map<String, Object> input) throws MissingRequiredParameterException {
-        if (!input.containsKey(parameter)) {
-            throw new MissingRequiredParameterException("Parameter " + parameter + " not supplied");
         }
     }
 
@@ -110,6 +103,14 @@ public class RocksetIntegrationResourceProperties {
 
     public Optional<String> getRocksetAwsAccount() {
         return rocksetAwsAccount;
+    }
+
+    public String getAwsAccountId() {
+        return this.awsAccountId;
+    }
+
+    public void setAwsAccountId(String awsAccountId){
+        this.awsAccountId = awsAccountId;
     }
 
 

@@ -140,10 +140,16 @@ class ActivityTests {
         }
 
         // appears to be an eventual consistency issue here. S3 returning not found
+
         try {
-            Thread.currentThread().sleep(20000);
-            LOG.info("checking processed bucket " + processedActivityBucket + " for activity: " + activityId + ".pbf");
-            assertTrue(s3.doesObjectExist(processedActivityBucket, activityId + ".pbf"));
+            int sleep = 20;
+            boolean exists = false;
+            while((sleep -=5) >=0 && !exists) {
+                Thread.currentThread().sleep(5000l);
+                exists = s3.doesObjectExist(processedActivityBucket, activityId + ".pbf");
+            }
+                LOG.info("checking processed bucket " + processedActivityBucket + " for activity: " + activityId + ".pbf");
+                assertTrue(exists);
         } catch (InterruptedException ex) {
             System.err.println("Thread interrupted");
         }

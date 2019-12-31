@@ -35,8 +35,6 @@ public class ParseFitActivityLambda implements RequestHandler<Map<String, Object
     public ParseFitActivityLambda() {
         this.region = System.getenv("AWS_DEFAULT_REGION");
         this.s3ActivityBucket = System.getenv("s3ActivityBucketName");
-
-        this.region = System.getenv("AWS_DEFAULT_REGION");
         this.activityTable = System.getenv("activityTable");
         this.userTable =  System.getenv("userTable");
         this.s3 = new S3Facade(region);

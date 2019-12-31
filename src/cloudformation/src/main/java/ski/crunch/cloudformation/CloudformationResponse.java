@@ -41,6 +41,10 @@ public class CloudformationResponse {
                 .withStatus(CloudformationResponse.ResponseStatus.SUCCESS);
     }
 
+    public CloudformationResponse withOutput(String key, String value){
+        this.data.put(key, value);
+        return this;
+    }
     public CloudformationResponse withStatus(ResponseStatus status) {
         this.status = status;
         return this;

@@ -14,9 +14,11 @@ include 'auth'
 include 'common'
 include 'websocket'
 include 'cloudformation'
+include 'cftest'
 
 project(":api").projectDir = file("src/api")
 project(":auth").projectDir = file("src/auth")
 project(":common").projectDir = file("src/common")
 project(":websocket").projectDir = file("src/websocket")
 project(":cloudformation").projectDir = file("src/cloudformation")
+project(":cftest").projectDir = file("src/cftest")
