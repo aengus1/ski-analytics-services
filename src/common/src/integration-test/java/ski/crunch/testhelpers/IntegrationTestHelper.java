@@ -118,6 +118,7 @@ public class IntegrationTestHelper {
         );
 
         try {
+            System.out.println("user id = " + userId);
             UserSettingsItem userSettings = new UserSettingsItem();
             userSettings.setId(userId);
 

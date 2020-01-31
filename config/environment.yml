@@ -1,0 +1,19 @@
+Properties:
+  ProjectName: crunch-ski
+  DomainName: mccullough-solutions.ca
+  Stage: development
+  Region:
+    primary: ca-central-1
+    secondary: us-west-2
+  Tags:
+    - Key: "project"
+      Value: "crunch.ski"
+    - Key: "module"
+      Value: ${{self:provider.stackName}}
+Modules:
+  - domain
+  - api
+  - auth
+  - frontend
+  - websocket
+

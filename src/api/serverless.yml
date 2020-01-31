@@ -2,20 +2,13 @@
 # Depends on authentication stack, common stack
 service: api
 
-
 plugins:
   - serverless-apigw-binary
 
 custom:
   currentStage: ${{opt:stage, self:provider.stage}}
-  domainName: crunch.ski
-  resourceTags:
-              -
-                Key: "project"
-                Value: "ski-analytics"
-              -
-                Key: "module"
-                Value: "api"
+  domainName: ${{file(../../config/environment.yml):Properties.DomainName}}
+  resourceTags: ${{file(../../config/environment.yml):Properties.Tags}}
   activityBucketName: "activity-${{self:custom.currentStage}}.${{self:custom.domainName}}"
   rawActivityBucketName: "activity-raw-${{self:custom.currentStage}}.${{self:custom.domainName}}"
   userPoolArn:
@@ -31,8 +24,8 @@ provider:
   name: aws
   runtime: java8
   variableSyntax: "\\${{([ ~:a-zA-Z0-9._\\'\",\\-\\/\\(\\)]+?)}}" # notice the double quotes for yaml to ignore the escape characters!
-  region: ca-central-1
-  stage: staging
+  region: ${{file(../../config/environment.yml):Properties.Region.primary}}
+  stage: ${{file(../../config/environment.yml):Properties.Stage}}
   stackName: ${{self:custom.currentStage}}-ski-analytics-api-stack
   iamRoleStatements:
     - Effect: Allow

@@ -85,7 +85,7 @@ integrationTest.mustRunAfter test
  * Builds the zip file for upload to AWS
  */
 task buildZip(type: Zip) {
-    archiveBaseName = "api"
+    baseName = "api"
     from compileJava
     from compileScala
     from processResources

@@ -20,6 +20,7 @@ allprojects {
 
 }
 
+
 subprojects {
     sourceSets {
         integrationTest {
@@ -51,7 +52,11 @@ subprojects {
         )
     }
 
+
     jacocoTestReport {
+        if(additionalSourceDirs == null) {
+            return
+        }
         additionalSourceDirs.from = files(sourceSets.main.allSource.srcDirs)
         sourceDirectories.from = files(sourceSets.main.allSource.srcDirs)
         classDirectories.from =  files(sourceSets.main.output)
@@ -76,6 +81,14 @@ subprojects {
     }
 
     test {
+        print("project name = " + project.name)
+        onlyIf {
+            project.name !='acm_certificate_validator'
+        }
+        if(project.name == 'acm_certificate_validator'){
+            print("equal acv")
+            return
+        }
         useJUnitPlatform()
 
         // show standard out and standard error of the test JVM(s) on the console
@@ -109,7 +122,10 @@ subprojects {
     }
 
     task integrationTest(type: Test) {
-
+        if(project.name == 'acm_certificate_validator'){
+            print("equal acv")
+            return
+        }
         useJUnitPlatform()
         // explicitly include or exclude tests
         include 'ski/crunch/**'
@@ -162,6 +178,9 @@ subprojects {
 
 
 task jacocoRootReport(type: JacocoReport) {
+    if(additionalSourceDirs ==null){
+        return
+    }
     dependsOn = subprojects.test
     additionalSourceDirs.from = files(subprojects.sourceSets.main.allSource.srcDirs)
     sourceDirectories.from = files(subprojects.sourceSets.main.allSource.srcDirs)
@@ -177,7 +196,10 @@ task jacocoRootReport(type: JacocoReport) {
     }
     doFirst {
         subprojects.findAll { subproject ->
-            subproject.pluginManager.hasPlugin('java') || subproject.pluginManager.hasPlugin('scala') || subproject.pluginManager.hasPlugin('java-library')
+            ((subproject.pluginManager.hasPlugin('java')
+                    || subproject.pluginManager.hasPlugin('scala')
+                    || subproject.pluginManager.hasPlugin('java-library'))
+            && subproject.name !='acm_certificate_validator')
         }.each { subproject ->
             additionalSourceDirs files((Set<File>) subproject.sourceSets.main.allSource.srcDirs)
             additionalClassDirs ((FileCollection) subproject.sourceSets.main.output)

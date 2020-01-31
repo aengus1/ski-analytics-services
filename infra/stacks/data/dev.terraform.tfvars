@@ -1,0 +1,14 @@
+project_name = "crunch-ski"
+domain_name = "mccullough-solutions.ca"
+primary_region = "ca-central-1"
+secondary_region = "us-west-2"
+profile = "default"
+post_confirmation_lambda_arn = "arn:aws:lambda:ca-central-1:556823078430:function:authentication-dev-postConfirmation"
+ses_domain_arn = "arn:aws:ses:us-west-2:556823078430:identity/mccullough-solutions.ca"
+user_table_read_capacity  = 1
+user_table_write_capacity = 1
+encrypt_user_table = false
+user_table_billing_mode = "PAY_PER_REQUEST"
+user_table_point_in_time_recovery = false
+user_table_prevent_deletion = false
+stage = "dev"

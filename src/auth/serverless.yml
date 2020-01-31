@@ -1,37 +1,32 @@
-## Provisions the authentication stack.
-## Depends on common stack
 service: authentication
 
 provider:
   name: aws
   runtime: java8
   variableSyntax: "\\${{([ ~:a-zA-Z0-9._\\'\",\\-\\/\\(\\)]+?)}}" # notice the double quotes for yaml to ignore the escape characters!
-  region: ca-central-1
-  stage: staging
-  stackName: ${{self:custom.currentStage}}-ski-analytics-authentication-stack
-  iamRoleStatements:
-    - Effect: Allow
-      Action:
-        - "execute-api:ManageConnections"
-      Resource: arn:aws:execute-api:${{self:provider.region}}:*:*/*
-    - Effect: Allow
-      Action:
-        - dynamodb:Query
-        - dynamodb:Scan
-        - dynamodb:GetItem
-        - dynamodb:PutItem
-        - dynamodb:UpdateItem
-        - dynamodb:DeleteItem
-      Resource: arn:aws:dynamodb:${{opt:region, self:provider.region}}:*:table/${{self:custom.userTable}}
+  region: ${{file(../../infra/stacks/global.tfvars.json):primary_region}}
+  stage: ${{file(../../infra/stacks/global.tfvars.json):stage}}
+  stackName: ${{self:custom.currentStage}}-${{self:custom.projectName}}-${{self:service}}
+#  iamRoleStatements:
+#    - Effect: Allow
+#      Action:
+#        - execute-api:ManageConnections
+#      Resource: arn:aws:execute-api:${{self:provider.region}}:*:*/*
+#    - Effect: Allow
+#      Action:
+#        - dynamodb:Query
+#        - dynamodb:Scan
+#        - dynamodb:GetItem
+#        - dynamodb:PutItem
+#        - dynamodb:UpdateItem
+#        - dynamodb:DeleteItem
+#      Resource: arn:aws:dynamodb:${{self:provider.region}}:*:table/${{self:custom.userTable}}
 
 custom:
   currentStage: ${{opt:stage, self:provider.stage}}
-  userTable: ${{self:custom.currentStage}}-crunch-User
-  resourceTags:
-    - Key: "project"
-      Value: "ski-analytics"
-    - Key: "module"
-      Value: "auth"
+  #userTable: ${{self:custom.currentStage}}-${{file(../../config/environment.yml):Properties.ProjectName}}-User
+  projectName: ${{file(../../infra/stacks/global.tfvars.json):project_name}}
+  resourceTags:  ${{file(../../config/environment.yml):Properties.Tags}}
 
 package:
   artifact: build/distributions/auth.zip
@@ -42,146 +37,151 @@ functions:
     handler: ski.crunch.auth.AddUserSettings
     events:
       - cognitoUserPool:
-          pool: ${{self:custom.currentStage}}-crunch-ski-userpool
+          pool: ${{self:custom.currentStage}}-${{self:custom.projectName}}-userpool
           trigger: PostConfirmation
     layers:
-      - ${{cf:${{self:custom.currentStage}}-ski-analytics-common-stack.UtilsLambdaLayerQualifiedArn}}
-      - ${{cf:${{self:custom.currentStage}}-ski-analytics-common-stack.CommonLambdaLayerQualifiedArn}}
+      - ${{cf:${{self:custom.currentStage}}-${{self:custom.projectName}}-common.UtilsLambdaLayerQualifiedArn}}
+      - ${{cf:${{self:custom.currentStage}}-${{self:custom.projectName}}-common.CommonLambdaLayerQualifiedArn}}
 
 resources:
-  Resources:
-    UserPool:
-      Type: AWS::Cognito::UserPool
-      Properties:
-        AdminCreateUserConfig:
-          AllowAdminCreateUserOnly: false
-          InviteMessageTemplate:
-            EmailMessage: "Hello there {username},  You're verification code is {####}"
-            EmailSubject: "Welcome to Crunch.Ski!"
-          UnusedAccountValidityDays: 365
-        UsernameAttributes:
-          - email
-        AutoVerifiedAttributes:
-            - email
-        DeviceConfiguration:
-          ChallengeRequiredOnNewDevice: false
-          DeviceOnlyRememberedOnUserPrompt: false
-#        EmailConfiguration: #-> this is erroring out saying invalid email address :( set it manually in console
-#          EmailSendingAccount: DEVELOPER
-#          ReplyToEmailAddress: admin@crunch.ski
-#          SourceArn:
-#            'Fn::Join':
-#              - ':'
-#              - - 'arn:aws:ses:us-west-2'
-#                - Ref: 'AWS::AccountId'
-#                - 'identity/crunch.ski'
-        MfaConfiguration: OFF
-        # commented because can't update an existing userpool (it creates a duplicate). Uncomment for prod deployment
-        ## for reference this is the addUserSettings function defined above
-        #LambdaConfig:
-         # PostConfirmation:  { "Fn::GetAtt": ["postconfirmationLambdaFunction", "Arn" ] }
-          #arn:aws:lambda${AWS::Region}:${AWS:AccountId}:function:
-          #${{postConfirmation !Sub 'arn:aws:lambda:${AWS::Region}:${AWS::AccountId}:function:${{postConfirmation}}'
-        Policies:
-          PasswordPolicy:
-            MinimumLength: 8
-            RequireLowercase: true
-            RequireNumbers: true
-            RequireSymbols: false
-            RequireUppercase: true
-        Schema:
-          - AttributeDataType: String
-            DeveloperOnlyAttribute: false
-            Mutable: false
-            Name: email
-            Required: true
-          - AttributeDataType: String
-            DeveloperOnlyAttribute: false
-            Mutable: false
-            Name: name
-            StringAttributeConstraints:
-              MinLength: 2
-              MaxLength: 20
-            Required: false
-          - AttributeDataType: String
-            DeveloperOnlyAttribute: false
-            Mutable: false
-            Name: familyName
-            StringAttributeConstraints:
-              MinLength: 2
-              MaxLength: 20
-            Required: false
-        UserPoolName: ${{self:custom.currentStage}}-crunch-ski-userpool
-        UserPoolTags:
-          project: ski-analytics
-          module: auth
-    UserPoolClient:
-      Type: AWS::Cognito::UserPoolClient
-      Properties:
-         ClientName: ${{self:custom.currentStage}}-crunch-ski-web
-         ExplicitAuthFlows:
-           - USER_PASSWORD_AUTH
-         GenerateSecret: false
-         UserPoolId:
-           Ref: UserPool
-    AppSyncDynamoDBPolicy:
-      Type: AWS::IAM::ManagedPolicy
-      Properties:
-        Description: "Managed policy to allow AWS AppSync to access the tables created by this template."
-        Path: /appsync/
-        PolicyDocument:
-          Version: "2012-10-17"
-          Statement:
-            - Effect: Allow
-              Action:
-                - dynamodb:GetItem
-                - dynamodb:PutItem
-                - dynamodb:DeleteItem
-                - dynamodb:UpdateItem
-                - dynamodb:Query
-                - dynamodb:Scan
-                - dynamodb:BatchGetItem
-                - dynamodb:BatchWriteItem
-              Resource:  arn:aws:dynamodb:${{opt:region, self:provider.region}}:*:table/${{self:custom.userTable}}
-    DynamoTableForUser:
-      Type: AWS::DynamoDB::Table
-      DeletionPolicy: Retain
-      Properties:
-        AttributeDefinitions:
-          - AttributeName: id
-            AttributeType: S
-        KeySchema:
-          - AttributeName: id
-            KeyType: HASH
-        ProvisionedThroughput:
-          ReadCapacityUnits: 1
-          WriteCapacityUnits: 1
-        TableName: ${{self:custom.userTable}}
-        Tags: ${{self:custom.resourceTags}}
+  #Resources:
+#    UserPool:
+#      Type: AWS::Cognito::UserPool
+#      Properties:
+#        AdminCreateUserConfig:
+#          AllowAdminCreateUserOnly: false
+#          InviteMessageTemplate:
+#            EmailMessage: "Hello there {username},  You're verification code is {####}"
+#            EmailSubject: "Welcome to Crunch.Ski!"
+#          UnusedAccountValidityDays: 365
+#        UsernameAttributes:
+#          - email
+#        AutoVerifiedAttributes:
+#            - email
+#        DeviceConfiguration:
+#          ChallengeRequiredOnNewDevice: false
+#          DeviceOnlyRememberedOnUserPrompt: false
+##        EmailConfiguration: #-> this is erroring out saying invalid email address :( set it manually in console
+##          EmailSendingAccount: DEVELOPER
+##          ReplyToEmailAddress: admin@crunch.ski
+##          SourceArn:
+##            'Fn::Join':
+##              - ':'
+##              - - 'arn:aws:ses:us-west-2'
+##                - Ref: 'AWS::AccountId'
+##                - 'identity/crunch.ski'
+#        MfaConfiguration: OFF
+#        # commented because can't update an existing userpool (it creates a duplicate). Uncomment for prod deployment
+#        ## for reference this is the addUserSettings function defined above
+#        #LambdaConfig:
+#         # PostConfirmation:  { "Fn::GetAtt": ["postconfirmationLambdaFunction", "Arn" ] }
+#          #arn:aws:lambda${AWS::Region}:${AWS:AccountId}:function:
+#          #${{postConfirmation !Sub 'arn:aws:lambda:${AWS::Region}:${AWS::AccountId}:function:${{postConfirmation}}'
+#        Policies:
+#          PasswordPolicy:
+#            MinimumLength: 8
+#            RequireLowercase: true
+#            RequireNumbers: true
+#            RequireSymbols: false
+#            RequireUppercase: true
+#        Schema:
+#          - AttributeDataType: String
+#            DeveloperOnlyAttribute: false
+#            Mutable: false
+#            Name: email
+#            Required: true
+#          - AttributeDataType: String
+#            DeveloperOnlyAttribute: false
+#            Mutable: false
+#            Name: name
+#            StringAttributeConstraints:
+#              MinLength: 2
+#              MaxLength: 20
+#            Required: false
+#          - AttributeDataType: String
+#            DeveloperOnlyAttribute: false
+#            Mutable: false
+#            Name: familyName
+#            StringAttributeConstraints:
+#              MinLength: 2
+#              MaxLength: 20
+#            Required: false
+#        UserPoolName: ${{self:custom.currentStage}}-crunch-ski-userpool
+#        UserPoolTags:
+#          project: ski-analytics
+#          module: auth
+#    UserPoolClient:
+#      Type: AWS::Cognito::UserPoolClient
+#      Properties:
+#         ClientName: ${{self:custom.currentStage}}-crunch-ski-web
+#         ExplicitAuthFlows:
+#           - USER_PASSWORD_AUTH
+#         GenerateSecret: false
+#         UserPoolId:
+#           Ref: UserPool
+#    AppSyncDynamoDBPolicy:
+#      Type: AWS::IAM::ManagedPolicy
+#      Properties:
+#        Description: "Managed policy to allow AWS AppSync to access the tables created by this template."
+#        Path: /appsync/
+#        PolicyDocument:
+#          Version: "2012-10-17"
+#          Statement:
+#            - Effect: Allow
+#              Action:
+#                - dynamodb:GetItem
+#                - dynamodb:PutItem
+#                - dynamodb:DeleteItem
+#                - dynamodb:UpdateItem
+#                - dynamodb:Query
+#                - dynamodb:Scan
+#                - dynamodb:BatchGetItem
+#                - dynamodb:BatchWriteItem
+#              Resource:  arn:aws:dynamodb:${{self:provider.region}}:*:table/${{self:custom.userTable}}
+#    DynamoTableForUser:
+#      Type: AWS::DynamoDB::Table
+#      DeletionPolicy: Retain
+#      Properties:
+#        AttributeDefinitions:
+#          - AttributeName: id
+#            AttributeType: S
+#        KeySchema:
+#          - AttributeName: id
+#            KeyType: HASH
+#        ProvisionedThroughput:
+#          ReadCapacityUnits: 1
+#          WriteCapacityUnits: 1
+#        TableName: ${{self:custom.userTable}}
+#        Tags: ${{self:custom.resourceTags}}
 
   Outputs:
-    UserPoolArn:
+    PostConfirmationArn:
       Value:
-        Ref: UserPool
+        Fn::GetAtt: PostConfirmationLambdaFunction.Arn
       Export:
-        Name:
-          Fn::Join: ['',[ Ref: AWS::StackName,'-UserPoolArn']]
-    UserPoolProviderName:
-      Value:
-        Fn::GetAtt: [UserPool, ProviderName]
-    UserPoolProviderUrl:
-      Value:
-        Fn::GetAtt: [UserPool, ProviderURL]
-    UserPoolClientId:
-      Value:
-        Ref: UserPoolClient
-      Export:
-        Name: UserPoolClient-${{self:custom.currentStage}}
-    UserTableArn:
-      Value:
-        Fn::GetAtt: [DynamoTableForUser, Arn]
-    UserTableName:
-      Value: ${{self:custom.userTable}}
-      Export:
-        Name:
-          Fn::Join: ['',[Ref: AWS::StackName, '-UserTableName']]
+        Name: PostConfirmationArn-${{self:custom.currentStage}}
+#    UserPoolArn:
+#      Value:
+#        Ref: UserPool
+#      Export:
+#        Name:
+#          Fn::Join: ['',[ Ref: AWS::StackName,'-UserPoolArn']]
+#    UserPoolProviderName:
+#      Value:
+#        Fn::GetAtt: [UserPool, ProviderName]
+#    UserPoolProviderUrl:
+#      Value:
+#        Fn::GetAtt: [UserPool, ProviderURL]
+#    UserPoolClientId:
+#      Value:
+#        Ref: UserPoolClient
+#      Export:
+#        Name: UserPoolClient-${{self:custom.currentStage}}
+#    UserTableArn:
+#      Value:
+#        Fn::GetAtt: [DynamoTableForUser, Arn]
+#    UserTableName:
+#      Value: ${{self:custom.userTable}}
+#      Export:
+#        Name:
+#          Fn::Join: ['',[Ref: AWS::StackName, '-UserTableName']]
