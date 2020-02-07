@@ -1,8 +1,17 @@
-################### Variables ################
-variable "ses_region" {
-  type = string
-  description = "region in which to create SES resources"
-}
+## SES Module
+## This module sets up email sending and receiving for the specified domain.
+## Relies on a pre-existing hosted zone (Route53).
+## TODO -> specific email addresses still need to be manually and invididually validated
+## Email will be persisted to email-${project-name} S3 bucket.  Will need to parse verification email from there
+
+## Contains SES domain, DNS records, S3 bucket for email receipt, SNS topic for email notification
+
+
+### Variables
+//variable "ses_region" {
+//  type = string
+//  description = "region in which to create SES resources"
+//}
 
 variable "domain_name" {
   type = string
@@ -30,13 +39,6 @@ variable "project_name" {
 resource "aws_ses_domain_identity" "ses_domain" {
   domain = var.domain_name
 }
-
-# TODO move this to calling stack
-provider "aws" {
-  profile = "default"
-  region = var.ses_region
-}
-
 
 ### Domain set up and sending
 resource "aws_route53_record" "ses-domain-identity-records" {
@@ -75,8 +77,8 @@ resource "aws_route53_record" "ms-mx-records" {
   ttl = "600"
 
   records = [
-    "10 inbound-smtp.${var.ses_region}.amazonses.com",
-    "10 inbound-smtp.${var.ses_region}.amazonaws.com",
+    "10 inbound-smtp.${var.primary_region}.amazonses.com",
+    "10 inbound-smtp.${var.primary_region}.amazonaws.com",
   ]
 }
 
@@ -106,7 +108,7 @@ resource "aws_ses_active_receipt_rule_set" "ms" {
 
 
 resource "aws_s3_bucket" "ms" {
-  bucket = "email-${var.project_name}"
+  bucket = "inbound-email-${var.project_name}"
   policy = <<POLICY
 {
     "Version": "2012-10-17",
@@ -118,7 +120,7 @@ resource "aws_s3_bucket" "ms" {
                 "Service": "ses.amazonaws.com"
             },
             "Action": "s3:PutObject",
-            "Resource": "arn:aws:s3:::email-${var.project_name}/*",
+            "Resource": "arn:aws:s3:::inbound-email-${var.project_name}/*",
             "Condition": {
                 "StringEquals": {
                     "aws:Referer": "${data.aws_caller_identity.current.account_id}"
@@ -161,6 +163,13 @@ resource "aws_ses_receipt_rule" "ms" {
     aws_sns_topic.ms]
 }
 
+resource "aws_ses_identity_policy" "ses_identity" {
+  identity = aws_ses_domain_identity.ses_domain.arn
+  name = "ses_sending_policy"
+  policy = data.aws_iam_policy_document.ses_sending_policy.json
+}
+
+### Data
 data "aws_caller_identity" "current" {}
 
 data "aws_iam_policy_document" "ses_sending_policy" {
@@ -178,16 +187,12 @@ data "aws_iam_policy_document" "ses_sending_policy" {
       "ses:SendRawEmail"
     ]
     resources = [
-      "arn:aws:ses:${var.ses_region}:${data.aws_caller_identity.current.account_id}:identity/${var.domain_name}"
+      "arn:aws:ses:${var.primary_region}:${data.aws_caller_identity.current.account_id}:identity/${var.domain_name}"
     ]
   }
 }
 
-resource "aws_ses_identity_policy" "ses_identity" {
-  identity = aws_ses_domain_identity.ses_domain.arn
-  name = "ses_sending_policy"
-  policy = data.aws_iam_policy_document.ses_sending_policy.json
-}
+### Outputs
 output "ses_domain_arn" {
   value = aws_ses_domain_identity.ses_domain.arn
 }

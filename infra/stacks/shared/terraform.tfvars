@@ -1,5 +1,6 @@
 project_name = "crunch-ski"
 domain_name = "mccullough-solutions.ca"
-primary_region = "ca-central-1"
 profile = "default"
-ses_region = "us-west-2"
+primary_region = "us-east-1"
+shared_region="us-east-1"
+#acm_cert_region = "us-east-1"

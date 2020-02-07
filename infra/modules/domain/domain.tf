@@ -1,7 +1,13 @@
+
 variable "primary_region" {
   type = string
   description = "aws region for acm certificate"
 }
+
+//variable "acm_cert_region" {
+//  type = string
+//  description = "aws region for acm certificate"
+//}
 variable "domain_name" {
   type = string
   description = "domain name for hosted zone"
@@ -10,11 +16,6 @@ variable "domain_name" {
 variable "profile" {
   type = string
   description = "aws profile to use"
-}
-
-provider "aws" {
-  profile = "default"
-  region = var.primary_region
 }
 
 resource "aws_route53_zone" "primary" {
@@ -52,3 +53,6 @@ output "hosted_zone" {
   value = aws_route53_zone.primary.zone_id
 }
 
+output "acm_certificate_arn"  {
+  value = aws_acm_certificate.cert.arn
+}

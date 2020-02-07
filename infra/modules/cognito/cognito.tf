@@ -28,6 +28,17 @@ variable "ses_region" {
   type = string
   description = "region of ses"
 }
+
+variable "acm_certificate_arn" {
+  type = string
+  description = "arn of acm certificate for custom auth domain"
+}
+
+variable "hosted_zone" {
+  type = string
+  description = "hosted zone for this domain"
+}
+
 data "aws_caller_identity" "current" {}
 
 resource "aws_cognito_user_pool" "pool" {
@@ -98,6 +109,22 @@ resource "aws_cognito_user_pool" "pool" {
   }
 }
 
+// TODO -> I think need to set up S3 and point an A record at it before configuring this
+//resource "aws_route53_record" "auth_a_record" {
+//  name = "auth.${var.domain_name}"
+//  type = "CNAME"
+//  zone_id = var.hosted_zone
+//  records = [ var.domain_name ]
+//  ttl = 60
+//}
+//
+//resource "aws_cognito_user_pool_domain" "pool-domain" {
+//  domain          = "auth.${var.domain_name}"
+//  certificate_arn = var.acm_certificate_arn
+//  user_pool_id    = aws_cognito_user_pool.pool.id
+//  depends_on = [ aws_route53_record.auth_a_record ]
+//}
+
 resource aws_cognito_user_pool_client "pool-client" {
 
   name = "${var.stage}-${var.project_name}-web"
@@ -110,10 +137,10 @@ output "userpool-arn" {
   value = aws_cognito_user_pool.pool.arn
 }
 
-//output "userpool-provider" {
-//  value = aws_cognito_user_pool.pool.na
-//}
-
 output "userpool-client-id" {
   value = aws_cognito_user_pool_client.pool-client.id
+}
+
+output "userpool-id" {
+  value = aws_cognito_user_pool.pool.id
 }

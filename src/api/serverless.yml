@@ -5,28 +5,13 @@ service: api
 plugins:
   - serverless-apigw-binary
 
-custom:
-  currentStage: ${{opt:stage, self:provider.stage}}
-  domainName: ${{file(../../config/environment.yml):Properties.DomainName}}
-  resourceTags: ${{file(../../config/environment.yml):Properties.Tags}}
-  activityBucketName: "activity-${{self:custom.currentStage}}.${{self:custom.domainName}}"
-  rawActivityBucketName: "activity-raw-${{self:custom.currentStage}}.${{self:custom.domainName}}"
-  userPoolArn:
-    Fn::ImportValue:
-      Fn::Join: ['', UserPoolArn]
-  activityTable:  ${{self:custom.currentStage}}-crunch-Activity
-  wsEndpoint:   ${{cf:${{self:custom.currentStage}}-ski-analytics-websocket-stack.ServiceEndpointWebsocket}}
-  apigwBinary:
-    types:
-      - '*/*'
-
 provider:
   name: aws
   runtime: java8
   variableSyntax: "\\${{([ ~:a-zA-Z0-9._\\'\",\\-\\/\\(\\)]+?)}}" # notice the double quotes for yaml to ignore the escape characters!
-  region: ${{file(../../config/environment.yml):Properties.Region.primary}}
-  stage: ${{file(../../config/environment.yml):Properties.Stage}}
-  stackName: ${{self:custom.currentStage}}-ski-analytics-api-stack
+  region: ${{file(../../infra/stacks/global.terraform.tfvars.json):primary_region}}
+  stage: "dev"
+  stackName: ${{self:custom.currentStage}}-${{self:custom.projectName}}-api-stack
   iamRoleStatements:
     - Effect: Allow
       Action:
@@ -63,7 +48,7 @@ provider:
         - dynamodb:PutItem
         - dynamodb:UpdateItem
         - dynamodb:DeleteItem
-      Resource: "arn:aws:dynamodb:${{opt:region, self:provider.region}}:*:table/${{cf:${{self:custom.currentStage}}-ski-analytics-authentication-stack.UserTableName}}"
+      Resource: "arn:aws:dynamodb:${{opt:region, self:provider.region}}:*:table/${{self:custom.userTable}}"
     - Effect: Allow
       Action:
         - ssm:GetParameter
@@ -74,6 +59,27 @@ provider:
         - execute-api:ManageConnections
         - execute-api:Invoke
       Resource: arn:aws:execute-api:${{self:provider.region}}:*:*/*
+custom:
+  currentStage: ${{opt:stage, self:provider.stage}}
+  domainName: ${{file(../../infra/stacks/global.terraform.tfvars.json):domain_name}}
+  projectName: ${{file(../../infra/stacks/global.terraform.tfvars.json):project_name}}
+  resourceTags:
+    Tags:
+      - Key: "project"
+        Value: ${{file(../../infra/stacks/global.terraform.tfvars.json):project_name}}
+      - Key: "module"
+        Value: ${{self:provider.stackName}}
+      - Key: "stage"
+        Value: ${{self:custom.currentStage}}
+  activityBucketName: ${{self:custom:currentStage}}-activity-${{self:custom.projectName}}
+  rawActivityBucketName: ${{self:custom:currentStage}}-raw-activity-${{self:custom.projectName}}
+  userPoolArn: ${{cf:${{self:custom.currentStage}}-${{self:custom.projectName}}-data-var-stack.UserPoolArn}}"
+  activityTable:  ${{self:custom.currentStage}}-${{self:custom.projectName}}-Activity
+  userTable: ${{self:custom.currentStage}}-${{self:custom.projectName}}-userTable
+  wsEndpoint:   ${{cf:${{self:custom.currentStage}}-ski-analytics-websocket-stack.ServiceEndpointWebsocket}}
+  apigwBinary:
+    types:
+      - '*/*'
 
 package:
   artifact: build/distributions/api.zip
@@ -83,8 +89,8 @@ functions:
     handler: ski.crunch.activity.GetActivityHandler
     environment:
       s3ActivityBucketName: ${{self:custom.activityBucketName}}
-      activityTable: ${{self:custom.currentStage}}-crunch-Activity
-      userTable: ${{cf:${{self:custom.currentStage}}-ski-analytics-authentication-stack.UserTableName}}
+      activityTable: ${{self:custom.activityTable}}
+      userTable: ${{cf:${{self:custom.userTable}}
       currentStage: ${{self:custom.currentStage}}
     events:
       - http:
@@ -108,13 +114,8 @@ functions:
               paths:
                 id: true
           authorizer:
-            arn: arn:aws:cognito-idp:ca-central-1:556823078430:userpool/ca-central-1_bcb6X1Muk
-              #  the ARN issue: https://github.com/serverless/serverless/issues/3212
-              #  should be fixed soon
-
-              ## had to hardcode this due to an issue with arns https://github.com/serverless/serverless/issues/3129
-              ### note - to access this function you need to include an Authorizer header on the request, containing the
-              ### Id token - not the access token
+            arn: ${{self:custom.userPoolArn}}
+            ## TODO -> ADDRESS THIS..
             ### SKIAPI-13 -> the value of ARN field here is now being referenced by ServerlessState class, parsing this for
             ### use in test harness
     Tags: ${{self:custom.resourceTags}}
@@ -126,8 +127,8 @@ functions:
     handler: ski.crunch.activity.PutActivityHandler
     environment:
       s3RawActivityBucketName: ${{self:custom.rawActivityBucketName}}
-      activityTable: ${{self:custom.currentStage}}-crunch-Activity
-      userTable: ${{cf:${{self:custom.currentStage}}-ski-analytics-authentication-stack.UserTableName}}
+      activityTable: ${{self:custom.activityTable}}
+      userTable: ${{cf:${{self:custom.userTable}}
       currentStage: ${{self:custom.currentStage}}
     events:
      - http:
@@ -145,9 +146,7 @@ functions:
             - Access-Control-Allow-Authorization
             - Access-Control-Allow-Origin
         authorizer:
-          arn: arn:aws:cognito-idp:ca-central-1:556823078430:userpool/ca-central-1_bcb6X1Muk
-            #Fn::Join: ['', ['arn:aws:cognito-idp:','${{self:provider.region}}-','${{self:custom.accountId}}','${{cf:${{self:custom.currentStage}}-ski-analytics-authentication-stack.UserPoolArn}}']]
-           # arn:aws:cognito-idp:ca-central-1:556823078430:userpool/ca-central-1_bcb6X1Muk
+          arn:  ${{self:custom.userPoolArn}}
     Tags: ${{self:custom.resourceTags}}
     layers:
       - ${{cf:${{self:custom.currentStage}}-ski-analytics-common-stack.UtilsLambdaLayerQualifiedArn}}
@@ -160,8 +159,8 @@ functions:
     environment:
       s3ActivityBucketName: ${{self:custom.activityBucketName}}
       s3rawActivityBucketName: ${{self:custom.rawActivityBucketName}}
-      activityTable: ${{self:custom.currentStage}}-crunch-Activity
-      userTable: ${{cf:${{self:custom.currentStage}}-ski-analytics-authentication-stack.UserTableName}}
+      activityTable: ${{self:custom.activityTable}}
+      userTable: ${{cf:${{self:custom.userTable}}
       currentStage: ${{self:custom.currentStage}}
       webSocketId: ${{self:custom.wsEndpoint}}
     events:
@@ -233,18 +232,18 @@ resources:
         ResponseType: DEFAULT_4XX
         RestApiId:
           Ref: 'ApiGatewayRestApi'
-    S3BucketForActivity:
-      Type: AWS::S3::Bucket
-      Properties:
-#        AccessControl: PublicRead
-        BucketName: ${{self:custom.activityBucketName}}
-        Tags: ${{self:custom.resourceTags}}
-    S3BucketForRawActivity:
-      Type: AWS::S3::Bucket
-      Properties:
-#        AccessControl: PublicRead
-        BucketName: ${{self:custom.rawActivityBucketName}}
-        Tags: ${{self:custom.resourceTags}}
+#    S3BucketForActivity:
+#      Type: AWS::S3::Bucket
+#      Properties:
+##        AccessControl: PublicRead
+#        BucketName: ${{self:custom.activityBucketName}}
+#        Tags: ${{self:custom.resourceTags}}
+#    S3BucketForRawActivity:
+#      Type: AWS::S3::Bucket
+#      Properties:
+##        AccessControl: PublicRead
+#        BucketName: ${{self:custom.rawActivityBucketName}}
+#        Tags: ${{self:custom.resourceTags}}
     ParseFitActivityLambdaLambdaPermissionS3BucketForRawActivityS3:
         Type: "AWS::Lambda::Permission"
         Properties:
@@ -257,41 +256,41 @@ resources:
           SourceAccount:
             Ref: AWS::AccountId
           SourceArn: "arn:aws:s3:::${{self:custom.rawActivityBucketName}}"
-    DynamoTableForActivity:
-      Type: AWS::DynamoDB::Table
-      DeletionPolicy: Retain
-      Properties:
-        AttributeDefinitions:
-          - AttributeName: id
-            AttributeType: S
-          - AttributeName: date
-            AttributeType: S
-#          - AttributeName: user_id
-#            AttributeType: string
-        KeySchema:
-          - AttributeName: id
-            KeyType: HASH
-          - AttributeName: date
-            KeyType: RANGE
-        ProvisionedThroughput:
-          ReadCapacityUnits: 1
-          WriteCapacityUnits: 1
-        TableName: ${{self:custom.currentStage}}-crunch-Activity
-        Tags: ${{self:custom.resourceTags}}
-    SsmParamForWeatherApiKey:
-      Type: "AWS::SSM::Parameter"
-      Properties:
-        Name: "${{self:custom.currentStage}}-weather-api-key"
-        Type: "String"
-        Value: "abc123"
-        Description: "SSM Parameter for storing dark sky weather api key"
-    SsmParamForLocationIqKey:
-      Type: "AWS::SSM::Parameter"
-      Properties:
-        Name: "${{self:custom.currentStage}}-location-api-key"
-        Type: "String"
-        Value: "abc123"
-        Description: "SSM Parameter for storing location iq geocoding api key"
+#    DynamoTableForActivity:
+#      Type: AWS::DynamoDB::Table
+#      DeletionPolicy: Retain
+#      Properties:
+#        AttributeDefinitions:
+#          - AttributeName: id
+#            AttributeType: S
+#          - AttributeName: date
+#            AttributeType: S
+##          - AttributeName: user_id
+##            AttributeType: string
+#        KeySchema:
+#          - AttributeName: id
+#            KeyType: HASH
+#          - AttributeName: date
+#            KeyType: RANGE
+#        ProvisionedThroughput:
+#          ReadCapacityUnits: 1
+#          WriteCapacityUnits: 1
+#        TableName: ${{self:custom.currentStage}}-crunch-Activity
+#        Tags: ${{self:custom.resourceTags}}
+#    SsmParamForWeatherApiKey:
+#      Type: "AWS::SSM::Parameter"
+#      Properties:
+#        Name: "${{self:custom.currentStage}}-weather-api-key"
+#        Type: "String"
+#        Value: "abc123"
+#        Description: "SSM Parameter for storing dark sky weather api key"
+#    SsmParamForLocationIqKey:
+#      Type: "AWS::SSM::Parameter"
+#      Properties:
+#        Name: "${{self:custom.currentStage}}-location-api-key"
+#        Type: "String"
+#        Value: "abc123"
+#        Description: "SSM Parameter for storing location iq geocoding api key"
 #  Outputs:
 #    CreateIntegrationMessage:
 #      Value:

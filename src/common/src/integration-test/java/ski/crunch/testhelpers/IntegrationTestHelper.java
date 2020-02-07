@@ -36,7 +36,8 @@ public class IntegrationTestHelper {
     private static final Logger LOG = Logger.getLogger(IntegrationTestHelper.class);
     private static final String INTEGRATION_TEST_USERNAME = "integration_test_user@crunch.ski";
     private static final String INTEGRATION_TEST_PASSWORD = "abC123Def!";
-
+    //TODO -> make this stage specific
+    private static final String DATA_STACK_NAME = "dev-crunch-ski-data-var-stack";
     private ProfileCredentialsProvider credentialsProvider;
     private CloudFormationHelper cfHelper;
     private AuthenticationHelper authHelper;
@@ -50,8 +51,8 @@ public class IntegrationTestHelper {
         credentialsProvider = new ProfileCredentialsProvider(AWS_PROFILE);
         cfHelper = new CloudFormationHelper(credentialsProvider, region);
         authHelper = new AuthenticationHelper(
-                cfHelper.getStackOutput(IncludeModules.auth.getStackName(), "UserPoolArn"),
-                cfHelper.getStackOutput(IncludeModules.auth.getStackName(), "UserPoolClientId"),
+                cfHelper.getStackOutput(DATA_STACK_NAME, "UserPoolArn"),
+                cfHelper.getStackOutput(DATA_STACK_NAME, "UserPoolClientId"),
                 region,
                 AWS_PROFILE);
 
@@ -89,7 +90,7 @@ public class IntegrationTestHelper {
     public void insertUserSettings(String userId) {
         DynamoFacade dynamo = new DynamoFacade(
                 serverlessStateMap.get(IncludeModules.auth.getStackName()).getRegion(),
-                cfHelper.getStackOutput(IncludeModules.auth.getStackName(), "UserTableName"),
+                cfHelper.getStackOutput(DATA_STACK_NAME, "UserTableName"),
                 credentialsProvider
         );
 
@@ -113,7 +114,7 @@ public class IntegrationTestHelper {
     public void removeUserSettings(String userId) {
         DynamoFacade dynamo = new DynamoFacade(
                 serverlessStateMap.get(IncludeModules.auth.getStackName()).getRegion(),
-                cfHelper.getStackOutput(IncludeModules.auth.getStackName(), "UserTableName"),
+                cfHelper.getStackOutput(DATA_STACK_NAME, "UserTableName"),
                 credentialsProvider
         );
 
