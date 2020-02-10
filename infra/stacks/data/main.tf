@@ -59,11 +59,6 @@ variable "post_confirmation_lambda_arn" {
   description = "arn of the post confirmation lambda function"
 }
 
-//variable "ses_domain_arn" {
-//  type = string
-//  description = "ses domain arn"
-//}
-
 variable "stage" {
   type = string
   description = "environment descriptor"
@@ -128,14 +123,6 @@ variable "activity_table_prevent_deletion" {
   type = bool
   description = "enable terraform termination protection on activity table"
 }
-//variable "acm_certificate_arn" {
-//  type = string
-//  description = "arn of this domain's acm certificate"
-//}
-//variable "hosted_zone" {
-//  type = string
-//  description = "hosted zone of this domain"
-//}
 
 
 ## Resources
@@ -210,6 +197,7 @@ resource aws_dynamodb_table "activityTable" {
   }
 }
 
+### empty ssm parameters for secret keys
 resource aws_ssm_parameter "weatherApiKey" {
   name = "${var.stage}-weather-api-key"
   type = "String"
@@ -224,6 +212,7 @@ resource aws_ssm_parameter "locationIqKey" {
   description = "SSM parameter for storing location iq geocoding api key"
 }
 
+### S3 bucket to store processed activities
 resource aws_s3_bucket "activityBucket" {
   bucket = "${var.stage}-activity-${var.project_name}"
   tags = {
@@ -232,7 +221,7 @@ resource aws_s3_bucket "activityBucket" {
     stage = var.stage
   }
 }
-
+### S3 bucket to store raw activities
 resource aws_s3_bucket "rawActivityBucket" {
   bucket = "${var.stage}-raw-activity-${var.project_name}"
   tags = {
@@ -242,6 +231,7 @@ resource aws_s3_bucket "rawActivityBucket" {
   }
 }
 
+### CF stack to export variables for use in serverless.yml (s)
 resource aws_cloudformation_stack "output_stack" {
 
   name = "${var.stage}-${var.project_name}-data-var-stack"

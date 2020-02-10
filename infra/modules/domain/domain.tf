@@ -4,10 +4,6 @@ variable "primary_region" {
   description = "aws region for acm certificate"
 }
 
-//variable "acm_cert_region" {
-//  type = string
-//  description = "aws region for acm certificate"
-//}
 variable "domain_name" {
   type = string
   description = "domain name for hosted zone"
