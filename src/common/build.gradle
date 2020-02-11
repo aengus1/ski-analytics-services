@@ -62,14 +62,14 @@ dependencies {
 // Task for building the zip file for upload
 task buildUtilsZip(type: Zip) {
     // set the base name of the zip file
-    baseName = "ski-crunch-utils"
+    baseName = "crunch-ski-utils"
     from(fileTree("build/libs/common.jar")) {
         into('/java/lib')
     }
 }
 
 task buildCommonZip(type: Zip) {
-    baseName = "ski-crunch-common"
+    baseName = "crunch-ski-common"
     from(configurations.runtimeClasspath) {
         excludes['ski/crunch/**']
         into('/java/lib')

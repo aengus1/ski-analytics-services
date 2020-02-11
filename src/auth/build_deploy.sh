@@ -1,11 +1,11 @@
 #!/bin/bash
 
-
+## TODO -> this is flaky.  Use return codes to indicate success/failure
 if ../../gradlew build -x test; then
   echo "Gradle task succeeded. Deploying..." >&2
+  postconfarn="$(sls deploy --stage dev -v | grep PostConfirmationLambdaFunctionQualifiedArn | awk '{print $NF}')"
   ## Now update terraform data stack variable with the arn of post confirmation function
-  postconfarn="$(sls deploy -v | grep PostConfirmationLambdaFunctionQualifiedArn | awk '{print $NF}')"
-  sed -i '' "s/\(post_confirmation_lambda_arn\":\).*\$/\1\"${postconfarn}\"/" ../../infra/stacks/data/dev.terraform.tfvars
+  sed -i '' "s/\(post_confirmation_lambda_arn\":\).*\$/\1\"${postconfarn}\"/" ../../infra/stacks/data/dev.terraform.tfvars.json
 
 else
   echo "Gradle task failed. Aborting" >&2

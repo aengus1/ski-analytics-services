@@ -6,17 +6,15 @@ provider:
   name: aws
   runtime: java8
   region: ${{file(../../infra/stacks/global.tfvars.json):primary_region}}
-  stage: ${{file(../../infra/stacks/global.tfvars.json):stage}}
+  stage: ${{opt:stage}}
   variableSyntax: "\\${{([ ~:a-zA-Z0-9._\\'\",\\-\\/\\(\\)]+?)}}" # notice the double quotes for yaml to ignore the escape characters!
-  stackName: ${{self:custom.currentStage}}-${{self:custom.projectName}}-${{self:service}}
+  stackName: ${{opt:stage}}-${{self:custom.projectName}}-${{self:service}}
 
-custom:
-  currentStage: ${{opt:stage, self:provider.stage}}
-  projectName: ${{file(../../infra/stacks/global.tfvars.json):project_name}}
+custom: ${{file(../../config/custom.yml)}}
 
 layers:
   utils:
-    name: ${{self:custom.currentStage}}-layer-utils
+    name: ${{opt:stage}}-layer-utils
     description: domain classes for object model and utilities
     compatibleRuntimes:
       - java8
@@ -24,9 +22,9 @@ layers:
     package:
       include: 
         - src/main/java/ski/crunch/**
-      artifact: build/distributions/ski-crunch-utils.zip
+      artifact: build/distributions/${{self:custom.projectName}}-utils.zip
   common:
-    name: ${{self:custom.currentStage}}-layer-common
+    name: ${{opt:stage}}-layer-${{self:service}}
     description: common dependencies for all services
     compatibleRuntimes:
       - java8
@@ -34,16 +32,4 @@ layers:
     package:
       include:
         - src/main/java/*
-      artifact: build/distributions/ski-crunch-common.zip
-
-#resources:
-#  Outputs:
-#    UtilsLayerVersion:
-#      Value:  ${{cf:${{self:provider.stackName}}.UtilsLambdaLayerQualifiedArn}}
-#      Export:
-#        Name: UtilsLayerVersion
-#    CommonLayerVersion:
-#      Value:
-#        Ref: CommonLambdaLayer
-#      Export:
-#        Name: CommonLayerVersion
+      artifact: build/distributions/${{self:custom.projectName}}-${{self:service}}.zip

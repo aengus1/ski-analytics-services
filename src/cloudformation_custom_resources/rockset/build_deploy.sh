@@ -1,9 +1,9 @@
 #!/bin/bash
 
 
-if ../../gradlew build -x test -x integrationTest; then
+if ../../../gradlew build -x test -x integrationTest; then
   echo "Gradle task succeeded. Deploying..." >&2
-  sls deploy -v
+  sls deploy --stage dev -v
 
 else
   echo "Gradle task failed. Aborting" >&2

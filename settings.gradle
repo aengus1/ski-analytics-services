@@ -16,7 +16,7 @@ include 'websocket'
 include 'cloudformation'
 include 'cftest'
 include 'rockset'
-include 'acm_certificate_validator'
+
 
 project(":api").projectDir = file("src/api")
 project(":auth").projectDir = file("src/auth")
@@ -24,9 +24,8 @@ project(":common").projectDir = file("src/common")
 project(":websocket").projectDir = file("src/websocket")
 project(":cloudformation").projectDir = file("src/cloudformation")
 project(":cftest").projectDir = file("src/cftest")
-//project(":cfm_reslib").projectDir = file("src/cloudformation_custom_resources/cfm_reslib")
+
 
 // Cloudformation custom resources
 project(":rockset").projectDir = file("src/cloudformation_custom_resources/rockset")
-project(":acm_certificate_validator").projectDir = file("src/cloudformation_custom_resources/acm_certificate_validator")
-//project(":cfm_reslib").projectDir = file("src/cloudformation_custom_resources/cfm_reslib")
+

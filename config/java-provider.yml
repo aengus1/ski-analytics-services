@@ -1,6 +1,0 @@
-provider:
-  name: aws
-  runtime: java8
-  variableSyntax: "\\${{([ ~:a-zA-Z0-9._\\'\",\\-\\/\\(\\)]+?)}}" # notice the double quotes for yaml to ignore the escape characters!
-  region: ${{file(environment.yml):Properties.Region.primary}}
-  stackName: crunch-ski-${{self:service}}

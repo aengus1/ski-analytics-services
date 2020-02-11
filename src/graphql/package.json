@@ -1,0 +1,9 @@
+{
+  "name": "graphql",
+  "description": "",
+  "version": "0.1.0",
+  "dependencies": {},
+  "devDependencies": {
+    "serverless-appsync-plugin": "^1.2.0"
+  }
+}

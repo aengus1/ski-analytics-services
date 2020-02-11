@@ -5,9 +5,9 @@ provider:
   name: aws
   runtime: java8
   variableSyntax: "\\${{([ ~:a-zA-Z0-9._\\'\",\\-\\/\\(\\)]+?)}}" # notice the double quotes for yaml to ignore the escape characters!
-  region: ca-central-1
-  stage: staging
-  stackName: ${{self:custom.currentStage}}-ski-analytics-websocket-stack
+  region: ${{file(../../infra/stacks/global.tfvars.json):primary_region}}
+  stackName: ${{opt:stage}}-${{self:custom.projectName}}-${{self:service}}
+  stage: ${{opt:stage}}
   iamRoleStatements:
     - Effect: Allow
       Action:
@@ -21,27 +21,21 @@ provider:
         - dynamodb:PutItem
         - dynamodb:UpdateItem
         - dynamodb:DeleteItem
-      Resource: arn:aws:dynamodb:${{opt:region, self:provider.region}}:*:table/${{cf:${{self:custom.currentStage}}-ski-analytics-authentication-stack.UserTableName}}
-  websocketsApiName: ${{self:custom.currentStage}}-ski-analytics-ws
+      Resource: arn:aws:dynamodb:${{self:provider.region}}:*:table/${{self:custom.userTable}}
+  websocketsApiName: ${{opt:stage}}-${self:custom.projectName}}-ws
   websocketsApiRouteSelectionExpression: $request.body.action
 
-custom:
-  currentStage: ${{opt:stage, self:provider.stage}}
-  resourceTags:
-    - Key: "project"
-      Value: "ski-analytics"
-    - Key: "module"
-      Value: "websocket"
+custom: ${{file(../../config/custom.yml)}}
 
 package:
-  artifact: build/distributions/websocket.zip
+  artifact: build/distributions/${{self:service}}.zip
 
 functions:
    # web socket connection for client callbacks
   connectionHandler:
     handler: ski.crunch.websocket.IncomingWebSocketHandler
     environment:
-      userTable: ${{cf:${{self:custom.currentStage}}-ski-analytics-authentication-stack.UserTableName}}
+      userTable: ${{self:custom.userTable}}
     events:
       - websocket:
           route: $connect
@@ -54,21 +48,21 @@ functions:
           route: $default
           handler: ski.crunch.websocket.IncomingWebSocketHandler
     layers:
-      - ${{cf:${{self:custom.currentStage}}-ski-analytics-common-stack.UtilsLambdaLayerQualifiedArn}}
-      - ${{cf:${{self:custom.currentStage}}-ski-analytics-common-stack.CommonLambdaLayerQualifiedArn}}
+      - ${{cf:${{opt:stage}}-${{self:custom.projectName}}-common.UtilsLambdaLayerQualifiedArn}}
+      - ${{cf:${{opt:stage}}-${{self:custom.projectName}}-common.CommonLambdaLayerQualifiedArn}}
 
     # custom authorizer for websocket (cognito auth not yet supported with apig ws)
   wsAuth:
     handler: ski.crunch.websocket.CustomWebSocketAuthorizer
     environment:
       appClientId:
-        ${{cf:${{self:custom.currentStage}}-ski-analytics-authentication-stack.UserPoolClientId}}
+        ${{cf:${{self:custom.dataStack}}.UserPoolClientId}}
       userPoolId:
-        ${{cf:${{self:custom.currentStage}}-ski-analytics-authentication-stack.UserPoolArn}}
+        ${{cf:${{self:custom.dataStack}}.UserPoolArn}}
       region: ${{self:provider.region}}
     layers:
-      - ${{cf:${{self:custom.currentStage}}-ski-analytics-common-stack.UtilsLambdaLayerQualifiedArn}}
-      - ${{cf:${{self:custom.currentStage}}-ski-analytics-common-stack.CommonLambdaLayerQualifiedArn}}
+      - ${{cf:${{opt:stage}}-${{self:custom.projectName}}-common.UtilsLambdaLayerQualifiedArn}}
+      - ${{cf:${{opt:stage}}-${{self:custom.projectName}}-common.CommonLambdaLayerQualifiedArn}}
 Outputs:
   WebSocketId:
     Value:

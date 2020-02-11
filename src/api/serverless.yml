@@ -1,17 +1,16 @@
 # Provisions the API stack, activity rest endpoints
 # Depends on authentication stack, common stack
-service: api
+service: activity
 
 plugins:
   - serverless-apigw-binary
-
 provider:
   name: aws
   runtime: java8
   variableSyntax: "\\${{([ ~:a-zA-Z0-9._\\'\",\\-\\/\\(\\)]+?)}}" # notice the double quotes for yaml to ignore the escape characters!
   region: ${{file(../../infra/stacks/global.tfvars.json):primary_region}}
-  stage: "dev"
-  stackName: ${{self:custom.currentStage}}-${{self:custom.projectName}}-api-stack
+  stackName: ${{opt:stage}}-${{self:custom.projectName}}-${{self:service}}
+  stage: ${{opt:stage}}
   iamRoleStatements:
     - Effect: Allow
       Action:
@@ -39,7 +38,7 @@ provider:
         - dynamodb:PutItem
         - dynamodb:UpdateItem
         - dynamodb:DeleteItem
-      Resource: "arn:aws:dynamodb:${{opt:region, self:provider.region}}:*:table/${{self:custom.activityTable}}"
+      Resource: "arn:aws:dynamodb:${{self:provider.region}}:*:table/${{self:custom.activityTable}}"
     - Effect: Allow
       Action:
         - dynamodb:Query
@@ -48,41 +47,48 @@ provider:
         - dynamodb:PutItem
         - dynamodb:UpdateItem
         - dynamodb:DeleteItem
-      Resource: "arn:aws:dynamodb:${{opt:region, self:provider.region}}:*:table/${{self:custom.userTable}}"
+      Resource: "arn:aws:dynamodb:${{self:provider.region}}:*:table/${{self:custom.userTable}}"
     - Effect: Allow
       Action:
         - ssm:GetParameter
         - ssm:GetParameters
-      Resource: arn:aws:ssm:${{opt:region, self:provider.region}}:*:parameter/*-*-api-key
+      Resource: arn:aws:ssm:${{self:provider.region}}:*:parameter/*-*-api-key
     - Effect: Allow
       Action:
         - execute-api:ManageConnections
         - execute-api:Invoke
       Resource: arn:aws:execute-api:${{self:provider.region}}:*:*/*
+
 custom:
-  currentStage: ${{opt:stage, self:provider.stage}}
-  domainName: ${{file(../../infra/stacks/global.tfvars.json):domain_name}}
-  projectName: ${{file(../../infra/stacks/global.tfvars.json):project_name}}
-  resourceTags:
-    Tags:
+    resourceTags:
       - Key: "project"
-        Value: ${{file(../../infra/stacks/global.tfvars.json):project_name}}
-      - Key: "module"
-        Value: ${{self:provider.stackName}}
+        Value: ${{self:custom.projectName}}
       - Key: "stage"
-        Value: ${{self:custom.currentStage}}
-  activityBucketName: ${{self:custom.currentStage}}-activity-${{self:custom.projectName}}
-  rawActivityBucketName: ${{self:custom.currentStage}}-raw-activity-${{self:custom.projectName}}
-  userPoolArn: ${{cf:${{self:custom.currentStage}}-${{self:custom.projectName}}-data-var-stack.UserPoolArn}}"
-  activityTable:  ${{self:custom.currentStage}}-${{self:custom.projectName}}-Activity
-  userTable: ${{self:custom.currentStage}}-${{self:custom.projectName}}-userTable
-  wsEndpoint:   ${{cf:${{self:custom.currentStage}}-ski-analytics-websocket-stack.ServiceEndpointWebsocket}}
-  apigwBinary:
-    types:
-      - '*/*'
+        Value: ${{opt:stage}}
+      - Key: "module"
+        Value: ${{self:service}}
+
+    ## common variables
+    projectName: ${{file(../../infra/stacks/global.tfvars.json):project_name}}
+    domainName: ${{file(../../infra/stacks/global.tfvars.json):domain_name}}
+    dataStack: ${{opt:stage}}-${{self:custom.projectName}}-data-var-stack
+
+    ## tables
+    userTable: ${{opt:stage}}-${{self:custom.projectName}}-userTable
+    activityTable:  ${{opt:stage}}-${{self:custom.projectName}}-Activity
+
+    ## buckets
+    activityBucketName: ${{opt:stage}}-activity-${{self:custom.projectName}}
+    rawActivityBucketName: ${{opt:stage}}-raw-activity-${{self:custom.projectName}}
+
+    ##cognito
+    userPoolArn: ${{cf:${{self:custom.dataStack}}.UserPoolArn}}
+    apigwBinary:
+     types:
+       - '*/*'
 
 package:
-  artifact: build/distributions/api.zip
+  artifact: build/distributions/${{self:service}}.zip
 
 functions:
   GetActivityLambda:
@@ -91,7 +97,7 @@ functions:
       s3ActivityBucketName: ${{self:custom.activityBucketName}}
       activityTable: ${{self:custom.activityTable}}
       userTable: ${{cf:${{self:custom.userTable}}
-      currentStage: ${{self:custom.currentStage}}
+      currentStage: ${{opt:stage}}
     events:
       - http:
           path: activity/{id}
@@ -120,8 +126,8 @@ functions:
             ### use in test harness
     Tags: ${{self:custom.resourceTags}}
     layers:
-      - ${{cf:${{self:custom.currentStage}}-ski-analytics-common-stack.UtilsLambdaLayerQualifiedArn}}
-      - ${{cf:${{self:custom.currentStage}}-ski-analytics-common-stack.CommonLambdaLayerQualifiedArn}}
+      - ${{cf:${{opt:stage}}-${{self:custom.projectName}}-common.UtilsLambdaLayerQualifiedArn}}
+      - ${{cf:${{opt:stage}}-${{self:custom.projectName}}-common.CommonLambdaLayerQualifiedArn}}
 
   PutActivityLambda:
     handler: ski.crunch.activity.PutActivityHandler
@@ -129,7 +135,7 @@ functions:
       s3RawActivityBucketName: ${{self:custom.rawActivityBucketName}}
       activityTable: ${{self:custom.activityTable}}
       userTable: ${{cf:${{self:custom.userTable}}
-      currentStage: ${{self:custom.currentStage}}
+      currentStage: ${{opt:stage}}
     events:
      - http:
         path: activity
@@ -149,8 +155,8 @@ functions:
           arn:  ${{self:custom.userPoolArn}}
     Tags: ${{self:custom.resourceTags}}
     layers:
-      - ${{cf:${{self:custom.currentStage}}-ski-analytics-common-stack.UtilsLambdaLayerQualifiedArn}}
-      - ${{cf:${{self:custom.currentStage}}-ski-analytics-common-stack.CommonLambdaLayerQualifiedArn}}
+      - ${{cf:${{opt:stage}}-${{self:custom.projectName}}-common.UtilsLambdaLayerQualifiedArn}}
+      - ${{cf:${{opt:stage}}-${{self:custom.projectName}}-common.CommonLambdaLayerQualifiedArn}}
 
   ParseFitActivityLambda:
     handler: ski.crunch.activity.ParseFitActivityLambda
@@ -161,17 +167,19 @@ functions:
       s3rawActivityBucketName: ${{self:custom.rawActivityBucketName}}
       activityTable: ${{self:custom.activityTable}}
       userTable: ${{cf:${{self:custom.userTable}}
-      currentStage: ${{self:custom.currentStage}}
-      webSocketId: ${{self:custom.wsEndpoint}}
+      currentStage: ${{opt:stage}}
+      webSocketId: ${{cf:${{opt:stage}}-${{self:custom.projectName}}-websocket.ServiceEndpointWebsocket}}
     events:
-     - s3: ForRawActivity
+     - s3:
+       bucket: ${{self:custom.rawActivityBucketName}}
        event: s3:ObjectCreated:*
+       existing: true
        rules:
            - suffix: .fit
     Tags: ${{self:custom.resourceTags}}
     layers:
-      - ${{cf:${{self:custom.currentStage}}-ski-analytics-common-stack.UtilsLambdaLayerQualifiedArn}}
-      - ${{cf:${{self:custom.currentStage}}-ski-analytics-common-stack.CommonLambdaLayerQualifiedArn}}
+      - ${{cf:${{opt:stage}}-${{self:custom.projectName}}-common.UtilsLambdaLayerQualifiedArn}}
+      - ${{cf:${{opt:stage}}-${{self:custom.projectName}}-common.CommonLambdaLayerQualifiedArn}}
 
 resources:
   Resources:
@@ -232,18 +240,6 @@ resources:
         ResponseType: DEFAULT_4XX
         RestApiId:
           Ref: 'ApiGatewayRestApi'
-#    S3BucketForActivity:
-#      Type: AWS::S3::Bucket
-#      Properties:
-##        AccessControl: PublicRead
-#        BucketName: ${{self:custom.activityBucketName}}
-#        Tags: ${{self:custom.resourceTags}}
-#    S3BucketForRawActivity:
-#      Type: AWS::S3::Bucket
-#      Properties:
-##        AccessControl: PublicRead
-#        BucketName: ${{self:custom.rawActivityBucketName}}
-#        Tags: ${{self:custom.resourceTags}}
     ParseFitActivityLambdaLambdaPermissionS3BucketForRawActivityS3:
         Type: "AWS::Lambda::Permission"
         Properties:
@@ -256,75 +252,3 @@ resources:
           SourceAccount:
             Ref: AWS::AccountId
           SourceArn: "arn:aws:s3:::${{self:custom.rawActivityBucketName}}"
-#    DynamoTableForActivity:
-#      Type: AWS::DynamoDB::Table
-#      DeletionPolicy: Retain
-#      Properties:
-#        AttributeDefinitions:
-#          - AttributeName: id
-#            AttributeType: S
-#          - AttributeName: date
-#            AttributeType: S
-##          - AttributeName: user_id
-##            AttributeType: string
-#        KeySchema:
-#          - AttributeName: id
-#            KeyType: HASH
-#          - AttributeName: date
-#            KeyType: RANGE
-#        ProvisionedThroughput:
-#          ReadCapacityUnits: 1
-#          WriteCapacityUnits: 1
-#        TableName: ${{self:custom.currentStage}}-crunch-Activity
-#        Tags: ${{self:custom.resourceTags}}
-#    SsmParamForWeatherApiKey:
-#      Type: "AWS::SSM::Parameter"
-#      Properties:
-#        Name: "${{self:custom.currentStage}}-weather-api-key"
-#        Type: "String"
-#        Value: "abc123"
-#        Description: "SSM Parameter for storing dark sky weather api key"
-#    SsmParamForLocationIqKey:
-#      Type: "AWS::SSM::Parameter"
-#      Properties:
-#        Name: "${{self:custom.currentStage}}-location-api-key"
-#        Type: "String"
-#        Value: "abc123"
-#        Description: "SSM Parameter for storing location iq geocoding api key"
-#  Outputs:
-#    CreateIntegrationMessage:
-#      Value:
-#        Fn::GetAtt:
-#          - RocksetIntegration
-#          - Message
-#    IntegrationName:
-#      Value:
-#        Fn::GetAtt:
-#          - RocksetIntegration
-#          - IntegrationName
-#      Export:
-#        Name: 'RocksetIntegrationName'
-#    CreateWorkspaceMessage:
-#      Value:
-#        Fn::GetAtt:
-#          - RocksetWorkspace
-#          - Message
-#    WorkspaceName:
-#      Value:
-#        Fn::GetAtt:
-#          - RocksetWorkspace
-#          - WorkspaceName
-#      Export:
-#        Name:  'RocksetWorkspaceName'
-#    CreateCollectionMessage:
-#      Value:
-#        Fn::GetAtt:
-#          - RocksetCollection
-#          - Message
-#    CollectionName:
-#      Value:
-#        Fn::GetAtt:
-#          - RocksetCollection
-#          - CollectionName
-#      Export:
-#        Name:  'RocksetCollectionName'
