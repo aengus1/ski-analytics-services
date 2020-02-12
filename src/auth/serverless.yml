@@ -7,20 +7,20 @@ provider:
   region: ${{file(../../infra/stacks/global.tfvars.json):primary_region}}
   stage: ${{opt:stage}}
   stackName: ${{opt:stage}}-${{self:custom.projectName}}-${{self:service}}
-#  iamRoleStatements:
-#    - Effect: Allow
-#      Action:
-#        - execute-api:ManageConnections
-#      Resource: arn:aws:execute-api:${{self:provider.region}}:*:*/*
-#    - Effect: Allow
-#      Action:
-#        - dynamodb:Query
-#        - dynamodb:Scan
-#        - dynamodb:GetItem
-#        - dynamodb:PutItem
-#        - dynamodb:UpdateItem
-#        - dynamodb:DeleteItem
-#      Resource: arn:aws:dynamodb:${{self:provider.region}}:*:table/${{self:custom.userTable}}
+  iamRoleStatements:
+    - Effect: Allow
+      Action:
+        - execute-api:ManageConnections
+      Resource: arn:aws:execute-api:${{self:provider.region}}:*:*/*
+    - Effect: Allow
+      Action:
+        - dynamodb:Query
+        - dynamodb:Scan
+        - dynamodb:GetItem
+        - dynamodb:PutItem
+        - dynamodb:UpdateItem
+        - dynamodb:DeleteItem
+      Resource: arn:aws:dynamodb:${{self:provider.region}}:*:table/${{self:custom.userTable}}
 
 custom: ${{file(../../config/custom.yml)}}
 #  currentStage: ${{opt:stage, self:provider.stage}}
@@ -35,6 +35,8 @@ functions:
   # post registration confirmation trigger to create record in user table
   postConfirmation:
     handler: ski.crunch.auth.AddUserSettings
+    environment:
+      userTable: ${{self:custom.userTable}}
     events:
       - cognitoUserPool:
           pool: ${{opt:stage}}-${{self:custom.projectName}}-pool
@@ -44,6 +46,15 @@ functions:
       - ${{cf:${{opt:stage}}-${{self:custom.projectName}}-common.CommonLambdaLayerQualifiedArn}}
 
 resources:
+  Resources:
+    OnCognitoConfirmationPermission:
+      Type: 'AWS::Lambda::Permission'
+      Properties:
+        Action: "lambda:InvokeFunction"
+        FunctionName: !GetAtt PostConfirmationLambdaFunction.Arn
+        Principal: "cognito-idp.amazonaws.com"
+        SourceArn: ${{self:custom.userPoolArn}}
+
   Outputs:
     PostConfirmationArn:
       Value:

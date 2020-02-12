@@ -109,6 +109,30 @@ resource "aws_cognito_user_pool" "pool" {
   }
 }
 
+//resource aws_iam_policy "cognitoLambda" {
+//  name        = "cognitoLambda"
+//  path        = "/"
+//  description = "Allow cognito to invoke lambda function. required for confirmation trigger"
+//
+//  policy = <<EOF
+//{
+//  "Version": "2012-10-17",
+//    "Statement": [
+//        {
+//            "Sid": "CognitoIDP",
+//            "Effect": "Allow",
+//            "Action": [
+//                "lambda:InvokeFunction",
+//                "cognito-idp:*"
+//            ],
+//            "Resource": "*"
+//        }
+//    ]
+//}
+//EOF
+//}
+
+
 // TODO -> I think need to set up S3 and point an A record at it before configuring this
 //resource "aws_route53_record" "auth_a_record" {
 //  name = "auth.${var.domain_name}"

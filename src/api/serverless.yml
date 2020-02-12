@@ -1,6 +1,6 @@
 # Provisions the API stack, activity rest endpoints
 # Depends on authentication stack, common stack
-service: activity
+service: api
 
 plugins:
   - serverless-apigw-binary

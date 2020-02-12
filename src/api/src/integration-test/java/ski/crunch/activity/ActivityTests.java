@@ -50,17 +50,17 @@ class ActivityTests {
         LOG.info("ACCESS KEY: " + this.accessKey);
 
 
-        String authRegion = helper.getServerlessState(IntegrationTestHelper.IncludeModules.auth.getStackName()).getRegion();
+        String authRegion = helper.getServerlessState(helper.getPrefix()+"auth").getRegion();
         ProfileCredentialsProvider profileCredentialsProvider = helper.getCredentialsProvider();
         System.out.println("auth region = " + authRegion);
         System.out.println("profile creds = " + profileCredentialsProvider.toString());
         this.s3 = new S3Facade(authRegion, profileCredentialsProvider);
-        this.dynamo = new DynamoFacade(helper.getServerlessState(IntegrationTestHelper.IncludeModules.api.getStackName()).getRegion(), helper.getActivityTable(),
+        this.dynamo = new DynamoFacade(helper.getServerlessState(helper.getPrefix()+"api").getRegion(), helper.getActivityTable(),
                 helper.getCredentialsProvider());
 
         this.activityDAO =  new ActivityDAO(dynamo, helper.getActivityTable());
         this.activityService = new ActivityService(s3, helper.getCredentialsProvider(), dynamo
-                , helper.getServerlessState(IntegrationTestHelper.IncludeModules.api.getStackName()).getRegion(),
+                , helper.getServerlessState(helper.getPrefix()+"api").getRegion(),
                 helper.getRawActivityBucketName(), helper.getActivityBucketName(),
                 helper.getActivityTable(), helper.getUserTable());
 

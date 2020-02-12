@@ -24,8 +24,6 @@
 
     ##cognito
     userPoolArn: ${{cf:${{self:custom.dataStack}}.UserPoolArn}}
+    userPoolId: ${{cf:${{self:custom.dataStack}}.UserPoolId}}
 
-    ## sibling stacks
-    ## TODO -> this doesn't belong here. it makes all services depend on webockset stack
-    ##wsEndpoint:   ${{cf:${{opt:stage}}-${{self:custom.projectName}}-websocket.ServiceEndpointWebsocket}}
 

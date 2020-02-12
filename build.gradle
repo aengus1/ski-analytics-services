@@ -122,6 +122,8 @@ subprojects {
     }
 
     task integrationTest(type: Test) {
+        systemProperty 'stage', System.getProperty('stage')
+
         if(project.name == 'acm_certificate_validator'){
             print("equal acv")
             return
