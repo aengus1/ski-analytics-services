@@ -81,6 +81,7 @@ functions:
     layers:
       - ${{cf:${{opt:stage}}-${{self:custom.projectName}}-common.UtilsLambdaLayerQualifiedArn}}
       - ${{cf:${{opt:stage}}-${{self:custom.projectName}}-common.CommonLambdaLayerQualifiedArn}}
+      - ${{cf:${{opt:stage}}-${{self:custom.projectName}}-common.CloudformationLambdaLayerQualifiedArn}}
   RocksetWorkspaceLambda:
     name: RocksetWorkspace
     handler: ski.crunch.cloudformation.rockset.RocksetWorkspaceLambda
@@ -90,6 +91,7 @@ functions:
     layers:
       - ${{cf:${{opt:stage}}-${{self:custom.projectName}}-common.UtilsLambdaLayerQualifiedArn}}
       - ${{cf:${{opt:stage}}-${{self:custom.projectName}}-common.CommonLambdaLayerQualifiedArn}}
+      - ${{cf:${{opt:stage}}-${{self:custom.projectName}}-common.CloudformationLambdaLayerQualifiedArn}}
   RocksetCollectionLambda:
     name: RocksetCollection
     handler: ski.crunch.cloudformation.rockset.RocksetCollectionLambda
@@ -99,6 +101,7 @@ functions:
     layers:
       - ${{cf:${{opt:stage}}-${{self:custom.projectName}}-common.UtilsLambdaLayerQualifiedArn}}
       - ${{cf:${{opt:stage}}-${{self:custom.projectName}}-common.CommonLambdaLayerQualifiedArn}}
+      - ${{cf:${{opt:stage}}-${{self:custom.projectName}}-common.CloudformationLambdaLayerQualifiedArn}}
 resources:
   Resources:
     SsmParamForRocksetApiKey:

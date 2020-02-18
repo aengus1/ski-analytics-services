@@ -1,6 +1,6 @@
 # Provisions the API stack, activity rest endpoints
 # Depends on authentication stack, common stack
-service: api
+service: api3
 
 plugins:
   - serverless-apigw-binary
@@ -28,6 +28,7 @@ provider:
       Resource: "arn:aws:s3:::${{self:custom.rawActivityBucketName}}/*"
     - Effect: Allow
       Action:
+        - s3:PutBucketNotification
         - s3:ListBucket
       Resource: "arn:aws:s3:::${{self:custom.rawActivityBucketName}}"
     - Effect: Allow
@@ -166,16 +167,17 @@ functions:
       s3ActivityBucketName: ${{self:custom.activityBucketName}}
       s3rawActivityBucketName: ${{self:custom.rawActivityBucketName}}
       activityTable: ${{self:custom.activityTable}}
-      userTable: ${{cf:${{self:custom.userTable}}
+      userTable: ${{self:custom.userTable}}
       currentStage: ${{opt:stage}}
       webSocketId: ${{cf:${{opt:stage}}-${{self:custom.projectName}}-websocket.ServiceEndpointWebsocket}}
+      ## not sure why but this is not creating the notification configuration.  added new resource RawActivityBucketLambdaNotification instead
     events:
-     - s3:
-       bucket: ${{self:custom.rawActivityBucketName}}
-       event: s3:ObjectCreated:*
-       existing: true
-       rules:
-           - suffix: .fit
+      - s3:
+        bucket: ${{self:custom.rawActivityBucketName}}
+        event: s3:ObjectCreated:*
+        rules:
+          - suffix: .fit
+        existing: true
     Tags: ${{self:custom.resourceTags}}
     layers:
       - ${{cf:${{opt:stage}}-${{self:custom.projectName}}-common.UtilsLambdaLayerQualifiedArn}}
@@ -183,7 +185,34 @@ functions:
 
 resources:
   Resources:
+#    NotificationConfiguration:
+#      Type: AWS::S3::Bucket::NotificationConfiguration
+#      Properties:
+#        LambdaConfigurations:
+#          - Event: "s3:objectCreated:*"
+#            Filter:
+#              S3Key:
+#                Rules:
+#                  - Name: "suffix"
+#                    Value: "*.fit"
+#            Function:
+#              Fn::GetAtt: ['ParseFitActivityLambdaLambdaFunction', 'Arn']
     ## Search Endpoint
+    RawBucketLambdaNotification:
+      Type: Custom::BucketNotification
+      Version: 1.0
+      DependsOn: ParseFitActivityLambdaLambdaFunction
+      Properties:
+        ServiceToken: ${{cf:${{opt:stage}}-${{self:custom.projectName}}-cf-bucket-notification.BucketNotificationLambdaArn}}
+        Name: ${{opt:stage}}-rawBucketNotification
+        Region: ${{self:provider.region}}
+        S3BucketName: ${{self:custom.rawActivityBucketName}}
+        LambdaFunctionArn:
+          Fn::Join: [':', ["arn:aws:lambda:${{self:provider.region}}", Ref: "AWS::AccountId", "function:${{self:service}}-${{opt:stage}}-ParseFitActivityLambda"]]
+        S3Event: "s3:ObjectCreated:*"
+        Filters:
+          - "suffix:*.fit"
+
 #    RocksetIntegration:
 #    Type: Custom::RocksetIntegration
 #    Version: 1.0
@@ -252,3 +281,14 @@ resources:
           SourceAccount:
             Ref: AWS::AccountId
           SourceArn: "arn:aws:s3:::${{self:custom.rawActivityBucketName}}"
+#    RawActivityBucketLambdaNotification:
+#      Type: "AWS::S3::Bucket::NotificationConfiguration"
+#      Properties:
+#        LambdaConfigurations:
+#          - Event: "s3:objectCreated:*"
+#            Filter:
+#              S3Key: "*.fit"
+#            Function:
+#              Fn::GetAtt:
+#                - ParseFitActivityLambdaLambdaFunction
+#                - Arn

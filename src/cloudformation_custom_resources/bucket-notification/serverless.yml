@@ -1,0 +1,75 @@
+service: cf-bucket-notification
+
+custom:
+  resourceTags:
+    - Key: "project"
+      Value: ${{self:custom.projectName}}
+    - Key: "stage"
+      Value: ${{opt:stage}}
+    - Key: "module"
+      Value: ${{self:service}}
+
+  ## common variables
+  projectName: ${{file(../../../infra/stacks/global.tfvars.json):project_name}}
+  domainName: ${{file(../../../infra/stacks/global.tfvars.json):domain_name}}
+  dataStack: ${{opt:stage}}-${{self:custom.projectName}}-data-var-stack
+
+  ## tables
+  userTable: ${{opt:stage}}-${{self:custom.projectName}}-userTable
+  activityTable:  ${{opt:stage}}-${{self:custom.projectName}}-Activity
+
+  ## buckets
+  activityBucketName: ${{opt:stage}}-activity-${{self:custom.projectName}}
+  rawActivityBucketName: ${{opt:stage}}-raw-activity-${{self:custom.projectName}}
+
+  ##cognito
+  userPoolArn: ${{cf:${{self:custom.dataStack}}.UserPoolArn}}
+  userPoolId: ${{cf:${{self:custom.dataStack}}.UserPoolId}}
+
+
+provider:
+  name: aws
+  runtime: java8
+  variableSyntax: "\\${{([ ~:a-zA-Z0-9._\\'\",\\-\\/\\(\\)]+?)}}" # notice the double quotes for yaml to ignore the escape characters!
+  region: ${{file(../../../infra/stacks/global.tfvars.json):primary_region}}
+  stage: ${{opt:stage}}
+  stackName: ${{opt:stage}}-${{self:custom.projectName}}-${{self:service}}
+  Tags: ${{self:custom.resourceTags}}
+  iamRoleStatements:
+    - Effect: Allow
+      Action:
+        - logs:CreateLogGroup
+        - logs:CreateLogStream
+        - logs:PutLogEvents
+      Resource: arn:aws:logs:*:*:*
+    - Effect: Allow
+      Action:
+        - s3:PutBucketNotification
+      Resource: arn:aws:s3:::*
+
+package:
+  artifact: build/distributions/${{self:service}}.zip
+
+functions:
+  BucketNotification:
+    name: BucketNotification
+    handler: ski.crunch.cloudformation.aws.BucketNotificationLambda
+    memorySize:  512
+    timeout: 240
+    environment:
+      awsAccountId:
+        Ref: AWS::AccountId
+    Tags: ${{self:custom.resourceTags}}
+    layers:
+      - ${{cf:${{opt:stage}}-${{self:custom.projectName}}-common.UtilsLambdaLayerQualifiedArn}}
+      - ${{cf:${{opt:stage}}-${{self:custom.projectName}}-common.CommonLambdaLayerQualifiedArn}}
+      - ${{cf:${{opt:stage}}-${{self:custom.projectName}}-common.CloudformationLambdaLayerQualifiedArn}}
+
+resources:
+  Outputs:
+    BucketNotificationLambdaArn:
+      Description: Bucket Notification Lambda Function ARN
+      Value: !GetAtt 'BucketNotificationLambdaFunction.Arn'
+      Export:
+        Name:
+          Fn::Join: ['',[ Ref: AWS::StackName,'-BucketNotificationFunction']]

@@ -5,7 +5,6 @@ import com.amazonaws.auth.AWSCredentialsProvider;
 import com.amazonaws.auth.DefaultAWSCredentialsProviderChain;
 import com.amazonaws.services.lambda.runtime.Context;
 import com.amazonaws.services.lambda.runtime.RequestHandler;
-import com.google.common.annotations.VisibleForTesting;
 import org.apache.log4j.Logger;
 import ski.crunch.utils.StackTraceUtil;
 
@@ -68,7 +67,7 @@ public abstract class AbstractCustomResourceLambda implements RequestHandler<Map
         return null;
     }
 
-    @VisibleForTesting
+
     boolean handle(CloudformationRequest request, Map<String, Object> input, Context context) {
         LOG.info("Executing");
         CloudformationResponse response = null;

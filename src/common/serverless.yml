@@ -32,4 +32,16 @@ layers:
     package:
       include:
         - src/main/java/*
+      exclude:
+        - src/main/java/ski/crunch/cloudformation/*
       artifact: build/distributions/${{self:custom.projectName}}-${{self:service}}.zip
+  cloudformation:
+    name: ${{opt:stage}}-layer-cloudformation
+    description: common dependencies for cloudformation custom resources
+    compatibleRuntimes:
+      - java8
+    retain: true
+    package:
+      include:
+        - src/main/java/ski/crunch/cloudformation/*
+      artifact: build/distributions/${{self:custom.projectName}}-cf.zip

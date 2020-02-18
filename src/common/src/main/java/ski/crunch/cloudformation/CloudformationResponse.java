@@ -30,7 +30,7 @@ public class CloudformationResponse {
                 .withRequestId(request.getRequestId())
                 .withLogicalResourceId(request.getLogicalResourceId())
                 .withPhysicalResourceId(request.getPhysicalResourceId())
-                .withStatus(CloudformationResponse.ResponseStatus.FAILED);
+                .withStatus(ResponseStatus.FAILED);
     }
 
     public static CloudformationResponse successResponse(CloudformationRequest request) {
@@ -38,7 +38,7 @@ public class CloudformationResponse {
                 .withStackId(request.getStackId())
                 .withRequestId(request.getRequestId())
                 .withLogicalResourceId(request.getLogicalResourceId())
-                .withStatus(CloudformationResponse.ResponseStatus.SUCCESS);
+                .withStatus(ResponseStatus.SUCCESS);
     }
 
     public CloudformationResponse withOutput(String key, String value){

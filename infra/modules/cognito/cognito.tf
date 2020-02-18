@@ -103,9 +103,9 @@ resource "aws_cognito_user_pool" "pool" {
     required = false
   }
   tags = {
-    project =  var.project_name
-    module =  "auth"
-    stage = var.stage
+    Project =  var.project_name
+    Module =  "auth"
+    Stage = var.stage
   }
 }
 

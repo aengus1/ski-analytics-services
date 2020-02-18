@@ -41,19 +41,20 @@ functions:
       - cognitoUserPool:
           pool: ${{opt:stage}}-${{self:custom.projectName}}-pool
           trigger: PostConfirmation
+          existing: true
     layers:
       - ${{cf:${{opt:stage}}-${{self:custom.projectName}}-common.UtilsLambdaLayerQualifiedArn}}
       - ${{cf:${{opt:stage}}-${{self:custom.projectName}}-common.CommonLambdaLayerQualifiedArn}}
 
 resources:
-  Resources:
-    OnCognitoConfirmationPermission:
-      Type: 'AWS::Lambda::Permission'
-      Properties:
-        Action: "lambda:InvokeFunction"
-        FunctionName: !GetAtt PostConfirmationLambdaFunction.Arn
-        Principal: "cognito-idp.amazonaws.com"
-        SourceArn: ${{self:custom.userPoolArn}}
+#  Resources:
+##    OnCognitoConfirmationPermission:
+##      Type: 'AWS::Lambda::Permission'
+##      Properties:
+##        Action: "lambda:InvokeFunction"
+##        FunctionName: !GetAtt PostConfirmationLambdaFunction.Arn
+##        Principal: "cognito-idp.amazonaws.com"
+##        SourceArn: ${{self:custom.userPoolArn}}
 
   Outputs:
     PostConfirmationArn:

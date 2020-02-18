@@ -59,11 +59,20 @@ dependencies {
 
 }
 
+task utilsJar(type: Jar) {
+    baseName = 'common'
+    includeEmptyDirs = false
+    from sourceSets.main.allJava
+    include "**\\ski\\crunch\\**"
+    exclude "**\\ski\\crunch\\cloudformation\\**"
+}
+
 // Task for building the zip file for upload
 task buildUtilsZip(type: Zip) {
     // set the base name of the zip file
     baseName = "crunch-ski-utils"
     from(fileTree("build/libs/common.jar")) {
+        excludes['ski/crunch/cloudformation/**']
         into('/java/lib')
     }
 }
@@ -74,7 +83,20 @@ task buildCommonZip(type: Zip) {
         excludes['ski/crunch/**']
         into('/java/lib')
     }
+}
 
+task cloudformationJar(type: Jar) {
+    baseName = 'cf-common'
+    includeEmptyDirs = false
+    from sourceSets.main.allJava
+    include "**\\ski\\crunch\\cloudformation\\**"
+}
+
+task buildCustomCloudformationZip(type: Zip) {
+    baseName = "crunch-ski-cf"
+    from(fileTree("build/libs/cf-common.jar")) {
+        into('/java/lib')
+    }
 }
 
 task testJar(type: Jar) {
@@ -85,8 +107,12 @@ task testJar(type: Jar) {
 artifacts {
     testClasses testJar
 }
+
+build.dependsOn utilsJar
+build.dependsOn cloudformationJar
 build.dependsOn buildUtilsZip
 build.dependsOn buildCommonZip
+build.dependsOn buildCustomCloudformationZip
 build.dependsOn testJar
 
 task wrapper(type: Wrapper) {

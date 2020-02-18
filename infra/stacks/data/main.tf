@@ -231,6 +231,28 @@ resource aws_s3_bucket "rawActivityBucket" {
   }
 }
 
+//resource aws_s3_bucket_policy "rawActivityBucketPolicy" {
+//
+//  bucket = aws_s3_bucket.rawActivityBucket
+//  policy = data.aws_iam_policy_document.rawActivityBucketPolicyDocument
+//}
+//
+//## resource based policy that allows lambda to read and write from buckets
+//
+//data "aws_iam_policy_document" "rawActivityBucketPolicyDocument" {
+//  statement {
+//    sid = "rawActivityBucketPolicy"
+//    actions = ["s3:GetObject", "s3:PutObject", "s3:ListBucket"]
+//    effect = "Allow"
+//
+//    principals {
+//      type        = "Service"
+//      identifiers = ["lambda.amazonaws.com"]
+//    }
+//    resources = ["${aws_s3_bucket.rawActivityBucket.arn}/*"]
+//  }
+//}
+
 ### CF stack to export variables for use in serverless.yml (s)
 resource aws_cloudformation_stack "output_stack" {
 

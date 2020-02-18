@@ -4,7 +4,7 @@ allprojects {
 
     repositories {
         maven {
-            url "http://download.osgeo.org/webdav/geotools/"
+            url "https://download.osgeo.org/webdav/geotools/"
         }
 
         mavenCentral()
@@ -14,7 +14,7 @@ allprojects {
         }
 
         maven {
-            url "http://maven.geotoolkit.org/"
+            url "https://maven.geotoolkit.org/"
         }
     }
 
@@ -124,10 +124,6 @@ subprojects {
     task integrationTest(type: Test) {
         systemProperty 'stage', System.getProperty('stage')
 
-        if(project.name == 'acm_certificate_validator'){
-            print("equal acv")
-            return
-        }
         useJUnitPlatform()
         // explicitly include or exclude tests
         include 'ski/crunch/**'

@@ -39,7 +39,7 @@ sourceSets {
 
 
 dependencies {
-   compile(
+   implementation(
             'org.scala-lang:scala-library:2.11.12',            
             'com.amazonaws:aws-java-sdk-cognitoidp:1.11.442',
             'com.amazonaws:aws-java-sdk-ssm:1.11.163',
@@ -85,12 +85,12 @@ integrationTest.mustRunAfter test
  * Builds the zip file for upload to AWS
  */
 task buildZip(type: Zip) {
-    baseName = "api"
+    archiveBaseName = "api3"
     from compileJava
     from compileScala
     from processResources
     into('lib') {
-        from ([ configurations.compile ] - [ configurations.compileOnly ])
+        from ([ configurations.compileClasspath ] - [ configurations.compileOnly ])
     }
 }
 

@@ -113,10 +113,11 @@ class ActivityTests {
         Client client = ClientBuilder.newClient();
         WebTarget target = client.target(endpoint).path("activity");
 
-
+        //construct put activity request
         InputStream is = ActivityTests.class.getResourceAsStream("/interval_test.fit");
         Entity payload = Entity.entity(is, MediaType.valueOf("application/fit"));
 
+        //send request to endpoint
         Response response = target.request(MediaType.APPLICATION_OCTET_STREAM_TYPE)
                 .accept("application/fit")
                 .header("Content-Type", "application/json")
@@ -124,6 +125,7 @@ class ActivityTests {
                 .header("Authorization", this.accessKey)
                 .buildPut(payload).invoke();
 
+        //parse response
         String result = response.readEntity(String.class);
         LOG.info("success result: " + result);
         assertEquals(200, response.getStatus());
