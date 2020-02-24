@@ -1,6 +1,6 @@
 # Provisions the API stack, activity rest endpoints
 # Depends on authentication stack, common stack
-service: api3
+service: api
 
 plugins:
   - serverless-apigw-binary
@@ -211,7 +211,7 @@ resources:
           Fn::Join: [':', ["arn:aws:lambda:${{self:provider.region}}", Ref: "AWS::AccountId", "function:${{self:service}}-${{opt:stage}}-ParseFitActivityLambda"]]
         S3Event: "s3:ObjectCreated:*"
         Filters:
-          - "suffix:*.fit"
+          - "suffix:.fit"
 
 #    RocksetIntegration:
 #    Type: Custom::RocksetIntegration

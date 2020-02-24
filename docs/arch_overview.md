@@ -57,7 +57,16 @@ only available in us-east-1, as such the shared stack can only be deployed in us
   but needs a lot more analysis.
 
 ## Infrastructure view
-
-
+ ###Overview
+ 
+ sls, tf, cf, gradle
+ variable passing
+ dependencies
+ 
+ ![Stack Diagram](images/stack_diagram.svg)
+ 
+ stack diagram
+ 
+ 
 
 3. Code view

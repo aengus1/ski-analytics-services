@@ -4,7 +4,6 @@ import com.amazonaws.auth.profile.ProfileCredentialsProvider;
 import org.apache.log4j.Logger;
 import ski.crunch.aws.DynamoFacade;
 import ski.crunch.model.UserSettingsItem;
-import ski.crunch.utils.NotFoundException;
 
 import java.io.File;
 import java.io.IOException;
@@ -14,7 +13,13 @@ public class IntegrationTestHelper {
 
     public static final String AWS_PROFILE = "backend_dev";
 
-    public final static String[] MODULES = {"api", "auth", "websocket"};
+    public final static String[] MODULES = {
+            "api",
+            "auth",
+            "websocket",
+            "cloudformation_custom_resources/rockset",
+            "cloudformation_custom_resources/bucket-notification"
+    };
     private static final Logger LOG = Logger.getLogger(IntegrationTestHelper.class);
     private static final String INTEGRATION_TEST_USERNAME = "integration_test_user@crunch.ski";
     private static final String INTEGRATION_TEST_PASSWORD = "abC123Def!";
@@ -31,7 +36,7 @@ public class IntegrationTestHelper {
 
     public IntegrationTestHelper() throws IOException {
         this.stage = System.getProperty("stage");
-        if(this.stage == null || this.stage==""){
+        if(this.stage == null || this.stage.equals("")){
             this.stage = "dev";
         }
 
@@ -42,6 +47,7 @@ public class IntegrationTestHelper {
         this.prefix = this.stage+"-"+projectName+"-";
         this.dataStackName = prefix+"data-var-stack";
         credentialsProvider = new ProfileCredentialsProvider(AWS_PROFILE);
+
         cfHelper = new CloudFormationHelper(credentialsProvider, region);
         authHelper = new AuthenticationHelper(
                 cfHelper.getStackOutput(dataStackName, "UserPoolId"),
@@ -88,7 +94,7 @@ public class IntegrationTestHelper {
         String dataStackName = this.prefix+"data-var-stack";
         DynamoFacade dynamo = new DynamoFacade(
                 this.region,
-                cfHelper.getStackOutput(dataStackName, "UserTableName"),
+                "dev-crunch-ski-userTable",
                 credentialsProvider
         );
 
@@ -133,7 +139,7 @@ public class IntegrationTestHelper {
         String authStack = this.stage+"-"+projectName+"-auth";
         DynamoFacade dynamo = new DynamoFacade(
                 this.region,
-                cfHelper.getStackOutput(authStack, "UserTableName"),
+               "dev-crunch-ski-userTable",
                 credentialsProvider
         );
 
@@ -157,6 +163,10 @@ public class IntegrationTestHelper {
         return serverlessStateMap.get(stackName);
     }
 
+    public ServerlessState getServerlessStateWithoutPrefix(String stackName) {
+        return serverlessStateMap.get(this.stage+"-"+this.projectName+"-"+stackName);
+    }
+
 
     private void readServerlessState() throws IOException {
 
@@ -166,19 +176,7 @@ public class IntegrationTestHelper {
             String buildPath = IntegrationTestHelper.class.getProtectionDomain().getCodeSource().getLocation().getPath();
             LOG.debug("build path = " + buildPath);
             int i = 0;
-            File srcDirFile = new File(IntegrationTestHelper.class.getResource("../").getFile());
-
-            while (srcDirFile.getParent() != null && !srcDirFile.getParent().endsWith("/src") && i < 20) {
-                i++;
-                srcDirFile = srcDirFile.getParentFile();
-            }
-            if (i == 20 || srcDirFile.getPath().equals("/")) {
-                LOG.error("can't find source directory");
-                throw new NotFoundException("Error locating module source directory");
-            }
-
-            srcDirFile = srcDirFile.getParentFile();
-            LOG.debug("src dir file: " + srcDirFile.getPath());
+            File srcDirFile = TestUtils.getSrcDirPath();
 
 
             boolean executedFromTestSuite = (buildPath.contains("/*/build/classes/java/test/")

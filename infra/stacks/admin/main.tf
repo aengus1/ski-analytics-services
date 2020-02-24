@@ -2,6 +2,15 @@ variable "project_name" {
   type = string
   description = "name of project"
 }
+variable "lock-read-capacity" {
+  type = number
+  description = "dynamodb read capacity for lock table"
+}
+
+variable "lock-write-capacity" {
+  type = number
+  description = "dynamodb write capacity for lock table"
+}
 
 provider "aws" {
   profile = "default"
@@ -31,8 +40,8 @@ resource "aws_s3_bucket" "terraform-state-storage-s3" {
 resource "aws_dynamodb_table" "dynamodb-terraform-state-lock" {
   name = "${var.project_name}-terraform-state-lock-dynamo"
   hash_key = "LockID"
-  read_capacity = 20
-  write_capacity = 20
+  read_capacity = var.lock-read-capacity
+  write_capacity = var.lock-write-capacity
 
   attribute {
     name = "LockID"

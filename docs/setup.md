@@ -50,3 +50,25 @@ TODO ->
  5.  setup credentials as a new profile called sls-dev `serverless config credentials -p aws -k <key> -s <secret> -n sls-dev`
  6.  setup continuous integration [CI setup](ci_setup.md)
  
+
+## Shared Stack
+
+Need to add and verify an email address manually.
+Add an identity policy to SES that allows cognito to access it
+```{
+       "Version": "2012-10-17",
+       "Statement": [
+           {
+               "Sid": "stmnt1234567891234",
+               "Effect": "Allow",
+               "Principal": {
+                   "Service": "cognito-idp.amazonaws.com"
+               },
+               "Action": [
+                   "ses:SendRawEmail",
+                   "ses:SendEmail"
+               ],
+               "Resource": "arn:aws:ses:us-east-1:556823078430:identity/mccullough-solutions.ca"
+           }
+       ]
+   }```

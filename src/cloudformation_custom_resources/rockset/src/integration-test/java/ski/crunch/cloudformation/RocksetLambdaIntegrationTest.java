@@ -9,16 +9,16 @@ import ski.crunch.testhelpers.ServerlessState;
 import java.io.IOException;
 import java.util.*;
 
-import static org.junit.jupiter.api.Assertions.assertTrue;
-import static org.junit.jupiter.api.Assertions.fail;
+import static org.junit.jupiter.api.Assertions.*;
 
 @TestMethodOrder(MethodOrderer.OrderAnnotation.class)
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
 public class RocksetLambdaIntegrationTest {
 
 
-    private ServerlessState cfStackSS;
+    private ServerlessState cfRocksetServerlessState;
     private Map<String, Object> parameters;
+    private String physicalIntegrationResourceId;
     private final static String INTEGRATION_NAME = "integration-test-integration";
 
     /**
@@ -27,9 +27,10 @@ public class RocksetLambdaIntegrationTest {
      */
     public RocksetLambdaIntegrationTest() throws IOException {
         IntegrationTestHelper testHelper = new IntegrationTestHelper();
-        this.cfStackSS = testHelper.getServerlessState(IntegrationTestHelper.IncludeModules.cloudformation.getStackName());
+        this.cfRocksetServerlessState = testHelper.getServerlessStateWithoutPrefix("cloudformation_custom_resources/rockset");
 
-        String apiSSM = cfStackSS.getRootNode()
+
+        String apiSSM = cfRocksetServerlessState.getRootNode()
                 .path("service")
                 .path("resources")
                 .path("Resources")
@@ -39,7 +40,7 @@ public class RocksetLambdaIntegrationTest {
 
 
         parameters = new HashMap<>();
-        parameters.put("Region", cfStackSS.getRegion());
+        parameters.put("Region", cfRocksetServerlessState.getRegion());
         parameters.put("Stage", "staging");
         parameters.put("RequestType", "CREATE");
         parameters.put("ResponseURL", "http://myResponseUrl");
@@ -61,7 +62,7 @@ public class RocksetLambdaIntegrationTest {
 
 
         HashMap<String, Object> resourceProperties = new HashMap<>();
-        resourceProperties.put("Region", cfStackSS.getRegion());
+        resourceProperties.put("Region", cfRocksetServerlessState.getRegion());
         resourceProperties.put("Name", INTEGRATION_NAME);
         resourceProperties.put("ApiKeySSM", apiSSM);
         //SET THESE
@@ -77,7 +78,6 @@ public class RocksetLambdaIntegrationTest {
     }
 
 
-    @Disabled()
     @Order(1)
     @Test()
     public void testRocksetCreation() throws Exception {
@@ -86,6 +86,7 @@ public class RocksetLambdaIntegrationTest {
             CloudformationRequest request = new CloudformationRequest(parameters);
             RocksetIntegrationLambda rocksetIntegrationLambda = new RocksetIntegrationLambda();
             CloudformationResponse response = rocksetIntegrationLambda.doCreate(request);
+            this.physicalIntegrationResourceId = response.getPhysicalResourceId();
             System.out.println("Create response message: " + response.getData().get("Message"));
 
             assertTrue(response.getData().get("Message").asText().contains("created_at"));
@@ -153,14 +154,16 @@ public class RocksetLambdaIntegrationTest {
 //    }
 //
 
-    @Disabled()
     @Order(4)
     @Test()
     public void testRocksetDeletion() throws IOException {
 
+        assertNotNull(physicalIntegrationResourceId);
         parameters.put("RequestType", "DELETE");
+        parameters.put("PhysicalResourceId", physicalIntegrationResourceId);
         //parameters.put("PhysicalResourceId", "0012345678");
         CloudformationRequest request = new CloudformationRequest(parameters);
+
         try {
             RocksetIntegrationLambda rocksetIntegrationLambda = new RocksetIntegrationLambda();
             CloudformationResponse response = rocksetIntegrationLambda.doDelete(request);
@@ -175,7 +178,7 @@ public class RocksetLambdaIntegrationTest {
 
     @AfterAll()
     public void tearDown() {
-        IAMFacade iamFacade = new IAMFacade(this.cfStackSS.getRegion());
+        IAMFacade iamFacade = new IAMFacade(this.cfRocksetServerlessState.getRegion());
 
         // ensure iam resources are properly deleted
         try{

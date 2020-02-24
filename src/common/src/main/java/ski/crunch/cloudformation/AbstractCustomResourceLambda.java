@@ -114,9 +114,11 @@ public abstract class AbstractCustomResourceLambda implements RequestHandler<Map
      */
     protected Object sendResponse(CloudformationResponse response, Context context, Map<String, Object> input) {
 
+        LOG.info("response = "  + response);
         String responseUrl = (String) input.get("ResponseURL");
 
         try {
+
 
             String output = response.build();
             LOG.info("Response: " + output);

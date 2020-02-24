@@ -49,9 +49,16 @@ public class BucketNotificationLambda extends AbstractCustomResourceLambda {
 
     @Override
     public CloudformationResponse doUpdate(CloudformationRequest request) throws Exception {
-        doDelete(request);
-        CloudformationResponse response =  doCreate(request);
-        response.withOutput("Message", "successfully updated bucket notification");
+        CloudformationResponse response = doCreate(request);
+        if (response.getStatus().equals(CloudformationResponse.ResponseStatus.SUCCESS)) {
+            CloudformationResponse deleteResponse = doDelete(request);
+            if (deleteResponse.getStatus().equals(CloudformationResponse.ResponseStatus.SUCCESS)) {
+                response.withOutput("Message", "Successfully updated bucket notification");
+            } else {
+                response.withOutput("Message", "Failed to remove previous version of bucket notification");
+            }
+        }
+
         return response;
     }
 

@@ -37,24 +37,43 @@ functions:
     handler: ski.crunch.auth.AddUserSettings
     environment:
       userTable: ${{self:custom.userTable}}
-    events:
-      - cognitoUserPool:
-          pool: ${{opt:stage}}-${{self:custom.projectName}}-pool
-          trigger: PostConfirmation
-          existing: true
+#    events:
+#      - cognitoUserPool:
+#          pool: ${{opt:stage}}-${{self:custom.projectName}}-pool
+#          trigger: PostConfirmation
+#          existing: true
     layers:
       - ${{cf:${{opt:stage}}-${{self:custom.projectName}}-common.UtilsLambdaLayerQualifiedArn}}
       - ${{cf:${{opt:stage}}-${{self:custom.projectName}}-common.CommonLambdaLayerQualifiedArn}}
 
 resources:
-#  Resources:
-##    OnCognitoConfirmationPermission:
-##      Type: 'AWS::Lambda::Permission'
-##      Properties:
-##        Action: "lambda:InvokeFunction"
-##        FunctionName: !GetAtt PostConfirmationLambdaFunction.Arn
-##        Principal: "cognito-idp.amazonaws.com"
-##        SourceArn: ${{self:custom.userPoolArn}}
+  Resources:
+    UserPoolPostConfirmationTrigger:
+      Type: Custom::UserPoolTrigger
+      Version: 1.0
+      DependsOn: PostConfirmationLambdaFunction
+      Properties:
+        ServiceToken: ${{cf:${{opt:stage}}-${{self:custom.projectName}}-cf-userpool-trigger.UserPoolTriggerFunctionArn}}
+        Name: ${{opt:stage}}-userPoolTrigger
+        Region: ${{self:provider.region}}
+        TriggerType: PostConfirmation
+        UserPool: ${{self:custom.userPoolId}}
+        LambdaFunctionArn:
+          Fn::Join: [':', ["arn:aws:lambda:${{self:provider.region}}", Ref: "AWS::AccountId", "function:${{self:service}}-${{opt:stage}}-PostConfirmationLambdaFunction"]]
+
+
+    OnCognitoConfirmationPermission:
+      Type: 'AWS::Lambda::Permission'
+      DependsOn: PostConfirmationLambdaFunction
+      Properties:
+        Action: lambda:InvokeFunction
+        FunctionName:
+          !GetAtt PostConfirmationLambdaFunction.Arn
+        Principal: cognito-idp.amazonaws.com
+        SourceArn:
+          Fn::Join: [':', ["arn:aws:cognito-idp", "${{self:provider.region}}", Ref: "AWS::AccountId", "userpool/*"]]
+
+
 
   Outputs:
     PostConfirmationArn:

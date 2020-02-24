@@ -45,7 +45,7 @@ class ActivityTests {
     @BeforeAll
     void retrieveAccessKey() throws Exception {
         this.helper = new IntegrationTestHelper();
-        helper.signup();
+        helper.signup().orElseThrow(() -> new RuntimeException("Error occurred signing up"));
         this.accessKey = helper.retrieveAccessToken();
         LOG.info("ACCESS KEY: " + this.accessKey);
 

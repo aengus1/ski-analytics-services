@@ -10,6 +10,11 @@ terraform {
     dynamodb_table = "crunch-ski-terraform-state-lock-dynamo"
     encrypt = false
   }
+
+    required_providers {
+      aws = "~> 2.47.0"
+    }
+
 }
 
 provider "aws" {
@@ -52,11 +57,6 @@ variable "secondary_region" {
 variable "profile" {
   type = string
   description = "aws profile to use"
-}
-
-variable "post_confirmation_lambda_arn" {
-  type = string
-  description = "arn of the post confirmation lambda function"
 }
 
 variable "stage" {
@@ -131,7 +131,6 @@ variable "activity_table_prevent_deletion" {
 module "cognito" {
   source = "../../modules/cognito"
   domain_name = var.domain_name
-  post_confirmation_lambda = var.post_confirmation_lambda_arn
   project_name = var.project_name
   ses_region = var.secondary_region
   ses_domain_arn = data.terraform_remote_state.shared.outputs.ses_domain_arn
@@ -206,7 +205,7 @@ resource aws_ssm_parameter "weatherApiKey" {
 }
 
 resource aws_ssm_parameter "locationIqKey" {
-  name = "${var.stage}-locationiq-api-key"
+  name = "${var.stage}-location-api-key"
   type = "String"
   value ="abc123"
   description = "SSM parameter for storing location iq geocoding api key"
@@ -371,7 +370,7 @@ resource aws_cloudformation_stack "output_stack" {
       "Description" : "user pool  id",
       "Value": "${module.cognito.userpool-id}",
       "Export": {
-      "Name" : "${var.stage}-UserPoolId"
+      "Name" : "UserPoolId"
         }
       }
   }

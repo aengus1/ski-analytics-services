@@ -114,6 +114,7 @@ public class RocksetService {
             throws RocksetApiException {
 
         try {
+            logger.debug("Delete integration: physical resource id: " + request.getPhysicalResourceId());
             String nameSuffix = "_" + request.getPhysicalResourceId().substring(request.getPhysicalResourceId().length() - 8);
             String roleName = resourceProperties.getName() + nameSuffix;
 

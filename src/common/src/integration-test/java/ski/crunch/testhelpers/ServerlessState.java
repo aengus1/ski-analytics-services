@@ -38,4 +38,8 @@ public class ServerlessState {
                StandardCharsets.UTF_8).collect(Collectors.joining("\n"));
        return new ServerlessState(body);
    }
+
+   public String getStackName(){
+       return rootNode.path("service").path("service").asText();
+   }
 }

@@ -22,7 +22,7 @@ provider:
         - dynamodb:UpdateItem
         - dynamodb:DeleteItem
       Resource: arn:aws:dynamodb:${{self:provider.region}}:*:table/${{self:custom.userTable}}
-  websocketsApiName: ${{opt:stage}}-${self:custom.projectName}}-ws
+  websocketsApiName: ${{opt:stage}}-${{self:custom.projectName}}-ws
   websocketsApiRouteSelectionExpression: $request.body.action
 
 custom: ${{file(../../config/custom.yml)}}
