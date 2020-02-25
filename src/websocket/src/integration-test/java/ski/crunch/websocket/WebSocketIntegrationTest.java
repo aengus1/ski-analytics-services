@@ -66,7 +66,7 @@ import static org.junit.jupiter.api.Assertions.*;
         System.out.println("CONNECTION TARGET = " + new URI(endpoint+"?token=" + jwtToken));
         testClient = new TestClient(new URI(endpoint+"?token=" + jwtToken), headers );
         testClient.connectBlocking();
-        //Thread.currentThread().sleep(5000l);
+        Thread.currentThread().sleep(5000l);
         assertTrue(testClient.opened);
     }
 

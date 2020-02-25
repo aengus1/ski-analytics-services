@@ -58,8 +58,7 @@ resources:
         Region: ${{self:provider.region}}
         TriggerType: PostConfirmation
         UserPool: ${{self:custom.userPoolId}}
-        LambdaFunctionArn:
-          Fn::Join: [':', ["arn:aws:lambda:${{self:provider.region}}", Ref: "AWS::AccountId", "function:${{self:service}}-${{opt:stage}}-PostConfirmationLambdaFunction"]]
+        LambdaFunctionArn: !GetAtt 'PostConfirmationLambdaFunction.Arn'
 
 
     OnCognitoConfirmationPermission:
@@ -69,9 +68,9 @@ resources:
         Action: lambda:InvokeFunction
         FunctionName:
           !GetAtt PostConfirmationLambdaFunction.Arn
-        Principal: cognito-idp.amazonaws.com
-        SourceArn:
-          Fn::Join: [':', ["arn:aws:cognito-idp", "${{self:provider.region}}", Ref: "AWS::AccountId", "userpool/*"]]
+        Principal: "cognito-idp.amazonaws.com"
+        SourceArn: ${{self:custom.userPoolArn}}
+        #  Fn::Join: [':', ["arn:aws:cognito-idp", "${{self:provider.region}}", Ref: "AWS::AccountId", "userpool/*"]]
 
 
 

@@ -119,7 +119,7 @@ public class IntegrationTestHelper {
         String dataStackName =this.prefix+"data-var-stack";
         DynamoFacade dynamo = new DynamoFacade(
                 this.region,
-                cfHelper.getStackOutput(dataStackName, "UserTableName"),
+                "dev-crunch-ski-userTable",
                 credentialsProvider
         );
 

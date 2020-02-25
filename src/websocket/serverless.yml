@@ -39,9 +39,10 @@ functions:
     events:
       - websocket:
           route: $connect
-          authorizer: wsAuth
-          identitySource:
-            - 'route.request.querystring.token'
+          authorizer:
+            name: wsAuth
+            identitySource:
+              - 'route.request.querystring.token'
       - websocket:
           route: $disconnect
       - websocket:
@@ -55,10 +56,8 @@ functions:
   wsAuth:
     handler: ski.crunch.websocket.CustomWebSocketAuthorizer
     environment:
-      appClientId:
-        ${{cf:${{self:custom.dataStack}}.UserPoolClientId}}
-      userPoolId:
-        ${{cf:${{self:custom.dataStack}}.UserPoolArn}}
+      appClientId: ${{self:custom.userPoolClientId}}
+      userPoolId: ${{self:custom.userPoolId}}
       region: ${{self:provider.region}}
     layers:
       - ${{cf:${{opt:stage}}-${{self:custom.projectName}}-common.UtilsLambdaLayerQualifiedArn}}

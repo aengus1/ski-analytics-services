@@ -25,5 +25,6 @@
     ##cognito
     userPoolArn: ${{cf:${{self:custom.dataStack}}.UserPoolArn}}
     userPoolId: ${{cf:${{self:custom.dataStack}}.UserPoolId}}
+    userPoolClientId: ${{cf:${{self:custom.dataStack}}.UserPoolClientId}}
 
 
