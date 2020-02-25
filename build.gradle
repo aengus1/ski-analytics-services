@@ -1,6 +1,15 @@
+buildscript {
+    ext {
+        gradleVersion = "6.0.1"
+        jacksonVersion = "2.10.2"
+        awsVersion = "1.11.728"
+
+    }
+}
 allprojects {
     apply plugin: 'java'
     apply plugin: 'jacoco'
+
 
     repositories {
         maven {
@@ -17,7 +26,6 @@ allprojects {
             url "https://maven.geotoolkit.org/"
         }
     }
-
 }
 
 
@@ -25,8 +33,8 @@ subprojects {
     sourceSets {
         integrationTest {
             java {
-                compileClasspath += sourceSets.main.output + sourceSets.test.output + configurations.testCompileOnly + configurations.integrationTestCompile
-                runtimeClasspath += sourceSets.main.output + sourceSets.test.output + configurations.integrationTestRuntime
+                compileClasspath += sourceSets.main.output + sourceSets.test.output + configurations.testCompileClasspath + configurations.integrationTestCompileClasspath
+                runtimeClasspath += sourceSets.main.output + sourceSets.test.output + configurations.integrationTestRuntimeClasspath
                 srcDirs = ['src/integration-test/java']
             }
             resources.srcDir file('src/integration-test/resources')
@@ -41,11 +49,11 @@ subprojects {
 
     dependencies {
         testImplementation(
-                'org.scalatest:scalatest_2.11:3.0.0',
-                'org.junit.jupiter:junit-jupiter-api:5.4.0',
-                'org.glassfish.jersey.core:jersey-client:2.5.1',
-                'com.fasterxml.jackson.core:jackson-core:2.9.7',
-                'org.mockito:mockito-junit-jupiter:2.23.0'
+                "org.scalatest:scalatest_2.11:3.0.0",
+                "org.junit.jupiter:junit-jupiter-api:5.4.0",
+                "org.glassfish.jersey.core:jersey-client:2.5.1",
+                "com.fasterxml.jackson.core:jackson-core:${jacksonVersion}",
+                "org.mockito:mockito-junit-jupiter:2.23.0"
         )
         testRuntimeOnly(
                 'org.junit.jupiter:junit-jupiter-engine:5.4.0'
@@ -194,10 +202,9 @@ task jacocoRootReport(type: JacocoReport) {
     }
     doFirst {
         subprojects.findAll { subproject ->
-            ((subproject.pluginManager.hasPlugin('java')
+            (subproject.pluginManager.hasPlugin('java')
                     || subproject.pluginManager.hasPlugin('scala')
                     || subproject.pluginManager.hasPlugin('java-library'))
-            && subproject.name !='acm_certificate_validator')
         }.each { subproject ->
             additionalSourceDirs files((Set<File>) subproject.sourceSets.main.allSource.srcDirs)
             additionalClassDirs ((FileCollection) subproject.sourceSets.main.output)

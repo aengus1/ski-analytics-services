@@ -13,7 +13,6 @@ include 'activity'
 include 'auth'
 include 'common'
 include 'websocket'
-include 'cloudformation'
 
 include 'rockset'
 include 'userpool-trigger'
@@ -23,8 +22,6 @@ project(":activity").projectDir = file("src/api")
 project(":auth").projectDir = file("src/auth")
 project(":common").projectDir = file("src/common")
 project(":websocket").projectDir = file("src/websocket")
-
-
 
 // Cloudformation custom resources
 project(":rockset").projectDir = file("src/cloudformation_custom_resources/rockset")

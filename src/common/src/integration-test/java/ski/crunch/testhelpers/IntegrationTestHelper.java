@@ -130,7 +130,7 @@ public class IntegrationTestHelper {
 
             dynamo.getMapper().delete(userSettings);
         } catch (Exception e) {
-            LOG.error("Error writing user settings", e);
+            LOG.error("Error removing user settings", e);
 
         }
     }
