@@ -1,0 +1,30 @@
+    ## Common variables to pass into custom section of serverless.yml
+    #always pass stage into scripts
+
+    resourceTags:
+      - Key: "project"
+        Value: ${{self:custom.projectName}}
+      - Key: "stage"
+        Value: ${{opt:stage}}
+      - Key: "module"
+        Value: ${{self:service}}
+
+    ## common variables
+    projectName: ${{file(../../infra/stacks/global.tfvars.json):project_name}}
+    domainName: ${{file(../../infra/stacks/global.tfvars.json):domain_name}}
+    dataStack: ${{opt:stage}}-${{self:custom.projectName}}-data-var-stack
+
+    ## tables
+    userTable: ${{opt:stage}}-${{self:custom.projectName}}-userTable
+    activityTable:  ${{opt:stage}}-${{self:custom.projectName}}-Activity
+
+    ## buckets
+    activityBucketName: ${{opt:stage}}-activity-${{self:custom.projectName}}
+    rawActivityBucketName: ${{opt:stage}}-raw-activity-${{self:custom.projectName}}
+
+    ##cognito
+    userPoolArn: ${{cf:${{self:custom.dataStack}}.UserPoolArn}}
+    userPoolId: ${{cf:${{self:custom.dataStack}}.UserPoolId}}
+    userPoolClientId: ${{cf:${{self:custom.dataStack}}.UserPoolClientId}}
+
+

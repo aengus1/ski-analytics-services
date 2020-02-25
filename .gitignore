@@ -20,6 +20,9 @@ src/**/out/*
 # Serverless directories
 .serverless
 
+## Terraform state
+*.tfstate
+
 # Idea
 .idea/
 ski-analytics-services.iml

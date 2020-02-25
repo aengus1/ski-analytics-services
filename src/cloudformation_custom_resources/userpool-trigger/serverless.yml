@@ -1,0 +1,66 @@
+service: cf-userpool-trigger
+
+custom:
+  resourceTags:
+    - Key: "project"
+      Value: ${{self:custom.projectName}}
+    - Key: "stage"
+      Value: ${{opt:stage}}
+    - Key: "module"
+      Value: ${{self:service}}
+
+    ## common variables
+  projectName: ${{file(../../../infra/stacks/global.tfvars.json):project_name}}
+  domainName: ${{file(../../../infra/stacks/global.tfvars.json):domain_name}}
+  dataStack: ${{opt:stage}}-${{self:custom.projectName}}-data-var-stack
+
+
+provider:
+  name: aws
+  runtime: java8
+  variableSyntax: "\\${{([ ~:a-zA-Z0-9._\\'\",\\-\\/\\(\\)]+?)}}" # notice the double quotes for yaml to ignore the escape characters!
+  region: ${{file(../../../infra/stacks/global.tfvars.json):primary_region}}
+  stage: ${{opt:stage}}
+  stackName: ${{opt:stage}}-${{self:custom.projectName}}-${{self:service}}
+  Tags: ${{self:custom.resourceTags}}
+  iamRoleStatements:
+    - Effect: Allow
+      Action:
+        - logs:CreateLogGroup
+        - logs:CreateLogStream
+        - logs:PutLogEvents
+      Resource: arn:aws:logs:*:*:*
+    - Effect: Allow
+      Action:
+        - cognito-idp:UpdateUserPool
+        - cognito-idp:DescribeUserPool
+      Resource: arn:aws:cognito-idp:${{self:provider.region}}:*:userpool/*
+
+
+package:
+  artifact: build/distributions/${{self:service}}.zip
+
+functions:
+  UserPoolTriggerLambda:
+    name: UserPoolTrigger
+    handler: ski.crunch.cloudformation.aws.UserPoolTriggerLambda
+    memorySize:  512
+    timeout: 240
+    environment:
+      awsAccountId:
+        Ref: AWS::AccountId
+    Tags: ${{self:custom.resourceTags}}
+    layers:
+      - ${{cf:${{opt:stage}}-${{self:custom.projectName}}-common.UtilsLambdaLayerQualifiedArn}}
+      - ${{cf:${{opt:stage}}-${{self:custom.projectName}}-common.CommonLambdaLayerQualifiedArn}}
+      - ${{cf:${{opt:stage}}-${{self:custom.projectName}}-common.CloudformationLambdaLayerQualifiedArn}}
+
+resources:
+  Outputs:
+    UserPoolTriggerFunctionArn:
+      Description: Userpool Trigger Lambda Function ARN
+      Value: !GetAtt 'UserPoolTriggerLambdaLambdaFunction.Arn'
+      Export:
+        Name:
+          Fn::Join: ['',[ Ref: AWS::StackName,'-UserPoolTriggerFunction']]
+

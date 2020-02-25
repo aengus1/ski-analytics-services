@@ -56,14 +56,15 @@ public class PutActivityHandler implements RequestHandler<Map<String, Object>, A
     public ApiGatewayResponse handleRequest(Map<String, Object> input, Context context) {
 
         //debugging to print classpath for layer issue...
-        ClassLoader cl = ClassLoader.getSystemClassLoader();
+        if( LOG.isDebugEnabled()) {
+            ClassLoader cl = ClassLoader.getSystemClassLoader();
 
-        URL[] urls = ((URLClassLoader)cl).getURLs();
-
-        for(URL url: urls){
-            System.out.println(url.getFile());
+            URL[] urls = ((URLClassLoader) cl).getURLs();
+            LOG.debug("printing classpath: ");
+            for (URL url : urls) {
+                LOG.debug(url.getFile());
+            }
         }
-
         LOG.debug("PutActivityHandler called");
         return activityService.saveRawActivity(input,context);
     }

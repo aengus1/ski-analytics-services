@@ -1,0 +1,111 @@
+service: cftest
+
+custom:
+  currentStage: ${{opt:stage, self:provider.stage}}
+  domainName: crunch.ski
+  resourceTags:
+    -
+      Key: "project"
+      Value: "ski-analytics"
+    -
+      Key: "module"
+      Value: "api"
+
+provider:
+  name: aws
+  runtime: java8
+  variableSyntax: "\\${{([ ~:a-zA-Z0-9._\\'\",\\-\\/\\(\\)]+?)}}" # notice the double quotes for yaml to ignore the escape characters!
+  region: ca-central-1
+  stage: staging
+  stackName: ${{self:custom.currentStage}}-ski-analytics-cftest-stack
+
+package:
+  artifact: build/distributions/cftest.zip
+
+functions:
+resources:
+  Resources:
+    RocksetIntegration:
+      Type: Custom::RocksetIntegration
+      Version: 1.0
+      Properties:
+        ServiceToken: ${{cf:${{self:custom.currentStage}}-ski-analytics-cloudformation-stack.RocksetIntegrationFunctionArn}}
+        Name: ${{self:custom.currentStage}}-searchIntegration
+        Region: ${{self:provider.region}}
+        Stage: ${{self:custom.currentStage}}
+        ApiKeySSM: ${{self:custom.currentStage}}-rockset-api-key
+        ExternalId: "7f8a915dfc74e3b5aea8f37f34f1d869726a8aca5c6a8e14d36a4825db25d628"
+        RocksetAccountId: "318212636800"
+        IntegrationType: "dynamodb"
+        AccessibleResources:
+          - "arn:aws:dynamodb:*:*:table/*"
+          - "arn:aws:dynamodb:*:*:table/*/stream/*"
+        Tags: ${{self:custom.resourceTags}}
+    RocksetWorkspace:
+      Type: Custom::RocksetWorkspace
+      Version: 1.0
+      Properties:
+        ServiceToken: ${{cf:${{self:custom.currentStage}}-ski-analytics-cloudformation-stack.RocksetWorkspaceFunctionArn}}
+        Name: testWorkspace
+        Description: part of test stack
+        Region:  ${{self:provider.region}}
+        ApiKeySSM:  ${{self:custom.currentStage}}-rockset-api-key
+    RocksetCollection:
+      Type: Custom::RocksetCollection
+      Version: 1.0
+      Properties:
+        ServiceToken: ${{cf:${{self:custom.currentStage}}-ski-analytics-cloudformation-stack.RocksetCollectionFunctionArn}}
+        Name: testCollection3
+        Description: part of test stack
+        Workspace:
+          Fn::GetAtt:
+            - RocksetWorkspace
+            - WorkspaceName
+        Region: ${{self:provider.region}}
+        Stage: ${{self:custom.currentStage}}
+        IntegrationName:
+          Fn::GetAtt:
+            - RocksetIntegration
+            - IntegrationName
+        ApiKeySSM: ${{self:custom.currentStage}}-rockset-api-key
+        DynamoDbDataSource:
+          DynamoDbAwsRegion:  ${{self:provider.region}}
+          DynamoDbTableName:  ${{self:custom.currentStage}}-crunch-Activity
+          DynamoDbRcu: 1
+  Outputs:
+    CreateIntegrationMessage:
+      Value:
+        Fn::GetAtt:
+          - RocksetIntegration
+          - Message
+    IntegrationName:
+      Value:
+        Fn::GetAtt:
+          - RocksetIntegration
+          - IntegrationName
+      Export:
+        Name: 'RocksetIntegrationName3'
+    CreateWorkspaceMessage:
+      Value:
+        Fn::GetAtt:
+          - RocksetWorkspace
+          - Message
+    WorkspaceName:
+      Value:
+        Fn::GetAtt:
+          - RocksetWorkspace
+          - WorkspaceName
+      Export:
+        Name:  'RocksetWorkspaceName3'
+    CreateCollectionMessage:
+      Value:
+        Fn::GetAtt:
+          - RocksetCollection
+          - Message
+    CollectionName:
+      Value:
+        Fn::GetAtt:
+          - RocksetCollection
+          - CollectionName
+      Export:
+        Name:  'RocksetCollectionName3'

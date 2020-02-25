@@ -41,7 +41,8 @@ public class AddUserSettings implements RequestStreamHandler {
             } catch (Exception ex) {
                 LOG.error("Error parsing stage from function name." + context.getFunctionName() + "  Expecting authentication-<stage>-<restofname>");
             }
-            String tableName = stage + "-crunch-User";
+            String tableName = System.getenv("userTable");
+        System.out.println("user table =  " + tableName);
 
             try {
                 this.credentialsProvider = DefaultAWSCredentialsProviderChain.getInstance();

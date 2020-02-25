@@ -45,22 +45,22 @@ class ActivityTests {
     @BeforeAll
     void retrieveAccessKey() throws Exception {
         this.helper = new IntegrationTestHelper();
-        helper.signup();
+        helper.signup().orElseThrow(() -> new RuntimeException("Error occurred signing up"));
         this.accessKey = helper.retrieveAccessToken();
         LOG.info("ACCESS KEY: " + this.accessKey);
 
 
-        String authRegion = helper.getServerlessState(IntegrationTestHelper.IncludeModules.auth.getStackName()).getRegion();
+        String authRegion = helper.getServerlessState(helper.getPrefix()+"auth").getRegion();
         ProfileCredentialsProvider profileCredentialsProvider = helper.getCredentialsProvider();
         System.out.println("auth region = " + authRegion);
         System.out.println("profile creds = " + profileCredentialsProvider.toString());
         this.s3 = new S3Facade(authRegion, profileCredentialsProvider);
-        this.dynamo = new DynamoFacade(helper.getServerlessState(IntegrationTestHelper.IncludeModules.api.getStackName()).getRegion(), helper.getActivityTable(),
+        this.dynamo = new DynamoFacade(helper.getServerlessState(helper.getPrefix()+"api").getRegion(), helper.getActivityTable(),
                 helper.getCredentialsProvider());
 
         this.activityDAO =  new ActivityDAO(dynamo, helper.getActivityTable());
         this.activityService = new ActivityService(s3, helper.getCredentialsProvider(), dynamo
-                , helper.getServerlessState(IntegrationTestHelper.IncludeModules.api.getStackName()).getRegion(),
+                , helper.getServerlessState(helper.getPrefix()+"api").getRegion(),
                 helper.getRawActivityBucketName(), helper.getActivityBucketName(),
                 helper.getActivityTable(), helper.getUserTable());
 
@@ -113,10 +113,11 @@ class ActivityTests {
         Client client = ClientBuilder.newClient();
         WebTarget target = client.target(endpoint).path("activity");
 
-
+        //construct put activity request
         InputStream is = ActivityTests.class.getResourceAsStream("/interval_test.fit");
         Entity payload = Entity.entity(is, MediaType.valueOf("application/fit"));
 
+        //send request to endpoint
         Response response = target.request(MediaType.APPLICATION_OCTET_STREAM_TYPE)
                 .accept("application/fit")
                 .header("Content-Type", "application/json")
@@ -124,6 +125,7 @@ class ActivityTests {
                 .header("Authorization", this.accessKey)
                 .buildPut(payload).invoke();
 
+        //parse response
         String result = response.readEntity(String.class);
         LOG.info("success result: " + result);
         assertEquals(200, response.getStatus());

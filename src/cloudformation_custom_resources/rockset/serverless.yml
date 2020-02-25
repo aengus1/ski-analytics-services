@@ -1,0 +1,132 @@
+service: cf-rockset
+
+custom:
+  resourceTags:
+    - Key: "project"
+      Value: ${{self:custom.projectName}}
+    - Key: "stage"
+      Value: ${{opt:stage}}
+    - Key: "module"
+      Value: ${{self:service}}
+
+    ## common variables
+  projectName: ${{file(../../../infra/stacks/global.tfvars.json):project_name}}
+  domainName: ${{file(../../../infra/stacks/global.tfvars.json):domain_name}}
+  dataStack: ${{opt:stage}}-${{self:custom.projectName}}-data-var-stack
+
+    ## tables
+  userTable: ${{opt:stage}}-${{self:custom.projectName}}-userTable
+  activityTable:  ${{opt:stage}}-${{self:custom.projectName}}-Activity
+  rocksetAccountId: 318212636800
+  rocksetExternalId: 7f8a915dfc74e3b5aea8f37f34f1d869726a8aca5c6a8e14d36a4825db25d628
+
+provider:
+  name: aws
+  runtime: java8
+  variableSyntax: "\\${{([ ~:a-zA-Z0-9._\\'\",\\-\\/\\(\\)]+?)}}" # notice the double quotes for yaml to ignore the escape characters!
+  region: ${{file(../../../infra/stacks/global.tfvars.json):primary_region}}
+  stage: ${{opt:stage}}
+  stackName: ${{opt:stage}}-${{self:custom.projectName}}-${{self:service}}
+  Tags: ${{self:custom.resourceTags}}
+  iamRoleStatements:
+    - Effect: Allow
+      Action:
+        - logs:CreateLogGroup
+        - logs:CreateLogStream
+        - logs:PutLogEvents
+      Resource: arn:aws:logs:*:*:*
+    - Effect: Allow
+      Action:
+        - ssm:GetParameter
+      Resource: arn:aws:ssm:${{self:provider.region}}:*:parameter/*-*-api-key
+    - Effect: Allow
+      Action:
+        - iam:TagRole
+        - iam:DeletePolicy
+        - iam:CreateRole
+        - iam:AttachRolePolicy
+        - iam:DetachRolePolicy
+        - iam:DeleteRolePolicy
+        - iam:ListAttachedRolePolicies
+        - iam:ListAttachedUserPolicies
+        - iam:ListRolePolicies
+        - iam:GetRole
+        - iam:GetPolicy
+        - iam:DeleteRole
+        - iam:CreatePolicy
+        - iam:GetUser
+        - iam:GetRolePolicy
+      Resource:
+        - arn:aws:iam::*:policy/*
+        - arn:aws:iam::*:role/*
+    - Effect: Allow
+      Action:
+        - iam:ListPolicies
+      Resource:
+        - arn:aws:iam::*:role/*
+
+package:
+  artifact: build/distributions/${{self:service}}.zip
+
+functions:
+  RocksetIntegrationLambda:
+    name: RocksetIntegration
+    handler: ski.crunch.cloudformation.rockset.RocksetIntegrationLambda
+    memorySize:  512
+    timeout: 240
+    environment:
+      awsAccountId:
+        Ref: AWS::AccountId
+    Tags: ${{self:custom.resourceTags}}
+    layers:
+      - ${{cf:${{opt:stage}}-${{self:custom.projectName}}-common.UtilsLambdaLayerQualifiedArn}}
+      - ${{cf:${{opt:stage}}-${{self:custom.projectName}}-common.CommonLambdaLayerQualifiedArn}}
+      - ${{cf:${{opt:stage}}-${{self:custom.projectName}}-common.CloudformationLambdaLayerQualifiedArn}}
+  RocksetWorkspaceLambda:
+    name: RocksetWorkspace
+    handler: ski.crunch.cloudformation.rockset.RocksetWorkspaceLambda
+    memorySize:  512
+    timeout: 240
+    Tags: ${{self:custom.resourceTags}}
+    layers:
+      - ${{cf:${{opt:stage}}-${{self:custom.projectName}}-common.UtilsLambdaLayerQualifiedArn}}
+      - ${{cf:${{opt:stage}}-${{self:custom.projectName}}-common.CommonLambdaLayerQualifiedArn}}
+      - ${{cf:${{opt:stage}}-${{self:custom.projectName}}-common.CloudformationLambdaLayerQualifiedArn}}
+  RocksetCollectionLambda:
+    name: RocksetCollection
+    handler: ski.crunch.cloudformation.rockset.RocksetCollectionLambda
+    memorySize:  512
+    timeout: 240
+    Tags: ${{self:custom.resourceTags}}
+    layers:
+      - ${{cf:${{opt:stage}}-${{self:custom.projectName}}-common.UtilsLambdaLayerQualifiedArn}}
+      - ${{cf:${{opt:stage}}-${{self:custom.projectName}}-common.CommonLambdaLayerQualifiedArn}}
+      - ${{cf:${{opt:stage}}-${{self:custom.projectName}}-common.CloudformationLambdaLayerQualifiedArn}}
+resources:
+  Resources:
+    SsmParamForRocksetApiKey:
+      Type: "AWS::SSM::Parameter"
+      Properties:
+        Name: "${{opt:stage}}-rockset-api-key"
+        Type: "String"
+        Value: "abc123"
+        Description: "SSM Parameter for storing rockset api key"
+  Outputs:
+    RocksetIntegrationFunctionArn:
+      Description: Rockset Integration Lambda Function ARN
+      Value: !GetAtt 'RocksetIntegrationLambdaLambdaFunction.Arn'
+      Export:
+        Name:
+          Fn::Join: ['',[ Ref: AWS::StackName,'-RocksetIntegrationFunction']]
+    RocksetWorkspaceFunctionArn:
+      Description: Rockset Workspace Lambda Function ARN
+      Value: !GetAtt 'RocksetWorkspaceLambdaLambdaFunction.Arn'
+      Export:
+        Name:
+          Fn::Join: ['',[ Ref: AWS::StackName,'-RocksetWorkspaceFunction']]
+    RocksetCollectionFunctionArn:
+      Description: Rockset Collection Lambda Function ARN
+      Value: !GetAtt 'RocksetCollectionLambdaLambdaFunction.Arn'
+      Export:
+        Name:
+          Fn::Join: ['',[ Ref: AWS::StackName,'-RocksetCollectionFunction']]

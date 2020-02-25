@@ -9,16 +9,22 @@
 
 rootProject.name = 'ski-analytics-services'
 
-include 'api'
+include 'activity'
 include 'auth'
 include 'common'
 include 'websocket'
-include 'cloudformation'
-include 'cftest'
 
-project(":api").projectDir = file("src/api")
+include 'rockset'
+include 'userpool-trigger'
+include 'bucket-notification'
+
+project(":activity").projectDir = file("src/api")
 project(":auth").projectDir = file("src/auth")
 project(":common").projectDir = file("src/common")
 project(":websocket").projectDir = file("src/websocket")
-project(":cloudformation").projectDir = file("src/cloudformation")
-project(":cftest").projectDir = file("src/cftest")
+
+// Cloudformation custom resources
+project(":rockset").projectDir = file("src/cloudformation_custom_resources/rockset")
+project(":bucket-notification").projectDir = file("src/cloudformation_custom_resources/bucket-notification")
+project(":userpool-trigger").projectDir = file("src/cloudformation_custom_resources/userpool-trigger")
+

@@ -1,0 +1,60 @@
+apply plugin: 'java'
+
+dependencies {
+
+    compileOnly(project(':common'))  //exclude from packaged artifact -> provided at runtime by lambda container
+    implementation(
+            "com.rockset:rockset-java:0.6.3",
+            "com.amazonaws:aws-java-sdk-kinesis:${awsVersion}",
+            "com.amazonaws:aws-java-sdk-redshift:${awsVersion}",
+            "com.amazonaws:aws-java-sdk-iam:${awsVersion}",
+            "com.fasterxml.jackson.core:jackson-core:${jacksonVersion}",
+            "com.fasterxml.jackson.core:jackson-databind:${jacksonVersion}",
+            "com.fasterxml.jackson.core:jackson-annotations:${jacksonVersion}",
+            "org.apache.httpcomponents:httpclient:4.5.5",
+            "com.amazonaws:aws-lambda-java-log4j:1.0.0"
+    )
+
+    integrationTestImplementation(
+            "com.amazonaws:aws-java-sdk-cloudformation:${awsVersion}",
+            "org.junit.jupiter:junit-jupiter-api:5.4.0",
+            "org.glassfish.jersey.core:jersey-client:2.5.1",
+            "com.fasterxml.jackson.core:jackson-core:${jacksonVersion}",
+            project(path: ':common', configuration: 'testClasses'),
+            project(':common')
+    )
+    integrationTestRuntimeOnly(
+            "org.junit.jupiter:junit-jupiter-engine:5.4.0",
+            project(':common')
+
+    )
+
+    testImplementation(
+            project(':common'),
+            "org.mockito:mockito-junit-jupiter:2.23.0"
+    )
+
+}
+test {
+    include 'ski/crunch/**'
+}
+
+
+// Task for building the zip file for upload
+task buildZip(type: Zip) {
+
+    // set the base name of the zip file
+    archiveBaseName = "${project.name}"
+    from compileJava
+    from processResources
+    into('lib') {
+        from([configurations.runtimeClasspath] - [configurations.compileOnly])
+
+    }
+}
+
+build.dependsOn buildZip
+
+task wrapper(type: Wrapper) {
+    gradleVersion = "${gradleVersion}"
+}

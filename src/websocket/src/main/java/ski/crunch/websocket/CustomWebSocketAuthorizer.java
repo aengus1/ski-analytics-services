@@ -233,7 +233,9 @@ public class CustomWebSocketAuthorizer implements RequestHandler<Map<String, Obj
         if (httpGet == null) {
             this.httpGet = new HttpGet();
         }
-        jwksEndpoint = URI.create("https://cognito-idp." + region + ".amazonaws.com/" + userPoolId + "/.well-known/jwks.json");
+        String jwksStr = "https://cognito-idp." + region + ".amazonaws.com/" + userPoolId + "/.well-known/jwks.json";
+        LOGGER.debug("JWKS Endpoint: " + jwksStr);
+        jwksEndpoint = URI.create(jwksStr);
         httpGet.setURI(jwksEndpoint);
         try (CloseableHttpResponse response = httpClient.execute(httpGet)) {
             HttpEntity entity = response.getEntity();

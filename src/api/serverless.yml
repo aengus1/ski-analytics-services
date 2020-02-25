@@ -2,38 +2,15 @@
 # Depends on authentication stack, common stack
 service: api
 
-
 plugins:
   - serverless-apigw-binary
-
-custom:
-  currentStage: ${{opt:stage, self:provider.stage}}
-  domainName: crunch.ski
-  resourceTags:
-              -
-                Key: "project"
-                Value: "ski-analytics"
-              -
-                Key: "module"
-                Value: "api"
-  activityBucketName: "activity-${{self:custom.currentStage}}.${{self:custom.domainName}}"
-  rawActivityBucketName: "activity-raw-${{self:custom.currentStage}}.${{self:custom.domainName}}"
-  userPoolArn:
-    Fn::ImportValue:
-      Fn::Join: ['', UserPoolArn]
-  activityTable:  ${{self:custom.currentStage}}-crunch-Activity
-  wsEndpoint:   ${{cf:${{self:custom.currentStage}}-ski-analytics-websocket-stack.ServiceEndpointWebsocket}}
-  apigwBinary:
-    types:
-      - '*/*'
-
 provider:
   name: aws
   runtime: java8
   variableSyntax: "\\${{([ ~:a-zA-Z0-9._\\'\",\\-\\/\\(\\)]+?)}}" # notice the double quotes for yaml to ignore the escape characters!
-  region: ca-central-1
-  stage: staging
-  stackName: ${{self:custom.currentStage}}-ski-analytics-api-stack
+  region: ${{file(../../infra/stacks/global.tfvars.json):primary_region}}
+  stackName: ${{opt:stage}}-${{self:custom.projectName}}-${{self:service}}
+  stage: ${{opt:stage}}
   iamRoleStatements:
     - Effect: Allow
       Action:
@@ -51,6 +28,7 @@ provider:
       Resource: "arn:aws:s3:::${{self:custom.rawActivityBucketName}}/*"
     - Effect: Allow
       Action:
+        - s3:PutBucketNotification
         - s3:ListBucket
       Resource: "arn:aws:s3:::${{self:custom.rawActivityBucketName}}"
     - Effect: Allow
@@ -61,7 +39,7 @@ provider:
         - dynamodb:PutItem
         - dynamodb:UpdateItem
         - dynamodb:DeleteItem
-      Resource: "arn:aws:dynamodb:${{opt:region, self:provider.region}}:*:table/${{self:custom.activityTable}}"
+      Resource: "arn:aws:dynamodb:${{self:provider.region}}:*:table/${{self:custom.activityTable}}"
     - Effect: Allow
       Action:
         - dynamodb:Query
@@ -70,29 +48,57 @@ provider:
         - dynamodb:PutItem
         - dynamodb:UpdateItem
         - dynamodb:DeleteItem
-      Resource: "arn:aws:dynamodb:${{opt:region, self:provider.region}}:*:table/${{cf:${{self:custom.currentStage}}-ski-analytics-authentication-stack.UserTableName}}"
+      Resource: "arn:aws:dynamodb:${{self:provider.region}}:*:table/${{self:custom.userTable}}"
     - Effect: Allow
       Action:
         - ssm:GetParameter
         - ssm:GetParameters
-      Resource: arn:aws:ssm:${{opt:region, self:provider.region}}:*:parameter/*-*-api-key
+      Resource: arn:aws:ssm:${{self:provider.region}}:*:parameter/*-*-api-key
     - Effect: Allow
       Action:
         - execute-api:ManageConnections
         - execute-api:Invoke
       Resource: arn:aws:execute-api:${{self:provider.region}}:*:*/*
 
+custom:
+    resourceTags:
+      - Key: "project"
+        Value: ${{self:custom.projectName}}
+      - Key: "stage"
+        Value: ${{opt:stage}}
+      - Key: "module"
+        Value: ${{self:service}}
+
+    ## common variables
+    projectName: ${{file(../../infra/stacks/global.tfvars.json):project_name}}
+    domainName: ${{file(../../infra/stacks/global.tfvars.json):domain_name}}
+    dataStack: ${{opt:stage}}-${{self:custom.projectName}}-data-var-stack
+
+    ## tables
+    userTable: ${{opt:stage}}-${{self:custom.projectName}}-userTable
+    activityTable:  ${{opt:stage}}-${{self:custom.projectName}}-Activity
+
+    ## buckets
+    activityBucketName: ${{opt:stage}}-activity-${{self:custom.projectName}}
+    rawActivityBucketName: ${{opt:stage}}-raw-activity-${{self:custom.projectName}}
+
+    ##cognito
+    userPoolArn: ${{cf:${{self:custom.dataStack}}.UserPoolArn}}
+    apigwBinary:
+     types:
+       - '*/*'
+
 package:
-  artifact: build/distributions/api.zip
+  artifact: build/distributions/${{self:service}}.zip
 
 functions:
   GetActivityLambda:
     handler: ski.crunch.activity.GetActivityHandler
     environment:
       s3ActivityBucketName: ${{self:custom.activityBucketName}}
-      activityTable: ${{self:custom.currentStage}}-crunch-Activity
-      userTable: ${{cf:${{self:custom.currentStage}}-ski-analytics-authentication-stack.UserTableName}}
-      currentStage: ${{self:custom.currentStage}}
+      activityTable: ${{self:custom.activityTable}}
+      userTable: ${{cf:${{self:custom.userTable}}
+      currentStage: ${{opt:stage}}
     events:
       - http:
           path: activity/{id}
@@ -115,27 +121,22 @@ functions:
               paths:
                 id: true
           authorizer:
-            arn: arn:aws:cognito-idp:ca-central-1:556823078430:userpool/ca-central-1_bcb6X1Muk
-              #  the ARN issue: https://github.com/serverless/serverless/issues/3212
-              #  should be fixed soon
-
-              ## had to hardcode this due to an issue with arns https://github.com/serverless/serverless/issues/3129
-              ### note - to access this function you need to include an Authorizer header on the request, containing the
-              ### Id token - not the access token
+            arn: ${{self:custom.userPoolArn}}
+            ## TODO -> ADDRESS THIS..
             ### SKIAPI-13 -> the value of ARN field here is now being referenced by ServerlessState class, parsing this for
             ### use in test harness
     Tags: ${{self:custom.resourceTags}}
     layers:
-      - ${{cf:${{self:custom.currentStage}}-ski-analytics-common-stack.UtilsLambdaLayerQualifiedArn}}
-      - ${{cf:${{self:custom.currentStage}}-ski-analytics-common-stack.CommonLambdaLayerQualifiedArn}}
+      - ${{cf:${{opt:stage}}-${{self:custom.projectName}}-common.UtilsLambdaLayerQualifiedArn}}
+      - ${{cf:${{opt:stage}}-${{self:custom.projectName}}-common.CommonLambdaLayerQualifiedArn}}
 
   PutActivityLambda:
     handler: ski.crunch.activity.PutActivityHandler
     environment:
       s3RawActivityBucketName: ${{self:custom.rawActivityBucketName}}
-      activityTable: ${{self:custom.currentStage}}-crunch-Activity
-      userTable: ${{cf:${{self:custom.currentStage}}-ski-analytics-authentication-stack.UserTableName}}
-      currentStage: ${{self:custom.currentStage}}
+      activityTable: ${{self:custom.activityTable}}
+      userTable: ${{cf:${{self:custom.userTable}}
+      currentStage: ${{opt:stage}}
     events:
      - http:
         path: activity
@@ -152,13 +153,11 @@ functions:
             - Access-Control-Allow-Authorization
             - Access-Control-Allow-Origin
         authorizer:
-          arn: arn:aws:cognito-idp:ca-central-1:556823078430:userpool/ca-central-1_bcb6X1Muk
-            #Fn::Join: ['', ['arn:aws:cognito-idp:','${{self:provider.region}}-','${{self:custom.accountId}}','${{cf:${{self:custom.currentStage}}-ski-analytics-authentication-stack.UserPoolArn}}']]
-           # arn:aws:cognito-idp:ca-central-1:556823078430:userpool/ca-central-1_bcb6X1Muk
+          arn:  ${{self:custom.userPoolArn}}
     Tags: ${{self:custom.resourceTags}}
     layers:
-      - ${{cf:${{self:custom.currentStage}}-ski-analytics-common-stack.UtilsLambdaLayerQualifiedArn}}
-      - ${{cf:${{self:custom.currentStage}}-ski-analytics-common-stack.CommonLambdaLayerQualifiedArn}}
+      - ${{cf:${{opt:stage}}-${{self:custom.projectName}}-common.UtilsLambdaLayerQualifiedArn}}
+      - ${{cf:${{opt:stage}}-${{self:custom.projectName}}-common.CommonLambdaLayerQualifiedArn}}
 
   ParseFitActivityLambda:
     handler: ski.crunch.activity.ParseFitActivityLambda
@@ -167,23 +166,53 @@ functions:
     environment:
       s3ActivityBucketName: ${{self:custom.activityBucketName}}
       s3rawActivityBucketName: ${{self:custom.rawActivityBucketName}}
-      activityTable: ${{self:custom.currentStage}}-crunch-Activity
-      userTable: ${{cf:${{self:custom.currentStage}}-ski-analytics-authentication-stack.UserTableName}}
-      currentStage: ${{self:custom.currentStage}}
-      webSocketId: ${{self:custom.wsEndpoint}}
+      activityTable: ${{self:custom.activityTable}}
+      userTable: ${{self:custom.userTable}}
+      currentStage: ${{opt:stage}}
+      webSocketId: ${{cf:${{opt:stage}}-${{self:custom.projectName}}-websocket.ServiceEndpointWebsocket}}
+      ## not sure why but this is not creating the notification configuration.  added new resource RawActivityBucketLambdaNotification instead
     events:
-     - s3: ForRawActivity
-       event: s3:ObjectCreated:*
-       rules:
-           - suffix: .fit
+      - s3:
+        bucket: ${{self:custom.rawActivityBucketName}}
+        event: s3:ObjectCreated:*
+        rules:
+          - suffix: .fit
+        existing: true
     Tags: ${{self:custom.resourceTags}}
     layers:
-      - ${{cf:${{self:custom.currentStage}}-ski-analytics-common-stack.UtilsLambdaLayerQualifiedArn}}
-      - ${{cf:${{self:custom.currentStage}}-ski-analytics-common-stack.CommonLambdaLayerQualifiedArn}}
+      - ${{cf:${{opt:stage}}-${{self:custom.projectName}}-common.UtilsLambdaLayerQualifiedArn}}
+      - ${{cf:${{opt:stage}}-${{self:custom.projectName}}-common.CommonLambdaLayerQualifiedArn}}
 
 resources:
   Resources:
+#    NotificationConfiguration:
+#      Type: AWS::S3::Bucket::NotificationConfiguration
+#      Properties:
+#        LambdaConfigurations:
+#          - Event: "s3:objectCreated:*"
+#            Filter:
+#              S3Key:
+#                Rules:
+#                  - Name: "suffix"
+#                    Value: "*.fit"
+#            Function:
+#              Fn::GetAtt: ['ParseFitActivityLambdaLambdaFunction', 'Arn']
     ## Search Endpoint
+    RawBucketLambdaNotification:
+      Type: Custom::BucketNotification
+      Version: 1.0
+      DependsOn: ParseFitActivityLambdaLambdaFunction
+      Properties:
+        ServiceToken: ${{cf:${{opt:stage}}-${{self:custom.projectName}}-cf-bucket-notification.BucketNotificationLambdaArn}}
+        Name: ${{opt:stage}}-rawBucketNotification
+        Region: ${{self:provider.region}}
+        S3BucketName: ${{self:custom.rawActivityBucketName}}
+        LambdaFunctionArn:
+          Fn::Join: [':', ["arn:aws:lambda:${{self:provider.region}}", Ref: "AWS::AccountId", "function:${{self:service}}-${{opt:stage}}-ParseFitActivityLambda"]]
+        S3Event: "s3:ObjectCreated:*"
+        Filters:
+          - "suffix:.fit"
+
 #    RocksetIntegration:
 #    Type: Custom::RocksetIntegration
 #    Version: 1.0
@@ -240,18 +269,6 @@ resources:
         ResponseType: DEFAULT_4XX
         RestApiId:
           Ref: 'ApiGatewayRestApi'
-    S3BucketForActivity:
-      Type: AWS::S3::Bucket
-      Properties:
-#        AccessControl: PublicRead
-        BucketName: ${{self:custom.activityBucketName}}
-        Tags: ${{self:custom.resourceTags}}
-    S3BucketForRawActivity:
-      Type: AWS::S3::Bucket
-      Properties:
-#        AccessControl: PublicRead
-        BucketName: ${{self:custom.rawActivityBucketName}}
-        Tags: ${{self:custom.resourceTags}}
     ParseFitActivityLambdaLambdaPermissionS3BucketForRawActivityS3:
         Type: "AWS::Lambda::Permission"
         Properties:
@@ -264,75 +281,14 @@ resources:
           SourceAccount:
             Ref: AWS::AccountId
           SourceArn: "arn:aws:s3:::${{self:custom.rawActivityBucketName}}"
-    DynamoTableForActivity:
-      Type: AWS::DynamoDB::Table
-      DeletionPolicy: Retain
-      Properties:
-        AttributeDefinitions:
-          - AttributeName: id
-            AttributeType: S
-          - AttributeName: date
-            AttributeType: S
-#          - AttributeName: user_id
-#            AttributeType: string
-        KeySchema:
-          - AttributeName: id
-            KeyType: HASH
-          - AttributeName: date
-            KeyType: RANGE
-        ProvisionedThroughput:
-          ReadCapacityUnits: 1
-          WriteCapacityUnits: 1
-        TableName: ${{self:custom.currentStage}}-crunch-Activity
-        Tags: ${{self:custom.resourceTags}}
-    SsmParamForWeatherApiKey:
-      Type: "AWS::SSM::Parameter"
-      Properties:
-        Name: "${{self:custom.currentStage}}-weather-api-key"
-        Type: "String"
-        Value: "abc123"
-        Description: "SSM Parameter for storing dark sky weather api key"
-    SsmParamForLocationIqKey:
-      Type: "AWS::SSM::Parameter"
-      Properties:
-        Name: "${{self:custom.currentStage}}-location-api-key"
-        Type: "String"
-        Value: "abc123"
-        Description: "SSM Parameter for storing location iq geocoding api key"
-#  Outputs:
-#    CreateIntegrationMessage:
-#      Value:
-#        Fn::GetAtt:
-#          - RocksetIntegration
-#          - Message
-#    IntegrationName:
-#      Value:
-#        Fn::GetAtt:
-#          - RocksetIntegration
-#          - IntegrationName
-#      Export:
-#        Name: 'RocksetIntegrationName'
-#    CreateWorkspaceMessage:
-#      Value:
-#        Fn::GetAtt:
-#          - RocksetWorkspace
-#          - Message
-#    WorkspaceName:
-#      Value:
-#        Fn::GetAtt:
-#          - RocksetWorkspace
-#          - WorkspaceName
-#      Export:
-#        Name:  'RocksetWorkspaceName'
-#    CreateCollectionMessage:
-#      Value:
-#        Fn::GetAtt:
-#          - RocksetCollection
-#          - Message
-#    CollectionName:
-#      Value:
-#        Fn::GetAtt:
-#          - RocksetCollection
-#          - CollectionName
-#      Export:
-#        Name:  'RocksetCollectionName'
+#    RawActivityBucketLambdaNotification:
+#      Type: "AWS::S3::Bucket::NotificationConfiguration"
+#      Properties:
+#        LambdaConfigurations:
+#          - Event: "s3:objectCreated:*"
+#            Filter:
+#              S3Key: "*.fit"
+#            Function:
+#              Fn::GetAtt:
+#                - ParseFitActivityLambdaLambdaFunction
+#                - Arn

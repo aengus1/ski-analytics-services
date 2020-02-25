@@ -1,30 +1,30 @@
-service: common # NOTE: update this with your service name
-
+## Stack provides two lambda layers:  utils (common code), and common (common dependencies)
+## No dependencies on other stacks
+service: common
 
 provider:
   name: aws
   runtime: java8
-  region: ca-central-1
-  stage: staging
+  region: ${{file(../../infra/stacks/global.tfvars.json):primary_region}}
+  stage: ${{opt:stage}}
   variableSyntax: "\\${{([ ~:a-zA-Z0-9._\\'\",\\-\\/\\(\\)]+?)}}" # notice the double quotes for yaml to ignore the escape characters!
-  stackName: ${{self:custom.currentStage}}-ski-analytics-common-stack
+  stackName: ${{opt:stage}}-${{self:custom.projectName}}-${{self:service}}
 
-custom:
-  currentStage: ${{opt:stage, self:provider.stage}}
+custom: ${{file(../../config/custom.yml)}}
 
 layers:
   utils:
-    name: ${{self:custom.currentStage}}-layer-utils
+    name: ${{opt:stage}}-layer-utils
     description: domain classes for object model and utilities
     compatibleRuntimes:
       - java8
     retain: true
     package:
-      include: # Specify the directories and files which should be included in the deployment package
+      include: 
         - src/main/java/ski/crunch/**
-      artifact: build/distributions/ski-crunch-utils.zip
+      artifact: build/distributions/${{self:custom.projectName}}-utils.zip
   common:
-    name: ${{self:custom.currentStage}}-layer-common
+    name: ${{opt:stage}}-layer-${{self:service}}
     description: common dependencies for all services
     compatibleRuntimes:
       - java8
@@ -32,18 +32,16 @@ layers:
     package:
       include:
         - src/main/java/*
-      artifact: build/distributions/ski-crunch-common.zip
-
-
-
-#resources:
-#  Outputs:
-#    UtilsLayerVersion:
-#      Value:  ${{cf:${{self:provider.stackName}}.UtilsLambdaLayerQualifiedArn}}
-#      Export:
-#        Name: UtilsLayerVersion
-#    CommonLayerVersion:
-#      Value:
-#        Ref: CommonLambdaLayer
-#      Export:
-#        Name: CommonLayerVersion
+      exclude:
+        - src/main/java/ski/crunch/cloudformation/*
+      artifact: build/distributions/${{self:custom.projectName}}-${{self:service}}.zip
+  cloudformation:
+    name: ${{opt:stage}}-layer-cloudformation
+    description: common dependencies for cloudformation custom resources
+    compatibleRuntimes:
+      - java8
+    retain: true
+    package:
+      include:
+        - src/main/java/ski/crunch/cloudformation/*
+      artifact: build/distributions/${{self:custom.projectName}}-cf.zip

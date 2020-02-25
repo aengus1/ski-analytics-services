@@ -41,7 +41,6 @@ import static com.amazonaws.util.Base64.decode;
 import static com.amazonaws.util.Base64.encode;
 import static java.util.Base64.getEncoder;
 
-;
 
 /**
  * Private class for SRP client side math.
@@ -178,6 +177,7 @@ AWSCredentials awsCreds = new ProfileCredentialsProvider(profileName).getCredent
         request = createSignupRequest(this.clientId, username, password);
         try {
             AWSCognitoIdentityProvider cognitoIdentityProvider = buildIdpWithCreds(profileName);
+
             SignUpResult result = cognitoIdentityProvider.signUp(request);
            /// System.out.println("signup result =" + result.getUserSub());
 

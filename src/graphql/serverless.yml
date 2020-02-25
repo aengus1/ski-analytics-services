@@ -1,18 +1,16 @@
 ## This Stack depends on auth-stack
 service: graphql
-#tenant: aengus
-#app: ski-analytics
 
 plugins:
   - serverless-appsync-plugin
-
 provider:
   name: aws
   runtime: java8
   variableSyntax: "\\${{([ ~:a-zA-Z0-9._\\'\",\\-\\/\\(\\)]+?)}}" # notice the double quotes for yaml to ignore the escape characters!
-  region: us-west-2
-  stage: staging
-  stackName: ${{self:custom.currentStage}}-ski-analytics-graphql-stack
+  ## region hardcoded as appsync is not offered in ca-central-1 yet
+  region: us-east-1
+  stackName: ${{opt:stage}}-${{self:custom.projectName}}-${{self:service}}
+  stage: ${{opt:stage}}
   iamRoleStatements:
     - Effect: Allow
       Action:
@@ -22,27 +20,42 @@ provider:
         - dynamodb:PutItem
         - dynamodb:UpdateItem
         - dynamodb:DeleteItem
-      Resource: "arn:aws:dynamodb:ca-central-1:*:table/${{self:custom.userTable}}"
+      Resource: "arn:aws:dynamodb:${{self:custom.primaryRegion}}:*:table/${{self:custom.userTable}}"
 
 custom:
-  currentStage: ${{opt:stage, self:provider.stage}}
-  domainName: crunch.ski
-  userTable:  ${{self:custom.currentStage}}-crunch-User
-  userTableDSName: ${{self:custom.currentStage}}_crunch_UserTable_DS
-  authStackName: ${{self:custom.currentStage}}-ski-analytics-authentication-stack
+  primaryRegion: ${{file(../../infra/stacks/global.tfvars.json):primary_region}}
   resourceTags:
     - Key: "project"
-      Value: "ski-analytics"
+      Value: ${{self:custom.projectName}}
+    - Key: "stage"
+      Value: ${{opt:stage}}
     - Key: "module"
-      Value: "graphql"
+      Value: ${{self:service}}
+
+    ## common variables
+  projectName: ${{file(../../infra/stacks/global.tfvars.json):project_name}}
+  domainName: ${{file(../../infra/stacks/global.tfvars.json):domain_name}}
+  dataStack: ${{opt:stage}}-${{self:custom.projectName}}-data-var-stack
+
+    ## tables
+  userTable: ${{opt:stage}}-${{self:custom.projectName}}-userTable
+  activityTable:  ${{opt:stage}}-${{self:custom.projectName}}-Activity
+
+    ## buckets
+  activityBucketName: ${{opt:stage}}-activity-${{self:custom.projectName}}
+  rawActivityBucketName: ${{opt:stage}}-raw-activity-${{self:custom.projectName}}
+
+    ##cognito
+  ## note that region is intentionally specified in cf output reference
+  userPoolArn: ${{cf.${{self:custom.primaryRegion}}:${{self:custom.dataStack}}.UserPoolArn}}
+  userTableDSName: ${{opt:stage}}_crunch_UserTable_DS
+  authStackName: ${{opt:stage}}-${{self:custom.projectName}}-auth
   appSync:
-    name: ${{self:custom.currentStage}}-appsync-api
+    name: ${{opt:stage}}-appsync-api
     authenticationType: "AMAZON_COGNITO_USER_POOLS"
     userPoolConfig:
-      userPoolId:
-        Fn::ImportValue:
-          Fn::Sub: ${{self:custom.authStackName}}-UserPoolArn
-      awsRegion: ca-central-1 #${{self:provider.region}}
+      userPoolId: ${{cf.${{self:custom.primaryRegion}}:${{self:custom.dataStack}}.UserPoolId}}
+      awsRegion: ${{self:custom.primaryRegion}}
       defaultAction: "ALLOW"
     logConfig:
       loggingRoleArn: { Fn::GetAtt: [DynamoDBRole, Arn] } # Where AppSyncLoggingServiceRole is a role with CloudWatch Logs write access
@@ -101,11 +114,9 @@ custom:
         description: "user settings table"
         config:
 #          tableName: ${{self:custom.userTable}}
-          tableName:
-            Fn::ImportValue:
-              Fn::Sub: ${{self:custom.authStackName}}-UserTableName
+          tableName: ${{self:custom.userTable}}
           serviceRoleArn: { Fn::GetAtt: [DynamoDBRole, Arn] } # Where AppSyncDynamoDBServiceRole is an IAM role defined in Resources
-          region: ca-central-1 # ${{self:provider.region}}
+          region: ${{self:custom.primaryRegion}}
 
 resources:
   Resources:
@@ -121,7 +132,7 @@ resources:
               Principal:
                 Service:
                   - appsync.amazonaws.com
-        RoleName: ${{self:custom.currentStage}}-appsync-dynamodb-role
+        RoleName: ${{opt:stage}}-appsync-dynamodb-role
         ManagedPolicyArns:
           - Ref: AppSyncDynamoDBPolicy
           - Ref: AppSyncLoggingPolicy
@@ -160,5 +171,5 @@ resources:
                 - dynamodb:Scan
                 - dynamodb:BatchGetItem
                 - dynamodb:BatchWriteItem
-              Resource:  "arn:aws:dynamodb:ca-central-1:*:table/${{self:custom.userTable}}"
+              Resource:  "arn:aws:dynamodb:${{self:custom.primaryRegion}}:*:table/${{self:custom.userTable}}"
 

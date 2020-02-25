@@ -9,7 +9,11 @@ import com.amazonaws.util.IOUtils;
 import org.apache.commons.io.FileUtils;
 import org.apache.log4j.Logger;
 
-import java.io.*;
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.util.Map;
 
 
 /**
@@ -84,6 +88,19 @@ public class S3Facade {
     public void putObject(String bucket, String key, File f) {
         PutObjectRequest putObjectRequest = new PutObjectRequest(bucket, key, f);
         PutObjectResult putObjectResult = this.s3Client.putObject(putObjectRequest);
+    }
+
+    public void setBucketNotificationConfiguration(String bucket, BucketNotificationConfiguration configuration) {
+        this.s3Client.setBucketNotificationConfiguration(bucket, configuration);
+    }
+
+    public void deleteBucketNotificationConfiguration(String bucket) {
+        BucketNotificationConfiguration configuration = this.s3Client.getBucketNotificationConfiguration(bucket);
+        Map<String, NotificationConfiguration> configs = configuration.getConfigurations();
+        for (String s : configs.keySet()) {
+            configuration.removeConfiguration(s);
+        }
+        this.s3Client.setBucketNotificationConfiguration(bucket, configuration);
     }
 
     public void deleteObject(String bucket, String key) throws IOException {

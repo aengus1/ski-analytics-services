@@ -1,40 +1,41 @@
 apply plugin: 'java'
 
-repositories {
-    mavenCentral()
-}
-
-
 dependencies {
     
     compileOnly(project(':common'))  //exclude from packaged artifact -> provided at runtime by lambda container
-    compile(
-            'com.amazonaws:aws-lambda-java-events:2.2.6',
-            'com.auth0:java-jwt:3.8.0',
-            'com.auth0:jwks-rsa:0.8.2'
+    implementation(
+            "com.amazonaws:aws-lambda-java-events:2.2.6",
+            "com.auth0:java-jwt:3.8.0",
+            "com.auth0:jwks-rsa:0.8.2"
     )
-
 }
+
 test {
     include 'ski/crunch/**'
 }
 
+/**
+ * Task for building the zip file for upload
+ *  This is the desired configuration for 'java' plugin modules
+ *  Includes only the dependencies declared in 'implementation' configuration (and their deps)  but excludes
+ *  libraries declared in common, as they will already be available on classpath via lambda layers
+ *  See gradle documentation here: https://docs.gradle.org/current/userguide/java_plugin.html
+ *  Also the gradle 'java-library' plugin documentation contains further details on the api vs implementation
+ *  https://docs.gradle.org/current/userguide/java_library_plugin.html
+ */
 
-// Task for building the zip file for upload
 task buildZip(type: Zip) {
-    
-    // set the base name of the zip file
-    baseName = "auth"
+    archiveBaseName = "${project.name}"
     from compileJava
     from processResources
     into('lib') {
-        from ([ configurations.compile ] - [ configurations.compileOnly ])
-
+        from ([ configurations.runtimeClasspath ] - [ configurations.compileOnly ])
     }
+
 }
 
 build.dependsOn buildZip
 
 task wrapper(type: Wrapper) {
-    gradleVersion = '3.5'
+    gradleVersion = "${gradleVersion}"
 }
