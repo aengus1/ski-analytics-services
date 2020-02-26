@@ -108,6 +108,3 @@ build.dependsOn buildCommonZip
 build.dependsOn buildCustomCloudformationZip
 build.dependsOn testJar
 
-task wrapper(type: Wrapper) {
-    gradleVersion = "${gradleVersion}"
-}

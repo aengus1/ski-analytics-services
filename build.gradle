@@ -89,14 +89,7 @@ subprojects {
     }
 
     test {
-        print("project name = " + project.name)
-        onlyIf {
-            project.name !='acm_certificate_validator'
-        }
-        if(project.name == 'acm_certificate_validator'){
-            print("equal acv")
-            return
-        }
+        
         useJUnitPlatform()
 
         // show standard out and standard error of the test JVM(s) on the console
@@ -180,6 +173,10 @@ subprojects {
     }
     deployStaging.dependsOn build
 
+    task wrapper(type: Wrapper) {
+        gradleVersion = "${gradleVersion}"
+    }
+
 }
 
 
@@ -219,6 +216,7 @@ task jacocoRootReport(type: JacocoReport) {
     }
 
 }
+
 
 
 configurations { codacy }
