@@ -13,6 +13,11 @@ variable "domain_name" {
   description = "domain name"
 }
 
+variable "cognito_sub_domain"  {
+  type = string
+  description = "subdomain for the cognito endpoint"
+}
+
 variable "ses_domain_arn" {
   type = string
   description = "arn of ses sending domain"
@@ -33,8 +38,20 @@ variable "hosted_zone" {
   description = "hosted zone for this domain"
 }
 
+variable "cognito_depends_on" {
+  type = any
+  default = []
+  description = "the value doesn't matter. variable just used to propogate dependencies"
+}
+
 data "aws_caller_identity" "current" {}
 
+resource "aws_cognito_user_pool_domain" userpoolDomain {
+  domain = "${var.cognito_sub_domain}.${var.stage}.${var.domain_name}"
+  certificate_arn = var.acm_certificate_arn
+  user_pool_id = aws_cognito_user_pool.pool.id
+  depends_on = [var.cognito_depends_on]
+}
 resource "aws_cognito_user_pool" "pool" {
   name = "${var.stage}-${var.project_name}-pool"
 
@@ -45,7 +62,6 @@ resource "aws_cognito_user_pool" "pool" {
       email_subject = "Welcome to ${var.project_name}"
       sms_message = "{username} your ${var.project_name} verification code is {####}"
     }
-
   }
   username_attributes = [
     "email"]
@@ -198,6 +214,7 @@ resource aws_cognito_user_pool_client "pool-client" {
   explicit_auth_flows = [
     "USER_PASSWORD_AUTH"]
   generate_secret = false
+
 }
 
 output "userpool-arn" {

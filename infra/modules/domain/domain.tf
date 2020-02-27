@@ -1,4 +1,36 @@
+#################################################################################################################
+## Module Name:   Domain module
+## Description:   This module sets up the DNS, hosted zone and SSL certificate for the root domain
+## Region:        us-east-1
+## Resources:
+##                ACM certificate
+##                Hosted Zone
+##                A record for certificate
+##                SSM parameters to store locationIq API key and Weather API Key
+##                S3 bucket to store raw activity data
+##                S3 bucket to store processed activity data
+##                Cloudtrail audit logging (in cf stack)
+##                Cloudformation stack to export variables to Serverless
+##
+## Dependencies:
+##                infra/stacks/shared
+##                infra/stacks/frontend | an A record on root domain is required to set up custom authentication domain
+##
+## Cardinality:   Per environment
+##
+## Outputs:
+##                User pool ARN
+##                User pool client ARN
+##                User pool ID
+##                User table ARN
+##                Activity table ARN
+##
+## TODO:          Confirm CF stack needs CAPABILITY_IAM
+## TODO:          S3 bucket policies
+#################################################################################################################
 
+## Configuration
+#################################################################################################################
 variable "primary_region" {
   type = string
   description = "aws region for acm certificate"
@@ -26,7 +58,7 @@ resource "aws_route53_zone" "primary" {
 resource "aws_acm_certificate" "cert" {
   domain_name = var.domain_name
   subject_alternative_names = [
-    "*.${var.domain_name}"]
+    "*.${var.domain_name}" ]
   validation_method = "DNS"
 }
 

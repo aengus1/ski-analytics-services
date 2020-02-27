@@ -1,3 +1,36 @@
+#################################################################################################################
+## Stack Name:    Admin Stack
+##
+## Description:   This stack contains the S3 bucket and dynamodb table for terraform remote state
+##
+## Region:        us-east-1
+##
+## Resources:
+##                S3 bucket to store terraform remote state
+##                DynamoDB table for terraform remote state locking
+##
+## Dependencies:  none
+##
+## Cardinality:   1
+##
+## Outputs:       none
+##
+##
+#################################################################################################################
+
+## Configuration
+#################################################################################################################
+provider "aws" {
+  profile = var.profile
+  region = "us-east-1"
+}
+
+## Variables
+#################################################################################################################
+variable "profile" {
+  type = string
+  description = "AWS profile to use"
+}
 variable "project_name" {
   type = string
   description = "name of project"
@@ -12,12 +45,9 @@ variable "lock-write-capacity" {
   description = "dynamodb write capacity for lock table"
 }
 
-provider "aws" {
-  profile = "default"
-  region = "us-east-1"
-}
-# terraform state file setup
-# create an S3 bucket to store the state file in
+## Resources
+#################################################################################################################
+
 resource "aws_s3_bucket" "terraform-state-storage-s3" {
   bucket = "${var.project_name}-tf-backend-store"
 
@@ -36,7 +66,6 @@ resource "aws_s3_bucket" "terraform-state-storage-s3" {
   }
 }
 
-# create a dynamodb table for locking the state file
 resource "aws_dynamodb_table" "dynamodb-terraform-state-lock" {
   name = "${var.project_name}-terraform-state-lock-dynamo"
   hash_key = "LockID"

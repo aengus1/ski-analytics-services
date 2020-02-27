@@ -1,9 +1,34 @@
-## Shared stack
+#################################################################################################################
+## Stack Name:    Shared Stack
+##
+## Description:   This stack contains all the resources that are shared between environments.
+##                CHANGES MADE HERE WILL IMPACT PRODUCTION ENVIRONMENT!!!
+##
+## Region:        us-east-1
+##
+## Resources:
+##                Domain (module) -> DNS & certificate for root domain
+##                SES (module) -> SES domain setup for email
+##
+## Dependencies:  /infra/stacks/admin -> for sharing state
+##
+## Cardinality:   1
+##
+## Outputs:
+##                Hosted Zone ID
+##                ACM Certificate ARN
+##                SES Domain ARN
+##
+## Notes:         SES domain requires manual email verification.  This can be done through the console by adding
+##                an email address (e.g. admin@crunch.ski).  Click the link in the file in the S3 email bucket
+##                to verify the address.  Subsequently a sending policy needs to be attached to that email address
+##                in order for cognito to use it
+##
+## TODO:          add the required SES sending policy to the SES module so can be easily attached manually
+#################################################################################################################
 
-## This stack contains all the resources that are shared amongst environments.  Changes to this
-## stack should be rare - it should not be touched by continuous integration.
-## Changes made here WILL IMPACT THE PRODUCTION ENVIRONMENT
-## Contains resources for initial DNS and email setup / config
+## Configuration
+#################################################################################################################
 
 terraform {
   backend "s3" {
@@ -13,15 +38,19 @@ terraform {
     dynamodb_table = "crunch-ski-terraform-state-lock-dynamo"
     encrypt = false
   }
+  required_providers {
+    aws = "~> 2.47.0"
+  }
 }
 
-## Provider
 provider "aws" {
   profile = "default"
   region = var.shared_region
 }
 
-### Variables
+## Variables
+#################################################################################################################
+
 variable "project_name" {
   type = string
   description = "name of this project"
@@ -46,24 +75,27 @@ variable "profile" {
   type = string
   description = "aws profile to use"
 }
+
 ## Resources
+#################################################################################################################
+
 module "domain" {
   source = "../../modules/domain"
   domain_name = var.domain_name
   primary_region = var.shared_region
-  //  acm_cert_region = var.acm_cert_region
   profile = var.profile
 }
 
 module "ses" {
   source = "../../modules/ses"
   domain_name = var.domain_name
-  //  ses_region = var.ses_region
   hosted_zone = module.domain.hosted_zone
   primary_region = var.shared_region
   project_name = var.project_name
 }
 
+## Outputs
+#################################################################################################################
 
 output "hosted_zone" {
   value = module.domain.hosted_zone
