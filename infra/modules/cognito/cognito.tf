@@ -1,3 +1,32 @@
+#################################################################################################################
+## Module Name:    Cognito Module
+##
+## Description:   This mobule contains the user pool, user pool client, user pool domain, and associated policies
+##
+## Region:        var.primary_region
+##
+## Resources:
+##                Cognito  user pool
+##                Cognito user pool client
+##                Cognito user pool domain
+##                Route53 A record for user pool domain
+##                SES sending Role, Sending Policy, Sending Assume Role policy
+##
+## Dependencies:
+##                infra/stacks/admin  |for tfstate
+##                infra/stacks/shared | for DNS
+##                infra/stacks/frontend #production env | an A record on root domain is required to set up custom authentication domain
+##
+##
+## Outputs:
+##                User pool ARN
+##                User pool client ARN
+##                User pool ID
+##
+#################################################################################################################
+
+## Variables
+#################################################################################################################
 variable "stage" {
   type = string
   description = "environment descriptor"
@@ -44,14 +73,16 @@ variable "cognito_depends_on" {
   description = "the value doesn't matter. variable just used to propogate dependencies"
 }
 
+## Resources
+#################################################################################################################
 data "aws_caller_identity" "current" {}
 
 resource "aws_cognito_user_pool_domain" userpoolDomain {
-  domain = "${var.cognito_sub_domain}.${var.stage}.${var.domain_name}"
+  domain = "${var.cognito_sub_domain}.${var.domain_name}"
   certificate_arn = var.acm_certificate_arn
   user_pool_id = aws_cognito_user_pool.pool.id
-  depends_on = [var.cognito_depends_on]
 }
+
 resource "aws_cognito_user_pool" "pool" {
   name = "${var.stage}-${var.project_name}-pool"
 
@@ -63,10 +94,8 @@ resource "aws_cognito_user_pool" "pool" {
       sms_message = "{username} your ${var.project_name} verification code is {####}"
     }
   }
-  username_attributes = [
-    "email"]
-  auto_verified_attributes = [
-    "email"]
+  username_attributes = ["email"]
+  auto_verified_attributes = ["email"]
   device_configuration {
     challenge_required_on_new_device = false
     device_only_remembered_on_user_prompt = false
@@ -121,6 +150,19 @@ resource "aws_cognito_user_pool" "pool" {
   }
 }
 
+resource aws_route53_record "authDomainRecord" {
+
+  name = "${var.cognito_sub_domain}.${var.domain_name}"
+  type = "A"
+  zone_id = var.hosted_zone
+  alias {
+    evaluate_target_health = false
+    name =  aws_cognito_user_pool_domain.userpoolDomain.cloudfront_distribution_arn
+    zone_id = "Z2FDTNDATAQYW2"
+  }
+  depends_on = [aws_cognito_user_pool_domain.userpoolDomain]
+}
+
 data aws_iam_policy_document "cognitoSendingPolicyDoc" {
   statement {
     sid = "cognitoSendingPolicy"
@@ -167,45 +209,6 @@ resource aws_iam_role_policy_attachment "cognitoSendingPolicyRoleAttach" {
   role = aws_iam_role.cognitoSendingRole.name
   policy_arn = aws_iam_policy.cognitoSendingPolicy.arn
 }
-//resource aws_iam_policy "cognitoLambda" {
-//  name        = "cognitoLambda"
-//  path        = "/"
-//  description = "Allow cognito to invoke lambda function. required for confirmation trigger"
-//
-//  policy = <<EOF
-//{
-//  "Version": "2012-10-17",
-//    "Statement": [
-//        {
-//            "Sid": "CognitoIDP",
-//            "Effect": "Allow",
-//            "Action": [
-//                "lambda:InvokeFunction",
-//                "cognito-idp:*"
-//            ],
-//            "Resource": "*"
-//        }
-//    ]
-//}
-//EOF
-//}
-
-
-// TODO -> I think need to set up S3 and point an A record at it before configuring this
-//resource "aws_route53_record" "auth_a_record" {
-//  name = "auth.${var.domain_name}"
-//  type = "CNAME"
-//  zone_id = var.hosted_zone
-//  records = [ var.domain_name ]
-//  ttl = 60
-//}
-//
-//resource "aws_cognito_user_pool_domain" "pool-domain" {
-//  domain          = "auth.${var.domain_name}"
-//  certificate_arn = var.acm_certificate_arn
-//  user_pool_id    = aws_cognito_user_pool.pool.id
-//  depends_on = [ aws_route53_record.auth_a_record ]
-//}
 
 resource aws_cognito_user_pool_client "pool-client" {
 
@@ -216,6 +219,9 @@ resource aws_cognito_user_pool_client "pool-client" {
   generate_secret = false
 
 }
+
+## Outputs
+#################################################################################################################
 
 output "userpool-arn" {
   value = aws_cognito_user_pool.pool.arn

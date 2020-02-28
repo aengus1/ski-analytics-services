@@ -29,7 +29,7 @@
 ## TODO:          S3 bucket policies
 #################################################################################################################
 
-## Configuration
+## Variables
 #################################################################################################################
 variable "primary_region" {
   type = string
@@ -45,6 +45,9 @@ variable "profile" {
   type = string
   description = "aws profile to use"
 }
+
+## Resources
+#################################################################################################################
 
 resource "aws_route53_zone" "primary" {
   name = var.domain_name
@@ -76,6 +79,9 @@ resource "aws_acm_certificate_validation" "cert" {
   validation_record_fqdns = [
     aws_route53_record.cert_validation.fqdn]
 }
+
+## Outputs
+#################################################################################################################
 
 output "hosted_zone" {
   value = aws_route53_zone.primary.zone_id

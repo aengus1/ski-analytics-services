@@ -16,9 +16,9 @@
 ##                Cloudformation stack to export variables to Serverless
 ##
 ## Dependencies:
-##                infra/stacks/admin
-##                infra/stacks/shared
-##                infra/stacks/frontend | an A record on root domain is required to set up custom authentication domain ??
+##                infra/stacks/admin  |for tfstate
+##                infra/stacks/shared | for DNS
+##                infra/stacks/frontend #production env | an A record on root domain is required to set up custom authentication domain
 ##
 ## Cardinality:   Per environment
 ##
@@ -158,31 +158,31 @@ variable "cognito_depends_on" {
 ## Resources
 #################################################################################################################
 
-resource "aws_acm_certificate" "apicert" {
-  domain_name = "${var.stage}.${var.domain_name}"
-  subject_alternative_names = [
-    "*.${var.stage}.${var.domain_name}" ]
-  validation_method = "DNS"
-  count = var.stage == "prod" ? 0 : 1
-}
-
-resource "aws_route53_record" "cert_validation" {
-  name = aws_acm_certificate.apicert[0].domain_validation_options[0].resource_record_name
-  type = aws_acm_certificate.apicert[0].domain_validation_options.0.resource_record_type
-  zone_id = data.terraform_remote_state.shared.outputs.hosted_zone
-  records = [
-    aws_acm_certificate.apicert[0].domain_validation_options[0].resource_record_value]
-  ttl = 60
-  count = var.stage == "prod" ? 0 : 1
-}
-
-resource "aws_acm_certificate_validation" "cert" {
-  certificate_arn = aws_acm_certificate.apicert[0].arn
-  validation_record_fqdns = [
-    aws_route53_record.cert_validation[0].fqdn]
-  count = var.stage == "prod" ? 0 : 1
-}
-
+//resource "aws_acm_certificate" "apicert" {
+//  domain_name = "${var.stage}.${var.domain_name}"
+//  subject_alternative_names = [
+//    "*.${var.stage}.${var.domain_name}" ]
+//  validation_method = "DNS"
+//  count = var.stage == "prod" ? 0 : 1
+//}
+//
+//resource "aws_route53_record" "cert_validation" {
+//  name = aws_acm_certificate.apicert[0].domain_validation_options[0].resource_record_name
+//  type = aws_acm_certificate.apicert[0].domain_validation_options.0.resource_record_type
+//  zone_id = data.terraform_remote_state.shared.outputs.hosted_zone
+//  records = [
+//    aws_acm_certificate.apicert[0].domain_validation_options[0].resource_record_value]
+//  ttl = 60
+//  count = var.stage == "prod" ? 0 : 1
+//}
+//
+//resource "aws_acm_certificate_validation" "cert" {
+//  certificate_arn = aws_acm_certificate.apicert[0].arn
+//  validation_record_fqdns = [
+//    aws_route53_record.cert_validation[0].fqdn]
+//  count = var.stage == "prod" ? 0 : 1
+//}
+//
 //resource aws_route53_record "recordset" {
 //  zone_id = data.terraform_remote_state.shared.outputs.hosted_zone
 //  name = "${var.stage}.${var.domain_name}"
@@ -204,7 +204,7 @@ module "cognito" {
   acm_certificate_arn = data.terraform_remote_state.shared.outputs.acm_certificate_arn
   hosted_zone = data.terraform_remote_state.shared.outputs.hosted_zone
   stage = var.stage
-  cognito_depends_on = [aws_acm_certificate_validation.cert, aws_route53_record.cert_validation ]
+  #cognito_depends_on = [aws_acm_certificate_validation.cert, aws_route53_record.cert_validation ]
 }
 
 resource aws_dynamodb_table "user_table" {

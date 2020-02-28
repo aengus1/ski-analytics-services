@@ -1,4 +1,30 @@
+#################################################################################################################
+## Module Name:   Hosting module
 ##
+## Description:   This module sets up the front end hosting artifacts: s3 bucket, cloudfront distribution, DNS records,
+##                and SSM parameters for CI
+##
+## Region:        var.primary_region
+##
+## Resources:
+##                S3 bucket (origin) for front end resources
+##                Cloudfront distribution
+##                A record for domain and www. alias
+##                S3 Cloudfront origin access identity
+##                SSM parameters to store S3 bucket name and cloudfront distro id
+##
+## Dependencies:  none
+##
+## Cardinality:   Per environment
+##
+## Outputs:
+##                CF distro name
+##                S3 bucket name
+
+#################################################################################################################
+
+## Variables
+#################################################################################################################
 variable "project_name" {
   type = string
   description = "name of project"
@@ -34,51 +60,8 @@ variable "zone_id" {
   description = "id of the hosted zone for this domain"
 }
 
-// commented - awaiting lambda@edge to be available in ca-central-1
-// lambda function to add headers to response
-//data "archive_file" "lambda_zip" {
-//  type        = "zip"
-//  source_file = "${path.module}/headers.js"
-//  output_path = "headers.zip"
-//}
-//
-//data "aws_iam_policy_document" "lambda_assume_role_policy" {
-//  statement {
-//    actions = ["sts:AssumeRole"]
-//    principals {
-//      type        = "Service"
-//      identifiers = ["lambda.amazonaws.com", "edgelambda.amazonaws.com"]
-//    }
-//  }
-//}
-//
-//resource "aws_iam_role" "lambda_service_role" {
-//  name               = "lambda_service_role"
-//  assume_role_policy = data.aws_iam_policy_document.lambda_assume_role_policy.json
-//}
-//
-//resource "aws_iam_role_policy_attachment" "sto-readonly-role-policy-attach" {
-//  role       = aws_iam_role.lambda_service_role.name
-//  policy_arn = "arn:aws:iam::aws:policy/service-role/AWSLambdaBasicExecutionRole"
-//}
-//
-//resource "aws_lambda_function" "edge_headers" {
-//  filename         = "headers.zip"
-//  function_name    = "edge_headers"
-//  role             = aws_iam_role.lambda_service_role.arn
-//  handler          = "headers.handler"
-//  source_code_hash = data.archive_file.lambda_zip.output_base64sha256
-//  runtime          = "nodejs10.x"
-//  publish          = true
-//  region = "us-east-1"
-//}
-//
-//resource "aws_lambda_permission" "allow_cloudwatch" {
-//  statement_id  = "AllowExecutionFromCloudWatch"
-//  action        = "lambda:InvokeFunction"
-//  function_name = aws_lambda_function.edge_headers.function_name
-//  principal     = "events.amazonaws.com"
-//}
+## Resources
+#################################################################################################################
 
 resource "aws_s3_bucket" "web_distribution" {
   bucket = "app-${var.stage}.${var.domain_name}"
@@ -185,7 +168,7 @@ resource "aws_cloudfront_distribution" "web_distribution" {
 
 resource aws_route53_record "recordset" {
   zone_id = var.zone_id
-  name = "${var.app_alias}.${var.domain_name}"
+  name = var.stage == "prod" ? var.domain_name : "${var.app_alias}.${var.domain_name}"
   type = "A"
   alias {
     name = aws_cloudfront_distribution.web_distribution.domain_name
@@ -220,6 +203,58 @@ resource aws_ssm_parameter "cfdistroparam" {
   value = aws_cloudfront_distribution.web_distribution.domain_name
   overwrite = true
 }
+
+
+//// commented - awaiting lambda@edge to be available in ca-central-1
+//// lambda function to add headers to response
+//data "archive_file" "lambda_zip" {
+//  type        = "zip"
+//  source_file = "${path.module}/headers.js"
+//  output_path = "headers.zip"
+//}
+//
+//data "aws_iam_policy_document" "lambda_assume_role_policy" {
+//  statement {
+//    actions = ["sts:AssumeRole"]
+//    principals {
+//      type        = "Service"
+//      identifiers = ["lambda.amazonaws.com", "edgelambda.amazonaws.com"]
+//    }
+//  }
+//}
+//
+//resource "aws_iam_role" "lambda_service_role" {
+//  name               = "lambda_service_role"
+//  assume_role_policy = data.aws_iam_policy_document.lambda_assume_role_policy.json
+//}
+//
+//resource "aws_iam_role_policy_attachment" "sto-readonly-role-policy-attach" {
+//  role       = aws_iam_role.lambda_service_role.name
+//  policy_arn = "arn:aws:iam::aws:policy/service-role/AWSLambdaBasicExecutionRole"
+//}
+//
+//resource "aws_lambda_function" "edge_headers" {
+//  filename         = "headers.zip"
+//  function_name    = "edge_headers"
+//  role             = aws_iam_role.lambda_service_role.arn
+//  handler          = "headers.handler"
+//  source_code_hash = data.archive_file.lambda_zip.output_base64sha256
+//  runtime          = "nodejs10.x"
+//  publish          = true
+//  region = "us-east-1"
+//}
+//
+//resource "aws_lambda_permission" "allow_cloudwatch" {
+//  statement_id  = "AllowExecutionFromCloudWatch"
+//  action        = "lambda:InvokeFunction"
+//  function_name = aws_lambda_function.edge_headers.function_name
+//  principal     = "events.amazonaws.com"
+//}
+
+
+
+## Outputs
+#################################################################################################################
 
 output "cloudfront_distro_domain" {
   value = aws_cloudfront_distribution.web_distribution.domain_name

@@ -1,4 +1,27 @@
+#################################################################################################################
+## Stack Name:    CI Stack
+##
+## Description:   This stack contains user and policy for continuous integration
+##
+## Region:        var.primary_region
+##
+## Resources:
+##                IAM User
+##                IAM Policy | allows put & delete on front-end S3 bucket, allows read SSM parameter, allows cloudfront cache invalidation
+##                User Access Key
+##
+## Dependencies: none
+##
+## Cardinality:   Per environment
+##
+## Outputs:
+##                Access Key
+##                Access Key Secret
+##
+#################################################################################################################
 
+## Variables
+#################################################################################################################
 variable "primary_region" {
   type = string
   description = "aws region for acm certificate"
@@ -24,11 +47,19 @@ variable "webBucketArn" {
   description = " arn of web deployment bucket"
 }
 
+variable "cd-username" {
+  type = string
+  description = " username for cd user"
+}
+
+## Resources
+#################################################################################################################
+
 data "aws_caller_identity" "current" {}
 
 resource aws_iam_user "cd_user" {
 
-  name = "cd-deployment"
+  name = "cd-${var.cd-username}-deployment"
   path = "/deployment"
   tags {
     module = "continous_deployment"
@@ -73,4 +104,17 @@ EOF
 
 resource "aws_iam_access_key" "cd_key" {
   user = aws_iam_user.cd_user.name
+}
+
+## Output
+#################################################################################################################
+
+output "access_key" {
+  type = string
+  value = aws_iam_access_key.cd_key.id
+}
+
+output "access_key_secret" {
+  type = string
+  value = aws_iam_access_key.cd_key.secret
 }
