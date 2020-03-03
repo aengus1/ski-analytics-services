@@ -62,6 +62,17 @@ functions:
     layers:
       - ${{cf:${{opt:stage}}-${{self:custom.projectName}}-common.UtilsLambdaLayerQualifiedArn}}
       - ${{cf:${{opt:stage}}-${{self:custom.projectName}}-common.CommonLambdaLayerQualifiedArn}}
+Resources:
+  resources:
+    WsDomainNameMapping:
+      Type: AWS::ApiGatewayV2::ApiMapping
+      Properties:
+        ApiId:
+          Ref: "WebsocketsApi"
+        ApiMappingKey: v1
+        DomainName: ${{self:custom.wsSubDomain}}.${{self:custom.domainName}}
+        Stage: ${{self:provider.stage}}
+        Tags:  ${{self:custom.resourceTags}}
 Outputs:
   WebSocketId:
     Value:

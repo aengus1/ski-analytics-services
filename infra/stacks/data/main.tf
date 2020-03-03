@@ -1,7 +1,39 @@
-## Data stack
-## This stack contains all persistent data resources for the application.  These have been
-## Extracted from the main application stack so that it can be quickly spun up / down
-## without worrying about deleting persistent data.
+#################################################################################################################
+## Stack Name:    Data Stack
+##
+## Description:   This stack contains all persistent data resources for the application
+##
+## Region:        var.primary_region
+##
+## Resources:
+##                Cognito (module): user pool, user pool client, iam
+##                DynamoDB User table
+##                DynamoDB Activity table
+##                SSM parameters to store locationIq API key and Weather API Key
+##                S3 bucket to store raw activity data
+##                S3 bucket to store processed activity data
+##                Cloudtrail audit logging (in cf stack)
+##                Cloudformation stack to export variables to Serverless
+##
+## Dependencies:
+##                infra/stacks/admin  |for tfstate
+##                infra/stacks/shared | for DNS
+##
+## Cardinality:   Per environment
+##
+## Outputs:
+##                User pool ARN
+##                User pool client ARN
+##                User pool ID
+##                User table ARN
+##                Activity table ARN
+##
+## TODO:          Confirm CF stack needs CAPABILITY_IAM
+## TODO:          S3 bucket policies
+#################################################################################################################
+
+## Configuration
+#################################################################################################################
 terraform {
   backend "s3" {
     bucket = "crunch-ski-tf-backend-store"
@@ -10,11 +42,9 @@ terraform {
     dynamodb_table = "crunch-ski-terraform-state-lock-dynamo"
     encrypt = false
   }
-
     required_providers {
       aws = "~> 2.47.0"
     }
-
 }
 
 provider "aws" {
@@ -22,11 +52,9 @@ provider "aws" {
   profile = var.profile
 }
 
-
 data "terraform_remote_state" "shared" {
   backend = "s3"
   config = {
-    # Replace this with your bucket name!
     bucket = "${var.project_name}-tf-backend-store"
     key    = "shared/terraform.tfstate"
     region = "us-east-1"
@@ -34,6 +62,7 @@ data "terraform_remote_state" "shared" {
 }
 
 ## Variables
+#################################################################################################################
 variable "project_name" {
   type = string
   description = "name of this project"
@@ -89,11 +118,6 @@ variable "user_table_point_in_time_recovery" {
   description = "enable point in time recovery on the user table"
 }
 
-variable "user_table_prevent_deletion" {
-  type = bool
-  description = "enable terraform termination protection on user table"
-}
-
 variable "activity_table_read_capacity" {
   type = string
   description = "read capacity of dynamodb activity table"
@@ -119,15 +143,25 @@ variable "activity_table_point_in_time_recovery" {
   description = "enable point in time recovery on the activity table"
 }
 
-variable "activity_table_prevent_deletion" {
-  type = bool
-  description = "enable terraform termination protection on activity table"
+variable "cognito_sub_domain" {
+  type = string
+  description = "cognito custom subdomain for auth endpoint.  i.e. <xxxx>.domain-name"
 }
 
+variable "ws_sub_domain" {
+  type = string
+  description = "alias for ws endpoint"
+}
+
+variable "module_depends_on" {
+  type = any
+  default = []
+  description = "value does not matter"
+}
 
 ## Resources
+#################################################################################################################
 
-### User Pool
 module "cognito" {
   source = "../../modules/cognito"
   domain_name = var.domain_name
@@ -139,15 +173,11 @@ module "cognito" {
   stage = var.stage
 }
 
-### User Table
 resource aws_dynamodb_table "user_table" {
   name = "${var.stage}-${var.project_name}-userTable"
   billing_mode = var.user_table_billing_mode
   hash_key = "id"
 
-  lifecycle {
-    prevent_destroy = false
-  }
   tags = {
     project = var.project_name
     stage = var.stage
@@ -169,7 +199,6 @@ resource aws_dynamodb_table "user_table" {
   }
 }
 
-### Activity Table
 resource aws_dynamodb_table "activityTable" {
   name = "${var.stage}-${var.project_name}-Activity"
   billing_mode = var.activity_table_billing_mode
@@ -194,14 +223,15 @@ resource aws_dynamodb_table "activityTable" {
     stage = var.stage
     project = var.project_name
   }
+
 }
 
-### empty ssm parameters for secret keys
 resource aws_ssm_parameter "weatherApiKey" {
   name = "${var.stage}-weather-api-key"
   type = "String"
   value ="abc123"
   description = "SSM parameter for storing weather service api key"
+  overwrite = false
 }
 
 resource aws_ssm_parameter "locationIqKey" {
@@ -209,9 +239,10 @@ resource aws_ssm_parameter "locationIqKey" {
   type = "String"
   value ="abc123"
   description = "SSM parameter for storing location iq geocoding api key"
+  overwrite = false
 }
 
-### S3 bucket to store processed activities
+
 resource aws_s3_bucket "activityBucket" {
   bucket = "${var.stage}-activity-${var.project_name}"
   tags = {
@@ -220,7 +251,7 @@ resource aws_s3_bucket "activityBucket" {
     stage = var.stage
   }
 }
-### S3 bucket to store raw activities
+
 resource aws_s3_bucket "rawActivityBucket" {
   bucket = "${var.stage}-raw-activity-${var.project_name}"
   tags = {
@@ -378,10 +409,14 @@ resource aws_cloudformation_stack "output_stack" {
 STACK
 }
 
-
 ## Outputs
+#################################################################################################################
 output "user_table_arn" {
   value = aws_dynamodb_table.user_table.arn
+}
+
+output "activity_table_arn" {
+  value = aws_dynamodb_table.activityTable.arn
 }
 
 output "userpool-id" {

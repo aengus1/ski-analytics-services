@@ -59,6 +59,12 @@ provider:
         - execute-api:ManageConnections
         - execute-api:Invoke
       Resource: arn:aws:execute-api:${{self:provider.region}}:*:*/*
+    - Effect: Allow
+      Action:
+        - cloudfront:updateDistribution
+      Resource:
+        Fn::Join: [':', ["arn:aws:cloudfront:", Ref: "AWS::AccountId", "distribution/${{self:custom.apiDomainZone}}"]]
+
 
 custom:
     resourceTags:
@@ -73,6 +79,9 @@ custom:
     projectName: ${{file(../../infra/stacks/global.tfvars.json):project_name}}
     domainName: ${{file(../../infra/stacks/global.tfvars.json):domain_name}}
     dataStack: ${{opt:stage}}-${{self:custom.projectName}}-data-var-stack
+    apiStack: ${{opt:stage}}-${{self:custom.projectName}}-api-var-stack
+    apiSubDomain: ${{file(../../infra/stacks/api/${{opt:stage}}.terraform.tfvars.json):api_sub_domain}}
+    hostedZoneId: ${{cf:${{self:custom.apiStack}}.HostedZoneId}}
 
     ## tables
     userTable: ${{opt:stage}}-${{self:custom.projectName}}-userTable
@@ -81,6 +90,10 @@ custom:
     ## buckets
     activityBucketName: ${{opt:stage}}-activity-${{self:custom.projectName}}
     rawActivityBucketName: ${{opt:stage}}-raw-activity-${{self:custom.projectName}}
+
+    ## endpoint
+    apiDomainName: ${{cf:${{self:custom.apiStack}}.APIEndpointName}}
+    apiDomainZone: ${{cf:${{self:custom.apiStack}}.APIEndpointZoneId}}
 
     ##cognito
     userPoolArn: ${{cf:${{self:custom.dataStack}}.UserPoolArn}}
@@ -281,6 +294,27 @@ resources:
           SourceAccount:
             Ref: AWS::AccountId
           SourceArn: "arn:aws:s3:::${{self:custom.rawActivityBucketName}}"
+    ApiGatewayDomainNameMapping:
+      Type: AWS::ApiGateway::BasePathMapping
+      Properties:
+        BasePath: ${{self:provider.stage}}
+        DomainName: ${{self:custom.apiSubDomain}}.${{self:custom.domainName}}
+        RestApiId:
+          Ref: "ApiGatewayRestApi"  #https://forum.serverless.com/t/fixed-how-do-i-get-reference-api-gateway-restapi-id-in-serverless-yml/3397/5
+        Stage: ${{self:provider.stage}}
+        Tags:  ${{self:custom.resourceTags}}
+#    RecordSet:
+#      Type: AWS::Route53::RecordSetGroup
+#      Properties:
+#        HostedZoneId: ${{self:custom.hostedZoneId}}
+#        Comment: Alias record for ${{self:custom.apiSubDomain}}.${{self:custom.domainName}}
+#        RecordSets:
+#          - Name: ${{self:custom.apiSubDomain}}.${{self:custom.domainName}}
+#            Type: A
+#            AliasTarget:
+#              HostedZoneId: ${{self:custom.apiDomainZone}}
+#              DNSName:  ${{self:custom.apiDomainName}}
+#                  !GetAtt: 'CloudFrontDistroForSite.DomainName'
 #    RawActivityBucketLambdaNotification:
 #      Type: "AWS::S3::Bucket::NotificationConfiguration"
 #      Properties:
