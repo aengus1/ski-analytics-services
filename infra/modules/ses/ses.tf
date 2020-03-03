@@ -1,17 +1,31 @@
-## SES Module
-## This module sets up email sending and receiving for the specified domain.
-## Relies on a pre-existing hosted zone (Route53).
+#################################################################################################################
+## Module Name:    SES Module
+##
+## Description:   This mobule contains the email domain and associated setup for sending and receiving
+##                Incoming emails are forwarded to an S3 bucket.
+##
+## Region:        us-east-1
+##
+## Resources:
+##                SES Domain
+##                SES identity records
+##                SES DKIM records
+##                SES MX records
+##                S3 Bucket for storing email
+##                SNS topic for forwarding mail to bucket
+##                SES sending policy (resource policy on domain)
+##
+## Dependencies:  none
+##
+## Outputs:
+##                SES domain ARN
+##
 ## TODO -> specific email addresses still need to be manually and invididually validated
-## Email will be persisted to email-${project-name} S3 bucket.  Will need to parse verification email from there
+##          Email will be persisted to email-${project-name} S3 bucket.  Will need to parse verification email from there
+#################################################################################################################
 
-## Contains SES domain, DNS records, S3 bucket for email receipt, SNS topic for email notification
-
-
-### Variables
-//variable "ses_region" {
-//  type = string
-//  description = "region in which to create SES resources"
-//}
+## Variables
+#################################################################################################################
 
 variable "domain_name" {
   type = string
@@ -33,9 +47,9 @@ variable "project_name" {
   description = "project name"
 }
 
-################### Resources ################
+## Resources
+#################################################################################################################
 
-# ses domain
 resource "aws_ses_domain_identity" "ses_domain" {
   domain = var.domain_name
 }
@@ -192,7 +206,9 @@ data "aws_iam_policy_document" "ses_sending_policy" {
   }
 }
 
-### Outputs
+## Output
+#################################################################################################################
+
 output "ses_domain_arn" {
   value = aws_ses_domain_identity.ses_domain.arn
 }

@@ -18,7 +18,6 @@
 ## Dependencies:
 ##                infra/stacks/admin  |for tfstate
 ##                infra/stacks/shared | for DNS
-##                infra/stacks/frontend #production env | an A record on root domain is required to set up custom authentication domain
 ##
 ## Cardinality:   Per environment
 ##
@@ -149,62 +148,29 @@ variable "cognito_sub_domain" {
   description = "cognito custom subdomain for auth endpoint.  i.e. <xxxx>.domain-name"
 }
 
-variable "cognito_depends_on" {
+variable "ws_sub_domain" {
+  type = string
+  description = "alias for ws endpoint"
+}
+
+variable "module_depends_on" {
   type = any
   default = []
-  description = "the value doesn't matter. variable just used to propogate dependencies"
+  description = "value does not matter"
 }
 
 ## Resources
 #################################################################################################################
 
-//resource "aws_acm_certificate" "apicert" {
-//  domain_name = "${var.stage}.${var.domain_name}"
-//  subject_alternative_names = [
-//    "*.${var.stage}.${var.domain_name}" ]
-//  validation_method = "DNS"
-//  count = var.stage == "prod" ? 0 : 1
-//}
-//
-//resource "aws_route53_record" "cert_validation" {
-//  name = aws_acm_certificate.apicert[0].domain_validation_options[0].resource_record_name
-//  type = aws_acm_certificate.apicert[0].domain_validation_options.0.resource_record_type
-//  zone_id = data.terraform_remote_state.shared.outputs.hosted_zone
-//  records = [
-//    aws_acm_certificate.apicert[0].domain_validation_options[0].resource_record_value]
-//  ttl = 60
-//  count = var.stage == "prod" ? 0 : 1
-//}
-//
-//resource "aws_acm_certificate_validation" "cert" {
-//  certificate_arn = aws_acm_certificate.apicert[0].arn
-//  validation_record_fqdns = [
-//    aws_route53_record.cert_validation[0].fqdn]
-//  count = var.stage == "prod" ? 0 : 1
-//}
-//
-//resource aws_route53_record "recordset" {
-//  zone_id = data.terraform_remote_state.shared.outputs.hosted_zone
-//  name = "${var.stage}.${var.domain_name}"
-//  type = "A"
-//  alias {
-//    name = aws_cloudfront_distribution.web_distribution.domain_name
-//    zone_id = aws_cloudfront_distribution.web_distribution.hosted_zone_id
-//    evaluate_target_health = false
-//  }
-//}
-
 module "cognito" {
   source = "../../modules/cognito"
   domain_name = var.domain_name
-  cognito_sub_domain = var.cognito_sub_domain
   project_name = var.project_name
   ses_region = var.secondary_region
   ses_domain_arn = data.terraform_remote_state.shared.outputs.ses_domain_arn
   acm_certificate_arn = data.terraform_remote_state.shared.outputs.acm_certificate_arn
   hosted_zone = data.terraform_remote_state.shared.outputs.hosted_zone
   stage = var.stage
-  #cognito_depends_on = [aws_acm_certificate_validation.cert, aws_route53_record.cert_validation ]
 }
 
 resource aws_dynamodb_table "user_table" {
@@ -293,7 +259,6 @@ resource aws_s3_bucket "rawActivityBucket" {
     project = var.project_name
     stage = var.stage
   }
-
 }
 
 //resource aws_s3_bucket_policy "rawActivityBucketPolicy" {

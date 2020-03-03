@@ -15,7 +15,8 @@
 ## Dependencies:
 ##                infra/stacks/admin  |for tfstate
 ##                infra/stacks/shared | for DNS
-##                infra/stacks/frontend #production env | an A record on root domain is required to set up custom authentication domain
+##                infra/stacks/frontend #production env | an A record on root domain is required to set up custom
+##                                      authentication domain
 ##
 ##
 ## Outputs:
@@ -42,10 +43,6 @@ variable "domain_name" {
   description = "domain name"
 }
 
-variable "cognito_sub_domain"  {
-  type = string
-  description = "subdomain for the cognito endpoint"
-}
 
 variable "ses_domain_arn" {
   type = string
@@ -67,21 +64,10 @@ variable "hosted_zone" {
   description = "hosted zone for this domain"
 }
 
-variable "cognito_depends_on" {
-  type = any
-  default = []
-  description = "the value doesn't matter. variable just used to propogate dependencies"
-}
-
 ## Resources
 #################################################################################################################
 data "aws_caller_identity" "current" {}
 
-resource "aws_cognito_user_pool_domain" userpoolDomain {
-  domain = "${var.cognito_sub_domain}.${var.domain_name}"
-  certificate_arn = var.acm_certificate_arn
-  user_pool_id = aws_cognito_user_pool.pool.id
-}
 
 resource "aws_cognito_user_pool" "pool" {
   name = "${var.stage}-${var.project_name}-pool"
@@ -148,19 +134,6 @@ resource "aws_cognito_user_pool" "pool" {
     Module = "auth"
     Stage = var.stage
   }
-}
-
-resource aws_route53_record "authDomainRecord" {
-
-  name = "${var.cognito_sub_domain}.${var.domain_name}"
-  type = "A"
-  zone_id = var.hosted_zone
-  alias {
-    evaluate_target_health = false
-    name =  aws_cognito_user_pool_domain.userpoolDomain.cloudfront_distribution_arn
-    zone_id = "Z2FDTNDATAQYW2"
-  }
-  depends_on = [aws_cognito_user_pool_domain.userpoolDomain]
 }
 
 data aws_iam_policy_document "cognitoSendingPolicyDoc" {

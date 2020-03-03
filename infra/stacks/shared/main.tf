@@ -9,6 +9,7 @@
 ## Resources:
 ##                Domain (module) -> DNS & certificate for root domain
 ##                SES (module) -> SES domain setup for email
+##                APIG_endpoint (module) -> custom domain endpoint and A record
 ##
 ## Dependencies:  /infra/stacks/admin -> for sharing state
 ##
@@ -18,6 +19,8 @@
 ##                Hosted Zone ID
 ##                ACM Certificate ARN
 ##                SES Domain ARN
+##                API endpoint cf domain
+##                API endpoint zone id
 ##
 ## Notes:         SES domain requires manual email verification.  This can be done through the console by adding
 ##                an email address (e.g. admin@crunch.ski).  Click the link in the file in the S3 email bucket

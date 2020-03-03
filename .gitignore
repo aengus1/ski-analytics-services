@@ -21,9 +21,12 @@ src/**/out/*
 .serverless
 
 ## Terraform state
+*.terraform
 *.tfstate
 
 # Idea
 .idea/
 ski-analytics-services.iml
 src/common/gradle/wrapper/gradle-wrapper.properties
+/infra/stacks/shared/.terraform/
+/infra/stacks/data/.terraform/

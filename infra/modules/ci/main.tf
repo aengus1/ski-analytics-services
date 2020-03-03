@@ -1,7 +1,7 @@
 #################################################################################################################
-## Stack Name:    CI Stack
+## Module Name:    CI Module
 ##
-## Description:   This stack contains user and policy for continuous integration
+## Description:   This module contains user and policy for continuous integration
 ##
 ## Region:        var.primary_region
 ##

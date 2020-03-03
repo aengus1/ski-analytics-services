@@ -5,12 +5,7 @@
 ## Resources:
 ##                ACM certificate
 ##                Hosted Zone
-##                A record for certificate
-##                SSM parameters to store locationIq API key and Weather API Key
-##                S3 bucket to store raw activity data
-##                S3 bucket to store processed activity data
-##                Cloudtrail audit logging (in cf stack)
-##                Cloudformation stack to export variables to Serverless
+##                A record for certificate validataion
 ##
 ## Dependencies:
 ##                infra/stacks/shared
@@ -19,14 +14,9 @@
 ## Cardinality:   Per environment
 ##
 ## Outputs:
-##                User pool ARN
-##                User pool client ARN
-##                User pool ID
-##                User table ARN
-##                Activity table ARN
+##                Hosted Zone ID
+##                ACM Cert ARN
 ##
-## TODO:          Confirm CF stack needs CAPABILITY_IAM
-## TODO:          S3 bucket policies
 #################################################################################################################
 
 ## Variables
@@ -63,6 +53,10 @@ resource "aws_acm_certificate" "cert" {
   subject_alternative_names = [
     "*.${var.domain_name}" ]
   validation_method = "DNS"
+  # ignore lifecycle changes due to this bug: https://github.com/terraform-providers/terraform-provider-aws/issues/8531
+  lifecycle {
+    ignore_changes = [subject_alternative_names]
+  }
 }
 
 resource "aws_route53_record" "cert_validation" {

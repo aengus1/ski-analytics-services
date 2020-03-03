@@ -27,4 +27,12 @@
     userPoolId: ${{cf:${{self:custom.dataStack}}.UserPoolId}}
     userPoolClientId: ${{cf:${{self:custom.dataStack}}.UserPoolClientId}}
 
+    ## endpoints
+    apiStack: ${{opt:stage}}-${{self:custom.projectName}}-api-var-stack
+    apiSubDomain: ${{file(../../infra/stacks/api/dev.terraform.tfvars.json):api_sub_domain}}
+    wsSubDomain: ${{file(../../infra/stacks/api/dev.terraform.tfvars.json):ws_sub_domain}}
+    apiDomainName: ${{cf:${{self:custom.apiStack}}.APIEndpointName}}
+    apiDomainZone: ${{cf:${{self:custom.apiStack}}.APIEndpointZoneId}}
+    hostedZoneId: ${{cf:${{self:custom.apiStack}}.HostedZoneId}}
+    acmCertificateArn: ${{cf:${{self:custom.apiStack}}.AcmCertificateArn
 

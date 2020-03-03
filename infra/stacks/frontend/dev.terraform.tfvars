@@ -1,2 +1,2 @@
-app_alias = "dev-app"
+app_alias = "app-dev"
 profile="default"
