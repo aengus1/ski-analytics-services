@@ -34,6 +34,7 @@ jobs:
             - node-cache-v1
 
         ## compile and unit test
+      - run: pwd
       - run: ./gradlew clean
       - run: ./gradlew build
 
