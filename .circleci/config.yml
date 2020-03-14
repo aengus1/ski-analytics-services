@@ -34,8 +34,8 @@ jobs:
             - node-cache-v1
 
         ## compile and unit test
-      - run: gradlew :clean
-      - run: gradlew :build
+      - run: ./gradlew clean
+      - run: ./gradlew build
 
         ## install node, npm, aws-cli
       - run:
@@ -62,16 +62,16 @@ jobs:
           profile-name: backend_dev
 
         ## deploy
-      - run: gradlew deploy -Pstage="ci"
+      - run: ./gradlew deploy -Pstage="ci"
 
         # run integration tests
-      - run: gradlew integrationTest
+      - run: ./gradlew integrationTest
 
-      - run: gradlew jacocoTestReport
+      - run: ./gradlew jacocoTestReport
       # generate coverage report
-      - run: gradlew jacocoRootReport
+      - run: ./gradlew jacocoRootReport
       # upload coverage report to codacy
-      - run: gradlew sendCoverageToCodacy
+      - run: ./gradlew sendCoverageToCodacy
 
       # save test results
       - run:
