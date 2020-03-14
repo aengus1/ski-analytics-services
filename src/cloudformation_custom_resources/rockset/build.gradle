@@ -1,4 +1,5 @@
 apply plugin: 'java'
+apply plugin: 'ski.crunch.build.deploy'
 
 dependencies {
 
@@ -29,9 +30,12 @@ dependencies {
 
     )
 
+    String commonLibDir = "${projectDir}/../../common/build/libs/"
+
     testImplementation(
             project(':common'),
-            "org.mockito:mockito-junit-jupiter:2.23.0"
+            "org.mockito:mockito-junit-jupiter:2.23.0",
+            fileTree(dir: commonLibDir, include: ['common-all.jar'])
     )
 
 }
@@ -39,6 +43,7 @@ test {
     include 'ski/crunch/**'
 }
 
+deployDependencies.dependencies = ['common']
 
 // Task for building the zip file for upload
 task buildZip(type: Zip) {

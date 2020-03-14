@@ -27,6 +27,7 @@ public class AddUserSettings implements RequestStreamHandler {
     private DynamoFacade dynamo;
     private AWSCredentialsProvider credentialsProvider = null;
     private String stage = "";
+    private String test;
 
     @Override
     public void handleRequest(InputStream input, OutputStream os, Context context) throws IOException {

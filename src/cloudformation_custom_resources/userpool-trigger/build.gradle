@@ -1,4 +1,5 @@
 apply plugin: 'java'
+apply plugin: 'ski.crunch.build.deploy'
 
 dependencies {
 
@@ -33,6 +34,7 @@ test {
     include 'ski/crunch/**'
 }
 
+deployDependencies.dependencies = ['common']
 
 // Task for building the zip file for upload
 task buildZip(type: Zip) {
@@ -42,7 +44,7 @@ task buildZip(type: Zip) {
     from compileJava
     from processResources
     into('lib') {
-        from([configurations.compile] - [configurations.compileOnly])
+        from([configurations.runtimeClasspath] - [configurations.compileOnly])
 
     }
 }

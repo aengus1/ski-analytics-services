@@ -1,35 +1,76 @@
+import ski.crunch.build.DeployServerless
+
+/*
+ ####################   Build Script Section  ################################################
+ ##   Specify global ext variables used throughout all .gradle build files
+ ##   Specify code dependencies & repositories used by the build itself
+ ############################################################################################
+*/
 buildscript {
     ext {
         gradleVersion = "6.0.1"
         jacksonVersion = "2.10.2"
         awsVersion = "1.11.728"
-
+    }
+    repositories {
+        maven {
+            url "https://plugins.gradle.org/m2/"
+        }
+    }
+    dependencies {
+        classpath "gradle.plugin.com.dorongold.plugins:task-tree:1.5"
     }
 }
+
+/*
+ ####################   All Projects Section  ################################################
+ ##   Specify plugins and repositories that are used in all .gradle build files
+ ##   Applied to root project and sub-modules
+ ############################################################################################
+*/
 allprojects {
     apply plugin: 'java'
     apply plugin: 'jacoco'
-
+    apply plugin: 'com.dorongold.task-tree'
 
     repositories {
         maven {
             url "https://download.osgeo.org/webdav/geotools/"
         }
-
         mavenCentral()
-
         maven {
             url "https://oss.sonatype.org/content/repositories/releases/"
         }
-
         maven {
             url "https://maven.geotoolkit.org/"
         }
     }
+
+    tasks.withType(JavaCompile) {
+        options.compilerArgs << '-Xlint:unchecked'
+        options.deprecation = true
+    }
 }
 
-
+/*
+ ####################   Sub Projects Section  ################################################
+ ##   Specify common configuration used by all sub projects
+ ##   Adds support for integration test source-set
+ ##   Adds common dependencies for tests
+ ##   Adds deploy task
+ ##   Adds test coverage report task
+ ##   Adds test configuration
+ ##   Adds integration test configuration from external file
+ ############################################################################################
+*/
 subprojects {
+
+    if (project.getBuildDir().getAbsolutePath().contains("cloudformation_custom_resources")) {
+        apply from: '../../../buildSrc/src/main/gradle/integration-test.gradle'
+    } else {
+        apply from: '../../buildSrc/src/main/gradle/integration-test.gradle'
+    }
+
     sourceSets {
         integrationTest {
             java {
@@ -38,7 +79,6 @@ subprojects {
                 srcDirs = ['src/integration-test/java']
             }
             resources.srcDir file('src/integration-test/resources')
-
         }
     }
 
@@ -56,50 +96,40 @@ subprojects {
                 "org.mockito:mockito-junit-jupiter:2.23.0"
         )
         testRuntimeOnly(
-                'org.junit.jupiter:junit-jupiter-engine:5.4.0'
+                'org.junit.jupiter:junit-jupiter-engine:5.4.0',
+                project(path: ':common', configuration: 'testClasses')
         )
     }
 
+    task deploy(type: DeployServerless)
+    deploy.dependsOn build
 
     jacocoTestReport {
-        if(additionalSourceDirs == null) {
+        if (additionalSourceDirs == null) {
             return
         }
         additionalSourceDirs.from = files(sourceSets.main.allSource.srcDirs)
         sourceDirectories.from = files(sourceSets.main.allSource.srcDirs)
-        classDirectories.from =  files(sourceSets.main.output)
+        classDirectories.from = files(sourceSets.main.output)
         executionData.from = fileTree(buildDir).include("jacoco/*.exec")
         reports {
             html.enabled = true
             xml.enabled = true
             csv.enabled = false
         }
-
-        onlyIf = {
-            true
-        }
         afterEvaluate {
             classDirectories.from = files(classDirectories.files.collect {
-                fileTree(dir: it,
-                        exclude: ['com/garmin/**',
-                                  'ski/crunch/model/**']
-                )
+                fileTree(dir: it, exclude: ['com/garmin/**', 'ski/crunch/model/**'])
             })
         }
     }
 
     test {
-        
         useJUnitPlatform()
 
-        // show standard out and standard error of the test JVM(s) on the console
         testLogging.showStandardStreams = true
-
-        // set heap size for the test JVM(s)
         minHeapSize = "128m"
         maxHeapSize = "512m"
-
-        // set JVM arguments for the test JVM(s)
         jvmArgs '-XX:MaxPermSize=256m'
 
         // listen to events in the test execution lifecycle
@@ -108,9 +138,8 @@ subprojects {
         }
 
         // Fail the 'test' task on the first test failure
-        failFast = true
+        failFast = false
 
-        // listen to standard out and standard error of the test JVM(s)
         onOutput { descriptor, event ->
             logger.lifecycle("Test:  $descriptor  produced standard out/err: ${event.message}")
         }
@@ -119,59 +148,7 @@ subprojects {
             junitXml.enabled = true
             html.enabled = true
         }
-
     }
-
-    task integrationTest(type: Test) {
-        systemProperty 'stage', System.getProperty('stage')
-
-        useJUnitPlatform()
-        // explicitly include or exclude tests
-        include 'ski/crunch/**'
-
-
-        // show standard out and standard error of the test JVM(s) on the console
-        testLogging.showStandardStreams = true
-
-        // set heap size for the test JVM(s)
-        minHeapSize = "128m"
-        maxHeapSize = "512m"
-
-        // set JVM arguments for the test JVM(s)
-        jvmArgs '-XX:MaxPermSize=256m'
-
-        // listen to events in the test execution lifecycle
-        beforeTest { descriptor ->
-            logger.lifecycle("Running integration test: $descriptor")
-        }
-
-        // Fail the 'test' task on the first test failure
-        failFast = true
-
-        // listen to standard out and standard error of the test JVM(s)
-        onOutput { descriptor, event ->
-            logger.lifecycle(event.message)
-        }
-
-
-        description = 'Runs the integration tests.'
-        group = 'verification'
-        testClassesDirs = sourceSets.integrationTest.output
-        classpath = sourceSets.integrationTest.runtimeClasspath
-        outputs.upToDateWhen { false }
-
-    }
-
-
-    /**
-     * Deploys the build to the staging environment
-     */
-    task deployStaging(type: Exec) {
-        environment 'PATH', "${environment.PATH}:/usr/local/bin"
-
-        commandLine 'sls', 'deploy', '-v'
-    }
-    deployStaging.dependsOn build
 
     task wrapper(type: Wrapper) {
         gradleVersion = "${gradleVersion}"
@@ -179,76 +156,13 @@ subprojects {
 
 }
 
-
-task jacocoRootReport(type: JacocoReport) {
-    if(additionalSourceDirs ==null){
-        return
-    }
-    dependsOn = subprojects.test
-    additionalSourceDirs.from = files(subprojects.sourceSets.main.allSource.srcDirs)
-    sourceDirectories.from = files(subprojects.sourceSets.main.allSource.srcDirs)
-    classDirectories.from = files(subprojects.sourceSets.main.output)
-    executionData.from = files(subprojects.jacocoTestReport.executionData)
-    reports {
-        html.enabled = true
-        xml.enabled = true
-        csv.enabled = false
-    }
-    onlyIf = {
-        true
-    }
-    doFirst {
-        subprojects.findAll { subproject ->
-            (subproject.pluginManager.hasPlugin('java')
-                    || subproject.pluginManager.hasPlugin('scala')
-                    || subproject.pluginManager.hasPlugin('java-library'))
-        }.each { subproject ->
-            additionalSourceDirs files((Set<File>) subproject.sourceSets.main.allSource.srcDirs)
-            additionalClassDirs ((FileCollection) subproject.sourceSets.main.output)
-            if (subproject.pluginManager.hasPlugin('jacoco')) {
-                executionData subproject.tasks.jacocoTestReport.executionData
-            }
-        }
-
-        executionData.from = files(executionData.findAll {
-            it.exists()
-        })
-    }
-
-}
-
-
-
-configurations { codacy }
-
-dependencies {
-    codacy 'com.codacy:codacy-coverage-reporter:latest.release'
-}
-
-task sendCoverageToCodacy(type: JavaExec, dependsOn: jacocoTestReport) {
-    main = "com.codacy.CodacyCoverageReporter"
-    classpath = configurations.codacy
-    args = [
-            "report",
-            "-l",
-            "Java",
-            "-r",
-            "${buildDir}/reports/jacoco/jacocoRootReport/jacocoRootReport.xml"
-    ]
-}
-jacocoRootReport.dependsOn {
-    subprojects*.test
-    subprojects*.integrationTest
-}
-
-build.dependsOn {
-    jacocoRootReport
-}
+/*
+ ####################   Additional Root Build Logic  ################################################
+ ##   Add Jacoco build logic from external file
+ ####################################################################################################
+*/
+apply from: 'buildSrc/src/main/gradle/coverage.gradle'
 
 clean.dependsOn {
     subprojects*.clean
 }
-
-
-//sourceCompatibility = 1.8
-//targetCompatibility = 1.8

@@ -1,0 +1,57 @@
+task integrationTest(type : Test) {
+    systemProperty 'stage', System.getProperty('stage')
+
+    def isRoot = (rootProject == project)
+
+    onlyIf {
+        !isRoot && sourceSetIsNotEmpty('integrationTest')
+    }
+
+        useJUnitPlatform()
+        // explicitly include or exclude tests
+        include 'ski/crunch/**'
+
+
+        // show standard out and standard error of the test JVM(s) on the console
+        testLogging.showStandardStreams = true
+
+        // set heap size for the test JVM(s)
+        minHeapSize = "128m"
+        maxHeapSize = "512m"
+
+        // set JVM arguments for the test JVM(s)
+        jvmArgs '-XX:MaxPermSize=256m'
+
+        // listen to events in the test execution lifecycle
+        beforeTest { descriptor ->
+            logger.lifecycle("Running integration test: $descriptor")
+        }
+
+        // Fail the 'test' task on the first test failure
+        failFast = true
+
+        // listen to standard out and standard error of the test JVM(s)
+        onOutput { descriptor, event ->
+            logger.lifecycle(event.message)
+        }
+
+
+        description = 'Runs the integration tests.'
+        group = 'verification'
+        if(sourceSetIsNotEmpty('integrationTest')) {
+            testClassesDirs = sourceSets.integrationTest.output
+            classpath = sourceSets.integrationTest.runtimeClasspath
+            outputs.upToDateWhen { false }
+        }
+
+}
+
+def sourceSetIsNotEmpty(String sourceSetName) {
+    final SourceSet sourceSet = sourceSets.find {
+        it.name.equals(sourceSetName)
+    }
+
+    return null != sourceSet &&
+            (0 < sourceSet.compileClasspath.size()
+                    || 0 < sourceSet.runtimeClasspath.size())
+}

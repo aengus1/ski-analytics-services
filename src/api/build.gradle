@@ -2,6 +2,7 @@ plugins {
     id 'scala'
     id 'java'
 }
+apply plugin: 'ski.crunch.build.deploy'
 
 
 /**
@@ -72,9 +73,9 @@ dependencies {
     )
 }
 
-
-check.dependsOn integrationTest
-integrationTest.mustRunAfter test
+deployDependencies.dependencies = ['auth', 'bucket-notification', 'common']
+//check.dependsOn integrationTest
+//integrationTest.mustRunAfter test
 
 
 /**

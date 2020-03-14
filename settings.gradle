@@ -8,23 +8,32 @@
  */
 
 rootProject.name = 'ski-analytics-services'
-
+/*
+ * Module Includes
+ */
 include 'api'
 include 'auth'
 include 'common'
 include 'websocket'
 
-include 'rockset'
-include 'userpool-trigger'
-include 'bucket-notification'
+include 'cf-rockset'
+include 'cf-userpool-trigger'
+include 'cf-bucket-notification'
 
-project(":api").projectDir = file("src/api")
+/*
+ * Module Source
+ */
+project(':api').projectDir = file("src/api")
 project(":auth").projectDir = file("src/auth")
 project(":common").projectDir = file("src/common")
 project(":websocket").projectDir = file("src/websocket")
 
 // Cloudformation custom resources
-project(":rockset").projectDir = file("src/cloudformation_custom_resources/rockset")
-project(":bucket-notification").projectDir = file("src/cloudformation_custom_resources/bucket-notification")
-project(":userpool-trigger").projectDir = file("src/cloudformation_custom_resources/userpool-trigger")
+project(":cf-rockset").projectDir = file("src/cloudformation_custom_resources/rockset")
+project(":cf-bucket-notification").projectDir = file("src/cloudformation_custom_resources/bucket-notification")
+project(":cf-userpool-trigger").projectDir = file("src/cloudformation_custom_resources/userpool-trigger")
+
+/*
+ * Module Dependencies
+ */
 

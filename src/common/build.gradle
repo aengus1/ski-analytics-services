@@ -1,6 +1,5 @@
 plugins {
     id 'java-library'
-    id 'java'
 }
 
 configurations {
@@ -48,8 +47,6 @@ dependencies {
     integrationTestRuntimeOnly(
             'org.junit.jupiter:junit-jupiter-engine:5.4.0'
     )
-
-
 }
 
 task utilsJar(type: Jar) {
@@ -58,6 +55,15 @@ task utilsJar(type: Jar) {
     from sourceSets.main.allJava
     include "**\\ski\\crunch\\**"
     exclude "**\\ski\\crunch\\cloudformation\\**"
+}
+
+task allJar(type: Jar) {
+    archiveBaseName = "${project.name}-all"
+    includeEmptyDirs = false
+    from compileJava
+    from processResources
+    from ([ configurations.runtimeClasspath ] - [ configurations.compileOnly ])
+    include "**\\ski\\crunch\\**"
 }
 
 // Task for building the zip file for upload
@@ -107,4 +113,5 @@ build.dependsOn buildUtilsZip
 build.dependsOn buildCommonZip
 build.dependsOn buildCustomCloudformationZip
 build.dependsOn testJar
+build.dependsOn allJar
 

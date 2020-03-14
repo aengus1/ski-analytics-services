@@ -302,7 +302,7 @@ resources:
         RestApiId:
           Ref: "ApiGatewayRestApi"  #https://forum.serverless.com/t/fixed-how-do-i-get-reference-api-gateway-restapi-id-in-serverless-yml/3397/5
         Stage: ${{self:provider.stage}}
-        Tags:  ${{self:custom.resourceTags}}
+        #Tags:  ${{self:custom.resourceTags}}
 #    RecordSet:
 #      Type: AWS::Route53::RecordSetGroup
 #      Properties:
