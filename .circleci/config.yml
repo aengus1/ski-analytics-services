@@ -35,6 +35,7 @@ jobs:
 
         ## compile and unit test
       - run: pwd
+      - run: ls -lh
       - run: ./gradlew clean
       - run: ./gradlew build
 
