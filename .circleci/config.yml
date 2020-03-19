@@ -23,13 +23,14 @@ commands:
   save-cache:
     steps:
       - save_cache:
+          key: gradle-cache-v1-{{ .Branch }}-{{ checksum "build.gradle" }}
           paths:
             - ~/.gradle
-          key: gradle-cache-v1-{{ .Branch }}-{{ checksum "build.gradle" }}
-            - save_cache:
-                paths:
-                  - /usr/local/lib/node_modules/
-                key: node-cache-v1-{{ .Branch }}
+      - save_cache:
+          key: node-cache-v1-{{ .Branch }}
+          paths:
+            - /usr/local/lib/node_modules/
+
   unit-test:
     steps:
       - run: gradle wrapper --gradle-version 6.2 --distribution-type all
