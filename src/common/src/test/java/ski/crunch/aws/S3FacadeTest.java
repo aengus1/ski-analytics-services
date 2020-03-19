@@ -28,6 +28,7 @@ public class S3FacadeTest {
         this.service.getS3Client().listBuckets().stream().map(Bucket::getName).forEach(System.out::println);
     }
 
+    @Disabled
     @Test
      void listActivityBucket(){
         ObjectListing listing = this.service.getS3Client().listObjects("activity-staging.crunch.ski");
