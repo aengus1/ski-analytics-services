@@ -22,6 +22,8 @@ buildscript {
     }
 }
 
+
+
 /*
  ####################   All Projects Section  ################################################
  ##   Specify plugins and repositories that are used in all .gradle build files
@@ -65,22 +67,16 @@ allprojects {
 */
 subprojects {
 
-    if (project.getBuildDir().getAbsolutePath().contains("cloudformation_custom_resources")) {
-        apply from: '../../../buildSrc/src/main/gradle/integration-test.gradle'
-    } else {
-        apply from: '../../buildSrc/src/main/gradle/integration-test.gradle'
-    }
-
-    sourceSets {
-        integrationTest {
-            java {
-                compileClasspath += sourceSets.main.output + sourceSets.test.output + configurations.testCompileClasspath + configurations.integrationTestCompileClasspath
-                runtimeClasspath += sourceSets.main.output + sourceSets.test.output + configurations.integrationTestRuntimeClasspath
-                srcDirs = ['src/integration-test/java']
+        sourceSets {
+            integrationTest {
+                java {
+                    compileClasspath += sourceSets.main.output + sourceSets.test.output + configurations.testCompileClasspath + configurations.integrationTestCompileClasspath
+                    runtimeClasspath += sourceSets.main.output + sourceSets.test.output + configurations.integrationTestRuntimeClasspath
+                    srcDirs = ['src/integration-test/java']
+                }
+                resources.srcDir file('src/integration-test/resources')
             }
-            resources.srcDir file('src/integration-test/resources')
         }
-    }
 
     configurations {
         integrationTestCompile.extendsFrom testImplementation
@@ -104,55 +100,9 @@ subprojects {
     task deploy(type: DeployServerless)
     deploy.dependsOn build
 
-    jacocoTestReport {
-        if (additionalSourceDirs == null) {
-            return
-        }
-        additionalSourceDirs.from = files(sourceSets.main.allSource.srcDirs)
-        sourceDirectories.from = files(sourceSets.main.allSource.srcDirs)
-        classDirectories.from = files(sourceSets.main.output)
-        executionData.from = fileTree(buildDir).include("jacoco/*.exec")
-        reports {
-            html.enabled = true
-            xml.enabled = true
-            csv.enabled = false
-        }
-        afterEvaluate {
-            classDirectories.from = files(classDirectories.files.collect {
-                fileTree(dir: it, exclude: ['com/garmin/**', 'ski/crunch/model/**'])
-            })
-        }
-    }
 
-    test {
-        useJUnitPlatform()
-
-        testLogging.showStandardStreams = true
-        minHeapSize = "128m"
-        maxHeapSize = "512m"
-        jvmArgs '-XX:MaxPermSize=256m'
-
-        // listen to events in the test execution lifecycle
-        beforeTest { descriptor ->
-            logger.lifecycle("Running test:  $descriptor")
-        }
-
-        // Fail the 'test' task on the first test failure
-        failFast = false
-
-        onOutput { descriptor, event ->
-            logger.lifecycle("Test:  $descriptor  produced standard out/err: ${event.message}")
-        }
-
-        reports {
-            junitXml.enabled = true
-            html.enabled = true
-        }
-    }
-
-    task wrapper(type: Wrapper) {
-        gradleVersion = "${gradleVersion}"
-    }
+    apply from: "${getProject().getParent().getProjectDir()}/gradle/test.gradle"
+    apply from: "${getProject().getParent().getProjectDir()}/gradle/integration-test.gradle"
 
 }
 
@@ -161,7 +111,7 @@ subprojects {
  ##   Add Jacoco build logic from external file
  ####################################################################################################
 */
-apply from: 'buildSrc/src/main/gradle/coverage.gradle'
+apply from: "${projectDir}/gradle/coverage.gradle"
 
 clean.dependsOn {
     subprojects*.clean

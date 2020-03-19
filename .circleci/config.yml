@@ -8,6 +8,51 @@ orbs:
   aws-cli: circleci/aws-cli@0.1.13
   node: circleci/node@1.1.6
 
+commands:
+  restore-cache:
+    steps:
+      - restore_cache:  ## Restore gradle cache
+          keys:
+            - gradle-cache-v1-{{ .Branch }}-{{ checksum "build.gradle" }}
+            - gradle-cache-v1-{{ .Branch }}
+            - gradle-cache-v1
+
+      - restore_cache:  ## restore node cache
+          keys:
+           - node-cache-v1
+  save-cache:
+    steps:
+      - save_cache:
+          paths:
+            - ~/.gradle
+          key: gradle-cache-v1-{{ .Branch }}-{{ checksum "build.gradle" }}
+            - save_cache:
+                paths:
+                  - /usr/local/lib/node_modules/
+                key: node-cache-v1-{{ .Branch }}
+  unit-test:
+    steps:
+      - run: gradle wrapper --gradle-version 6.2 --distribution-type all
+      - run: ./gradlew clean
+      - run: ./gradlew build
+  install-sls:
+    steps:
+      - node/with-cache:
+          steps:
+            - run: sudo npm install -g serverless
+  save-test-results:
+    steps:
+      - run:
+          name: Save test results
+          command: |
+            mkdir build/reports/test-results
+            find . -type f -regex ".*/build/test-results/.*xml" -exec cp {} build/reports/test-results/ \;
+          when: always
+      - store_test_results:
+          path: build/reports/test-results
+      - store_artifacts:
+          path: build/reports/
+
 jobs:
   build:
     docker:
@@ -22,70 +67,18 @@ jobs:
 
     steps:
       - checkout
-
-      - restore_cache:  ## Restore gradle cache
-          keys:
-            - gradle-cache-v1-{{ .Branch }}-{{ checksum "build.gradle" }}
-            - gradle-cache-v1-{{ .Branch }}
-            - gradle-cache-v1
-
-      - restore_cache:  ## restore node cache
-          keys:
-            - node-cache-v1
-
-        ## compile and unit test
-      - run: gradle wrapper --gradle-version 6.2 --distribution-type all
-      - run: ./gradlew clean
-      - run: ./gradlew build
-
-        ## install node, npm, aws-cli
-      - run:
-          name: Update Node and npm
-          command: |
-            curl -sSL "https://nodejs.org/dist/v12.16.1/node-v12.16.1-linux-x64.tar.xz" | sudo tar --strip-components=2 -xJ -C /usr/local/bin/ node-v11.10.0-linux-x64/bin/node
-            curl https://www.npmjs.com/install.sh | sudo bash
-      - run:
-          name: Check current version of node
-          command: node -v
-      - run:
-          name: Install serverless
-          command: sudo npm install -g serverless
-      - save_cache:
-          paths:
-            - ~/.gradle
-          key: gradle-cache-v1-{{ .Branch }}-{{ checksum "build.gradle" }}
-      - save_cache:
-          paths:
-            - /usr/local/lib/node_modules/
-          key: node-cache-v1-{{ .Branch }}
+      - restore-cache
+      - unit-test
+      - install-sls
       - aws-cli/install
       - aws-cli/configure:
           profile-name: backend_dev
-
-        ## deploy
       - run: ./gradlew deploy -Pstage="ci"
-
-        # run integration tests
       - run: ./gradlew integrationTest
-
-      - run: ./gradlew jacocoTestReport
-      # generate coverage report
+      - save-cache
       - run: ./gradlew jacocoRootReport
-      # upload coverage report to codacy
       - run: ./gradlew sendCoverageToCodacy
-
-      # save test results
-      - run:
-          name: Save test results
-          command: |
-            mkdir -p ~/test-results/junit/
-            find . -type f -regex "**/build/test-results/**/*.xml" -exec cp {} ~/test-results/junit/ \;
-          when: always
-      - store_test_results:
-          path: test-results/junit
-      - store_artifacts:
-          path: ~/test-results/junit
-      # store coverage report
+      - save-test-results
       - store_artifacts:
           path:  build/reports/jacoco/jacocoRootReport/jacocoRootReport.xml
 

@@ -24,19 +24,23 @@ sourceSets {
         }
     }
     integrationTest {
+
         scala {
-            compileClasspath += main.output + test.output
-            runtimeClasspath += main.output + test.output
+            compileClasspath += main.output + test.output //+ configurations.integrationTestCompileClasspath
+            runtimeClasspath += main.output + test.output //+ configurations.integrationTestRuntimeClasspath
             srcDirs = ['src/integration-test/scala', 'src/integration-test/java']
+            outputDir = file("$buildDir/classes/scala/integrationTest")
         }
         java {
             compileClasspath += sourceSets.main.output + configurations.testCompileClasspath + configurations.integrationTestCompileClasspath
             runtimeClasspath += sourceSets.main.output + configurations.integrationTestRuntimeClasspath
-            srcDirs = ['src/integration-test/java']
+            srcDirs = ['src/integration-test/java', 'src/integration-test/scala']
+            outputDir = file("$buildDir/classes/java/integrationTest")
         }
         resources.srcDir file('src/integration-test/resources')
     }
 }
+
 
 dependencies {
    implementation(
@@ -47,7 +51,7 @@ dependencies {
             "org.geotools:gt-main:16.1",
             "org.geotools:gt-epsg-hsql:16.1"
     )
-    
+
     compileOnly(
             project(':common')
     )
@@ -64,18 +68,18 @@ dependencies {
             "org.glassfish.jersey.core:jersey-client:2.5.1",
             "com.fasterxml.jackson.core:jackson-core:${jacksonVersion}",
             "org.mockito:mockito-all:1.10.19",
-            project(path: ':common', configuration: 'testClasses')
+            project(path: ':common', configuration: 'testClasses'),
+            project(':common')
     )
     integrationTestRuntimeOnly(
             "org.junit.jupiter:junit-jupiter-engine:5.1.0",
+            "javax.xml.bind:jaxb-api:2.3.1",
             project(':common'),
             project(path: ':common', configuration: 'testClasses')
     )
 }
 
-deployDependencies.dependencies = ['auth', 'bucket-notification', 'common']
-//check.dependsOn integrationTest
-//integrationTest.mustRunAfter test
+deploy.dependencies = ['auth', 'cf-bucket-notification', 'common']
 
 
 /**

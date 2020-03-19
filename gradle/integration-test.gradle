@@ -1,0 +1,82 @@
+task integrationTest(type: Test) {
+    systemProperty 'stage', System.getProperty('stage')
+
+    useJUnitPlatform()
+    // explicitly include or exclude tests
+    include {
+        'ski/crunch/**'
+        'scala/ski/crunch/**'
+    }
+
+
+    // show standard out and standard error of the test JVM(s) on the console
+    testLogging.showStandardStreams = true
+
+    // set heap size for the test JVM(s)
+    minHeapSize = "128m"
+    maxHeapSize = "512m"
+
+    // set JVM arguments for the test JVM(s)
+    jvmArgs '-XX:MaxPermSize=256m'
+
+    // listen to events in the test execution lifecycle
+    beforeTest { descriptor ->
+        logger.lifecycle("Running integration test: $descriptor")
+    }
+
+    // Fail the 'test' task on the first test failure
+    failFast = true
+
+    // listen to standard out and standard error of the test JVM(s)
+    onOutput { descriptor, event ->
+        logger.lifecycle(event.message)
+    }
+
+
+    description = 'Runs the integration tests.'
+    group = 'verification'
+    testClassesDirs = sourceSets.integrationTest.output
+    classpath = sourceSets.integrationTest.runtimeClasspath
+    //outputs.upToDateWhen { false }
+
+    jacoco {
+        classDumpDir = file("$buildDir/jacoco/classpathdumps")
+    }
+}
+
+task integrationTestReport(type: TestReport) {
+    destinationDir = file("${buildDir}/reports/integration-tests")
+    reportOn integrationTest.binaryResultsDirectory
+    group = "report"
+    description = "create integration test result report"
+}
+
+task jacocoIntegrationTestReport(type: JacocoReport) {
+
+    if (additionalSourceDirs == null) {
+        return
+    }
+
+    group = 'report'
+    description = 'Generate Jacoco coverage reports after running integration tests.'
+    executionData file("${buildDir}/jacoco/integrationTest.exec")
+    additionalSourceDirs.from = files(sourceSets.main.allSource.srcDirs)
+    sourceDirectories.from = files(sourceSets.main.allSource.srcDirs)
+    classDirectories.from = files(sourceSets.main.output)
+
+    reports {
+        csv.enabled = false
+        xml.enabled = true
+        html.enabled = true
+        html.setDestination(new File("${buildDir}/reports/jacoco/integration-test/html"))
+    }
+
+    afterEvaluate {
+        getClassDirectories().from = files(classDirectories.files.collect {
+            fileTree(dir: it, exclude: ['**/com/garmin/**', 'ski/crunch/model/**'])
+        })
+    }
+}
+
+integrationTest.finalizedBy integrationTestReport
+integrationTestReport.finalizedBy jacocoIntegrationTestReport

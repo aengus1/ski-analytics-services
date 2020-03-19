@@ -18,7 +18,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.Mockito.*;
 
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
-public class LocationIqServiceTests {
+public class LocationIqServiceTest {
 
     @Mock
     private HttpClientUtil clientUtil;

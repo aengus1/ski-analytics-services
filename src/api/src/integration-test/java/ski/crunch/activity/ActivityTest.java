@@ -28,7 +28,7 @@ import static org.junit.jupiter.api.Assertions.*;
 
 
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
-class ActivityTests {
+class ActivityTest {
     private String accessKey = null;
     private final String devUserName = "testDevUser@test.com";
     private final String devPassword = "testDevPassword123";
@@ -39,7 +39,7 @@ class ActivityTests {
     private DynamoFacade dynamo = null;
     private ActivityDAO activityDAO = null;
     private String processedActivityBucket = null;
-    private static final Logger LOG = Logger.getLogger(ActivityTests.class);
+    private static final Logger LOG = Logger.getLogger(ActivityTest.class);
 
 
     @BeforeAll
@@ -84,7 +84,7 @@ class ActivityTests {
         WebTarget target = client.target(endpoint).path("activity");
 
 
-        InputStream is = ActivityTests.class.getResourceAsStream("/261217.fit");
+        InputStream is = ActivityTest.class.getResourceAsStream("/261217.fit");
         Entity payload = Entity.entity(is, MediaType.APPLICATION_OCTET_STREAM_TYPE);
 
         Response response = target.request(MediaType.APPLICATION_OCTET_STREAM_TYPE)
@@ -114,7 +114,7 @@ class ActivityTests {
         WebTarget target = client.target(endpoint).path("activity");
 
         //construct put activity request
-        InputStream is = ActivityTests.class.getResourceAsStream("/interval_test.fit");
+        InputStream is = ActivityTest.class.getResourceAsStream("/interval_test.fit");
         Entity payload = Entity.entity(is, MediaType.valueOf("application/fit"));
 
         //send request to endpoint

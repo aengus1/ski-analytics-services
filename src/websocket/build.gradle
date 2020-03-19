@@ -45,7 +45,7 @@ test {
 }
 
 
-deployDependencies.dependencies = ['common']
+deploy.dependencies = ['common']
 
 // Task for building the zip file for upload
 task buildZip(type: Zip) {

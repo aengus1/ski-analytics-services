@@ -211,6 +211,7 @@ resources:
 #            Function:
 #              Fn::GetAtt: ['ParseFitActivityLambdaLambdaFunction', 'Arn']
     ## Search Endpoint
+
     RawBucketLambdaNotification:
       Type: Custom::BucketNotification
       Version: 1.0
@@ -294,14 +295,28 @@ resources:
           SourceAccount:
             Ref: AWS::AccountId
           SourceArn: "arn:aws:s3:::${{self:custom.rawActivityBucketName}}"
+
+
+#    ## Unfortunately necessary hack to ensure that the base path mapping is not created before the api g deployment
+#    ## https://github.com/serverless/serverless/issues/4029
+#    ApiMapping:
+#      Type: AWS::ApiGateway::BasePathMapping
+#      DependsOn: "ApiGatewayDeployment${sls:instanceId}"
+#      Properties:
+#        DomainName: ${{self:custom.apiSubDomain}}.${{self:custom.domainName}}
+#        RestApiId:
+#          Ref: ApiGatewayRestApi
+#        Stage: ${{opt:stage}}
+
     ApiGatewayDomainNameMapping:
       Type: AWS::ApiGateway::BasePathMapping
+      DependsOn: "ApiGatewayDeployment${{sls:instanceId}}"
       Properties:
-        BasePath: ${{self:provider.stage}}
+        BasePath: ${{opt:stage}}
         DomainName: ${{self:custom.apiSubDomain}}.${{self:custom.domainName}}
         RestApiId:
           Ref: "ApiGatewayRestApi"  #https://forum.serverless.com/t/fixed-how-do-i-get-reference-api-gateway-restapi-id-in-serverless-yml/3397/5
-        Stage: ${{self:provider.stage}}
+        Stage: ${{opt:stage}}
         #Tags:  ${{self:custom.resourceTags}}
 #    RecordSet:
 #      Type: AWS::Route53::RecordSetGroup

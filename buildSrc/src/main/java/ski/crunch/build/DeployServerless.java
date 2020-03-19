@@ -69,8 +69,6 @@ public class DeployServerless extends Exec {
     @TaskAction
     public void run() {
 
-//        System.out.println("called from task action " + getWorkingDir() + " " + getProject().getBuildDir());
-//        System.out.println("stage = " + getStage());
         List<String> args = new ArrayList<>();
         args.add("deploy");
         args.add("--stage");

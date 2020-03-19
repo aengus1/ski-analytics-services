@@ -49,7 +49,9 @@ import static org.junit.jupiter.api.Assertions.*;
     @AfterAll()
      void destroy() {
         helper.destroySignupUser();
-        helper.removeUserSettings(userId);
+        try {
+            helper.removeUserSettings(userId);
+        }catch(Exception ex) {}
     }
 
 

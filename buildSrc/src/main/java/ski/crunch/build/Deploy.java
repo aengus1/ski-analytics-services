@@ -30,7 +30,7 @@ public class Deploy implements Plugin<Project> {
     @Override
     public void apply(Project target) {
         Task targetDeployTask = target.getTasksByName("deploy", false).iterator().next();
-        DependenciesExtension extension = target.getExtensions().create("deployDependencies", DependenciesExtension.class, target.getObjects());
+        DependenciesExtension extension = target.getExtensions().create("deploy", DependenciesExtension.class, target.getObjects());
 
         target.afterEvaluate(cl -> {
             if (target.getProperties().containsKey("full")) {
