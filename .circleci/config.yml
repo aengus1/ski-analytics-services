@@ -81,7 +81,7 @@ jobs:
       - run: ./gradlew sendCoverageToCodacy
       - save-test-results
       - store_artifacts:
-          path:  build/reports/jacoco/jacocoRootReport/jacocoRootReport.xml
+          path:  ~/repo/build/reports/jacoco/jacocoRootReport/jacocoRootReport.xml
 
 workflows:
   version: 2.1
