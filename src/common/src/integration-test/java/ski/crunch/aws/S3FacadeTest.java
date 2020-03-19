@@ -6,7 +6,6 @@ import com.amazonaws.services.s3.model.Bucket;
 import com.amazonaws.services.s3.model.ObjectListing;
 import com.amazonaws.services.s3.model.S3ObjectSummary;
 import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.assertTrue;
@@ -24,18 +23,16 @@ public class S3FacadeTest {
     }
 
     @Test
-    void testListBucket(){
+    void testListBuckets(){
         this.service.getS3Client().listBuckets().stream().map(Bucket::getName).forEach(System.out::println);
     }
 
-    @Disabled
     @Test
      void listActivityBucket(){
         ObjectListing listing = this.service.getS3Client().listObjects("activity-staging.crunch.ski");
         listing.getObjectSummaries().stream().map(S3ObjectSummary::getKey).forEach(System.out::println);
     }
 
-    @Disabled
     @Test
      public void doesObjectExist(){
 
