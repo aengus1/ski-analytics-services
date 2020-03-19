@@ -58,7 +58,7 @@ jobs:
   build:
     docker:
       - image: circleci/openjdk:8-jdk
-      - image: circleci/python:3.7-stretch
+      - image: circleci/python:3.7.1-stretch
     executor: aws-cli/default
     working_directory: ~/repo
 
@@ -70,7 +70,18 @@ jobs:
       - checkout
       - restore-cache
       - unit-test
-      - install-sls
+        ## install node, npm, aws-cli
+      - run:
+          name: Update Node and npm
+          command: |
+            curl -sSL "https://nodejs.org/dist/v12.16.1/node-v12.16.1-linux-x64.tar.xz" | sudo tar --strip-components=2 -xJ -C /usr/local/bin/ node-v11.10.0-linux-x64/bin/node
+            curl https://www.npmjs.com/install.sh | sudo bash
+      - run:
+          name: Check current version of node
+          command: node -v
+      - run:
+          name: Install serverless
+          command: sudo npm install -g serverless
       - aws-cli/install
       - aws-cli/configure:
           profile-name: backend_dev
