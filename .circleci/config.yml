@@ -47,12 +47,12 @@ commands:
           name: Save test results
           command: |
             mkdir ~/repo/build/reports/test-results
-            find . -type f -regex ".*/build/test-results/.*xml" -exec cp {} ~/repo/build/reports/test-results/ \;
+            find . -type f -regex ".*/build/test-results/.*xml" -exec cp {} ~/build/reports/test-results/ \;
           when: always
       - store_test_results:
-          path: ~/repo/build/reports/test-results
+          path: ~/build/reports/test-results
       - store_artifacts:
-          path: ~/repo/build/reports/
+          path: ~/build/reports/
 
 jobs:
   build:
@@ -81,7 +81,7 @@ jobs:
       - run: ./gradlew sendCoverageToCodacy
       - save-test-results
       - store_artifacts:
-          path:  ~/repo/build/reports/jacoco/jacocoRootReport/jacocoRootReport.xml
+          path:  ~/build/reports/jacoco/jacocoRootReport/jacocoRootReport.xml
 
 workflows:
   version: 2.1
