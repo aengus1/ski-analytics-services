@@ -6,13 +6,59 @@ version: 2.1
 
 orbs:
   aws-cli: circleci/aws-cli@0.1.13
+  node: circleci/node@1.1.6
+
+commands:
+  restore-cache:
+    steps:
+      - restore_cache:  ## Restore gradle cache
+          keys:
+            - gradle-cache-v1-{{ .Branch }}-{{ checksum "build.gradle" }}
+            - gradle-cache-v1-{{ .Branch }}
+            - gradle-cache-v1
+
+      - restore_cache:  ## restore node cache
+          keys:
+           - node-cache-v1
+  save-cache:
+    steps:
+      - save_cache:
+          key: gradle-cache-v1-{{ .Branch }}-{{ checksum "build.gradle" }}
+          paths:
+            - ~/.gradle
+      - save_cache:
+          key: node-cache-v1-{{ .Branch }}
+          paths:
+            - /usr/local/lib/node_modules/
+
+  unit-test:
+    steps:
+      - run: gradle wrapper --gradle-version 6.2 --distribution-type all
+      - run: ./gradlew clean
+      - run: ./gradlew build --stacktrace
+  install-sls:
+    steps:
+      - node/with-cache:
+          steps:
+            - run: sudo npm install -g serverless
+  save-test-results:
+    steps:
+      - run:
+          name: Save test results
+          command: |
+            mkdir ~/repo/build/reports/test-results
+            find . -type f -regex ".*/build/test-results/.*xml" -exec cp {} ~/build/reports/test-results/ \;
+          when: always
+      - store_test_results:
+          path: ~/build/reports/test-results
+      - store_artifacts:
+          path: ~/build/reports/
 
 jobs:
-
   build:
     docker:
       - image: circleci/openjdk:8-jdk
-      - image: circleci/python:3.7-stretch
+      - image: circleci/python:3.7.1-stretch
     executor: aws-cli/default
     working_directory: ~/repo
 
@@ -22,21 +68,13 @@ jobs:
 
     steps:
       - checkout
-      - restore_cache:
-          keys:
-            - v1-dependencies-{{ checksum "build.gradle" }}
-            - v1-dependencies-
-            - node-v1-
-      - run: gradle :clean
-      - run: gradle :api:dependencies
-      - run: gradle :auth:dependencies
-      - run: gradle :common:dependencies
-      - run: gradle :websocket:dependencies
-      - run: gradle :cloudformation:dependencies
+      - restore-cache
+      - unit-test
+        ## install node, npm, aws-cli
       - run:
-          name: "Update Node.js and npm"
+          name: Update Node and npm
           command: |
-            curl -sSL "https://nodejs.org/dist/v11.10.0/node-v11.10.0-linux-x64.tar.xz" | sudo tar --strip-components=2 -xJ -C /usr/local/bin/ node-v11.10.0-linux-x64/bin/node
+            curl -sSL "https://nodejs.org/dist/v12.16.1/node-v12.16.1-linux-x64.tar.xz" | sudo tar --strip-components=2 -xJ -C /usr/local/bin/ node-v11.10.0-linux-x64/bin/node
             curl https://www.npmjs.com/install.sh | sudo bash
       - run:
           name: Check current version of node
@@ -44,69 +82,17 @@ jobs:
       - run:
           name: Install serverless
           command: sudo npm install -g serverless
-      - save_cache:
-          paths:
-            - ~/.gradle
-#            - ~/usr/local/lib/node_modules  # location depends on npm version
-          key: v1-dependencies-{{ checksum "build.gradle" }}
-      - save_cache:
-          paths:
-            - /usr/local/lib/node_modules/
-          key: node-v1-
       - aws-cli/install
       - aws-cli/configure:
           profile-name: backend_dev
-      - run:
-          name: serverless package
-          command: |
-                  gradle :api:build -x check
-                  gradle :auth:build -x check
-                  gradle :common:build -x check
-                  gradle :websocket:build -x check
-                  gradle :cloudformation:build -x check
-                  pwd
-                  cd ~/repo/src/api
-                  sls package
-                  cd ~/repo/src/auth
-                  sls package
-                  cd ~/repo/src/common
-                  sls package
-                  cd ~/repo/src/websocket
-                  sls package
-                  cd ~/repo/src/cloudformation
-                  sls package
-      # run tests!
-      - run: gradle :api:integrationTest
-      - run: gradle :api:test
-      - run: gradle :auth:test
-      - run: gradle :common:test
-      - run: gradle :common:integrationTest
-      - run: gradle :websocket:test
-      - run: gradle :websocket:integrationTest
-      - run: gradle :cloudformation:test
-
-      - run: gradle jacocoTestReport
-      # generate coverage report
-      - run: gradle jacocoRootReport
-      # upload coverage report to codacy
-      - run: gradle :sendCoverageToCodacy
-
-      # save test results
-      - run:
-          name: Save test results
-          command: |
-            mkdir -p ~/test-results/junit/
-            find . -type f -regex "**/build/test-results/**/*.xml" -exec cp {} ~/test-results/junit/ \;
-          when: always
-      - store_test_results:
-          path: test-results/junit
+      - run: ./gradlew deploy -Pstage="ci"
+      - run: ./gradlew integrationTest
+      - save-cache
+      - run: ./gradlew jacocoRootReport
+      - run: ./gradlew sendCoverageToCodacy
+      - save-test-results
       - store_artifacts:
-          path: ~/test-results/junit
-      # store coverage report
-      - store_artifacts:
-          path:  build/reports/jacoco/jacocoRootReport/jacocoRootReport.xml
-
-
+          path:  ~/build/reports/jacoco/jacocoRootReport/jacocoRootReport.xml
 
 workflows:
   version: 2.1

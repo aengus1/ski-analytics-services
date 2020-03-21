@@ -3,7 +3,6 @@ package ski.crunch.aws;
 import com.amazonaws.auth.AWSCredentialsProvider;
 import com.amazonaws.auth.profile.ProfileCredentialsProvider;
 import org.apache.log4j.Logger;
-import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestInstance;
 
@@ -13,7 +12,6 @@ import org.junit.jupiter.api.TestInstance;
 public class SSMParameterFacadeTest {
     private static final Logger logger = Logger.getLogger(SSMParameterFacadeTest.class);
 
-    @Disabled()
     @Test
     public void testGetParameter() {
 

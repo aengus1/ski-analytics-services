@@ -1,0 +1,94 @@
+/**
+ * Task to merge jacoco exec from subprojects into a single exec
+ **/
+task jacocoMergeAll(type: JacocoMerge) {
+
+        subprojects.each { subproject ->
+            File intTest = new File(subproject.getBuildDir(),"jacoco/integrationTest.exec")
+            File test = new File(subproject.getBuildDir(),"jacoco/test.exec")
+
+            if (intTest.exists()) {
+                println "has i test " + subproject.name
+                executionData subproject.tasks.withType(Test)
+            } else if (test.exists()) {
+                println "has unit test " + subproject.name
+                executionData subproject.tasks.getByName("test")
+            }
+        }
+}
+
+/**
+ * Task to execute a 'root' coverage report encompassing all tests
+ **/
+task jacocoRootReport(type: JacocoReport) {
+
+    if (additionalSourceDirs == null) {
+        return
+    }
+    group = "report"
+    description = "runs root jacoco report"
+    dependsOn(jacocoMergeAll)
+    additionalSourceDirs.from = files(subprojects.sourceSets.main.allSource.srcDirs)
+    sourceDirectories.from = files(subprojects.sourceSets.main.allSource.srcDirs)
+    classDirectories.from = files(subprojects.sourceSets.main.output)
+    executionData.from = files("${buildDir}/jacoco/jacocoMergeAll.exec")
+
+    reports {
+        html.enabled = true
+        xml.enabled = true
+        csv.enabled = false
+    }
+
+    onlyIf = {
+        true
+    }
+    doFirst {
+        subprojects.findAll { subproject ->
+            (
+                        subproject.pluginManager.hasPlugin('java')
+                    || subproject.pluginManager.hasPlugin('scala')
+                    || subproject.pluginManager.hasPlugin('java-library')
+            )
+        }.each { subproject ->
+                additionalSourceDirs files((Set<File>) subproject.sourceSets.main.allSource.srcDirs)
+                additionalClassDirs((FileCollection) subproject.sourceSets.main.output)
+            if (subproject.pluginManager.hasPlugin('jacoco')) {
+                executionData {
+                    subproject.tasks.jacocoTestReport.executionData
+                    subproject.tasks.jacocoIntegrationTestReport.executionData
+                }
+            }
+        }
+
+        executionData.from = files(executionData.findAll {
+            it.exists()
+        })
+    }
+
+    afterEvaluate {
+        getClassDirectories().from = files(classDirectories.files.collect {
+            fileTree(dir: it, exclude: ['**/com/garmin/**', 'ski/crunch/model/**'])
+        })
+    }
+}
+
+
+configurations { codacy }
+
+dependencies {
+    codacy 'com.codacy:codacy-coverage-reporter:latest.release'
+}
+
+task sendCoverageToCodacy(type: JavaExec, dependsOn: jacocoTestReport) {
+    main = "com.codacy.CodacyCoverageReporter"
+    classpath = configurations.codacy
+    group = "report"
+    description = "sends coverage report to codacy.  requires environment variable to be set"
+    args = [
+            "report",
+            "-l",
+            "Java",
+            "-r",
+            "${buildDir}/reports/jacoco/jacocoRootReport/jacocoRootReport.xml"
+    ]
+}

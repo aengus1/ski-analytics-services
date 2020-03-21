@@ -23,10 +23,6 @@ provider:
       Resource: arn:aws:dynamodb:${{self:provider.region}}:*:table/${{self:custom.userTable}}
 
 custom: ${{file(../../config/custom.yml)}}
-#  currentStage: ${{opt:stage, self:provider.stage}}
-#  #userTable: ${{self:custom.currentStage}}-${{file(../../config/environment.yml):Properties.ProjectName}}-User
-#  projectName: ${{file(../../infra/stacks/global.tfvars.json):project_name}}
-#  resourceTags:  ${{file(../../config/environment.yml):Properties.Tags}}
 
 package:
   artifact: build/distributions/${{self:service}}.zip
@@ -37,11 +33,6 @@ functions:
     handler: ski.crunch.auth.AddUserSettings
     environment:
       userTable: ${{self:custom.userTable}}
-#    events:
-#      - cognitoUserPool:
-#          pool: ${{opt:stage}}-${{self:custom.projectName}}-pool
-#          trigger: PostConfirmation
-#          existing: true
     layers:
       - ${{cf:${{opt:stage}}-${{self:custom.projectName}}-common.UtilsLambdaLayerQualifiedArn}}
       - ${{cf:${{opt:stage}}-${{self:custom.projectName}}-common.CommonLambdaLayerQualifiedArn}}
@@ -60,7 +51,6 @@ resources:
         UserPool: ${{self:custom.userPoolId}}
         LambdaFunctionArn: !GetAtt 'PostConfirmationLambdaFunction.Arn'
 
-
     OnCognitoConfirmationPermission:
       Type: 'AWS::Lambda::Permission'
       DependsOn: PostConfirmationLambdaFunction
@@ -70,9 +60,6 @@ resources:
           !GetAtt PostConfirmationLambdaFunction.Arn
         Principal: "cognito-idp.amazonaws.com"
         SourceArn: ${{self:custom.userPoolArn}}
-        #  Fn::Join: [':', ["arn:aws:cognito-idp", "${{self:provider.region}}", Ref: "AWS::AccountId", "userpool/*"]]
-
-
 
   Outputs:
     PostConfirmationArn:
@@ -80,4 +67,3 @@ resources:
         Fn::GetAtt: PostConfirmationLambdaFunction.Arn
       Export:
         Name: PostConfirmationArn-${{opt:stage}}
-

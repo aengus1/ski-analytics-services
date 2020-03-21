@@ -1,5 +1,6 @@
 apply plugin: 'java'
-
+apply plugin: 'ski.crunch.build.deploy'
+//logging.captureStandardOutput LogLevel.INFO
 dependencies {
     
     compileOnly(project(':common'))  //exclude from packaged artifact -> provided at runtime by lambda container
@@ -8,11 +9,17 @@ dependencies {
             "com.auth0:java-jwt:3.8.0",
             "com.auth0:jwks-rsa:0.8.2"
     )
+
 }
 
 test {
     include 'ski/crunch/**'
 }
+
+
+
+deploy.dependencies = ['cf-userpool-trigger', 'common' ]
+
 
 /**
  * Task for building the zip file for upload
@@ -23,7 +30,6 @@ test {
  *  Also the gradle 'java-library' plugin documentation contains further details on the api vs implementation
  *  https://docs.gradle.org/current/userguide/java_library_plugin.html
  */
-
 task buildZip(type: Zip) {
     archiveBaseName = "${project.name}"
     from compileJava

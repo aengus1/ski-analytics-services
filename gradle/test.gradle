@@ -1,0 +1,62 @@
+test {
+    useJUnitPlatform()
+
+    reporting.baseDir = "${buildDir}/reports"
+    testResultsDirName = "test-results"
+
+    testLogging.showStandardStreams = true
+    minHeapSize = "128m"
+    maxHeapSize = "512m"
+    jvmArgs '-XX:MaxPermSize=256m'
+
+    // listen to events in the test execution lifecycle
+    beforeTest { descriptor ->
+        logger.lifecycle("Running test:  $descriptor")
+    }
+
+    // Fail the 'test' task on the first test failure
+    failFast = false
+
+    onOutput { descriptor, event ->
+        logger.lifecycle("Test:  $descriptor  produced standard out/err: ${event.message}")
+    }
+
+
+    reports {
+        junitXml.enabled = false
+        html.enabled = true
+        //html.destination = file("$buildDir/reports/unit-test-results/html")
+    }
+    jacoco {
+        classDumpDir = file("$buildDir/jacoco/classpathdumps")
+    }
+}
+
+task testReport(type: TestReport) {
+    destinationDir = file("${buildDir}/reports/unit-tests/")
+    reportOn test.binaryResultsDirectory
+    group = "report"
+    description = "create unit test result report"
+}
+
+jacocoTestReport{
+
+    group = "report"
+    description = "create jacoco unit test coverage report"
+    executionData file("${buildDir}/jacoco/test.exec")
+    additionalSourceDirs.from = files(sourceSets.main.allSource.srcDirs)
+    sourceDirectories.from = files(sourceSets.main.allSource.srcDirs)
+    classDirectories.from = files(sourceSets.main.output)
+
+    reports {
+        html.enabled = true
+        xml.enabled = true
+        csv.enabled = false
+        html.setDestination(new File("${buildDir}/reports/jacoco/unit-test/html"))
+    }
+    afterEvaluate {
+        getClassDirectories().from = files(classDirectories.files.collect {
+            fileTree(dir: it, exclude: ['**/com/garmin/**', 'ski/crunch/model/**'])
+        })
+    }
+}
