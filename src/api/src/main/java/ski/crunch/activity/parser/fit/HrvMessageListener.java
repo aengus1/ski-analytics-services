@@ -13,7 +13,7 @@ import ski.crunch.activity.processor.model.ActivityHolder;
  * Heart Rate Variability (HRV) data may be recorded in an activity file. The hrv data message is an array of RR
  * interval values. All hrv messages contained within the activity file shall be concatenated together into a single,
  * large array of data. Note that hrv data is not timestamped, and shall be synchronized by checking successive RR
- * intervals as they occur between timestamp activity “record” data.
+ * intervals as they occur between timestamp activity "record" data.
  */
 public class HrvMessageListener extends  AbstractMesgListener implements HrvMesgListener {
     

@@ -2,7 +2,7 @@ package scala.ski.crunch.activity.processor.model
 
 import java.text.SimpleDateFormat
 
-import com.vividsolutions.jts.geom._
+import org.locationtech.jts.geom._
 import org.geotools.geometry.jts.JTS
 import org.geotools.referencing.CRS
 

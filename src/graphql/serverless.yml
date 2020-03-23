@@ -5,7 +5,7 @@ plugins:
   - serverless-appsync-plugin
 provider:
   name: aws
-  runtime: java8
+  runtime: java11
   variableSyntax: "\\${{([ ~:a-zA-Z0-9._\\'\",\\-\\/\\(\\)]+?)}}" # notice the double quotes for yaml to ignore the escape characters!
   ## region hardcoded as appsync is not offered in ca-central-1 yet
   region: us-east-1

@@ -23,16 +23,16 @@
     rawActivityBucketName: ${{opt:stage}}-raw-activity-${{self:custom.projectName}}
 
     ##cognito
-    userPoolArn: ${{cf:${{self:custom.dataStack}}.UserPoolArn}}
-    userPoolId: ${{cf:${{self:custom.dataStack}}.UserPoolId}}
-    userPoolClientId: ${{cf:${{self:custom.dataStack}}.UserPoolClientId}}
+    userPoolArn: ${{cf:${{self:custom.dataStack}}.UserPoolArn${{opt:stage}}}}
+    userPoolId: ${{cf:${{self:custom.dataStack}}.UserPoolId${{opt:stage}}}}
+    userPoolClientId: ${{cf:${{self:custom.dataStack}}.UserPoolClientId${{opt:stage}}}}
 
     ## endpoints
     apiStack: ${{opt:stage}}-${{self:custom.projectName}}-api-var-stack
     apiSubDomain: ${{file(../../infra/stacks/api/dev.terraform.tfvars.json):api_sub_domain}}
     wsSubDomain: ${{file(../../infra/stacks/api/dev.terraform.tfvars.json):ws_sub_domain}}
-    apiDomainName: ${{cf:${{self:custom.apiStack}}.APIEndpointName}}
-    apiDomainZone: ${{cf:${{self:custom.apiStack}}.APIEndpointZoneId}}
-    hostedZoneId: ${{cf:${{self:custom.apiStack}}.HostedZoneId}}
+    apiDomainName: ${{cf:${{self:custom.apiStack}}.APIEndpointName${{opt:stage}}}}
+    apiDomainZone: ${{cf:${{self:custom.apiStack}}.APIEndpointZoneId${{opt:stage}}}}
+    hostedZoneId: ${{cf:${{self:custom.apiStack}}.HostedZoneId${{opt:stage}}}}
     acmCertificateArn: ${{cf:${{self:custom.apiStack}}.AcmCertificateArn
 

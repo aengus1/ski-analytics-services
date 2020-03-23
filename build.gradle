@@ -46,6 +46,10 @@ allprojects {
         maven {
             url "https://maven.geotoolkit.org/"
         }
+
+        maven {
+            url "https://mvnrepository.com/"
+        }
     }
 
     tasks.withType(JavaCompile) {

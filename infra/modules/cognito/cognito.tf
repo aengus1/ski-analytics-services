@@ -138,7 +138,7 @@ resource "aws_cognito_user_pool" "pool" {
 
 data aws_iam_policy_document "cognitoSendingPolicyDoc" {
   statement {
-    sid = "cognitoSendingPolicy"
+    sid = "${var.stage}CognitoSendingPolicy"
 
     effect = "Allow"
     actions = [
@@ -155,7 +155,7 @@ data aws_iam_policy_document "cognitoSendingPolicyDoc" {
 
 data aws_iam_policy_document "cognitoSendingAssumeRoleDoc" {
   statement {
-    sid = "cognitoSendingAssumeRolePolicyDoc"
+    sid = "${var.stage}CognitoSendingAssumeRolePolicyDoc"
     effect = "Allow"
     actions = [
       "sts:AssumeRole"]
@@ -168,12 +168,12 @@ data aws_iam_policy_document "cognitoSendingAssumeRoleDoc" {
 }
 
 resource aws_iam_policy "cognitoSendingPolicy" {
-  name="cognitoSendingPolicy"
+  name="${var.stage}CognitoSendingPolicy"
   policy = data.aws_iam_policy_document.cognitoSendingPolicyDoc.json
 }
 
 resource aws_iam_role "cognitoSendingRole" {
-  name = "${var.stage}-cognitoSendingRole"
+  name = "${var.stage}CognitoSendingRole"
   description = "permission for cognito to use SES as default sending account"
   assume_role_policy = data.aws_iam_policy_document.cognitoSendingAssumeRoleDoc.json
 }

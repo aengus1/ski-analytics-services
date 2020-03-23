@@ -1,13 +1,8 @@
-# Java Gradle CircleCI 2.0 configuration file
-#
-# Check https://circleci.com/docs/2.0/language-java/ for more details
-#
-version: 2.1
+## CircleCI configuration file
 
+version: 2.1
 orbs:
   aws-cli: circleci/aws-cli@0.1.13
-  node: circleci/node@1.1.6
-
 commands:
   restore-cache:
     steps:
@@ -47,20 +42,18 @@ commands:
           name: Save test results
           command: |
             mkdir ~/repo/build/reports/test-results
-            find . -type f -regex ".*/build/test-results/.*xml" -exec cp {} ~/build/reports/test-results/ \;
+            find . -type f -regex ".*/build/test-results/.*xml" -exec cp {} ~/repo/build/reports/test-results/ \;
           when: always
       - store_test_results:
-          path: ~/build/reports/test-results
+          path: ~/repo/build/reports/test-results
       - store_artifacts:
-          path: ~/build/reports/
+          path: ~/repo/build/reports/
 
 jobs:
   build:
     docker:
-      - image: circleci/openjdk:8-jdk
-      - image: circleci/python:3.7.1-stretch
-    executor: aws-cli/default
-    working_directory: ~/repo
+      - image: aengus/crunch-ski:1.0.6
+    working_directory: /home/circleci/repo
 
     environment:
       JVM_OPTS: -Xmx3200m
@@ -70,29 +63,16 @@ jobs:
       - checkout
       - restore-cache
       - unit-test
-        ## install node, npm, aws-cli
-      - run:
-          name: Update Node and npm
-          command: |
-            curl -sSL "https://nodejs.org/dist/v12.16.1/node-v12.16.1-linux-x64.tar.xz" | sudo tar --strip-components=2 -xJ -C /usr/local/bin/ node-v11.10.0-linux-x64/bin/node
-            curl https://www.npmjs.com/install.sh | sudo bash
-      - run:
-          name: Check current version of node
-          command: node -v
-      - run:
-          name: Install serverless
-          command: sudo npm install -g serverless
-      - aws-cli/install
       - aws-cli/configure:
           profile-name: backend_dev
-      - run: ./gradlew deploy -Pstage="ci"
+      - run: ./gradlew deploy -Dstage="ci" --stacktrace
       - run: ./gradlew integrationTest
       - save-cache
       - run: ./gradlew jacocoRootReport
       - run: ./gradlew sendCoverageToCodacy
       - save-test-results
       - store_artifacts:
-          path:  ~/build/reports/jacoco/jacocoRootReport/jacocoRootReport.xml
+          path:  ~/repo/build/reports/jacoco/jacocoRootReport/jacocoRootReport.xml
 
 workflows:
   version: 2.1

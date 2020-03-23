@@ -47,9 +47,9 @@ dependencies {
             "org.scala-lang:scala-library:2.11.12",
             "com.amazonaws:aws-java-sdk-cognitoidp:${awsVersion}",
             "com.amazonaws:aws-java-sdk-ssm:${awsVersion}",
-            "com.vividsolutions:jts:1.13",
-            "org.geotools:gt-main:16.1",
-            "org.geotools:gt-epsg-hsql:16.1"
+            "org.locationtech.jts:jts:1.16.1",
+            "org.geotools:gt-main:21.0",
+            "org.geotools:gt-epsg-hsql:21.1"
     )
 
     compileOnly(

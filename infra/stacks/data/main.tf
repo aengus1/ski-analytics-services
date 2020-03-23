@@ -12,7 +12,6 @@
 ##                SSM parameters to store locationIq API key and Weather API Key
 ##                S3 bucket to store raw activity data
 ##                S3 bucket to store processed activity data
-##                Cloudtrail audit logging (in cf stack)
 ##                Cloudformation stack to export variables to Serverless
 ##
 ## Dependencies:
@@ -41,6 +40,7 @@ terraform {
     region = "us-east-1"
     dynamodb_table = "crunch-ski-terraform-state-lock-dynamo"
     encrypt = false
+    workspace_key_prefix = "frontend-"
   }
     required_providers {
       aws = "~> 2.47.0"
@@ -291,117 +291,42 @@ resource aws_cloudformation_stack "output_stack" {
   template_body = <<STACK
 {
   "Resources" : {
-    "S3Bucket": {
-            "DeletionPolicy": "Retain",
-            "Type": "AWS::S3::Bucket",
+    "EmptySSM": {
+            "Type": "AWS::SSM::Parameter",
             "Properties": {
-
-            }
-        },
-        "BucketPolicy": {
-            "Type": "AWS::S3::BucketPolicy",
-            "Properties": {
-                "Bucket": {
-                    "Ref": "S3Bucket"
-                },
-                "PolicyDocument": {
-                    "Version": "2012-10-17",
-                    "Statement": [
-                        {
-                            "Sid": "AWSCloudTrailAclCheck",
-                            "Effect": "Allow",
-                            "Principal": {
-                                "Service": "cloudtrail.amazonaws.com"
-                            },
-                            "Action": "s3:GetBucketAcl",
-                            "Resource": {
-                                "Fn::Join": [
-                                    "",
-                                    [
-                                        "arn:aws:s3:::",
-                                        {
-                                            "Ref": "S3Bucket"
-                                        }
-                                    ]
-                                ]
-                            }
-                        },
-                        {
-                            "Sid": "AWSCloudTrailWrite",
-                            "Effect": "Allow",
-                            "Principal": {
-                                "Service": "cloudtrail.amazonaws.com"
-                            },
-                            "Action": "s3:PutObject",
-                            "Resource": {
-                                "Fn::Join": [
-                                    "",
-                                    [
-                                        "arn:aws:s3:::",
-                                        {
-                                            "Ref": "S3Bucket"
-                                        },
-                                        "/AWSLogs/",
-                                        {
-                                            "Ref": "AWS::AccountId"
-                                        },
-                                        "/*"
-                                    ]
-                                ]
-                            },
-                            "Condition": {
-                                "StringEquals": {
-                                    "s3:x-amz-acl": "bucket-owner-full-control"
-                                }
-                            }
-                        }
-                    ]
-                }
-            }
-        },
-        "myTrail": {
-            "DependsOn": [
-                "BucketPolicy"
-            ],
-            "Type": "AWS::CloudTrail::Trail",
-            "Properties": {
-                "S3BucketName": {
-                    "Ref": "S3Bucket"
-                },
-                "IsLogging": true,
-                "IsMultiRegionTrail": true,
-                "IncludeGlobalServiceEvents" : true,
-                "TrailName": "${var.project_name}-trail"
+                "Type": "String",
+                "Name": "${var.stage}-data-emptySSM",
+                "Value": "abc123"
             }
         }
   },
   "Outputs" : {
-    "UserTableArn" : {
+    "UserTableArn${var.stage}" : {
         "Description" : "user table arn",
         "Value": "${aws_dynamodb_table.user_table.arn}",
         "Export": {
-          "Name" : "UserTableArn"
+          "Name" : "UserTableArn${var.stage}"
         }
     },
-      "UserPoolArn" : {
+      "UserPoolArn${var.stage}" : {
       "Description" : "user pool arn",
       "Value": "${module.cognito.userpool-arn}",
       "Export": {
-        "Name" : "UserPoolArn"
+        "Name" : "UserPoolArn${var.stage}"
         }
       },
-      "UserPoolClientId" : {
+      "UserPoolClientId${var.stage}" : {
       "Description" : "user pool client id",
       "Value": "${module.cognito.userpool-client-id}",
       "Export": {
-      "Name" : "UserPoolClientId"
+      "Name" : "UserPoolClientId${var.stage}"
         }
       },
-      "UserPoolId" : {
+      "UserPoolId${var.stage}" : {
       "Description" : "user pool  id",
       "Value": "${module.cognito.userpool-id}",
       "Export": {
-      "Name" : "UserPoolId"
+      "Name" : "UserPoolId${var.stage}"
         }
       }
   }

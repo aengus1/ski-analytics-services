@@ -2,7 +2,7 @@ service: auth
 
 provider:
   name: aws
-  runtime: java8
+  runtime: java11
   variableSyntax: "\\${{([ ~:a-zA-Z0-9._\\'\",\\-\\/\\(\\)]+?)}}" # notice the double quotes for yaml to ignore the escape characters!
   region: ${{file(../../infra/stacks/global.tfvars.json):primary_region}}
   stage: ${{opt:stage}}

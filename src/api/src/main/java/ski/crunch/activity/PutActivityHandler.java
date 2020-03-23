@@ -11,8 +11,6 @@ import ski.crunch.aws.DynamoFacade;
 import ski.crunch.aws.S3Facade;
 import ski.crunch.utils.ApiGatewayResponse;
 
-import java.net.URL;
-import java.net.URLClassLoader;
 import java.util.Map;
 
 
@@ -56,15 +54,17 @@ public class PutActivityHandler implements RequestHandler<Map<String, Object>, A
     public ApiGatewayResponse handleRequest(Map<String, Object> input, Context context) {
 
         //debugging to print classpath for layer issue...
-        if( LOG.isDebugEnabled()) {
-            ClassLoader cl = ClassLoader.getSystemClassLoader();
-
-            URL[] urls = ((URLClassLoader) cl).getURLs();
-            LOG.debug("printing classpath: ");
-            for (URL url : urls) {
-                LOG.debug(url.getFile());
-            }
-        }
+        //urlClassLoader not supported with java11.  Need to rework this
+        //https://community.oracle.com/thread/4011800
+//        if( LOG.isDebugEnabled()) {
+//            ClassLoader cl = ClassLoader.getSystemClassLoader();
+//
+//            URL[] urls = ((URLClassLoader) cl).getURLs();
+//            LOG.debug("printing classpath: ");
+//            for (URL url : urls) {
+//                LOG.debug(url.getFile());
+//            }
+//        }
         LOG.debug("PutActivityHandler called");
         return activityService.saveRawActivity(input,context);
     }

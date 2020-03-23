@@ -5,7 +5,7 @@ service: frontend-stack
 
 provider:
   name: aws
-  runtime: java8
+  runtime: java11
   variableSyntax: "\\${{([ ~:a-zA-Z0-9._\\'\",\\-\\/\\(\\)]+?)}}" # notice the double quotes for yaml to ignore the escape characters!
   stage: staging
   region: ca-central-1

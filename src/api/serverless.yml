@@ -6,7 +6,7 @@ plugins:
   - serverless-apigw-binary
 provider:
   name: aws
-  runtime: java8
+  runtime: java11
   variableSyntax: "\\${{([ ~:a-zA-Z0-9._\\'\",\\-\\/\\(\\)]+?)}}" # notice the double quotes for yaml to ignore the escape characters!
   region: ${{file(../../infra/stacks/global.tfvars.json):primary_region}}
   stackName: ${{opt:stage}}-${{self:custom.projectName}}-${{self:service}}
@@ -81,7 +81,7 @@ custom:
     dataStack: ${{opt:stage}}-${{self:custom.projectName}}-data-var-stack
     apiStack: ${{opt:stage}}-${{self:custom.projectName}}-api-var-stack
     apiSubDomain: ${{file(../../infra/stacks/api/${{opt:stage}}.terraform.tfvars.json):api_sub_domain}}
-    hostedZoneId: ${{cf:${{self:custom.apiStack}}.HostedZoneId}}
+    hostedZoneId: ${{cf:${{self:custom.apiStack}}.HostedZoneId${{opt:stage}}}}
 
     ## tables
     userTable: ${{opt:stage}}-${{self:custom.projectName}}-userTable
@@ -92,11 +92,11 @@ custom:
     rawActivityBucketName: ${{opt:stage}}-raw-activity-${{self:custom.projectName}}
 
     ## endpoint
-    apiDomainName: ${{cf:${{self:custom.apiStack}}.APIEndpointName}}
-    apiDomainZone: ${{cf:${{self:custom.apiStack}}.APIEndpointZoneId}}
+    apiDomainName: ${{cf:${{self:custom.apiStack}}.APIEndpointName${{opt:stage}}}}
+    apiDomainZone: ${{cf:${{self:custom.apiStack}}.APIEndpointZoneId${{opt:stage}}}}
 
     ##cognito
-    userPoolArn: ${{cf:${{self:custom.dataStack}}.UserPoolArn}}
+    userPoolArn: ${{cf:${{self:custom.dataStack}}.UserPoolArn${{opt:stage}}}}
     apigwBinary:
      types:
        - '*/*'

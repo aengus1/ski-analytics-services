@@ -38,6 +38,7 @@ terraform {
     region = "us-east-1"
     dynamodb_table = "crunch-ski-terraform-state-lock-dynamo"
     encrypt = false
+    workspace_key_prefix = "frontend-"
   }
   required_providers {
     aws = "~> 2.47.0"
@@ -204,66 +205,66 @@ resource aws_cloudformation_stack "output_stack" {
             "Type": "AWS::SSM::Parameter",
             "Properties": {
                 "Type": "String",
-                "Name": "${var.stage}-emptySSM",
+                "Name": "${var.stage}-api-emptySSM",
                 "Value": "abc123"
             }
         }
   },
   "Outputs" : {
-      "APIEndpointName" : {
+      "APIEndpointName${var.stage}" : {
       "Description" : "api endpoint domain name",
       "Value": "${module.api_endpoint.endpoint_name}",
       "Export": {
-      "Name" : "ApiEndpointDomainName"
+      "Name" : "ApiEndpointDomainName${var.stage}"
         }
       },
-      "APIEndpointZoneId" : {
+      "APIEndpointZoneId${var.stage}" : {
       "Description" : "api endpoint zone id",
       "Value": "${module.api_endpoint.endpoint_zoneid}",
       "Export": {
-      "Name" : "ApiEndpointZoneId"
+      "Name" : "ApiEndpointZoneId${var.stage}"
         }
       },
-      "WsEndpointName" : {
+      "WsEndpointName${var.stage}" : {
       "Description" : "ws endpoint domain name",
       "Value": "${module.ws_endpoint.endpoint_name}",
       "Export": {
-      "Name" : "WsEndpointDomainName"
+      "Name" : "WsEndpointDomainName${var.stage}"
         }
       },
-      "WsEndpointZoneId" : {
+      "WsEndpointZoneId${var.stage}" : {
       "Description" : "ws endpoint zone id",
       "Value": "${module.ws_endpoint.endpoint_zoneid}",
       "Export": {
-      "Name" : "WsEndpointZoneId"
+      "Name" : "WsEndpointZoneId${var.stage}"
         }
       },
-      "AuthEndpointCfArn" : {
+      "AuthEndpointCfArn${var.stage}" : {
       "Description" : "auth endpoint cf arn",
       "Value": "${aws_cognito_user_pool_domain.userpoolDomain.cloudfront_distribution_arn}",
       "Export": {
-      "Name" : "AuthEndpointCfArn"
+      "Name" : "AuthEndpointCfArn${var.stage}"
         }
       },
-      "AuthEndpointS3Bucket" : {
+      "AuthEndpointS3Bucket${var.stage}" : {
       "Description" : "auth endpoint cf arn",
       "Value": "${aws_cognito_user_pool_domain.userpoolDomain.s3_bucket}",
       "Export": {
-      "Name" : "AuthEndpointS3Bucket"
+      "Name" : "AuthEndpointS3Bucket${var.stage}"
         }
       },
-      "CertificateArn" : {
+      "CertificateArn${var.stage}" : {
       "Description" : "arn of acm certificate",
       "Value": "${data.terraform_remote_state.shared.outputs.acm_certificate_arn}",
       "Export": {
-      "Name" : "AcmCertificateArn"
+      "Name" : "AcmCertificateArn${var.stage}"
         }
       },
-    "HostedZoneId" : {
+    "HostedZoneId${var.stage}" : {
       "Description" : "hosted zone id",
       "Value": "${data.terraform_remote_state.shared.outputs.hosted_zone}",
       "Export": {
-      "Name" : "HostedZoneId"
+      "Name" : "HostedZoneId${var.stage}"
         }
       }
   }

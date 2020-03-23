@@ -3,7 +3,7 @@ package scala.ski.crunch.activity.processor
 import java.text.SimpleDateFormat
 import java.util.Date
 
-import com.vividsolutions.jts.geom.{Coordinate, GeometryFactory, PrecisionModel}
+import org.locationtech.jts.geom.{Coordinate, GeometryFactory, PrecisionModel}
 import javax.annotation.processing.Processor
 
 import scala.annotation.tailrec

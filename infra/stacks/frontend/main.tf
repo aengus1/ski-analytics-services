@@ -28,6 +28,7 @@ terraform {
     region = "us-east-1"
     dynamodb_table = "crunch-ski-terraform-state-lock-dynamo"
     encrypt = false
+    workspace_key_prefix = "frontend-"
   }
   required_providers {
     aws = "~> 2.48.0"

@@ -4,7 +4,7 @@ service: common
 
 provider:
   name: aws
-  runtime: java8
+  runtime: java11
   region: ${{file(../../infra/stacks/global.tfvars.json):primary_region}}
   stage: ${{opt:stage}}
   variableSyntax: "\\${{([ ~:a-zA-Z0-9._\\'\",\\-\\/\\(\\)]+?)}}" # notice the double quotes for yaml to ignore the escape characters!

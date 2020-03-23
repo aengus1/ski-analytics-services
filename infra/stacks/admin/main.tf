@@ -61,7 +61,25 @@ resource "aws_s3_bucket" "terraform-state-storage-s3" {
 
   tags = {
     name = "S3 Remote Terraform State Store"
-    module = "Shared"
+    module = "admin"
+    project = var.project_name
+  }
+}
+
+resource "aws_s3_bucket" "serverless-deployment-bucket" {
+  bucket = "${var.project_name}-sls-deploy-bucket"
+
+  versioning {
+    enabled = true
+  }
+
+  lifecycle {
+    prevent_destroy = false
+  }
+
+  tags = {
+    name = "Serverless Deployment Bucket"
+    module = "admin"
     project = var.project_name
   }
 }
