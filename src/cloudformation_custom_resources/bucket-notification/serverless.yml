@@ -23,8 +23,8 @@ custom:
   rawActivityBucketName: ${{opt:stage}}-raw-activity-${{self:custom.projectName}}
 
   ##cognito
-  userPoolArn: ${{cf:${{self:custom.dataStack}}.UserPoolArn}}
-  userPoolId: ${{cf:${{self:custom.dataStack}}.UserPoolId}}
+  userPoolArn: ${{cf:${{self:custom.dataStack}}.UserPoolArn{{opt:stage}}}}
+  userPoolId: ${{cf:${{self:custom.dataStack}}.UserPoolId{{opt:stage}}}}
 
 
 provider:

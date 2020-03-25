@@ -50,8 +50,8 @@ public class IntegrationTestHelper {
 
         cfHelper = new CloudFormationHelper(credentialsProvider, region);
         authHelper = new AuthenticationHelper(
-                cfHelper.getStackOutput(dataStackName, "UserPoolId"),
-                cfHelper.getStackOutput(dataStackName, "UserPoolClientId"),
+                cfHelper.getStackOutput(dataStackName, "UserPoolId"+this.stage),
+                cfHelper.getStackOutput(dataStackName, "UserPoolClientId"+this.stage),
                 region,
                 AWS_PROFILE);
         readServerlessState();
