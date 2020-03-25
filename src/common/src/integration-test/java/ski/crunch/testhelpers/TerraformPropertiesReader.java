@@ -11,7 +11,7 @@ public class TerraformPropertiesReader {
     public enum TerraformStack {
         SHARED(false),
         DATA(true),
-        APPLICATION(false),
+//        APPLICATION(false),
         ADMIN(false),
         GLOBAL(true);
 
@@ -33,23 +33,23 @@ public class TerraformPropertiesReader {
         String variableFilePath = null;
         switch (stack) {
             case GLOBAL: {
-                variableFilePath = "stacks/global.tfvars.json";
+                variableFilePath = "envs/global.tfvars.json";
                 break;
             }
             case SHARED: {
-                variableFilePath = "stacks/shared/terraform.tfvars";
+                variableFilePath = "envs/shared/terraform.tfvars";
                 break;
             }
             case DATA: {
-                variableFilePath = "stacks/data/" + stage + ".tfvars.json";
+                variableFilePath = "envs/"+stage+"/data/" + stage + ".tfvars.json";
                 break;
             }
-            case APPLICATION: {
-                variableFilePath = "stacks/application/" + stage + ".terraform.tfvars";
-                break;
-            }
+//            case APPLICATION: {
+//                variableFilePath = "envs/"+stage+"/api/"  + stage + ".terraform.tfvars";
+//                break;
+//            }
             case ADMIN: {
-                variableFilePath = "stacks/admin/terraform.tfvars";
+                variableFilePath = "envs/admin/terraform.tfvars";
                 break;
             }
 

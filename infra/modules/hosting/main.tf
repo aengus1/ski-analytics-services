@@ -55,6 +55,11 @@ variable "app_alias" {
   description = "prefix for application-url.  e.g. app- for prod, staging-app for staging etc"
 }
 
+variable "s3_alias" {
+  type = string
+  description = "prefix for s3 bucket name"
+}
+
 variable "zone_id" {
   type = string
   description = "id of the hosted zone for this domain"
@@ -64,7 +69,7 @@ variable "zone_id" {
 #################################################################################################################
 
 resource "aws_s3_bucket" "web_distribution" {
-  bucket = "app-${var.stage}.${var.domain_name}"
+  bucket = var.app_alias=="" ? var.domain_name : "${var.app_alias}.${var.domain_name}"
   acl    = "private"
 
   cors_rule {
@@ -162,13 +167,13 @@ resource "aws_cloudfront_distribution" "web_distribution" {
     project = var.project_name
   }
   aliases = [
-    var.stage== "prod" ? var.domain_name : "${var.app_alias}.${var.domain_name}"
+    var.app_alias=="" ? var.domain_name : "${var.app_alias}.${var.domain_name}"
   ]
 }
 
 resource aws_route53_record "recordset" {
   zone_id = var.zone_id
-  name = var.stage == "prod" ? var.domain_name : "${var.app_alias}.${var.domain_name}"
+  name = var.app_alias=="" ? var.domain_name : "${var.app_alias}.${var.domain_name}"
   type = "A"
   alias {
     name = aws_cloudfront_distribution.web_distribution.domain_name
@@ -180,7 +185,8 @@ resource aws_route53_record "recordset" {
 
 resource aws_route53_record "recordsetwww" {
   zone_id = var.zone_id
-  name = "www.${var.app_alias}.${var.domain_name}"
+  name = var.app_alias=="" ? "www.${var.domain_name}" : "www.${var.app_alias}.${var.domain_name}"
+
   type = "A"
   alias {
     name = aws_cloudfront_distribution.web_distribution.domain_name
@@ -191,14 +197,14 @@ resource aws_route53_record "recordsetwww" {
 }
 
 resource aws_ssm_parameter "s3bucketparam" {
-  name = "${var.stage}-app-bucket-name"
+  name = "${var.s3_alias}-bucket-name"
   type = "String"
   value = aws_s3_bucket.web_distribution.bucket
   overwrite = true
 }
 
 resource aws_ssm_parameter "cfdistroparam" {
-  name = "${var.stage}-cfdistro-name"
+  name = "${var.s3_alias}-cfdistro-name"
   type = "String"
   value = aws_cloudfront_distribution.web_distribution.domain_name
   overwrite = true

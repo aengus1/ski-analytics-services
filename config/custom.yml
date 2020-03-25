@@ -10,8 +10,8 @@
         Value: ${{self:service}}
 
     ## common variables
-    projectName: ${{file(../../infra/stacks/global.tfvars.json):project_name}}
-    domainName: ${{file(../../infra/stacks/global.tfvars.json):domain_name}}
+    projectName: ${{file(../../infra/envs/global.tfvars.json):project_name}}
+    domainName: ${{file(../../infra/envs/global.tfvars.json):domain_name}}
     dataStack: ${{opt:stage}}-${{self:custom.projectName}}-data-var-stack
 
     ## tables
@@ -29,8 +29,8 @@
 
     ## endpoints
     apiStack: ${{opt:stage}}-${{self:custom.projectName}}-api-var-stack
-    apiSubDomain: ${{file(../../infra/stacks/api/dev.terraform.tfvars.json):api_sub_domain}}
-    wsSubDomain: ${{file(../../infra/stacks/api/dev.terraform.tfvars.json):ws_sub_domain}}
+    apiSubDomain: ${{file(../../infra/envs/${{opt:stage}}/api/${{opt:stage}}.terraform.tfvars.json):api_sub_domain}}
+    wsSubDomain: ${{file(../../infra/envs/${{opt:stage}}/api/${{opt:stage}}.terraform.tfvars.json):ws_sub_domain}}
     apiDomainName: ${{cf:${{self:custom.apiStack}}.APIEndpointName${{opt:stage}}}}
     apiDomainZone: ${{cf:${{self:custom.apiStack}}.APIEndpointZoneId${{opt:stage}}}}
     hostedZoneId: ${{cf:${{self:custom.apiStack}}.HostedZoneId${{opt:stage}}}}

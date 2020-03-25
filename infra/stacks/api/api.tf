@@ -16,7 +16,7 @@
 ##                infra/stacks/admin  |for tfstate
 ##                infra/stacks/shared | for DNS
 ##                infra/stacks/data | for origins
-##                infra/stacks/frontend #production env | an A record on root domain is required to set up custom authentication domain
+##                infra/stacks/frontend #production env | an A record on root domain is required to set up custom authentication domain //SOLVED (I THINK)
 ##
 ## Cardinality:   Per environment
 ##
@@ -31,24 +31,6 @@
 
 ## Configuration
 #################################################################################################################
-terraform {
-  backend "s3" {
-    bucket = "crunch-ski-tf-backend-store"
-    key = "api/terraform.tfstate"
-    region = "us-east-1"
-    dynamodb_table = "crunch-ski-terraform-state-lock-dynamo"
-    encrypt = false
-    workspace_key_prefix = "frontend-"
-  }
-  required_providers {
-    aws = "~> 2.47.0"
-  }
-}
-
-provider "aws" {
-  region = var.primary_region
-  profile = var.profile
-}
 
 data "terraform_remote_state" "shared" {
   backend = "s3"
@@ -62,13 +44,15 @@ data "terraform_remote_state" "shared" {
 data "terraform_remote_state" "data" {
   backend = "s3"
   config = {
-    bucket = "${var.project_name}-tf-backend-store"
+    bucket = "${var.stage}-${var.project_name}-tf-backend-store"
     key    = "data/terraform.tfstate"
     region = "us-east-1"
   }
 }
+
 ## Variables
 #################################################################################################################
+//<editor-fold desc="Variables">
 variable "project_name" {
   type = string
   description = "name of this project"
@@ -107,6 +91,7 @@ variable "api_sub_domain"  {
   type = string
   description = "subdomain for the websocket endpoint"
 }
+//</editor-fold>
 
 
 

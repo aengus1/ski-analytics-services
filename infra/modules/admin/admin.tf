@@ -1,21 +1,24 @@
 #################################################################################################################
-## Stack Name:    Admin Stack
+## Module Name:    Admin Module
 ##
-## Description:   This stack contains the S3 bucket and dynamodb table for terraform remote state
+## Description:   This module contains the S3 bucket and dynamodb table for terraform remote state.  It also holds
+##                the serverless deployment bucket and the data backup bucket for the specified stage.
 ##
 ## Region:        us-east-1
 ##
 ## Resources:
 ##                S3 bucket to store terraform remote state
 ##                DynamoDB table for terraform remote state locking
+##                S3 Bucket for Serverless Deployments for current stage  //TODO
+##                S3 Bucket to store data backups //TODO
 ##
 ## Dependencies:  none
 ##
-## Cardinality:   1
+## Cardinality:   per environment
 ##
 ## Outputs:       none
 ##
-##
+## TODO ADD TERMINATION PROTECTION TO ALL RESOURCES
 #################################################################################################################
 
 ## Configuration
@@ -45,11 +48,18 @@ variable "lock-write-capacity" {
   description = "dynamodb write capacity for lock table"
 }
 
+variable "stage" {
+  type = string
+  description = "environment"
+}
+
 ## Resources
 #################################################################################################################
 
+##  Terraform Remote State
+###################################################################
 resource "aws_s3_bucket" "terraform-state-storage-s3" {
-  bucket = "${var.project_name}-tf-backend-store"
+  bucket = "${var.stage}-${var.project_name}-tf-backend-store"
 
   versioning {
     enabled = true
@@ -66,26 +76,8 @@ resource "aws_s3_bucket" "terraform-state-storage-s3" {
   }
 }
 
-resource "aws_s3_bucket" "serverless-deployment-bucket" {
-  bucket = "${var.project_name}-sls-deploy-bucket"
-
-  versioning {
-    enabled = true
-  }
-
-  lifecycle {
-    prevent_destroy = false
-  }
-
-  tags = {
-    name = "Serverless Deployment Bucket"
-    module = "admin"
-    project = var.project_name
-  }
-}
-
 resource "aws_dynamodb_table" "dynamodb-terraform-state-lock" {
-  name = "${var.project_name}-terraform-state-lock-dynamo"
+  name = "${var.stage}-${var.project_name}-terraform-state-lock-dynamo"
   hash_key = "LockID"
   read_capacity = var.lock-read-capacity
   write_capacity = var.lock-write-capacity
@@ -100,4 +92,15 @@ resource "aws_dynamodb_table" "dynamodb-terraform-state-lock" {
     project = var.project_name
     module = "Shared"
   }
+  lifecycle {
+    prevent_destroy = true
+  }
 }
+
+##  Serverless Deployment Bucket
+###################################################################
+
+
+
+##  Backup Bucket
+###################################################################

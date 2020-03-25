@@ -4,7 +4,7 @@ provider:
   name: aws
   runtime: java11
   variableSyntax: "\\${{([ ~:a-zA-Z0-9._\\'\",\\-\\/\\(\\)]+?)}}" # notice the double quotes for yaml to ignore the escape characters!
-  region: ${{file(../../infra/stacks/global.tfvars.json):primary_region}}
+  region: ${{file(../../infra/envs/global.tfvars.json):primary_region}}
   stage: ${{opt:stage}}
   stackName: ${{opt:stage}}-${{self:custom.projectName}}-${{self:service}}
   iamRoleStatements:
