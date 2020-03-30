@@ -7,13 +7,16 @@ import com.amazonaws.services.s3.AmazonS3ClientBuilder;
 import com.amazonaws.services.s3.model.*;
 import com.amazonaws.util.IOUtils;
 import org.apache.commons.io.FileUtils;
-import org.apache.log4j.Logger;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 
 /**
@@ -22,10 +25,10 @@ import java.util.Map;
 public class S3Facade {
 
     private AmazonS3 s3Client;
-    private static final Logger LOG = Logger.getLogger(S3Facade.class);
+    private static final Logger logger = LoggerFactory.getLogger(S3Facade.class);
 
     public S3Facade(String region) {
-        LOG.info("creating S3 service in " + region);
+        logger.info("creating S3 service in " + region);
         this.s3Client = AmazonS3ClientBuilder.standard()
                 .withRegion(region)
                 //.withCredentials(new ProfileCredentialsProvider())
@@ -41,7 +44,7 @@ public class S3Facade {
 
     public boolean doesObjectExist(String bucket, String key) {
         boolean exists = this.s3Client.doesObjectExist(bucket, key);
-        LOG.info("confirmed that " +  key + " in "  + bucket + " exists " + exists);
+        logger.info("confirmed that " + key + " in " + bucket + " exists " + exists);
         return exists;
     }
 
@@ -58,16 +61,16 @@ public class S3Facade {
 
     public void saveObjectToTmpDir(String bucket, String key) throws IOException {
 
-            S3Object o = this.s3Client.getObject(bucket, key);
-            try(S3ObjectInputStream s3is = o.getObjectContent()) {
-                try (FileOutputStream fos = new FileOutputStream(new File("/tmp", key))) {
-                    byte[] read_buf = new byte[1024];
-                    int read_len = 0;
-                    while ((read_len = s3is.read(read_buf)) > 0) {
-                        fos.write(read_buf, 0, read_len);
-                    }
+        S3Object o = this.s3Client.getObject(bucket, key);
+        try (S3ObjectInputStream s3is = o.getObjectContent()) {
+            try (FileOutputStream fos = new FileOutputStream(new File("/tmp", key))) {
+                byte[] read_buf = new byte[1024];
+                int read_len = 0;
+                while ((read_len = s3is.read(read_buf)) > 0) {
+                    fos.write(read_buf, 0, read_len);
                 }
             }
+        }
     }
 
     public void putObject(String bucket, String key, InputStream is) throws IOException {
@@ -121,9 +124,14 @@ public class S3Facade {
             PutObjectResult result = s3Client.putObject(por);
 
         } catch (SdkClientException ex) {
-            LOG.error(ex);
+            logger.error("exception putting object result", ex);
             throw new IOException(ex);
         }
+    }
+
+    public List<String> listObjects(String bucket) {
+        ObjectListing objectListing = this.s3Client.listObjects(bucket);
+        return objectListing.getObjectSummaries().stream().map(x -> x.getKey()).collect(Collectors.toList());
     }
 
 

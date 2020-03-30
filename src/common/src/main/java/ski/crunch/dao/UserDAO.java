@@ -16,9 +16,9 @@ public class UserDAO extends AbstractDAO {
 
     public Optional<UserSettingsItem> getUserSettings(String cognitoId) {
         dynamoDBService.updateTableName(tableName);
-        LOG.info("cognitoId: " + cognitoId);
+        logger.info("cognitoId: " + cognitoId);
         if (cognitoId == null || cognitoId.isEmpty()) {
-            LOG.error("cognito id null or empty" );
+            logger.error("cognito id null or empty" );
             return Optional.empty();
         }
 
@@ -36,7 +36,7 @@ public class UserDAO extends AbstractDAO {
         List<UserSettingsItem> result = dynamoDBService.getMapper().query(UserSettingsItem.class, queryExpression);
 
         if (result.isEmpty()) {
-            LOG.error("User not found for cognitoId " + cognitoId );
+            logger.error("User not found for cognitoId " + cognitoId );
             return Optional.empty();
 
         }
@@ -53,8 +53,8 @@ public class UserDAO extends AbstractDAO {
 
         if (userToUpdate.isPresent()) {
             UserSettingsItem user = userToUpdate.get();
-            LOG.info("updating user with id = " + user.getId());
-            LOG.info("user id = " + user.getId());
+            logger.info("updating user with id = " + user.getId());
+            logger.info("user id = " + user.getId());
             user.addDevice(device);
             user.setActivityTypes(activityTypes);
             try {

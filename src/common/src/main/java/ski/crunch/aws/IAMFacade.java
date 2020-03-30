@@ -3,13 +3,14 @@ package ski.crunch.aws;
 import com.amazonaws.services.identitymanagement.AmazonIdentityManagement;
 import com.amazonaws.services.identitymanagement.AmazonIdentityManagementClientBuilder;
 import com.amazonaws.services.identitymanagement.model.*;
-import org.apache.log4j.Logger;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.util.List;
 
 public class IAMFacade {
     private AmazonIdentityManagement iam;
-    private static final Logger LOG = Logger.getLogger(IAMFacade.class);
+    private static final Logger logger = LoggerFactory.getLogger(IAMFacade.class);
 
     public IAMFacade(String region) {
         iam = AmazonIdentityManagementClientBuilder.standard().withRegion(region).build();
@@ -21,20 +22,20 @@ public class IAMFacade {
                 .withPolicyName(policyName)
                 .withPolicyDocument(policyDocument)
                 .withDescription(description);
-        LOG.debug("attempting to create policy " + policyName);
+        logger.debug("attempting to create policy " + policyName);
         return iam.createPolicy(request);
     }
 
     public DeletePolicyResult deletePolicy(String arn) {
         DeletePolicyRequest request = new DeletePolicyRequest().withPolicyArn(arn);
-        LOG.debug("attempting to delete policy " + arn);
+        logger.debug("attempting to delete policy " + arn);
         return iam.deletePolicy(request);
     }
 
 
     public GetPolicyResult getPolicy(String arn) throws NoSuchEntityException {
         GetPolicyRequest request = new GetPolicyRequest().withPolicyArn(arn);
-        LOG.debug("attempting to fetch policy " + arn);
+        logger.debug("attempting to fetch policy " + arn);
         return iam.getPolicy(request);
     }
 
@@ -44,7 +45,7 @@ public class IAMFacade {
                 new AttachRolePolicyRequest()
                         .withRoleName(roleName)
                         .withPolicyArn(policyArn);
-        LOG.debug("attempting to attach policy " + policyArn + " to " + roleName);
+        logger.debug("attempting to attach policy " + policyArn + " to " + roleName);
         return iam.attachRolePolicy(attach_request);
     }
 
@@ -52,7 +53,7 @@ public class IAMFacade {
         DetachRolePolicyRequest request = new DetachRolePolicyRequest()
                 .withRoleName(roleName)
                 .withPolicyArn(policyArn);
-        LOG.debug("attempting to detacj policy " + policyArn + " from " + roleName);
+        logger.debug("attempting to detacj policy " + policyArn + " from " + roleName);
         return iam.detachRolePolicy(request);
     }
 
@@ -64,7 +65,7 @@ public class IAMFacade {
 
     public ListAttachedRolePoliciesResult getRolePolicies(String roleName) throws NoSuchEntityException {
         ListAttachedRolePoliciesRequest request = new ListAttachedRolePoliciesRequest().withRoleName(roleName);
-        LOG.debug("attempting to fetch  policies for role " + roleName);
+        logger.debug("attempting to fetch  policies for role " + roleName);
         return iam.listAttachedRolePolicies(request);
     }
 
@@ -76,12 +77,12 @@ public class IAMFacade {
             if(!tags.isEmpty()) {
                 request.withTags(tags);
             }
-            LOG.debug("create role tags..");
+            logger.debug("create role tags..");
         for (Tag tag : tags) {
-            LOG.debug(tag.getKey() + ": "  + tag.getValue());
+            logger.debug(tag.getKey() + ": "  + tag.getValue());
         }
 
-        LOG.debug("attempting to create role " + roleName);
+        logger.debug("attempting to create role " + roleName);
         return iam.createRole(request);
     }
 
@@ -91,7 +92,7 @@ public class IAMFacade {
         try {
             return iam.deleteRole(request);
         } catch (DeleteConflictException e) {
-            LOG.error("Unable to delete role" + roleName + ". Verify role is not associated with any resources");
+            logger.error("Unable to delete role" + roleName + ". Verify role is not associated with any resources");
             throw e;
         }
     }
@@ -103,7 +104,7 @@ public class IAMFacade {
                 .withUserName(userName)
                 .withPath(path)
                 .withTags(tags);
-        LOG.debug("attempting to create user " + userName);
+        logger.debug("attempting to create user " + userName);
         return iam.createUser(createUserRequest);
 
     }
@@ -126,7 +127,7 @@ public class IAMFacade {
                 new AttachUserPolicyRequest()
                         .withUserName(userName)
                         .withPolicyArn(policyArn);
-        LOG.debug("attempting to attach policy " + policyArn + " to " + userName);
+        logger.debug("attempting to attach policy " + policyArn + " to " + userName);
         return iam.attachUserPolicy(attach_request);
     }
 
@@ -134,14 +135,14 @@ public class IAMFacade {
         DetachUserPolicyRequest request = new DetachUserPolicyRequest()
                 .withUserName(userName)
                 .withPolicyArn(policyArn);
-        LOG.debug("attempting to detach policy " + policyArn + " from " + userName);
+        logger.debug("attempting to detach policy " + policyArn + " from " + userName);
         return iam.detachUserPolicy(request);
     }
 
     public ListAttachedUserPoliciesResult getUserPolicies(String userName) throws NoSuchEntityException {
         ListAttachedUserPoliciesRequest request = new ListAttachedUserPoliciesRequest()
                 .withUserName(userName);
-        LOG.debug("attempting to fetch  policies for user " + userName);
+        logger.debug("attempting to fetch  policies for user " + userName);
         return iam.listAttachedUserPolicies(request);
     }
 
@@ -151,7 +152,7 @@ public class IAMFacade {
     public CreateAccessKeyResult createAccessKey(String userName) {
         CreateAccessKeyRequest request = new CreateAccessKeyRequest()
                 .withUserName(userName);
-        LOG.info("attempting to create access key for user " + userName);
+        logger.info("attempting to create access key for user " + userName);
         return iam.createAccessKey(request);
     }
 

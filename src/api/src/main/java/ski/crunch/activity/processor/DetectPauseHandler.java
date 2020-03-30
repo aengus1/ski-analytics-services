@@ -1,6 +1,7 @@
 package ski.crunch.activity.processor;
 
-import org.apache.log4j.Logger;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import scala.ski.crunch.activity.processor.EventProcessor;
 import ski.crunch.activity.processor.model.ActivityHolder;
 
@@ -8,7 +9,7 @@ public class DetectPauseHandler implements Handler<ActivityHolder> {
     private Logger logger;
 
     public DetectPauseHandler() {
-        this.logger = Logger.getLogger(getClass().getName());
+        this.logger = LoggerFactory.getLogger(getClass().getName());
     }
 
     @Override

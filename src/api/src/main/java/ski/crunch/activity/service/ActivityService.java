@@ -6,7 +6,8 @@ import com.amazonaws.util.Base64;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ObjectNode;
-import org.apache.log4j.Logger;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import scala.ski.crunch.activity.processor.model.ActivityRecord;
 import ski.crunch.activity.ActivityWriter;
 import ski.crunch.activity.ActivityWriterImpl;
@@ -33,7 +34,7 @@ import java.util.stream.Collectors;
 
 public class ActivityService {
 
-    private static final Logger LOG = Logger.getLogger(ActivityService.class);
+    private static final Logger logger = LoggerFactory.getLogger(ActivityService.class);
 
     private String s3RawActivityBucket;
     private String s3ProcessedActivityBucket;
@@ -74,7 +75,7 @@ public class ActivityService {
             config = new LambdaProxyConfig(input);
 
         } catch (ParseException ex) {
-            LOG.error(" error  parsing input parameters:" + ex.getMessage());
+            logger.error(" error  parsing input parameters:" + ex.getMessage());
             return ApiGatewayResponse.builder()
                     .setStatusCode(400)
                     .setRawBody(new ErrorResponse(400,
@@ -86,7 +87,7 @@ public class ActivityService {
 
             //Create UUID
             String activityId = UUID.randomUUID().toString();
-            LOG.info("Creating Activity with ID: " + activityId);
+            logger.info("Creating Activity with ID: " + activityId);
 
             //Write to S3
             String[] contentTypeArray = config.getHeaders().getContentType().split("application/");
@@ -105,10 +106,10 @@ public class ActivityService {
                 activityDAO.saveMetadata(activityId, identity, contentType, region);
             } catch (SaveException ex) {
                 try {
-                    LOG.error("Error occurred saving activity metadata. Rolling back..");
+                    logger.error("Error occurred saving activity metadata. Rolling back..");
                     s3.deleteObject(s3RawActivityBucket, activityId);
                 } catch (IOException e1) {
-                    LOG.error("Error deleting S3 object", e1);
+                    logger.error("Error deleting S3 object", e1);
                 } finally {
                     throw ex;
                 }
@@ -160,7 +161,7 @@ public class ActivityService {
             id = config.getPathParameters().get("id");
             email = config.getRequestContext().getIdentity().getEmail();
         } catch (ParseException ex) {
-            LOG.error(" error  parsing input parameters:" + ex.getMessage());
+            logger.error(" error  parsing input parameters:" + ex.getMessage());
             return ApiGatewayResponse.builder()
                     .setStatusCode(400)
                     .setRawBody(new ErrorResponse(400,
@@ -172,7 +173,7 @@ public class ActivityService {
         //2. check this user owns the resource
         if (!confirmActivityOwner(id, email)) {
             //return error response
-            LOG.info("user: " + email + " attempted to access resource " + id + " that they don't own");
+            logger.info("user: " + email + " attempted to access resource " + id + " that they don't own");
             return ApiGatewayResponse.builder()
                     .setStatusCode(403)
                     .setRawBody(new ErrorResponse(403,
@@ -182,7 +183,7 @@ public class ActivityService {
         }
         //3. check the resource exists in s3
         if (!s3.doesObjectExist(this.s3ProcessedActivityBucket, id)) {
-            LOG.info("user: " + email + " attempted to access resource " + id
+            logger.info("user: " + email + " attempted to access resource " + id
                     + " that doesn't exist.  Likely it is still queued for processing");
             return ApiGatewayResponse.builder()
                     .setStatusCode(403)
@@ -208,7 +209,7 @@ public class ActivityService {
         } catch (IOException ex) {
             //return error response
             ex.printStackTrace();
-            LOG.error(" error reading file from S3" + ex.getMessage());
+            logger.error(" error reading file from S3" + ex.getMessage());
             return ApiGatewayResponse.builder()
                     .setStatusCode(500)
                     .setRawBody(new ErrorResponse(403,
@@ -228,7 +229,7 @@ public class ActivityService {
         String newKey = "";
         try {
 
-            LOG.info("process and save activity");
+            logger.info("process and save activity");
             Iterator<String> it = input.keySet().iterator();
             while (it.hasNext()) {
                 String next = it.next();
@@ -260,7 +261,7 @@ public class ActivityService {
             newKey = id.concat(".pbf");
 
         } catch (ParseException ex) {
-            LOG.error(" error  parsing input parameters:" + ex.getMessage());
+            logger.error(" error  parsing input parameters:" + ex.getMessage());
             return errorResponse("error occurred parsing input", ex);
         }
 
@@ -276,20 +277,20 @@ public class ActivityService {
                 FileUtils.deleteIfExists(rawTmp);
                 s3Service.saveObjectToTmpDir(bucket, key);
             } catch (IOException e) {
-                LOG.error("error saving file " + e.getMessage());
+                logger.error("error saving file " + e.getMessage());
             }
             ActivityHolderAdapter fitParser = new FitActivityHolderAdapter();
             try (FileInputStream fis = new FileInputStream(rawTmp)) {
                 try (BufferedInputStream bis = new BufferedInputStream(fis)) {
                     activity = fitParser.convert(bis);
                 } catch (ParseException ex) {
-                    LOG.error("parse exception " + ex.getMessage());
+                    logger.error("parse exception " + ex.getMessage());
                 }
 
             } catch (FileNotFoundException ex) {
-                LOG.error("error reading file " + ex.getMessage());
+                logger.error("error reading file " + ex.getMessage());
             } catch (IOException ex) {
-                LOG.error("error reading file " + ex.getMessage());
+                logger.error("error reading file " + ex.getMessage());
             }
 
 
@@ -303,7 +304,7 @@ public class ActivityService {
             ActivityOuterClass.Activity.Location location = null;
 
             if (initMove > 0) {
-                LOG.info("gps data found. getting weather and location info");
+                logger.info("gps data found. getting weather and location info");
                 ActivityRecord record = activity.getRecords().get(initMove);
                 weather = weatherService.getWeather(record.lat(), record.lon(), record.ts());
                 location = locationService.getLocation(record.lat(), record.lon());
@@ -326,7 +327,7 @@ public class ActivityService {
             //7. update user settings with possible new devices / activityTypes
             Optional<ActivityItem> activityItemOptional = activityDAO.getActivityItem(id);
             if (!activityItemOptional.isPresent()) {
-                LOG.error("Activity Item " + id + " not present");
+                logger.error("Activity Item " + id + " not present");
                 return ApiGatewayResponse.builder()
                         .setStatusCode(400)
                         .setRawBody(new ErrorResponse(400,
@@ -344,7 +345,7 @@ public class ActivityService {
                         activityTypes
                 );
             } catch (Exception ex) {
-                LOG.error("error updating activity types and devices in user settings", ex);
+                logger.error("error updating activity types and devices in user settings", ex);
             }
 
             //8. mark activity as complete
@@ -356,11 +357,11 @@ public class ActivityService {
             String cognitoId = activityItem.getCognitoId();
             Optional<UserSettingsItem> user = userDAO.getUserSettings(cognitoId);
             connectionId = user.orElseThrow(() -> new NotFoundException(("User " + cognitoId + " not found"))).getConnectionId();
-            LOG.info("connection Id = " + connectionId);
+            logger.info("connection Id = " + connectionId);
 
 
             String apiId = System.getenv("webSocketId");
-            LOG.debug("api ID = " + apiId);
+            logger.debug("api ID = " + apiId);
 
             OutgoingWebSocketService outgoingWebSocketService = new OutgoingWebSocketService();
 
@@ -405,9 +406,9 @@ public class ActivityService {
 
         if (key != null && key.length() > 1 && key.contains(".")) {
             id = key.substring(0, key.indexOf("."));
-            LOG.debug("extracted id: " + id);
+            logger.debug("extracted id: " + id);
         } else {
-            LOG.error("invalid key name: " + key);
+            logger.error("invalid key name: " + key);
             throw new ParseException("invalid key name for activity " + key);
         }
         return id;
@@ -421,11 +422,11 @@ public class ActivityService {
      */
     public boolean deleteRawActivityFromS3(String id) {
         try {
-            LOG.debug("Attempting delete of raw activity: " + id + " from " + this.s3RawActivityBucket);
+            logger.debug("Attempting delete of raw activity: " + id + " from " + this.s3RawActivityBucket);
             this.s3.deleteObject(this.s3RawActivityBucket, id);
             return true;
         } catch (IOException ex) {
-            LOG.error("Error deleting raw activity: " + id + " from S3", ex);
+            logger.error("Error deleting raw activity: " + id + " from S3", ex);
             return false;
         }
     }
@@ -439,11 +440,11 @@ public class ActivityService {
      */
     public boolean deleteProcessedActivityFromS3(String id) {
         try {
-            LOG.debug("Attempting delete of processed activity: " + id + " from " + this.s3ProcessedActivityBucket);
+            logger.debug("Attempting delete of processed activity: " + id + " from " + this.s3ProcessedActivityBucket);
             this.s3.deleteObject(this.s3ProcessedActivityBucket, id);
             return true;
         } catch (IOException ex) {
-            LOG.error("Error deleting processed activity: " + id + " from S3", ex);
+            logger.error("Error deleting processed activity: " + id + " from S3", ex);
             return false;
         }
     }
@@ -470,11 +471,11 @@ public class ActivityService {
         try {
             byte[] body = null;
             body = Base64.decode(bodyStr);
-            LOG.debug("decoded raw activity base64 to binary");
+            logger.debug("decoded raw activity base64 to binary");
             ByteArrayInputStream bais = new ByteArrayInputStream(body);
             s3.putObject(bais, s3RawActivityBucket, activityId + "." + extension, body.length, "rawActivity");
         } catch (IOException e) {
-            LOG.error("error writing object to S3", e);
+            logger.error("error writing object to S3", e);
             throw new SaveException("failed to save raw activity file", e);
         }
     }

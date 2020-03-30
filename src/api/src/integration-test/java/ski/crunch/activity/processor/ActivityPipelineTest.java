@@ -1,10 +1,10 @@
 package ski.crunch.activity.processor;
 
-import org.apache.log4j.Level;
-import org.apache.log4j.Logger;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestInstance;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import scala.ski.crunch.activity.processor.model.ActivityRecord;
 import ski.crunch.activity.ActivityWriter;
 import ski.crunch.activity.ActivityWriterImpl;
@@ -31,7 +31,7 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
 public class ActivityPipelineTest {
 
-    private static final Logger LOG = Logger.getLogger(ActivityPipelineTest.class);
+    private static final Logger logger = LoggerFactory.getLogger(ActivityPipelineTest.class);
     private static final SimpleDateFormat targetFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss");
 
     private static final String testFile = "261217.fit";
@@ -44,7 +44,6 @@ public class ActivityPipelineTest {
     @BeforeAll
     void setUp() {
 
-        LOG.setLevel(Level.DEBUG);
 
     }
 

@@ -1,6 +1,7 @@
 package ski.crunch.activity.processor.summarizer;
 
-import org.apache.log4j.Logger;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import ski.crunch.activity.processor.model.ActivityHolder;
 
 import java.text.ParseException;
@@ -10,7 +11,7 @@ import static ski.crunch.activity.processor.model.ActivityHolder.TARGET_FORMAT;
 
 public class CalculateTotalMoving implements StatisticFunc<Double> {
 
-    private Logger logger = Logger.getLogger(getClass().getName());
+    private Logger logger = LoggerFactory.getLogger(getClass().getName());
 
     /**
      *    * 1 -> 0  (moving to stop)  counted as moving

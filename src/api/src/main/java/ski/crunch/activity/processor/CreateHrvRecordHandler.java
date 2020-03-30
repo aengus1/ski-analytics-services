@@ -1,10 +1,12 @@
 package ski.crunch.activity.processor;
 
-import org.apache.log4j.Logger;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import scala.ski.crunch.activity.processor.model.ActivityRecord;
 import ski.crunch.activity.processor.model.ActivityHolder;
 
-import java.util.*;
+import java.util.List;
+import java.util.Optional;
 
 /**
  * Takes Map<String, Double[]> (ts, hrv[]) and adds the individual hrv values into the activity record list
@@ -17,7 +19,7 @@ public class CreateHrvRecordHandler implements  Handler<ActivityHolder> {
     private Logger logger;
 
     public CreateHrvRecordHandler() {
-        this.logger= Logger.getLogger(getClass().getName());
+        this.logger= LoggerFactory.getLogger(getClass().getName());
     }
 
 

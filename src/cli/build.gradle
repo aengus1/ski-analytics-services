@@ -11,7 +11,9 @@ dependencies {
     implementation(
             'com.google.guava:guava:28.1-jre',
             'info.picocli:picocli:4.2.0',
-
+            "com.amazonaws:aws-lambda-java-log4j:1.0.0",
+            "log4j:log4j:1.2.15",
+            project(':common')
 //            'org.apache.logging.log4j:log4j-core:2.8.2',
 //            'org.apache.logging.log4j:log4j-api:2.8.2'
     )
@@ -35,6 +37,7 @@ apply plugin: 'com.palantir.graal'
 graal {
     mainClass 'crunch.ski.cli.App'
     outputName 'crunch'
+    option '-H:ReflectionConfigurationFiles=src/main/resources/reflect-config.json'
 }
 compileJava {
     options.compilerArgs += ["-Aproject=${project.group}/${project.name}"]

@@ -5,7 +5,8 @@ import com.fasterxml.jackson.databind.node.TextNode;
 import org.apache.http.client.methods.HttpGet;
 import org.apache.http.impl.client.CloseableHttpClient;
 import org.apache.http.impl.client.HttpClients;
-import org.apache.log4j.Logger;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import ski.crunch.model.ActivityOuterClass;
 import ski.crunch.utils.HttpClientUtil;
 
@@ -15,7 +16,7 @@ import java.util.Iterator;
 import java.util.Map;
 
 public class LocationIqService implements LocationService {
-    private static final Logger logger = Logger.getLogger(LocationIqService.class);
+    private static final Logger logger = LoggerFactory.getLogger(LocationIqService.class);
     public static final String LOCATION_IQ_URL = "https://us1.locationiq.com/v1/reverse.php?";
     private HttpClientUtil httpClient;
     private HttpGet httpGet;

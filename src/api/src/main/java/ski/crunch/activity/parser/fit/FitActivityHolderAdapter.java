@@ -1,9 +1,11 @@
 package ski.crunch.activity.parser.fit;
 
-import com.garmin.fit.*;
-import org.apache.log4j.Logger;
-import ski.crunch.activity.processor.model.ActivityHolder;
+import com.garmin.fit.Decode;
+import com.garmin.fit.MesgBroadcaster;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import ski.crunch.activity.parser.ActivityHolderAdapter;
+import ski.crunch.activity.processor.model.ActivityHolder;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -15,7 +17,7 @@ import java.io.InputStream;
 public class FitActivityHolderAdapter implements ActivityHolderAdapter {
 
 
-    private static final Logger logger = Logger.getLogger(FitActivityHolderAdapter.class);
+    private static final Logger logger = LoggerFactory.getLogger(FitActivityHolderAdapter.class);
     ActivityHolder holder = new ActivityHolder();
 
 

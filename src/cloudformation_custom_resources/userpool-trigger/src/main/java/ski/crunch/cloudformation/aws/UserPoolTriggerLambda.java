@@ -1,7 +1,8 @@
 package ski.crunch.cloudformation.aws;
 
 import com.amazonaws.services.cognitoidp.model.*;
-import org.apache.log4j.Logger;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import ski.crunch.aws.CognitoFacade;
 import ski.crunch.cloudformation.AbstractCustomResourceLambda;
 import ski.crunch.cloudformation.CloudformationRequest;
@@ -10,7 +11,7 @@ import ski.crunch.cloudformation.CloudformationResponse;
 import java.util.UUID;
 
 public class UserPoolTriggerLambda extends AbstractCustomResourceLambda {
-    private static final Logger LOG = Logger.getLogger(UserPoolTriggerLambda.class);
+    private static final Logger logger = LoggerFactory.getLogger(UserPoolTriggerLambda.class);
 
     @Override
     public CloudformationResponse doCreate(CloudformationRequest request) throws Exception {
@@ -24,7 +25,7 @@ public class UserPoolTriggerLambda extends AbstractCustomResourceLambda {
             describeUserPoolRequest.setUserPoolId(resourceProperties.getUserPoolId());
             CognitoFacade cognitoFacade = new CognitoFacade(resourceProperties.getRegion());
             DescribeUserPoolResult describeUserPoolResult = cognitoFacade.describeUserPool(describeUserPoolRequest);
-            LOG.info("received response from describeUserPool: " + describeUserPoolResult.toString());
+            logger.info("received response from describeUserPool: " + describeUserPoolResult.toString());
             //TODO -> need to grant cognito permission to use SES
             //https://stackoverflow.com/questions/53348863/aws-cloudformation-script-fails-cognito-is-not-allowed-to-use-your-email-ident
             LambdaConfigType lambdaConfigType = describeUserPoolResult.getUserPool().getLambdaConfig();
@@ -77,62 +78,62 @@ public class UserPoolTriggerLambda extends AbstractCustomResourceLambda {
             }
 
             updateUserPoolRequest.setLambdaConfig(lambdaConfigType);
-            LOG.info("GETTING USER POOL");
+            logger.info("GETTING USER POOL");
             describeUserPoolResult.getUserPool();
-            LOG.info("GOT USER POOL");
+            logger.info("GOT USER POOL");
             //this is ridiculous but the updateUserPool API call will overwrite ALL settings to their default
             // except for the ones specified.  So... we have to fetch all the settings and shove them into this request
             AdminCreateUserConfigType adminCreateUserConfigType = describeUserPoolResult.getUserPool().getAdminCreateUserConfig();
             adminCreateUserConfigType.setUnusedAccountValidityDays(null);
             updateUserPoolRequest.setAdminCreateUserConfig(adminCreateUserConfigType);
-            LOG.info("ADMIN CREATE USER CONFIG");
+            logger.info("ADMIN CREATE USER CONFIG");
             updateUserPoolRequest.setAutoVerifiedAttributes(describeUserPoolResult.getUserPool().getAutoVerifiedAttributes());
-            LOG.info("AUTO VERIFIED");
+            logger.info("AUTO VERIFIED");
             updateUserPoolRequest.setDeviceConfiguration(describeUserPoolResult.getUserPool().getDeviceConfiguration());
-            LOG.info("DEVICE CONFIG");
+            logger.info("DEVICE CONFIG");
             EmailConfigurationType emailConfigurationType = describeUserPoolResult.getUserPool().getEmailConfiguration();
-            LOG.info("sending acc" + emailConfigurationType.getEmailSendingAccount());
-            LOG.info(emailConfigurationType.getReplyToEmailAddress());
-            LOG.info("from " + emailConfigurationType.getFrom());
-            LOG.info(emailConfigurationType.getSourceArn());
-            LOG.info("config set " + emailConfigurationType.getConfigurationSet());
+            logger.info("sending acc" + emailConfigurationType.getEmailSendingAccount());
+            logger.info(emailConfigurationType.getReplyToEmailAddress());
+            logger.info("from " + emailConfigurationType.getFrom());
+            logger.info(emailConfigurationType.getSourceArn());
+            logger.info("config set " + emailConfigurationType.getConfigurationSet());
             updateUserPoolRequest.setEmailConfiguration(describeUserPoolResult.getUserPool().getEmailConfiguration());
-            LOG.info("email config");
+            logger.info("email config");
             updateUserPoolRequest.setEmailVerificationSubject(describeUserPoolResult.getUserPool().getEmailVerificationSubject());
-            LOG.info("email verif");
+            logger.info("email verif");
             updateUserPoolRequest.setEmailVerificationMessage(describeUserPoolResult.getUserPool().getEmailVerificationMessage());
-            LOG.info("email verif");
+            logger.info("email verif");
             updateUserPoolRequest.setMfaConfiguration(describeUserPoolResult.getUserPool().getMfaConfiguration());
-            LOG.info("MFA");
+            logger.info("MFA");
             updateUserPoolRequest.setPolicies(describeUserPoolResult.getUserPool().getPolicies());
-            LOG.info("policie");
+            logger.info("policie");
             updateUserPoolRequest.setSmsAuthenticationMessage(describeUserPoolResult.getUserPool().getSmsAuthenticationMessage());
-            LOG.info("sms auth");
+            logger.info("sms auth");
             updateUserPoolRequest.setSmsConfiguration(describeUserPoolResult.getUserPool().getSmsConfiguration());
-            LOG.info("SMS config");
+            logger.info("SMS config");
             //updateUserPoolRequest.setUserPoolAddOns(describeUserPoolResult.getUserPool().getUserPoolAddOns());
-            //LOG.info("user pool add ons");
+            //logger.info("user pool add ons");
             updateUserPoolRequest.setUserPoolTags(describeUserPoolResult.getUserPool().getUserPoolTags());
-            LOG.info("tags");
+            logger.info("tags");
             updateUserPoolRequest.setSmsVerificationMessage(describeUserPoolResult.getUserPool().getSmsVerificationMessage());
-            LOG.info("sms verif");
+            logger.info("sms verif");
             try{
                 VerificationMessageTemplateType type = describeUserPoolResult.getUserPool().getVerificationMessageTemplate();
-                LOG.info(type.getDefaultEmailOption());
-                LOG.info(type.getEmailMessage());
-                LOG.info(type.getEmailMessageByLink());
-                LOG.info(type.getEmailSubject());
-                LOG.info(type.getEmailSubjectByLink());
+                logger.info(type.getDefaultEmailOption());
+                logger.info(type.getEmailMessage());
+                logger.info(type.getEmailMessageByLink());
+                logger.info(type.getEmailSubject());
+                logger.info(type.getEmailSubjectByLink());
                 updateUserPoolRequest.setVerificationMessageTemplate(type);
             }catch(Exception ex){
                 ex.printStackTrace();
             }
             //updateUserPoolRequest.setVerificationMessageTemplate(describeUserPoolResult.getUserPool().getVerificationMessageTemplate());
-            LOG.info("SMS vefif");
+            logger.info("SMS vefif");
 
-            LOG.info("sending request to updateUserPool: " + updateUserPoolRequest.toString());
+            logger.info("sending request to updateUserPool: " + updateUserPoolRequest.toString());
             UpdateUserPoolResult updateUserPoolResult = cognitoFacade.updateUserPool(updateUserPoolRequest);
-            LOG.info("received response from updateUserPool: " + updateUserPoolResult.toString());
+            logger.info("received response from updateUserPool: " + updateUserPoolResult.toString());
         }catch(Exception ex){
             ex.printStackTrace();
             return CloudformationResponse.errorResponse(request);
@@ -146,7 +147,7 @@ public class UserPoolTriggerLambda extends AbstractCustomResourceLambda {
 
     @Override
     public CloudformationResponse doUpdate(CloudformationRequest request) throws Exception {
-        LOG.info("physical resource id on update: " + request.getPhysicalResourceId());
+        logger.info("physical resource id on update: " + request.getPhysicalResourceId());
         CloudformationResponse response = doCreate(request);
         if (response.getStatus().equals(CloudformationResponse.ResponseStatus.SUCCESS)) {
             CloudformationResponse deleteResponse = doDelete(request);

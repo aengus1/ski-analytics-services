@@ -3,7 +3,7 @@ package ski.crunch.websocket;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.TextNode;
-import org.apache.log4j.Logger;
+import org.slf4j.Logger;
 import ski.crunch.utils.StreamUtils;
 
 import java.io.IOException;
@@ -12,6 +12,8 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
 
+import static org.slf4j.LoggerFactory.getLogger;
+
 /**
  * Class for processing incoming websocket requests.  Delegates messages to handlers based on request type
  */
@@ -19,7 +21,7 @@ public class WebSocketService {
 
     private Map<WebSocketRequestType, WebSocketHandler> handlers;
     private static final ObjectMapper objectMapper = new ObjectMapper();
-    private static final Logger LOGGER = Logger.getLogger(WebSocketService.class);
+    private static final Logger logger = getLogger(WebSocketService.class);
 
 
     public WebSocketService(WebSocketHandler connectHandler, WebSocketHandler disconnectHandler, WebSocketHandler messageHandler) {
@@ -39,7 +41,7 @@ public class WebSocketService {
         WebSocketRequestContext context = new WebSocketRequestContext();
         JsonNode eventJson = StreamUtils.convertStreamToJson(is);
 
-        LOGGER.info("parsed json: " + objectMapper.writerWithDefaultPrettyPrinter().writeValueAsString(eventJson));
+        logger.info("parsed json: " + objectMapper.writerWithDefaultPrettyPrinter().writeValueAsString(eventJson));
 
         String body = eventJson.path(WebSocketRequestContext.body).asText();
         JsonNode reqContext = eventJson.path(WebSocketRequestContext.requestContext);
@@ -52,7 +54,7 @@ public class WebSocketService {
             System.out.println(next.getKey() + " " + next.getValue());
             if (next.getKey().equals(WebSocketRequestContext.cognitoUsername)) {
                 context.setUsername(((TextNode) next.getValue()).asText());
-                LOGGER.debug("username set: " + context.getUsername());
+                logger.debug("username set: " + context.getUsername());
             }
         }
 
@@ -62,11 +64,11 @@ public class WebSocketService {
             Map.Entry next = (Map.Entry) itr.next();
             if (next.getKey().equals("connectionId")) {
                 context.setConnectionId(((TextNode) next.getValue()).asText());
-                LOGGER.debug("connectionId set: " + context.getConnectionId());
+                logger.debug("connectionId set: " + context.getConnectionId());
             }
             if (next.getKey().equals("eventType")) {
                 context.setEventType(Enum.valueOf(WebSocketRequestType.class, ((TextNode) next.getValue()).asText().toUpperCase()));
-                LOGGER.debug("eventType set: " + context.getEventType());
+                logger.debug("eventType set: " + context.getEventType());
             }
         }
 
@@ -75,24 +77,24 @@ public class WebSocketService {
             try {
                 body = body.replace("\\\"", "\"");
                 JsonNode jsonBody = objectMapper.readTree(body);
-                LOGGER.info("parsed body: " + objectMapper.writerWithDefaultPrettyPrinter().writeValueAsString(jsonBody));
+                logger.info("parsed body: " + objectMapper.writerWithDefaultPrettyPrinter().writeValueAsString(jsonBody));
                 try {
                     context.setMessageContent(jsonBody.at("/message/payload").asText());
-                    LOGGER.debug("message content set: " + context.getMessageContent());
+                    logger.debug("message content set: " + context.getMessageContent());
                 }catch(Exception ex) {
-                    LOGGER.error("error parsing message context.  Expecting body/message/payload");
+                    logger.error("error parsing message context.  Expecting body/message/payload");
                     throw ex;
                 }
                 try {
                     context.setAction(jsonBody.at("/action").asText());
-                    LOGGER.debug("message action set: " + context.getAction());
+                    logger.debug("message action set: " + context.getAction());
                 }catch(Exception ex) {
-                    LOGGER.error("error parsing action.  Expecting body/action");
+                    logger.error("error parsing action.  Expecting body/action");
                     throw ex;
                 }
 
             }catch(Exception ex) {
-                LOGGER.error("error obtaining messageBody");
+                logger.error("error obtaining messageBody");
                 throw ex;
             }
         }

@@ -19,7 +19,8 @@ import org.apache.http.client.methods.CloseableHttpResponse;
 import org.apache.http.client.methods.HttpGet;
 import org.apache.http.impl.client.CloseableHttpClient;
 import org.apache.http.impl.client.HttpClients;
-import org.apache.log4j.Logger;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import ski.crunch.utils.StreamUtils;
 
 import java.io.IOException;
@@ -34,7 +35,7 @@ import java.util.*;
 
 public class CustomWebSocketAuthorizer implements RequestHandler<Map<String, Object>, Map<String, Object>> {
 
-    private static final Logger LOGGER = Logger.getLogger(CustomWebSocketAuthorizer.class);
+    private static final Logger logger = LoggerFactory.getLogger(CustomWebSocketAuthorizer.class);
     private static final ObjectMapper objectMapper = new ObjectMapper();
     private HttpGet httpGet = null;
     private String userPoolId = System.getenv("userPoolId");
@@ -56,17 +57,17 @@ public class CustomWebSocketAuthorizer implements RequestHandler<Map<String, Obj
     @Override
     public Map<String, Object> handleRequest(Map<String, Object> input, Context context) {
 
-        LOGGER.info("custom ws authorizer hit");
-        LOGGER.debug("app client id = " + System.getenv("appClientId"));
-        LOGGER.debug("user pool id= " + System.getenv("userPoolId"));
-        LOGGER.debug("Input = " + input);
+        logger.info("custom ws authorizer hit");
+        logger.debug("app client id = " + System.getenv("appClientId"));
+        logger.debug("user pool id= " + System.getenv("userPoolId"));
+        logger.debug("Input = " + input);
 
         // retrieve the authentication token and methodARN from the queryString
         Map qsp = (Map) input.get("queryStringParameters");
         String authorizationToken = qsp.get("token").toString();
         String methodArn = input.get("methodArn").toString();
-        LOGGER.debug("authToken token: " + authorizationToken);
-        LOGGER.debug("methodARN: " + methodArn);
+        logger.debug("authToken token: " + authorizationToken);
+        logger.debug("methodARN: " + methodArn);
 
 
         // retrieve public key from jwks
@@ -93,10 +94,10 @@ public class CustomWebSocketAuthorizer implements RequestHandler<Map<String, Obj
         try {
             DecodedJWT jwt = JWT.decode(authorizationToken);
 
-            LOGGER.debug("header: " + jwt.getHeader());
-            LOGGER.debug("Payload: " + jwt.getPayload());
-            LOGGER.debug("Signature: " + jwt.getSignature());
-            LOGGER.debug("Id : " + jwt.getSubject());
+            logger.debug("header: " + jwt.getHeader());
+            logger.debug("Payload: " + jwt.getPayload());
+            logger.debug("Signature: " + jwt.getSignature());
+            logger.debug("Id : " + jwt.getSubject());
             String principalId = jwt.getSubject();
 
             String[] arnPartials = methodArn.split(":");
@@ -121,25 +122,25 @@ public class CustomWebSocketAuthorizer implements RequestHandler<Map<String, Obj
             authResponse.put("context", context);
 
 
-            if (LOGGER.isDebugEnabled()) {
-                LOGGER.debug(String.join(",", authResponse.keySet()));
+            if (logger.isDebugEnabled()) {
+                logger.debug(String.join(",", authResponse.keySet()));
                 for (String s : authResponse.keySet()) {
-                    LOGGER.debug(s + " : " + authResponse.get(s));
+                    logger.debug(s + " : " + authResponse.get(s));
                 }
 
-                LOGGER.debug(String.join(",", policyDocument.keySet()));
+                logger.debug(String.join(",", policyDocument.keySet()));
                 for (String s : policyDocument.keySet()) {
-                    LOGGER.debug(s + " : " + policyDocument.get(s));
+                    logger.debug(s + " : " + policyDocument.get(s));
                 }
 
-                LOGGER.debug(String.join(",", statement1.keySet()));
+                logger.debug(String.join(",", statement1.keySet()));
                 for (String s : statement1.keySet()) {
-                    LOGGER.debug(s + " : " + statement1.get(s));
+                    logger.debug(s + " : " + statement1.get(s));
                 }
             }
 
         } catch (Exception exception) {
-            LOGGER.error(exception.getMessage(), exception);
+            logger.error(exception.getMessage(), exception);
             return null;
         }
         return authResponse;
@@ -155,7 +156,7 @@ public class CustomWebSocketAuthorizer implements RequestHandler<Map<String, Obj
                         Jwk jwk = provider.get(keyId);
                         return (RSAPublicKey) jwk.getPublicKey();
                     } catch (JwkException ex) {
-                        LOGGER.error("Invalid public key from jwks " + CustomWebSocketAuthorizer.stackTraceToString(ex));
+                        logger.error("Invalid public key from jwks " + CustomWebSocketAuthorizer.stackTraceToString(ex));
                         return null;
                     }
                 }
@@ -178,10 +179,10 @@ public class CustomWebSocketAuthorizer implements RequestHandler<Map<String, Obj
             effect = "Allow";
         } catch (MalformedURLException ex) {
             ex.printStackTrace();
-            LOGGER.error("JWKS URL is invalid" + CustomWebSocketAuthorizer.stackTraceToString(ex));
+            logger.error("JWKS URL is invalid" + CustomWebSocketAuthorizer.stackTraceToString(ex));
             return false;
         } catch (JWTVerificationException ex) {
-            LOGGER.error("error verifying jwt.  Token is not valid.. " + CustomWebSocketAuthorizer.stackTraceToString(ex));
+            logger.error("error verifying jwt.  Token is not valid.. " + CustomWebSocketAuthorizer.stackTraceToString(ex));
             ex.printStackTrace();
             effect = "Deny";
             return false;
@@ -206,8 +207,8 @@ public class CustomWebSocketAuthorizer implements RequestHandler<Map<String, Obj
                 }
 
             }
-            LOGGER.debug(" decoded payload: " + decodedPayload);
-            LOGGER.debug(" Decoded header: " + decodedHeader);
+            logger.debug(" decoded payload: " + decodedPayload);
+            logger.debug(" Decoded header: " + decodedHeader);
             JsonNode jsonHeader = objectMapper.readTree(decodedHeader);
 
             Iterator it = jsonHeader.fields();
@@ -216,12 +217,12 @@ public class CustomWebSocketAuthorizer implements RequestHandler<Map<String, Obj
                 System.out.println(next.getKey() + ": " + next.getValue());
                 if (next.getKey().equals("kid") && publicKeys.contains(next.getValue())) {
                     kid = (String) next.getValue();
-                    LOGGER.debug("verified matching kid");
+                    logger.debug("verified matching kid");
                     break;
                 }
             }
         } catch (IOException ex) {
-            LOGGER.error("Error parsing jwt " + CustomWebSocketAuthorizer.stackTraceToString(ex));
+            logger.error("Error parsing jwt " + CustomWebSocketAuthorizer.stackTraceToString(ex));
             return null;
         }
         return kid;
@@ -234,14 +235,14 @@ public class CustomWebSocketAuthorizer implements RequestHandler<Map<String, Obj
             this.httpGet = new HttpGet();
         }
         String jwksStr = "https://cognito-idp." + region + ".amazonaws.com/" + userPoolId + "/.well-known/jwks.json";
-        LOGGER.debug("JWKS Endpoint: " + jwksStr);
+        logger.debug("JWKS Endpoint: " + jwksStr);
         jwksEndpoint = URI.create(jwksStr);
         httpGet.setURI(jwksEndpoint);
         try (CloseableHttpResponse response = httpClient.execute(httpGet)) {
             HttpEntity entity = response.getEntity();
             String jwks = StreamUtils.convertStreamToString(entity.getContent());
-            LOGGER.info("jwks = " + jwks);
-            LOGGER.info("userPoolId = " + userPoolId);
+            logger.info("jwks = " + jwks);
+            logger.info("userPoolId = " + userPoolId);
             JsonNode jwksJson = objectMapper.readTree(jwks);
             JsonNode keyNode = jwksJson.get("keys");
             Iterator it = keyNode.fields();
@@ -253,7 +254,7 @@ public class CustomWebSocketAuthorizer implements RequestHandler<Map<String, Obj
                 }
             }
         } catch (IOException ex) {
-            LOGGER.error("IO Exception occurred fetching public key from "
+            logger.error("IO Exception occurred fetching public key from "
                     + jwksEndpoint.toString() + "," + CustomWebSocketAuthorizer.stackTraceToString(ex));
             return null;
         }

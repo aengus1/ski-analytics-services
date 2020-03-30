@@ -1,6 +1,7 @@
 package ski.crunch.activity.processor.summarizer;
 
-import org.apache.log4j.Logger;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import scala.ski.crunch.activity.processor.model.ActivitySummary;
 import ski.crunch.activity.processor.Handler;
 import ski.crunch.activity.processor.model.ActivityEvent;
@@ -21,7 +22,7 @@ public class ActivitySummarizer implements Handler<ActivityHolder> {
     private List<Range> pauseIndex = new ArrayList<Range>();
 
     public ActivitySummarizer() {
-        this.logger = Logger.getLogger(getClass().getName());
+        this.logger = LoggerFactory.getLogger(getClass().getName());
     }
 
 

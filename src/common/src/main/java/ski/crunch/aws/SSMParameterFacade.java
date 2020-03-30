@@ -5,12 +5,13 @@ import com.amazonaws.services.simplesystemsmanagement.AWSSimpleSystemsManagement
 import com.amazonaws.services.simplesystemsmanagement.AWSSimpleSystemsManagementClientBuilder;
 import com.amazonaws.services.simplesystemsmanagement.model.GetParameterRequest;
 import com.amazonaws.services.simplesystemsmanagement.model.GetParameterResult;
-import org.apache.log4j.Logger;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 public class SSMParameterFacade {
     AWSSimpleSystemsManagement ssmClient;
     String region;
-    private static final Logger LOG = Logger.getLogger(SSMParameterFacade.class);
+    private static final Logger logger = LoggerFactory.getLogger(SSMParameterFacade.class);
 
     public SSMParameterFacade(String region, AWSCredentialsProvider credentialsProvider) {
         this.region = region;
@@ -19,7 +20,7 @@ public class SSMParameterFacade {
 
 
     public String getParameter( String name) {
-        LOG.info("fetching SSM parameter: " + name);
+        logger.info("fetching SSM parameter: " + name);
         GetParameterRequest request= new GetParameterRequest();
         request.withName(name)
                 .setWithDecryption(false);

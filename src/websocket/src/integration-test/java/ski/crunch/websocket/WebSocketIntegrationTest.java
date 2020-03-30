@@ -4,10 +4,12 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ObjectNode;
-import org.apache.log4j.Logger;
 import org.java_websocket.client.WebSocketClient;
 import org.java_websocket.handshake.ServerHandshake;
-import org.junit.jupiter.api.*;
+import org.junit.jupiter.api.AfterAll;
+import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.TestInstance;
 import ski.crunch.services.OutgoingWebSocketService;
 import ski.crunch.testhelpers.AbstractAwsTest;
 import ski.crunch.testhelpers.IntegrationTestHelper;
@@ -25,7 +27,6 @@ import static org.junit.jupiter.api.Assertions.*;
  */
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
  class WebSocketIntegrationTest extends AbstractAwsTest {
-    private static final Logger LOG = Logger.getLogger(WebSocketIntegrationTest.class);
     private   String endpoint;
     private String userId;
     private String connectionId;
@@ -133,7 +134,7 @@ import static org.junit.jupiter.api.Assertions.*;
 
         @Override
         public void onOpen(ServerHandshake handshakedata) {
-            LOG.info("connection opened:  :" + handshakedata.getHttpStatusMessage() + " "  +
+            logger.info("connection opened:  :" + handshakedata.getHttpStatusMessage() + " "  +
                     handshakedata.getHttpStatus());
             opened = true;
 

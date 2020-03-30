@@ -1,6 +1,7 @@
 package ski.crunch.activity.processor;
 
-import org.apache.log4j.Logger;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import scala.collection.JavaConversions;
 import scala.collection.immutable.HashMap;
 import scala.ski.crunch.activity.processor.RecordProcessor;
@@ -10,13 +11,16 @@ import ski.crunch.activity.processor.model.ActivityHolder;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.util.*;
+import java.util.Collections;
+import java.util.Date;
+import java.util.List;
+import java.util.Map;
 
 public class SetEventIndexHandler implements  Handler<ActivityHolder> {
     private Logger logger;
 
     public SetEventIndexHandler() {
-        this.logger = Logger.getLogger(getClass().getName());
+        this.logger = LoggerFactory.getLogger(getClass().getName());
     }
 
     @Override

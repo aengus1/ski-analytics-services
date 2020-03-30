@@ -1,6 +1,7 @@
 package ski.crunch.activity.processor;
 
-import org.apache.log4j.Logger;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import scala.collection.JavaConversions;
 import scala.collection.immutable.List;
 import scala.ski.crunch.activity.processor.RecordProcessor;
@@ -19,7 +20,7 @@ public class RemoveSpikesHandler implements Handler<ActivityHolder> {
      *
      */
     public RemoveSpikesHandler() {
-        this.logger = Logger.getLogger(getClass().getName());
+        this.logger = LoggerFactory.getLogger(getClass().getName());
     }
 
     @Override

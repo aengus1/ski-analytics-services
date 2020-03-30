@@ -38,12 +38,12 @@ public class ActivityDAO extends AbstractDAO {
 
     public boolean saveActivitySearchFields(ActivityOuterClass.Activity activity) {
         dynamoDBService.updateTableName(tableName);
-        LOG.info("activity id = " + activity.getId());
+        logger.info("activity id = " + activity.getId());
         ActivityItem item = null;
         Optional<ActivityItem> itemo = getActivityItem(activity.getId());
 
         if (!itemo.isPresent()) {
-            LOG.error("activity item " + activity.getId() + " not found");
+            logger.error("activity item " + activity.getId() + " not found");
             return false;
         } else {
             item = itemo.get();
@@ -65,11 +65,11 @@ public class ActivityDAO extends AbstractDAO {
 
         try {
 
-            LOG.info("Updated activity " + activity.getId() + "search fields in dynamo");
+            logger.info("Updated activity " + activity.getId() + "search fields in dynamo");
             dynamoDBService.getMapper().save(item);
             return true;
         } catch (Exception ex) {
-            LOG.error("Error updating  activityitem: " + activity.getId() + " from dynamo", ex);
+            logger.error("Error updating  activityitem: " + activity.getId() + " from dynamo", ex);
             return false;
         }
     }
@@ -89,7 +89,7 @@ public class ActivityDAO extends AbstractDAO {
             activity.setRawFileType(contentType);
             dynamoDBService.getMapper().save(activity);
         } catch (Exception e) {
-            LOG.error("Error writing metadata to activity table. Rolling back", e);
+            logger.error("Error writing metadata to activity table. Rolling back", e);
             throw new SaveException("Error writing metadata to activity table");
         }
     }

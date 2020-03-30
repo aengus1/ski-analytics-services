@@ -4,7 +4,8 @@ import com.amazonaws.auth.AWSCredentialsProvider;
 import com.amazonaws.services.identitymanagement.model.CreatePolicyResult;
 import com.amazonaws.services.identitymanagement.model.Tag;
 import com.google.common.annotations.VisibleForTesting;
-import org.apache.log4j.Logger;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import ski.crunch.aws.IAMFacade;
 import ski.crunch.aws.SSMParameterFacade;
 import ski.crunch.cloudformation.CloudformationRequest;
@@ -24,7 +25,7 @@ import java.util.stream.Collectors;
 
 public class RocksetService {
 
-    private static final Logger logger = Logger.getLogger(RocksetService.class);
+    private static final Logger logger = LoggerFactory.getLogger(RocksetService.class);
     public static final String ROLE_DESCRIPTION = "Role for rockset x-account permissions";
     public static final String POLICY_DESCRIPTION = "Policy for rockset to access integration source";
     public static final String INTEGRATION_DESCRIPTION = " aws integration";

@@ -4,7 +4,8 @@ import com.amazonaws.AmazonClientException;
 import com.amazonaws.auth.DefaultAWSCredentialsProviderChain;
 import com.amazonaws.services.lambda.runtime.Context;
 import com.amazonaws.services.lambda.runtime.RequestHandler;
-import org.apache.log4j.Logger;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import ski.crunch.activity.service.*;
 import ski.crunch.aws.DynamoFacade;
 import ski.crunch.aws.S3Facade;
@@ -30,7 +31,7 @@ public class ParseFitActivityLambda implements RequestHandler<Map<String, Object
     private LocationService locationService;
     private SSMParameterFacade parameterService;
 
-    private static final Logger LOG = Logger.getLogger(ParseFitActivityLambda.class);
+    private static final Logger logger = LoggerFactory.getLogger(ParseFitActivityLambda.class);
 
     public ParseFitActivityLambda() {
         this.region = System.getenv("AWS_DEFAULT_REGION");
@@ -42,9 +43,9 @@ public class ParseFitActivityLambda implements RequestHandler<Map<String, Object
         try {
             this.credentialsProvider = DefaultAWSCredentialsProviderChain.getInstance();
             credentialsProvider.getCredentials();
-            LOG.debug("Obtained default aws credentials");
+            logger.debug("Obtained default aws credentials");
         } catch (AmazonClientException e) {
-            LOG.error("Unable to obtain default aws credentials", e);
+            logger.error("Unable to obtain default aws credentials", e);
         }
         this.dynamo = new DynamoFacade(region, activityTable, credentialsProvider);
         this.s3RawActivityBucket = System.getenv("s3RawActivityBucketName");
@@ -57,7 +58,7 @@ public class ParseFitActivityLambda implements RequestHandler<Map<String, Object
     @Override
     public ApiGatewayResponse handleRequest(Map<String, Object> input, Context context) {
         String stage = System.getenv("currentStage");
-        LOG.info("stage = " + stage);
+        logger.info("stage = " + stage);
 
         String weatherApiKey = parameterService.getParameter(stage + WEATHER_API_PARAMETER_NAME);
         this.weatherService = new DarkSkyWeatherService(weatherApiKey);
@@ -65,7 +66,7 @@ public class ParseFitActivityLambda implements RequestHandler<Map<String, Object
         String locationApiKey = parameterService.getParameter(stage + LOCATION_API_PARAMETER_NAME);
         this.locationService = new LocationIqService(locationApiKey);
 
-        LOG.debug("ParseFitActivityHandler called");
+        logger.debug("ParseFitActivityHandler called");
         return this.activityService.processAndSaveActivity(input, context, weatherService, locationService);
 
     }

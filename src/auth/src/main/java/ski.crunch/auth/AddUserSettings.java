@@ -4,11 +4,11 @@ import com.amazonaws.AmazonClientException;
 import com.amazonaws.auth.AWSCredentialsProvider;
 import com.amazonaws.auth.DefaultAWSCredentialsProviderChain;
 import com.amazonaws.services.lambda.runtime.Context;
-import com.amazonaws.services.lambda.runtime.LambdaLogger;
 import com.amazonaws.services.lambda.runtime.RequestStreamHandler;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import org.apache.log4j.Logger;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import ski.crunch.aws.DynamoFacade;
 import ski.crunch.model.UserSettingsItem;
 
@@ -21,7 +21,7 @@ import java.util.List;
 
 public class AddUserSettings implements RequestStreamHandler {
 
-    private static final Logger LOG = Logger.getLogger(AddUserSettings.class);
+    private static final Logger logger = LoggerFactory.getLogger(AddUserSettings.class);
 
     private static final ObjectMapper objectMapper = new ObjectMapper();
     private DynamoFacade dynamo;
@@ -32,7 +32,7 @@ public class AddUserSettings implements RequestStreamHandler {
     @Override
     public void handleRequest(InputStream input, OutputStream os, Context context) throws IOException {
 
-        LambdaLogger logger = context.getLogger();
+        //LambdaLogger logger = context.getLogger();
 
         JsonNode eventNode = objectMapper.readTree(input);
 
@@ -40,7 +40,7 @@ public class AddUserSettings implements RequestStreamHandler {
 
                 stage = context.getFunctionName().split("-")[1];
             } catch (Exception ex) {
-                LOG.error("Error parsing stage from function name." + context.getFunctionName() + "  Expecting authentication-<stage>-<restofname>");
+                logger.error("Error parsing stage from function name." + context.getFunctionName() + "  Expecting authentication-<stage>-<restofname>");
             }
             String tableName = System.getenv("userTable");
         System.out.println("user table =  " + tableName);
@@ -48,9 +48,9 @@ public class AddUserSettings implements RequestStreamHandler {
             try {
                 this.credentialsProvider = DefaultAWSCredentialsProviderChain.getInstance();
                 credentialsProvider.getCredentials();
-                LOG.debug("Obtained default aws credentials");
+                logger.debug("Obtained default aws credentials");
             } catch (AmazonClientException e) {
-                LOG.error("Unable to obtain default aws credentials", e);
+                logger.error("Unable to obtain default aws credentials", e);
             }
             this.dynamo = new DynamoFacade(
                     eventNode.path("region").asText(),
@@ -70,11 +70,11 @@ public class AddUserSettings implements RequestStreamHandler {
 
                 dynamo.getMapper().save(userSettings);
             } catch (Exception e) {
-                LOG.error("Error writing user settings", e);
+                logger.error("Error writing user settings", e);
 
             }
 
-            logger.log(objectMapper.writeValueAsString(eventNode));
+            logger.info(objectMapper.writeValueAsString(eventNode));
 
 
             objectMapper.writeValue(os, eventNode);
@@ -88,7 +88,7 @@ public class AddUserSettings implements RequestStreamHandler {
 //            }
 //            //json = objectMapper.readTree(input);
 //
-//        logger.log(objectMapper.writeValueAsString(json));
+//        logger.logger(objectMapper.writeValueAsString(json));
 //
 //
 //        } catch (IOException e) {
@@ -133,7 +133,7 @@ public class AddUserSettings implements RequestStreamHandler {
 //            root.put("response", objectMapper.createObjectNode());
 //
 //
-//            LOG.debug("res = " + root.toString());
+//            logger.debug("res = " + root.toString());
 //
 //
 //

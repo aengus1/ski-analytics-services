@@ -4,7 +4,8 @@ import com.amazonaws.*;
 import com.amazonaws.auth.AWS4Signer;
 import com.amazonaws.auth.AWSCredentialsProvider;
 import com.amazonaws.http.*;
-import org.apache.log4j.Logger;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
@@ -16,7 +17,7 @@ import java.nio.charset.StandardCharsets;
 
 public class OutgoingWebSocketService {
 
-    private static final Logger log = Logger.getLogger(OutgoingWebSocketService.class);
+    private static final Logger logger = LoggerFactory.getLogger(OutgoingWebSocketService.class);
 
     /**
      * @param message             String The message to send
@@ -69,8 +70,8 @@ public class OutgoingWebSocketService {
             }
         });
 
-        log.info("status:  " + response.getHttpResponse().getStatusCode());
-        log.info("text:  " + response.getHttpResponse().getStatusText());
+        logger.info("status:  " + response.getHttpResponse().getStatusCode());
+        logger.info("text:  " + response.getHttpResponse().getStatusText());
 
         return response.getHttpResponse().getStatusCode();
 
@@ -87,8 +88,8 @@ public class OutgoingWebSocketService {
                 .append(connectionId)
                 .toString();
 
-        log.info(" target = " + targetUrl);
-        log.info(" message = " + message);
+        logger.info(" target = " + targetUrl);
+        logger.info(" message = " + message);
 
 
         Request<Void> request = new DefaultRequest<>("execute-api");
