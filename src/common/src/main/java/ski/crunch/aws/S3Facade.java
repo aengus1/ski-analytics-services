@@ -25,9 +25,12 @@ import java.util.stream.Collectors;
 public class S3Facade {
 
     private AmazonS3 s3Client;
+    private boolean transferAcceleration = false;
+    private String region;
     private static final Logger logger = LoggerFactory.getLogger(S3Facade.class);
 
     public S3Facade(String region) {
+        this.region = region;
         logger.info("creating S3 service in " + region);
         this.s3Client = AmazonS3ClientBuilder.standard()
                 .withRegion(region)
@@ -35,11 +38,30 @@ public class S3Facade {
                 .build();
     }
 
+    public S3Facade(String region, boolean transferAcceleration) {
+        this.region = region;
+        logger.info("creating S3 service in " + region);
+        this.transferAcceleration = transferAcceleration;
+        this.s3Client = AmazonS3ClientBuilder.standard()
+                .withRegion(region)
+                //.withCredentials(new ProfileCredentialsProvider())
+                .withAccelerateModeEnabled(transferAcceleration)
+                .build();
+    }
+
     public S3Facade(String region, AWSCredentialsProvider credentialsProvider) {
+        this(region, credentialsProvider, false);
+    }
+
+    public S3Facade(String region, AWSCredentialsProvider credentialsProvider, boolean transferAcceleration) {
+        this.region = region;
+        this.transferAcceleration = transferAcceleration;
         this.s3Client = AmazonS3ClientBuilder.standard()
                 .withRegion(region)
                 .withCredentials(credentialsProvider)
+                .withAccelerateModeEnabled(transferAcceleration)
                 .build();
+
     }
 
     public boolean doesObjectExist(String bucket, String key) {
@@ -50,17 +72,22 @@ public class S3Facade {
 
     public byte[] getObject(String bucket, String key) throws IOException {
 
+        setTransferAcceleration(bucket);
         S3Object object = this.s3Client.getObject(new GetObjectRequest(bucket, key));
-
         return IOUtils.toByteArray(object.getObjectContent());
     }
 
+    public ObjectMetadata getObjectMetadata(String bucket, String key) throws IOException {
+        return s3Client.getObjectMetadata(bucket, key);
+    }
+
     public InputStream getObjectAsInputStream(String bucket, String key) {
+        setTransferAcceleration(bucket);
         return this.s3Client.getObject(new GetObjectRequest(bucket, key)).getObjectContent();
     }
 
     public void saveObjectToTmpDir(String bucket, String key) throws IOException {
-
+        setTransferAcceleration(bucket);
         S3Object o = this.s3Client.getObject(bucket, key);
         try (S3ObjectInputStream s3is = o.getObjectContent()) {
             try (FileOutputStream fos = new FileOutputStream(new File("/tmp", key))) {
@@ -77,6 +104,7 @@ public class S3Facade {
         File scratchFile = File.createTempFile("activity", "tempProto");
         try {
             FileUtils.copyInputStreamToFile(is, scratchFile);
+            setTransferAcceleration(bucket);
             PutObjectRequest putObjectRequest = new PutObjectRequest(bucket, key, scratchFile);
             PutObjectResult putObjectResult = this.s3Client.putObject(putObjectRequest);
 
@@ -89,6 +117,7 @@ public class S3Facade {
     }
 
     public void putObject(String bucket, String key, File f) {
+        setTransferAcceleration(bucket);
         PutObjectRequest putObjectRequest = new PutObjectRequest(bucket, key, f);
         PutObjectResult putObjectResult = this.s3Client.putObject(putObjectRequest);
     }
@@ -107,6 +136,7 @@ public class S3Facade {
     }
 
     public void deleteObject(String bucket, String key) throws IOException {
+        setTransferAcceleration(bucket);
         this.s3Client.deleteObject(bucket, key);
     }
 
@@ -119,6 +149,7 @@ public class S3Facade {
         metadata.setContentType("application/x-binary");
         metadata.addUserMetadata("x-amz-meta-title", metaTitle);
         metadata.setContentLength(length);
+        setTransferAcceleration(bucketName);
         PutObjectRequest por = new PutObjectRequest(bucketName, objectKey, is, metadata);
         try {
             PutObjectResult result = s3Client.putObject(por);
@@ -130,9 +161,31 @@ public class S3Facade {
     }
 
     public List<String> listObjects(String bucket) {
+        setTransferAcceleration(bucket);
         ObjectListing objectListing = this.s3Client.listObjects(bucket);
         return objectListing.getObjectSummaries().stream().map(x -> x.getKey()).collect(Collectors.toList());
     }
 
+    private void setTransferAcceleration(String bucket) {
+        if (transferAcceleration) {
+            s3Client.setBucketAccelerateConfiguration(
+                    new SetBucketAccelerateConfigurationRequest(bucket,
+                            new BucketAccelerateConfiguration(
+                                    BucketAccelerateStatus.Enabled)));
+        } else {
+            s3Client.setBucketAccelerateConfiguration(
+                    new SetBucketAccelerateConfigurationRequest(bucket,
+                            new BucketAccelerateConfiguration(
+                                    BucketAccelerateStatus.Suspended)));
+        }
+    }
+
+    public String getRegion(){
+        return this.region;
+    }
+
+   public boolean getTransferAcceleration() {
+        return transferAcceleration;
+    }
 
 }

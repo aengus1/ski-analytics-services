@@ -1,4 +1,4 @@
-package crunch.ski.cli.config;
+package crunch.ski.cli;
 
 import picocli.CommandLine;
 

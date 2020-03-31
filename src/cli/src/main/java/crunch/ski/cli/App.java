@@ -1,6 +1,5 @@
 package crunch.ski.cli;
 
-import crunch.ski.cli.config.Config;
 import picocli.CommandLine;
 import picocli.CommandLine.Command;
 import picocli.CommandLine.Option;
@@ -58,12 +57,20 @@ public class App implements Callable<Integer> {
     public String getAwsProfile() {
         return awsProfile;
     }
-
     public String getProjectName() {
         return projectName;
     }
     public String getDataRegion() {
         return dataRegion;
+    }
+    void setAwsProfile(String profile) {
+        this.awsProfile = profile;
+    }
+    void setProjectName(String projectName) {
+        this.projectName = projectName;
+    }
+    void setDataRegion(String dataRegion) {
+        this.dataRegion = dataRegion;
     }
     public boolean isVerbose() {
         return verbose;
