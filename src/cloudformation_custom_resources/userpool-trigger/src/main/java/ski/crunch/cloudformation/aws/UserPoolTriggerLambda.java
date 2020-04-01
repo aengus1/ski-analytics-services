@@ -26,8 +26,7 @@ public class UserPoolTriggerLambda extends AbstractCustomResourceLambda {
             CognitoFacade cognitoFacade = new CognitoFacade(resourceProperties.getRegion());
             DescribeUserPoolResult describeUserPoolResult = cognitoFacade.describeUserPool(describeUserPoolRequest);
             logger.info("received response from describeUserPool: " + describeUserPoolResult.toString());
-            //TODO -> need to grant cognito permission to use SES
-            //https://stackoverflow.com/questions/53348863/aws-cloudformation-script-fails-cognito-is-not-allowed-to-use-your-email-ident
+
             LambdaConfigType lambdaConfigType = describeUserPoolResult.getUserPool().getLambdaConfig();
 
 

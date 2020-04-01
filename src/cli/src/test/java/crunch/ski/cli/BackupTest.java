@@ -52,9 +52,9 @@ public class BackupTest {
 
         verify(credentialsProviderFactory, times(1))
                 .newCredentialsProvider(CredentialsProviderType.PROFILE, Optional.of(PROFILE_NAME));
-        assertEquals(false, backup.getS3Facade().getTransferAcceleration());
+        assertEquals(false, backup.getS3Backup().getS3Facade().getTransferAcceleration());
         assertTrue(backup.getBackupId().startsWith(ENV + "-"));
-        assertTrue(backup.getS3Facade().getRegion().equals(DATA_REGION));
+        assertTrue(backup.getS3Backup().getS3Facade().getRegion().equals(DATA_REGION));
     }
 
     @Test
@@ -74,9 +74,9 @@ public class BackupTest {
 
         verify(credentialsProviderFactory, times(1))
                 .newCredentialsProvider(CredentialsProviderType.PROFILE, Optional.of("newProfile"));
-        assertEquals(true, backup.getS3Facade().getTransferAcceleration());
+        assertEquals(true, backup.getS3Backup().getS3Facade().getTransferAcceleration());
         assertTrue(backup.calcBucketName("my-bucket").endsWith("test-test-project"));
-        assertTrue(backup.getS3Facade().getRegion().equals("newRegion"));
+        assertTrue(backup.getS3Backup().getS3Facade().getRegion().equals("newRegion"));
     }
 
 }

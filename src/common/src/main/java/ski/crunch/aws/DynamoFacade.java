@@ -62,6 +62,8 @@ public class DynamoFacade {
     }
 
 
+
+
     public DynamoDBMapperConfig getConfig() {
         return this.config;
     }
