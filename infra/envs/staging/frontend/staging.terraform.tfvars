@@ -1,0 +1,2 @@
+app_alias = "staging-app"
+profile="default"

@@ -33,24 +33,6 @@
 
 ## Configuration
 #################################################################################################################
-terraform {
-  backend "s3" {
-    bucket = "crunch-ski-tf-backend-store"
-    key = "data/terraform.tfstate"
-    region = "us-east-1"
-    dynamodb_table = "crunch-ski-terraform-state-lock-dynamo"
-    encrypt = false
-    workspace_key_prefix = "frontend-"
-  }
-    required_providers {
-      aws = "~> 2.47.0"
-    }
-}
-
-provider "aws" {
-  region = var.primary_region
-  profile = var.profile
-}
 
 data "terraform_remote_state" "shared" {
   backend = "s3"
@@ -143,21 +125,6 @@ variable "activity_table_point_in_time_recovery" {
   description = "enable point in time recovery on the activity table"
 }
 
-variable "cognito_sub_domain" {
-  type = string
-  description = "cognito custom subdomain for auth endpoint.  i.e. <xxxx>.domain-name"
-}
-
-variable "ws_sub_domain" {
-  type = string
-  description = "alias for ws endpoint"
-}
-
-variable "module_depends_on" {
-  type = any
-  default = []
-  description = "value does not matter"
-}
 
 ## Resources
 #################################################################################################################

@@ -28,6 +28,6 @@ src/**/out/*
 .idea/
 ski-analytics-services.iml
 src/common/gradle/wrapper/gradle-wrapper.properties
-/infra/stacks/shared/.terraform/
+/infra/envs/shared/.terraform/
 /infra/stacks/data/.terraform/
 /buildSrc/build/

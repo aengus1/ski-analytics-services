@@ -1,0 +1,2 @@
+app_alias = "ci-app"
+profile="default"

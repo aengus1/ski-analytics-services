@@ -189,7 +189,7 @@ data "aws_caller_identity" "current" {}
 data "aws_iam_policy_document" "ses_sending_policy" {
 
   statement {
-    sid = "stmnt1234567891234"
+    sid = "sesSendingPolicy"
     effect = "Allow"
     principals {
       identifiers = [
@@ -205,6 +205,33 @@ data "aws_iam_policy_document" "ses_sending_policy" {
     ]
   }
 }
+
+## This is the policy that needs to be manually attached after an email identity has been configured
+## Modify the resources string accordingly (e.g. substitute admin@ for whatever#
+//resource "aws_ses_identity_policy" "ses_sending_identity_policy" {
+//  identity = aws_ses_domain_identity.ses_domain.arn
+//  name = "ses_sending_identity_policy"
+//  policy = data.aws_iam_policy_document.ses_sending_identity_policy.json
+//}
+//data "aws_iam_policy_document" "ses_sending_identity_policy" {
+//
+//  statement {
+//    sid = "sesSendingPolicy"
+//    effect = "Allow"
+//    principals {
+//      identifiers = [
+//        "cognito-idp.amazonaws.com"]
+//      type = "Service"
+//    }
+//    actions = [
+//      "ses:SendEmail",
+//      "ses:SendRawEmail"
+//    ]
+//    resources = [
+//      "arn:aws:ses:${var.primary_region}:${data.aws_caller_identity.current.account_id}:identity/admin@${var.domain_name}"
+//    ]
+//  }
+//}
 
 ## Output
 #################################################################################################################
