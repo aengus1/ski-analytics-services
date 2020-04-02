@@ -23,7 +23,7 @@ provider:
       Resource: "arn:aws:dynamodb:${{self:custom.primaryRegion}}:*:table/${{self:custom.userTable}}"
 
 custom:
-  primaryRegion: ${{file(../../infra/stacks/global.tfvars.json):primary_region}}
+  primaryRegion: ${{file(../../infra/envs/global.tfvars.json):primary_region}}
   resourceTags:
     - Key: "project"
       Value: ${{self:custom.projectName}}
@@ -33,8 +33,8 @@ custom:
       Value: ${{self:service}}
 
     ## common variables
-  projectName: ${{file(../../infra/stacks/global.tfvars.json):project_name}}
-  domainName: ${{file(../../infra/stacks/global.tfvars.json):domain_name}}
+  projectName: ${{file(../../infra/envs/global.tfvars.json):project_name}}
+  domainName: ${{file(../../infra/envs/global.tfvars.json):domain_name}}
   dataStack: ${{opt:stage}}-${{self:custom.projectName}}-data-var-stack
 
     ## tables
@@ -47,14 +47,14 @@ custom:
 
     ##cognito
   ## note that region is intentionally specified in cf output reference
-  userPoolArn: ${{cf.${{self:custom.primaryRegion}}:${{self:custom.dataStack}}.UserPoolArn}}
+  userPoolArn: ${{cf.${{self:custom.primaryRegion}}:${{self:custom.dataStack}}.{{opt:stage}}UserPoolArn}}
   userTableDSName: ${{opt:stage}}_crunch_UserTable_DS
   authStackName: ${{opt:stage}}-${{self:custom.projectName}}-auth
   appSync:
     name: ${{opt:stage}}-appsync-api
     authenticationType: "AMAZON_COGNITO_USER_POOLS"
     userPoolConfig:
-      userPoolId: ${{cf.${{self:custom.primaryRegion}}:${{self:custom.dataStack}}.UserPoolId}}
+      userPoolId: ${{cf.${{self:custom.primaryRegion}}:${{self:custom.dataStack}}.{{opt:stage}}UserPoolId}}
       awsRegion: ${{self:custom.primaryRegion}}
       defaultAction: "ALLOW"
     logConfig:

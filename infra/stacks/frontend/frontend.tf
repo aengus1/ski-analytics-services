@@ -21,24 +21,6 @@
 
 ## Configuration
 #################################################################################################################
-terraform {
-  backend "s3" {
-    bucket = "crunch-ski-tf-backend-store"
-    key = "frontend/terraform.tfstate"
-    region = "us-east-1"
-    dynamodb_table = "crunch-ski-terraform-state-lock-dynamo"
-    encrypt = false
-    workspace_key_prefix = "frontend-"
-  }
-  required_providers {
-    aws = "~> 2.48.0"
-  }
-}
-
-provider "aws" {
-  region = var.primary_region
-  profile = var.profile
-}
 
 data "terraform_remote_state" "shared" {
   backend = "s3"
@@ -83,6 +65,13 @@ variable "stage" {
 ## Resources
 #################################################################################################################
 
+resource "aws_ssm_parameter" "app-bucket-name-ssm-param" {
+  name  = "${var.stage}-app-bucket-name"
+  type  = "String"
+  value = module.hosting.s3_bucket_app
+  overwrite = true
+}
+
 module "hosting" {
   source = "../../modules/hosting"
   acm_certificate_arn = data.terraform_remote_state.shared.outputs.acm_certificate_arn
@@ -92,15 +81,11 @@ module "hosting" {
   project_name = var.project_name
   stage = var.stage
   zone_id = data.terraform_remote_state.shared.outputs.hosted_zone
+  s3_alias = "${var.stage}-app"
 }
 
-resource "aws_ssm_parameter" "app-bucket-name-ssm-param" {
-  name  = "${var.stage}-app-bucket-name"
-  type  = "String"
-  value = module.hosting.s3_bucket_app
-  overwrite = true
-}
-
+## spreading out the ssm parameters in an attempt to avoid the TooManyUpdates exception
+## https://github.com/terraform-providers/terraform-provider-aws/issues/1082
 resource "aws_ssm_parameter" "cf-distro-name-ssm-param" {
   name  = "${var.stage}-cfdistro-name"
   type  = "String"
