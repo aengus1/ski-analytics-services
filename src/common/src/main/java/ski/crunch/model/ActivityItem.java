@@ -1,6 +1,7 @@
 package ski.crunch.model;
 
 import com.amazonaws.services.dynamodbv2.datamodeling.*;
+import ski.crunch.utils.Jsonable;
 
 import java.util.Date;
 import java.util.Set;
@@ -10,7 +11,7 @@ import java.util.Set;
  */
 
 @DynamoDBTable(tableName="ActivityTable")  //override this on call
-public class ActivityItem {
+public class ActivityItem implements Jsonable {
 
     private String id;
     private Date dateOfUpload;

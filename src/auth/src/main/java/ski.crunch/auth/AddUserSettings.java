@@ -35,6 +35,7 @@ public class AddUserSettings implements RequestStreamHandler {
         //LambdaLogger logger = context.getLogger();
 
         JsonNode eventNode = objectMapper.readTree(input);
+        System.out.println(eventNode.asText());
 
         try {
 

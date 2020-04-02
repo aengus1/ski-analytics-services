@@ -5,7 +5,7 @@ import com.amazonaws.services.dynamodbv2.datamodeling.DynamoDBScanExpression;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import ski.crunch.aws.DynamoFacade;
-import ski.crunch.model.Jsonable;
+import ski.crunch.utils.Jsonable;
 
 import java.io.BufferedWriter;
 import java.io.File;
