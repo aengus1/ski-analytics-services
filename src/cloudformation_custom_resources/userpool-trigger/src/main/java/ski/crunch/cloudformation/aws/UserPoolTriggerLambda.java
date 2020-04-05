@@ -11,13 +11,102 @@ import ski.crunch.cloudformation.CloudformationResponse;
 import java.util.UUID;
 
 public class UserPoolTriggerLambda extends AbstractCustomResourceLambda {
+    //static { System.setProperty("log4j.configurationFile", "resources/log4j2.xml"); }
     private static final Logger logger = LoggerFactory.getLogger(UserPoolTriggerLambda.class);
 
     @Override
     public CloudformationResponse doCreate(CloudformationRequest request) throws Exception {
-
         String uuid = UUID.randomUUID().toString();
+        return processRequest(request, uuid);
+    }
 
+    @Override
+    public CloudformationResponse doUpdate(CloudformationRequest request) throws Exception {
+        logger.info("physical resource id on update: " + request.getPhysicalResourceId());
+        return processRequest(request, request.getPhysicalResourceId());
+//        CloudformationResponse response = doCreate(request);
+//        if (response.getStatus().equals(CloudformationResponse.ResponseStatus.SUCCESS)) {
+//            CloudformationResponse deleteResponse = doDelete(request);
+//            if (deleteResponse.getStatus().equals(CloudformationResponse.ResponseStatus.SUCCESS)) {
+//                response.withOutput("Message", "Successfully updated user pool trigger");
+//            } else {
+//                response.withOutput("Message", "Failed to remove previous version of user pool trigger");
+//            }
+//        }
+//
+//        return response;
+    }
+
+    @Override
+    public CloudformationResponse doDelete(CloudformationRequest request) throws Exception {
+        try {
+            UserPoolTriggerResourceProperties resourceProperties = new UserPoolTriggerResourceProperties(request.getResourceProperties());
+
+            CognitoFacade cognitoFacade = new CognitoFacade(resourceProperties.getRegion());
+            UpdateUserPoolRequest updateUserPoolRequest = new UpdateUserPoolRequest();
+            updateUserPoolRequest.setUserPoolId(resourceProperties.getUserPoolId());
+            DescribeUserPoolRequest describeUserPoolRequest = new DescribeUserPoolRequest();
+            describeUserPoolRequest.setUserPoolId(resourceProperties.getUserPoolId());
+            DescribeUserPoolResult describeUserPoolResult = cognitoFacade.describeUserPool(describeUserPoolRequest);
+            LambdaConfigType lambdaConfigType = describeUserPoolResult.getUserPool().getLambdaConfig();
+            switch(resourceProperties.getTriggerType()){
+                case "PostConfirmation": {
+                    lambdaConfigType.setPostConfirmation(null);
+                    break;
+                }
+                case "PreSignUp": {
+                    lambdaConfigType.setPreSignUp(null);
+                    break;
+                }
+                case "PreAuthentication": {
+                    lambdaConfigType.setPreAuthentication(null);
+                    break;
+                }
+                case "PostAuthentication": {
+                    lambdaConfigType.setPostAuthentication(null);
+                    break;
+                }
+                case "CustomMessage" : {
+                    lambdaConfigType.setCustomMessage(null);
+                    break;
+                }
+                case "DefineAuthChallenge": {
+                    lambdaConfigType.setDefineAuthChallenge(null);
+                    break;
+                }
+                case "CreateAuthChallenge" : {
+                    lambdaConfigType.setCreateAuthChallenge(null);
+                    break;
+                }
+                case "VerifyAuthChallengeResponse" : {
+                    lambdaConfigType.setVerifyAuthChallengeResponse(null);
+                    break;
+                }
+                case "PreTokenGeneration" : {
+                    lambdaConfigType.setPreTokenGeneration(null);
+                    break;
+                }
+                case "UserMigration" : {
+                    lambdaConfigType.setUserMigration(null);
+                    break;
+                }
+            }
+
+            updateUserPoolRequest.setLambdaConfig(lambdaConfigType);
+
+            cognitoFacade.updateUserPool(updateUserPoolRequest);
+            CloudformationResponse response = CloudformationResponse.successResponse(request);
+
+            response.withOutput("Message", "successfully deleted user pool trigger");
+            response.withPhysicalResourceId(request.getPhysicalResourceId());
+            return response;
+        }catch(Exception ex){
+            ex.printStackTrace();
+            return CloudformationResponse.errorResponse(request);
+        }
+    }
+
+    private CloudformationResponse processRequest(CloudformationRequest request, String physicalResourceId) {
         try {
 
             UserPoolTriggerResourceProperties resourceProperties = new UserPoolTriggerResourceProperties(request.getResourceProperties());
@@ -138,94 +227,9 @@ public class UserPoolTriggerLambda extends AbstractCustomResourceLambda {
             return CloudformationResponse.errorResponse(request);
         }
         CloudformationResponse response = CloudformationResponse.successResponse(request);
-        response.withOutput("NotificationId", uuid);
+        response.withOutput("NotificationId", physicalResourceId);
         response.withOutput("Message", "successfully created userpool trigger");
-        response.withPhysicalResourceId(uuid);
+        response.withPhysicalResourceId(physicalResourceId);
         return response;
-    }
-
-    @Override
-    public CloudformationResponse doUpdate(CloudformationRequest request) throws Exception {
-        logger.info("physical resource id on update: " + request.getPhysicalResourceId());
-        CloudformationResponse response = doCreate(request);
-        if (response.getStatus().equals(CloudformationResponse.ResponseStatus.SUCCESS)) {
-            CloudformationResponse deleteResponse = doDelete(request);
-            if (deleteResponse.getStatus().equals(CloudformationResponse.ResponseStatus.SUCCESS)) {
-                response.withOutput("Message", "Successfully updated user pool trigger");
-            } else {
-                response.withOutput("Message", "Failed to remove previous version of user pool trigger");
-            }
-        }
-
-        return response;
-    }
-
-    @Override
-    public CloudformationResponse doDelete(CloudformationRequest request) throws Exception {
-        try {
-            UserPoolTriggerResourceProperties resourceProperties = new UserPoolTriggerResourceProperties(request.getResourceProperties());
-
-            CognitoFacade cognitoFacade = new CognitoFacade(resourceProperties.getRegion());
-            UpdateUserPoolRequest updateUserPoolRequest = new UpdateUserPoolRequest();
-            updateUserPoolRequest.setUserPoolId(resourceProperties.getUserPoolId());
-            DescribeUserPoolRequest describeUserPoolRequest = new DescribeUserPoolRequest();
-            describeUserPoolRequest.setUserPoolId(resourceProperties.getUserPoolId());
-            DescribeUserPoolResult describeUserPoolResult = cognitoFacade.describeUserPool(describeUserPoolRequest);
-            LambdaConfigType lambdaConfigType = describeUserPoolResult.getUserPool().getLambdaConfig();
-            switch(resourceProperties.getTriggerType()){
-                case "PostConfirmation": {
-                    lambdaConfigType.setPostConfirmation(null);
-                    break;
-                }
-                case "PreSignUp": {
-                    lambdaConfigType.setPreSignUp(null);
-                    break;
-                }
-                case "PreAuthentication": {
-                    lambdaConfigType.setPreAuthentication(null);
-                    break;
-                }
-                case "PostAuthentication": {
-                    lambdaConfigType.setPostAuthentication(null);
-                    break;
-                }
-                case "CustomMessage" : {
-                    lambdaConfigType.setCustomMessage(null);
-                    break;
-                }
-                case "DefineAuthChallenge": {
-                    lambdaConfigType.setDefineAuthChallenge(null);
-                    break;
-                }
-                case "CreateAuthChallenge" : {
-                    lambdaConfigType.setCreateAuthChallenge(null);
-                    break;
-                }
-                case "VerifyAuthChallengeResponse" : {
-                    lambdaConfigType.setVerifyAuthChallengeResponse(null);
-                    break;
-                }
-                case "PreTokenGeneration" : {
-                    lambdaConfigType.setPreTokenGeneration(null);
-                    break;
-                }
-                case "UserMigration" : {
-                    lambdaConfigType.setUserMigration(null);
-                    break;
-                }
-            }
-
-            updateUserPoolRequest.setLambdaConfig(lambdaConfigType);
-
-            cognitoFacade.updateUserPool(updateUserPoolRequest);
-            CloudformationResponse response = CloudformationResponse.successResponse(request);
-
-            response.withOutput("Message", "successfully deleted user pool trigger");
-            response.withPhysicalResourceId(request.getPhysicalResourceId());
-            return response;
-        }catch(Exception ex){
-            ex.printStackTrace();
-            return CloudformationResponse.errorResponse(request);
-        }
     }
 }

@@ -101,7 +101,6 @@ subprojects {
                 project(path: ':common', configuration: 'testClasses')
         )
     }
-
     task deploy(type: DeployServerless)
     deploy.dependsOn build
 

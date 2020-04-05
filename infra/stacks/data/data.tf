@@ -154,6 +154,12 @@ resource aws_dynamodb_table "user_table" {
     name = "id"
     type = "S"
   }
+
+  attribute {
+    name = "email"
+    type = "S"
+  }
+
   read_capacity = var.user_table_read_capacity
   write_capacity = var.user_table_write_capacity
 
@@ -164,6 +170,14 @@ resource aws_dynamodb_table "user_table" {
   point_in_time_recovery {
     enabled = var.user_table_point_in_time_recovery
   }
+
+  global_secondary_index {
+    hash_key = "email-index"
+    name = "email"
+    read_capacity = var.user_table_read_capacity
+    write_capacity = var.user_table_write_capacity
+    projection_type = "INCLUDE"
+  }
 }
 
 resource aws_dynamodb_table "activityTable" {
@@ -171,20 +185,27 @@ resource aws_dynamodb_table "activityTable" {
   billing_mode = var.activity_table_billing_mode
   read_capacity = var.activity_table_read_capacity
   write_capacity = var.activity_table_write_capacity
-  hash_key = "id"
-  range_key = "date"
+  hash_key = "cognitoId"
+  range_key = "id"
 
   attribute {
     name = "id"
     type = "S"
   }
+
   attribute {
     name = "date"
+    type = "S"
+  }
+
+  attribute {
+    name = "cognitoId"
     type = "S"
   }
   point_in_time_recovery {
     enabled = var.activity_table_point_in_time_recovery
   }
+
   tags = {
     module = "data"
     stage = var.stage

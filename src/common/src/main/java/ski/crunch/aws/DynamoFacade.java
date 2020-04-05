@@ -57,6 +57,10 @@ public class DynamoFacade {
         return this.mapper;
     }
 
+    public DynamoDB getClient() {
+        return dynamo;
+    }
+
     public Table getTable(String tableName){
         return this.dynamo.getTable(tableName);
     }

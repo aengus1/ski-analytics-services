@@ -7,10 +7,12 @@ import org.apache.commons.codec.digest.DigestUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import ski.crunch.aws.S3Facade;
+import ski.crunch.utils.ChecksumFailedException;
 
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
+import java.io.IOException;
 import java.util.List;
 
 public class S3Backup {
@@ -23,7 +25,13 @@ public class S3Backup {
         this.s3Facade = new S3Facade(region, credentialsProvider, transferAcceleration);
     }
 
-    public void backupS3BucketToFile(String backupId, String bucketName) throws Exception {
+    /**
+     * Copies all contents of a bucket to "java.io.tmpdir"/bucketName-backupId and performs checksum validation
+     * @param backupId
+     * @param bucketName
+     * @throws Exception
+     */
+    public void backupS3BucketToTempDir(String backupId, String bucketName) throws IOException, ChecksumFailedException {
         List<String> objectKeys = s3Facade.listObjects(bucketName);
         String tmpDirKey = bucketName + "-" + backupId;
         File tmpDir = new File(System.getProperty("java.io.tmpdir"), tmpDirKey);
@@ -47,7 +55,7 @@ public class S3Backup {
             logger.info("file: " + DigestUtils.md5Hex(new FileInputStream(destFile)));
             logger.info("s3  : " + o.getObjectMetadata().getETag());
             if (!DigestUtils.md5Hex(new FileInputStream(destFile)).equals(o.getObjectMetadata().getETag())) {
-                throw new Exception("md5 checksum failed for " + objectKey);
+                throw new ChecksumFailedException("md5 checksum failed for " + objectKey);
             }
         }
     }

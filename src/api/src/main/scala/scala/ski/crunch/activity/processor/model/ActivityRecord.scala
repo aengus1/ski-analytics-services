@@ -92,7 +92,7 @@ class ActivityRecord(val ts: String, val hr: Int, val lat: Double, val lon: Doub
       ActivityUtils.avgNum(grade, another.grade),
       ActivityUtils.avgNum(distance, another.distance),
       ActivityUtils.avgNum(temperature, another.temperature),
-      if (moving != null && another.moving != null) (moving || another.moving) else if (another.moving != null) another.moving else moving,
+      if (Option(moving).isDefined && Option(another.moving).isDefined) (moving || another.moving) else if (Option(another.moving).isDefined) another.moving else moving,
       ActivityUtils.avgNum(cadence, another.cadence).toInt,
       ActivityUtils.avgNum(verticalSpeed, another.verticalSpeed),
       ActivityUtils.avgNum(hrv, another.hrv)

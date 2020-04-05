@@ -2,9 +2,8 @@ package ski.crunch.model;
 
 import com.amazonaws.services.dynamodbv2.datamodeling.DynamoDBAttribute;
 import com.amazonaws.services.dynamodbv2.datamodeling.DynamoDBHashKey;
+import com.amazonaws.services.dynamodbv2.datamodeling.DynamoDBIndexHashKey;
 import com.amazonaws.services.dynamodbv2.datamodeling.DynamoDBTable;
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import ski.crunch.utils.Jsonable;
 
 import java.util.HashSet;
@@ -18,9 +17,13 @@ public class UserSettingsItem implements Jsonable {
     private String gender;
     private int height;
     private int weight;
+    private boolean confirmed;
     private List<Integer> hrZones;
     private String connectionId;
-
+    private String pwhash;
+    private String email;
+    private String firstName;
+    private String lastName;
     private Set<String> activityTypes;
     private Set<String> tags;
     private Set<String> devices;
@@ -83,11 +86,28 @@ public class UserSettingsItem implements Jsonable {
         this.connectionId = connectionId;
     }
 
+    @DynamoDBAttribute(attributeName = "pwhash")
+    public String getPwhash() {
+        return pwhash;
+    }
+
+    public void setPwhash(String hash) {
+        this.pwhash = hash;
+    }
+
+    @DynamoDBAttribute(attributeName = "confirmed")
+    public boolean isConfirmed() {
+        return confirmed;
+    }
+
+    public void setConfirmed(boolean confirmed) {
+        this.confirmed = confirmed;
+    }
+
     @DynamoDBAttribute(attributeName = "activityTypes")
     public Set<String> getActivityTypes() {
         return activityTypes;
     }
-
 
     public void setActivityTypes(Set<String> activityTypes) {
         this.activityTypes = activityTypes;
@@ -118,6 +138,32 @@ public class UserSettingsItem implements Jsonable {
         this.devices.add(device);
     }
 
+    @DynamoDBAttribute(attributeName = "firstName")
+    public String getFirstName() {
+        return this.firstName;
+    }
+    public void setFirstName(String firstName) {
+        this.firstName = firstName;
+    }
+
+    @DynamoDBIndexHashKey(globalSecondaryIndexName = "email-index")
+    @DynamoDBAttribute(attributeName = "email")
+    public String getEmail() {
+        return this.email;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
+    }
+
+    @DynamoDBAttribute(attributeName = "lastName")
+    public String getLastName() {
+        return this.lastName;
+    }
+
+    public void setLastName(String lastName) {
+        this.lastName = lastName;
+    }
 
 
 

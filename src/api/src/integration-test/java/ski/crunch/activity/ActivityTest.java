@@ -178,12 +178,12 @@ class ActivityTest {
 
         assertEquals("RUNNING",item.get().getActivityType());
         assertEquals("GENERIC_SUBSPORT",item.get().getActivitySubType());
-        assertEquals(new Double(5459), item.get().getDistance());
-        assertEquals(new Double(2052), item.get().getDuration());
-        assertEquals(new Double(231), item.get().getDescent());
-        assertEquals(new Double(179), item.get().getAscent());
-        assertEquals(new Integer(-998), item.get().getAvHr());
-        assertEquals(new Integer(0), item.get().getMaxHr());
+        assertEquals(Double.valueOf(5459), item.get().getDistance());
+        assertEquals(Double.valueOf(2052), item.get().getDuration());
+        assertEquals(Double.valueOf(231), item.get().getDescent());
+        assertEquals(Double.valueOf(179), item.get().getAscent());
+        assertEquals(Integer.valueOf(-998), item.get().getAvHr());
+        assertEquals(Integer.valueOf(0), item.get().getMaxHr());
         assertNotEquals("", item.get().getLastUpdateTimestamp());
 
     }

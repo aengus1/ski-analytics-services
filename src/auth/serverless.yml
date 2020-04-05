@@ -36,6 +36,13 @@ functions:
     layers:
       - ${{cf:${{opt:stage}}-${{self:custom.projectName}}-common.UtilsLambdaLayerQualifiedArn}}
       - ${{cf:${{opt:stage}}-${{self:custom.projectName}}-common.CommonLambdaLayerQualifiedArn}}
+  preSignup:
+    handler: ski.crunch.auth.CapturePwHash
+    environment:
+      userTable: ${{self:custom.userTable}}
+    layers:
+      - ${{cf:${{opt:stage}}-${{self:custom.projectName}}-common.UtilsLambdaLayerQualifiedArn}}
+      - ${{cf:${{opt:stage}}-${{self:custom.projectName}}-common.CommonLambdaLayerQualifiedArn}}
 
 resources:
   Resources:
@@ -50,6 +57,8 @@ resources:
         TriggerType: PostConfirmation
         UserPool: ${{self:custom.userPoolId}}
         LambdaFunctionArn: !GetAtt 'PostConfirmationLambdaFunction.Arn'
+        # a UUID forces a refetch from lambda on each deploy
+        UUID: ${{sls:instanceId}}
 
     OnCognitoConfirmationPermission:
       Type: 'AWS::Lambda::Permission'
@@ -61,9 +70,39 @@ resources:
         Principal: "cognito-idp.amazonaws.com"
         SourceArn: ${{self:custom.userPoolArn}}
 
+    UserPoolPreSignupTrigger:
+      Type: Custom::UserPoolTrigger
+      Version: 1.0
+      DependsOn: PreSignupLambdaFunction
+      Properties:
+        ServiceToken: ${{cf:${{opt:stage}}-${{self:custom.projectName}}-cf-userpool-trigger.UserPoolTriggerFunctionArn}}
+        Name: ${{opt:stage}}-userPoolTrigger
+        Region: ${{self:provider.region}}
+        TriggerType: PreSignUp
+        UserPool: ${{self:custom.userPoolId}}
+        LambdaFunctionArn: !GetAtt 'PreSignupLambdaFunction.Arn'
+        # a UUID forces a refetch from lambda on each deploy
+        UUID: ${{sls:instanceId}}
+
+    OnCognitoPreSignupPermission:
+      Type: 'AWS::Lambda::Permission'
+      DependsOn: PreSignupLambdaFunction
+      Properties:
+        Action: lambda:InvokeFunction
+        FunctionName:
+          !GetAtt PreSignupLambdaFunction.Arn
+        Principal: "cognito-idp.amazonaws.com"
+        SourceArn: ${{self:custom.userPoolArn}}
+
+
   Outputs:
-    PostConfirmationArn:
+#    PostConfirmationArn:
+#      Value:
+#        Fn::GetAtt: PostConfirmationLambdaFunction.Arn
+#      Export:
+#       Name: PostConfirmationArn-${{opt:stage}}
+    PreSignupArn:
       Value:
-        Fn::GetAtt: PostConfirmationLambdaFunction.Arn
+        Fn::GetAtt: PreSignupLambdaFunction.Arn
       Export:
-        Name: PostConfirmationArn-${{opt:stage}}
+        Name: PreSignupArn-${{opt:stage}}

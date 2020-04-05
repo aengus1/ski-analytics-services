@@ -2,6 +2,7 @@ package ski.crunch.aws;
 
 import com.amazonaws.auth.AWSCredentialsProvider;
 import com.amazonaws.auth.profile.ProfileCredentialsProvider;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestInstance;
 import org.slf4j.Logger;
@@ -13,6 +14,7 @@ public class SSMParameterFacadeTest {
     private static final Logger logger = LoggerFactory.getLogger(SSMParameterFacadeTest.class);
 
     @Test
+    @Disabled
     public void testGetParameter() {
 
         final String  AWS_PROFILE = "backend_dev";

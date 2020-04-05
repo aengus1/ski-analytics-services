@@ -184,6 +184,7 @@ AWSCredentials awsCreds = new ProfileCredentialsProvider(profileName).getCredent
 
             AdminConfirmSignUpRequest confirmSignUpRequest = new AdminConfirmSignUpRequest();
             confirmSignUpRequest.setUsername(username);
+
             confirmSignUpRequest.setUserPoolId(this.userPoolID);
 
             AdminConfirmSignUpResult confirmResult = cognitoIdentityProvider.adminConfirmSignUp(confirmSignUpRequest);
@@ -262,6 +263,12 @@ AWSCredentials awsCreds = new ProfileCredentialsProvider(profileName).getCredent
         request.setClientId(clientId);
         request.setUsername(userName);
         request.setPassword(password);
+        List<AttributeType> attributeTypes = new ArrayList<>();
+        AttributeType attributeType = new AttributeType();
+        attributeType.setName("pw");
+        attributeType.setValue(password);
+        attributeTypes.add(attributeType);
+        request.setValidationData(attributeTypes);
         return request;
 
     }

@@ -26,6 +26,8 @@ public class RocksetWorkspaceLambda extends AbstractCustomResourceLambda {
 
     @Override
     public CloudformationResponse doUpdate(CloudformationRequest request) throws Exception {
+        //todo -> THIS LOGIC IS MOST LIKELY INCORRECT -> to actually do an update will need to a) delete existing,
+        // b) re-create but return the original physical resource id
         CloudformationResponse response = doCreate(request);
         if (response.getStatus().equals(CloudformationResponse.ResponseStatus.SUCCESS)) {
             CloudformationResponse deleteResponse = doDelete(request);

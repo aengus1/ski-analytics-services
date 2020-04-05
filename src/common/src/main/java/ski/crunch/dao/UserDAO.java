@@ -10,6 +10,7 @@ import java.util.*;
 
 public class UserDAO extends AbstractDAO {
 
+
     public UserDAO(DynamoFacade dynamo, String tableName) {
         super(dynamo, tableName);
     }
@@ -65,5 +66,37 @@ public class UserDAO extends AbstractDAO {
         }
     }
 
+    public void initializeUserSettings(String username) {
+        try {
+            UserSettingsItem userSettings = dynamoDBService.getMapper().load(UserSettingsItem.class, username);
+            logger.debug("usersettings pwhash = " + userSettings.getPwhash());
+            userSettings.setGender("");
+            userSettings.setConfirmed(true);
+            userSettings.setHeight(0);
+            userSettings.setWeight(0);
+            List<Integer> zones = new ArrayList<>();
+            Collections.addAll(zones, 60, 130, 145, 150, 171, 190);
+            userSettings.setHrZones(zones);
+            dynamoDBService.getMapper().save(userSettings);
+        } catch (Exception e) {
+            logger.error("Error writing user settings", e);
 
+        }
+    }
+
+    public void storeUserPwHash(String username, String hash,String email, String firstName, String lastName) {
+        try {
+            UserSettingsItem userSettings = new UserSettingsItem();
+            userSettings.setEmail(email);
+            userSettings.setFirstName(firstName);
+            userSettings.setLastName(lastName);
+            userSettings.setId(username);
+            userSettings.setConfirmed(false);
+            userSettings.setPwhash(hash);
+            dynamoDBService.getMapper().save(userSettings);
+        } catch (Exception e) {
+            logger.error("Error saving password hash", e);
+
+        }
+    }
 }

@@ -2,14 +2,18 @@ package ski.crunch.dao;
 
 import com.amazonaws.services.dynamodbv2.datamodeling.DynamoDBMapperConfig;
 import com.amazonaws.services.dynamodbv2.datamodeling.DynamoDBQueryExpression;
-import com.amazonaws.services.dynamodbv2.model.AttributeValue;
+import com.amazonaws.services.dynamodbv2.datamodeling.PaginatedQueryList;
+import com.amazonaws.services.dynamodbv2.datamodeling.S3Link;
 import ski.crunch.aws.DynamoFacade;
 import ski.crunch.model.ActivityItem;
 import ski.crunch.model.ActivityOuterClass;
 import ski.crunch.utils.LambdaProxyConfig;
 import ski.crunch.utils.SaveException;
 
-import java.util.*;
+import java.util.Date;
+import java.util.List;
+import java.util.Optional;
+import java.util.stream.Collectors;
 
 public class ActivityDAO extends AbstractDAO {
 
@@ -17,30 +21,35 @@ public class ActivityDAO extends AbstractDAO {
         super(dynamo, tableName);
     }
 
-    public Optional<ActivityItem> getActivityItem(String activityId) {
-        dynamoDBService.updateTableName(tableName);
-        System.out.println("attempting to fetch " + activityId + " from " + tableName);
-        Map<String, AttributeValue> eav = new HashMap<String, AttributeValue>();
-        if (activityId.endsWith(".pbf")) {
-            activityId = activityId.substring(0, activityId.length() - 4);
-        }
-        eav.put(":val1", new AttributeValue().withS(activityId));
-
-        DynamoDBQueryExpression<ActivityItem> queryExpression = new DynamoDBQueryExpression<ActivityItem>()
-                .withKeyConditionExpression("id = :val1")
-                .withExpressionAttributeValues(eav);
-        List<ActivityItem> items = dynamoDBService.getMapper().query(ActivityItem.class, queryExpression);
-        System.out.println("returned " + items.size());
-        return items.isEmpty() ? Optional.empty() : Optional.of(items.get(0));
+    public Optional<ActivityItem> getActivityItem(String activityId, String cognitoId) {
+        return Optional.ofNullable(dynamoDBService.getMapper().load(ActivityItem.class, cognitoId, activityId));
+//        dynamoDBService.updateTableName(tableName);
+//        System.out.println("attempting to fetch " + activityId + " from " + tableName);
+//        Map<String, AttributeValue> eav = new HashMap<String, AttributeValue>();
+//        if (activityId.endsWith(".pbf")) {
+//            activityId = activityId.substring(0, activityId.length() - 4);
+//        }
+//        eav.put(":val1", new AttributeValue().withS(activityId));
+//
+//        DynamoDBQueryExpression<ActivityItem> queryExpression = new DynamoDBQueryExpression<ActivityItem>()
+//                .withKeyConditionExpression("id = :val1")
+//                .withExpressionAttributeValues(eav);
+//        List<ActivityItem> items = dynamoDBService.getMapper().query(ActivityItem.class, queryExpression);
+//        System.out.println("returned " + items.size());
+//        return items.isEmpty() ? Optional.empty() : Optional.of(items.get(0));
 
     }
 
-
-    public boolean saveActivitySearchFields(ActivityOuterClass.Activity activity) {
+    public void saveLinkToProcessed(String activityId, String userId, S3Link s3LinkToProcessed) {
+        ActivityItem activityItem = dynamoDBService.getMapper().load(ActivityItem.class, userId, activityId);
+        activityItem.setProcessedActivity(s3LinkToProcessed);
+        dynamoDBService.getMapper().save(activityItem);
+    }
+    public boolean saveActivitySearchFields(ActivityOuterClass.Activity activity, String cognitoId) {
         dynamoDBService.updateTableName(tableName);
         logger.info("activity id = " + activity.getId());
         ActivityItem item = null;
-        Optional<ActivityItem> itemo = getActivityItem(activity.getId());
+        Optional<ActivityItem> itemo = getActivityItem(activity.getId(), cognitoId);
 
         if (!itemo.isPresent()) {
             logger.error("activity item " + activity.getId() + " not found");
@@ -100,9 +109,9 @@ public class ActivityDAO extends AbstractDAO {
      * @param id
      * @return
      */
-    public boolean deleteActivityItemById(String id) {
+    public boolean deleteActivityItemById(String id, String cognitoId) {
         dynamoDBService.updateTableName(tableName);
-        Optional<ActivityItem> itemOptional = getActivityItem(id);
+        Optional<ActivityItem> itemOptional = getActivityItem(id, cognitoId);
         if (itemOptional.isPresent()) {
             dynamoDBService.getMapper().delete(itemOptional.get());
         } else {
@@ -120,6 +129,16 @@ public class ActivityDAO extends AbstractDAO {
                 .build();
         activityItem.setStatus(ActivityItem.Status.COMPLETE);
         dynamoDBService.getMapper().save(activityItem, dynamoDBMapperConfig);
+    }
+
+    public List<ActivityItem> getActivitiesByUser(String cognitoId) {
+        dynamoDBService.updateTableName(tableName);
+        DynamoDBQueryExpression<ActivityItem> queryExp = new DynamoDBQueryExpression<>();
+        ActivityItem itemToQuery = new ActivityItem();
+        itemToQuery.setCognitoId(cognitoId);
+        queryExp.setHashKeyValues(itemToQuery);
+        final PaginatedQueryList<ActivityItem> results = dynamoDBService.getMapper().query(ActivityItem.class, queryExp);
+        return results.stream().collect(Collectors.toList());
     }
 }
 

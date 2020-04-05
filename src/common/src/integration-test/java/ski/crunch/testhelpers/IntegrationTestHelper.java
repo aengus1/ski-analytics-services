@@ -79,6 +79,7 @@ public class IntegrationTestHelper {
     }
 
     public Optional<String> signup() {
+
         return authHelper.performAdminSignup(INTEGRATION_TEST_USERNAME, INTEGRATION_TEST_PASSWORD);
     }
 

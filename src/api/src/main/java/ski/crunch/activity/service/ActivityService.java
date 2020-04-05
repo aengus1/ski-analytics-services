@@ -1,6 +1,7 @@
 package ski.crunch.activity.service;
 
 import com.amazonaws.auth.AWSCredentialsProvider;
+import com.amazonaws.services.dynamodbv2.datamodeling.S3Link;
 import com.amazonaws.services.lambda.runtime.Context;
 import com.amazonaws.util.Base64;
 import com.fasterxml.jackson.core.JsonProcessingException;
@@ -171,7 +172,7 @@ public class ActivityService {
         }
 
         //2. check this user owns the resource
-        if (!confirmActivityOwner(id, email)) {
+        if (!confirmActivityOwner(id, context.getIdentity().getIdentityId())) {
             //return error response
             logger.info("user: " + email + " attempted to access resource " + id + " that they don't own");
             return ApiGatewayResponse.builder()
@@ -319,13 +320,17 @@ public class ActivityService {
             result.writeTo(cos);
             System.out.println("processed bucket = " + s3ProcessedActivityBucket);
             s3Service.putObject(s3ProcessedActivityBucket, newKey, cos.toInputStream());
+            S3Link s3Link = dynamo.getMapper().createS3Link(s3ProcessedActivityBucket, result.getId()+".pbf");
+
+            // save the link to the processed file
+            activityDAO.saveLinkToProcessed(result.getId(), context.getIdentity().getIdentityId(), s3Link);
 
             //6. add search fields to activity table
-            activityDAO.saveActivitySearchFields(result);
+            activityDAO.saveActivitySearchFields(result, context.getIdentity().getIdentityId());
 
 
             //7. update user settings with possible new devices / activityTypes
-            Optional<ActivityItem> activityItemOptional = activityDAO.getActivityItem(id);
+            Optional<ActivityItem> activityItemOptional = activityDAO.getActivityItem(id, context.getIdentity().getIdentityId());
             if (!activityItemOptional.isPresent()) {
                 logger.error("Activity Item " + id + " not present");
                 return ApiGatewayResponse.builder()
@@ -481,11 +486,11 @@ public class ActivityService {
     }
 
 
-    private boolean confirmActivityOwner(String activityId, String email) {
+    private boolean confirmActivityOwner(String activityId, String cognitoId) {
 
-        Optional<ActivityItem> item = activityDAO.getActivityItem(activityId);
+        Optional<ActivityItem> item = activityDAO.getActivityItem(activityId, cognitoId);
         if (item.isPresent()) {
-            return item.get().getUserId().trim().equalsIgnoreCase(email.trim());
+            return item.get().getCognitoId().trim().equalsIgnoreCase(cognitoId.trim());
         } else {
             return false;
         }

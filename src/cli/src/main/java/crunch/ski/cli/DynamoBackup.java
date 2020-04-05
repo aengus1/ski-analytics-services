@@ -1,11 +1,19 @@
 package crunch.ski.cli;
 
 import com.amazonaws.auth.AWSCredentialsProvider;
-import com.amazonaws.services.dynamodbv2.datamodeling.DynamoDBScanExpression;
+import com.amazonaws.services.dynamodbv2.datamodeling.DynamoDBQueryExpression;
+import com.amazonaws.services.dynamodbv2.datamodeling.PaginatedQueryList;
+import com.amazonaws.services.dynamodbv2.datamodeling.S3Link;
+import com.amazonaws.services.dynamodbv2.document.Item;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import ski.crunch.aws.DynamoFacade;
+import ski.crunch.dao.ActivityDAO;
+import ski.crunch.dao.TableScanner;
+import ski.crunch.model.ActivityItem;
+import ski.crunch.model.UserSettingsItem;
 import ski.crunch.utils.Jsonable;
+import ski.crunch.utils.NotFoundException;
 
 import java.io.BufferedWriter;
 import java.io.File;
@@ -16,7 +24,7 @@ import java.util.List;
 public class DynamoBackup {
 
     public static final Logger logger = LoggerFactory.getLogger(DynamoBackup.class);
-    private DynamoFacade dynamoFacade;
+    //private DynamoFacade dynamoFacade;
     private String region;
     private AWSCredentialsProvider credentialsProvider;
 
@@ -25,54 +33,64 @@ public class DynamoBackup {
         this.credentialsProvider = credentialsProvider;
     }
 
-//    public <E extends Jsonable> void partialTableBackup(Class<E> typeParamClass, String backupId, String tableName,
-//                                                        int numberOfThreads, String filterExpression,
-//                                                        Map<String, AttributeValue> entityAttributeValues) {
-//        String tmpDirKey = tableName + "-" + backupId;
-//        File tmpDir = new File(System.getProperty("java.io.tmpdir"), tmpDirKey);
-//
-//        Map<String, AttributeValue> eav = new HashMap<String, AttributeValue>();
-//        eav.put(":val1", new AttributeValue().withS("id"));
-//        List<AttributeValue> ids = new ArrayList<>();
-//        ids.add(new AttributeValue().withL);
-//        ids.add("789");
-//        eav.put(":val2", new AttributeValue().withL(ids));
-//
-//        DynamoDBScanExpression scanExpression = new DynamoDBScanExpression()
-//                .withFilterExpression("ProductCategory = :val1 and BicycleType = :val2").withExpressionAttributeValues(eav);
-//
-//        List<E> scanResult = dynamoFacade.getMapper().parallelScan(typeParamClass, scanExpression, numberOfThreads);
-//        for (E item : scanResult) {
-//            try {
-//                System.out.println(item.toJsonString());
-//            } catch (Exception ex) {
-//                ex.printStackTrace();
-//            }
-//        }
-//    }
+    public void userDataBackup(String user, String backupId, String userTableName) {
+        DynamoFacade dynamoFacade = new DynamoFacade(region, userTableName , credentialsProvider);
+        ActivityDAO activityDAO = new ActivityDAO(dynamoFacade, userTableName);
+        UserSettingsItem userSettingsItem = lookupUser(user, userTableName);
+        List<ActivityItem> activityItems = activityDAO.getActivitiesByUser(userSettingsItem.getId());
+
+        for (ActivityItem activityItem : activityItems) {
+            S3Link rawActivityS3Link = activityItem.getRawActivity();
+            S3Link processedActivityS3Link = activityItem.getProcessedActivity();
+        }
+
+    }
+
+
+    public void fullTableBackup(String backupId, String tableName, int numberOfThreads) throws IOException {
+       DynamoFacade dynamoFacade = new DynamoFacade(region, tableName, credentialsProvider);
+        String tmpDirKey = tableName + "-" + backupId;
+        File tmpDir = new File(System.getProperty("java.io.tmpdir"), tmpDirKey);
+        List<Item> results =  TableScanner.parallelScan(dynamoFacade, tableName,20, numberOfThreads );
+        writeItemsToFile(results, tmpDir);
+    }
+
+    /**
+     * Writes list of Jsonable objects to file
+     * @param resultSet List<Item> resultset to write
+     * @param file File to write to*
+     * @throws IOException
+     */
+    private  void writeItemsToFile(List<Item> resultSet, File file) throws IOException{
+        try (FileWriter fw = new FileWriter(file)) {
+            try (BufferedWriter bufferedWriter = new BufferedWriter(fw)) {
+
+                for (Item item : resultSet) {
+                    try {
+                        System.out.println(item.toJSON());
+                        bufferedWriter.write(item.toJSON() + System.lineSeparator());
+                    } catch (Exception ex) {
+                        ex.printStackTrace();
+                    }
+                }
+                bufferedWriter.flush();
+            }
+        }
+    }
 
 
     /**
-     * Performs full table scan
-     *
-     * @param typeParamClass
-     * @param backupId
-     * @param tableName
-     * @param numberOfThreads
-     * @param <E>
+     * Writes list of Jsonable objects to file
+     * @param resultSet List<E> resultset to write
+     * @param file File to write to
+     * @param <E> Dynamodbv2 mapper type that implements Jsonable
+     * @throws IOException
      */
-    public <E extends Jsonable> void fullTableBackup(Class<E> typeParamClass, String backupId, String tableName, int numberOfThreads) throws IOException {
-        dynamoFacade = new DynamoFacade(region, tableName, credentialsProvider);
-        String tmpDirKey = tableName + "-" + backupId;
-        File tmpDir = new File(System.getProperty("java.io.tmpdir"), tmpDirKey);
-
-        DynamoDBScanExpression scanExpression = new DynamoDBScanExpression();
-
-        List<E> scanResult = dynamoFacade.getMapper().parallelScan(typeParamClass, scanExpression, numberOfThreads);
-        try(FileWriter fw = new FileWriter(tmpDirKey)) {
+    private <E extends Jsonable> void writeResultSetToFile(List<E> resultSet, File file) throws IOException{
+        try (FileWriter fw = new FileWriter(file)) {
             try (BufferedWriter bufferedWriter = new BufferedWriter(fw)) {
 
-                for (E item : scanResult) {
+                for (E item : resultSet) {
                     try {
                         System.out.println(item.toJsonString());
                         bufferedWriter.write(item.toJsonString() + System.lineSeparator());
@@ -83,5 +101,31 @@ public class DynamoBackup {
                 bufferedWriter.flush();
             }
         }
+    }
+
+    private UserSettingsItem lookupUser(String user, String userTableName) throws NotFoundException {
+        DynamoFacade dynamoFacade = new DynamoFacade(region, userTableName , credentialsProvider);
+        UserSettingsItem userItem = null;
+
+        if (user.contains("@")) {
+            //query email via gsi
+            final UserSettingsItem userSettingsItem = new UserSettingsItem();
+            userSettingsItem.setEmail(user);
+            final DynamoDBQueryExpression<UserSettingsItem> queryExpression = new DynamoDBQueryExpression<>();
+            queryExpression.setHashKeyValues(userSettingsItem);
+            queryExpression.setIndexName("email-index");
+            queryExpression.setConsistentRead(false);
+
+
+            final PaginatedQueryList<UserSettingsItem> results =  dynamoFacade.getMapper().query(UserSettingsItem.class, queryExpression);
+            assert(results.size() == 1);
+            if(results.size() < 1) {
+                throw new NotFoundException("user " + user + " not found via email");
+            }
+            userItem = results.get(0);
+        } else {
+            userItem = dynamoFacade.getMapper().load(UserSettingsItem.class, user);
+        }
+        return userItem;
     }
 }

@@ -16,6 +16,7 @@ public class ActivityItem implements Jsonable {
     private String id;
     private Date dateOfUpload;
     private S3Link rawActivity;
+    private S3Link processedActivity;
     private String sourceIp;
 
     private String rawFileType;
@@ -43,7 +44,7 @@ public class ActivityItem implements Jsonable {
 
     public enum Status { PENDING, PROCESSED, ERROR, COMPLETE};
 
-    @DynamoDBHashKey(attributeName="id")
+    @DynamoDBRangeKey(attributeName="id")
     public String getId() {
         return id;
     }
@@ -52,7 +53,7 @@ public class ActivityItem implements Jsonable {
         this.id = id;
     }
 
-    @DynamoDBRangeKey(attributeName="date")
+    @DynamoDBAttribute(attributeName = "date")
     public Date getDateOfUpload() {
         return dateOfUpload;
     }
@@ -68,6 +69,15 @@ public class ActivityItem implements Jsonable {
 
     public void setRawActivity(S3Link activity) {
         this.rawActivity = activity;
+    }
+
+    @DynamoDBAttribute(attributeName = "processedActivity")
+    public S3Link getProcessedActivity() {
+        return processedActivity;
+    }
+
+    public void setProcessedActivity(S3Link activity) {
+        this.processedActivity = activity;
     }
 
     @DynamoDBAttribute(attributeName = "sourceIp")
@@ -119,7 +129,7 @@ public class ActivityItem implements Jsonable {
         this.rawFileType = rawFileType;
     }
 
-    @DynamoDBAttribute(attributeName = "cognitoId")
+    @DynamoDBHashKey(attributeName = "cognitoId")
     public String getCognitoId() {
         return cognitoId;
     }

@@ -10,6 +10,7 @@ dependencies {
             "com.auth0:jwks-rsa:0.8.2",
             //mem-hard pw hashing implementation https://github.com/terl/lazysodium-java
             "com.goterl.lazycode:lazysodium-java:4.2.5",
+            "co.libly:resource-loader:1.3.7",
             "net.java.dev.jna:jna:5.5.0"
     )
 
@@ -18,6 +19,16 @@ dependencies {
 test {
     include 'ski/crunch/**'
 }
+
+/**
+ * Not sure why but clean task is not properly cleaning the build dir.. this is a temp fix
+ */
+//task customCleanUp(type:Delete) {
+//    doFirst {
+//        delete(buildDir)
+//    }
+//}
+//tasks.clean.dependsOn(tasks.customCleanUp)
 
 
 
