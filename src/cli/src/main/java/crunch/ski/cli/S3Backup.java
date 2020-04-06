@@ -31,14 +31,14 @@ public class S3Backup {
      * @param bucketName
      * @throws Exception
      */
-    public void backupS3BucketToTempDir(String backupId, String bucketName) throws IOException, ChecksumFailedException {
+    public void backupS3BucketToTempDir(String backupId, String bucketName, File destinationDir) throws IOException, ChecksumFailedException {
         List<String> objectKeys = s3Facade.listObjects(bucketName);
-        String tmpDirKey = bucketName + "-" + backupId;
-        File tmpDir = new File(System.getProperty("java.io.tmpdir"), tmpDirKey);
-        tmpDir.mkdir();
+//        String tmpDirKey = bucketName + "-" + backupId;
+//        File tmpDir = new File(System.getProperty("java.io.tmpdir"), tmpDirKey);
+//        tmpDir.mkdir();
 
         for (String objectKey : objectKeys) {
-            File destFile = new File(tmpDir, objectKey);
+            File destFile = new File(destinationDir, objectKey);
             S3Object o = s3Facade.getS3Client().getObject(bucketName, objectKey);
 
             try (S3ObjectInputStream s3is = o.getObjectContent()) {
@@ -49,6 +49,7 @@ public class S3Backup {
                         fos.write(read_buf, 0, read_len);
                     }
                 }
+                s3is.abort();
             }
             //checksum validation
             logger.info("checking md5...");

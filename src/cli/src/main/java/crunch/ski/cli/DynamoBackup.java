@@ -19,6 +19,7 @@ import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
 
 public class DynamoBackup {
@@ -33,26 +34,31 @@ public class DynamoBackup {
         this.credentialsProvider = credentialsProvider;
     }
 
-    public void userDataBackup(String user, String backupId, String userTableName) {
+    public void userDataBackup(String user, String backupId, String userTableName, File destDir) throws IOException{
+
         DynamoFacade dynamoFacade = new DynamoFacade(region, userTableName , credentialsProvider);
         ActivityDAO activityDAO = new ActivityDAO(dynamoFacade, userTableName);
         UserSettingsItem userSettingsItem = lookupUser(user, userTableName);
+        writeResultToFile(userSettingsItem, new File(destDir, "user.json"));
         List<ActivityItem> activityItems = activityDAO.getActivitiesByUser(userSettingsItem.getId());
-
+        writeResultSetToFile(activityItems, new File(destDir, "activities.json"));
+        File rawDir = new File(destDir, "raw");
+        File procDir = new File(destDir, "proc");
+        rawDir.mkdir();
+        procDir.mkdir();
         for (ActivityItem activityItem : activityItems) {
             S3Link rawActivityS3Link = activityItem.getRawActivity();
+            rawActivityS3Link.downloadTo(rawDir);
             S3Link processedActivityS3Link = activityItem.getProcessedActivity();
+            processedActivityS3Link.downloadTo(procDir);
         }
-
     }
 
 
-    public void fullTableBackup(String backupId, String tableName, int numberOfThreads) throws IOException {
+    public void fullTableBackup(String backupId, String tableName, int numberOfThreads, File destination, String fileName) throws IOException {
        DynamoFacade dynamoFacade = new DynamoFacade(region, tableName, credentialsProvider);
-        String tmpDirKey = tableName + "-" + backupId;
-        File tmpDir = new File(System.getProperty("java.io.tmpdir"), tmpDirKey);
         List<Item> results =  TableScanner.parallelScan(dynamoFacade, tableName,20, numberOfThreads );
-        writeItemsToFile(results, tmpDir);
+        writeItemsToFile(results, new File(destination, fileName));
     }
 
     /**
@@ -78,6 +84,18 @@ public class DynamoBackup {
         }
     }
 
+
+    /**
+     * Writes list of Jsonable objects to file*
+     * @param file File to write to
+     * @param <E> Dynamodbv2 mapper type that implements Jsonable
+     * @throws IOException
+     */
+    private <E extends Jsonable> void writeResultToFile(E result, File file) throws IOException{
+        List<E> list = new ArrayList<>();
+        list.add(result);
+        writeResultSetToFile(list, file);
+    }
 
     /**
      * Writes list of Jsonable objects to file

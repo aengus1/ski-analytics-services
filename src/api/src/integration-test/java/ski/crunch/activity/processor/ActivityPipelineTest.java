@@ -14,6 +14,8 @@ import ski.crunch.activity.processor.model.ActivityEvent;
 import ski.crunch.activity.processor.model.ActivityHolder;
 import ski.crunch.activity.processor.model.EventType;
 import ski.crunch.model.ActivityOuterClass;
+import ski.crunch.patterns.Handler;
+import ski.crunch.patterns.PipelineManager;
 import ski.crunch.utils.ParseException;
 
 import java.io.File;

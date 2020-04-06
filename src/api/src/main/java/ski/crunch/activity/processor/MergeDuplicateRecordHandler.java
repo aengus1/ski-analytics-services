@@ -7,9 +7,10 @@ import scala.collection.immutable.List;
 import scala.ski.crunch.activity.processor.RecordProcessor;
 import scala.ski.crunch.activity.processor.model.ActivityRecord;
 import ski.crunch.activity.processor.model.ActivityHolder;
+import ski.crunch.patterns.Handler;
 
 
-public class MergeDuplicateRecordHandler implements  Handler<ActivityHolder> {
+public class MergeDuplicateRecordHandler implements Handler<ActivityHolder> {
 
 private Logger logger;
 

@@ -99,6 +99,7 @@ import static java.util.Base64.getEncoder;
     private String clientId;
     private String region;
     private String profileName;
+    private String cognitoId;
 
      AuthenticationHelper(String userPoolID, String userPoolClientId, String region, String profileName) {
         do {
@@ -180,6 +181,7 @@ AWSCredentials awsCreds = new ProfileCredentialsProvider(profileName).getCredent
 
             SignUpResult result = cognitoIdentityProvider.signUp(request);
            /// System.out.println("signup result =" + result.getUserSub());
+            cognitoId = result.getUserSub();
 
 
             AdminConfirmSignUpRequest confirmSignUpRequest = new AdminConfirmSignUpRequest();
@@ -212,6 +214,10 @@ AWSCredentials awsCreds = new ProfileCredentialsProvider(profileName).getCredent
         }
 
 
+    }
+
+    public String getCognitoId() {
+         return cognitoId;
     }
     /**
      * Method to orchestrate the SRP Authentication

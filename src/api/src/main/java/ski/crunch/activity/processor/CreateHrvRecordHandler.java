@@ -4,6 +4,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import scala.ski.crunch.activity.processor.model.ActivityRecord;
 import ski.crunch.activity.processor.model.ActivityHolder;
+import ski.crunch.patterns.Handler;
 
 import java.util.List;
 import java.util.Optional;
@@ -14,7 +15,7 @@ import java.util.Optional;
  * In .FIT files, hrv is not timestamped, it relies on ordering interleaved with records to determine ts.  When multiple
  * HRVs are recorded between records we are only taking the first one.
  */
-public class CreateHrvRecordHandler implements  Handler<ActivityHolder> {
+public class CreateHrvRecordHandler implements Handler<ActivityHolder> {
 
     private Logger logger;
 

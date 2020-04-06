@@ -5,6 +5,7 @@ import org.slf4j.LoggerFactory;
 import ski.crunch.activity.processor.model.ActivityEvent;
 import ski.crunch.activity.processor.model.ActivityHolder;
 import ski.crunch.activity.processor.model.EventType;
+import ski.crunch.patterns.Handler;
 
 public class CloseSegmentsHandler implements Handler<ActivityHolder> {
 

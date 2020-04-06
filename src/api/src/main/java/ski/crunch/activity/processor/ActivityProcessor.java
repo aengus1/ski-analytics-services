@@ -2,6 +2,8 @@ package ski.crunch.activity.processor;
 
 import ski.crunch.activity.processor.model.ActivityHolder;
 import ski.crunch.activity.processor.summarizer.ActivitySummarizer;
+import ski.crunch.patterns.Handler;
+import ski.crunch.patterns.PipelineManager;
 
 public class ActivityProcessor {
 

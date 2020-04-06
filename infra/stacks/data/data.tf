@@ -172,11 +172,11 @@ resource aws_dynamodb_table "user_table" {
   }
 
   global_secondary_index {
-    hash_key = "email-index"
-    name = "email"
+    name = "email-index"
+    hash_key = "email"
     read_capacity = var.user_table_read_capacity
     write_capacity = var.user_table_write_capacity
-    projection_type = "INCLUDE"
+    projection_type = "ALL"
   }
 }
 
@@ -190,11 +190,6 @@ resource aws_dynamodb_table "activityTable" {
 
   attribute {
     name = "id"
-    type = "S"
-  }
-
-  attribute {
-    name = "date"
     type = "S"
   }
 

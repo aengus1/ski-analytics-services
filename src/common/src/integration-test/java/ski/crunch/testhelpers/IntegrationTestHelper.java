@@ -83,6 +83,9 @@ public class IntegrationTestHelper {
         return authHelper.performAdminSignup(INTEGRATION_TEST_USERNAME, INTEGRATION_TEST_PASSWORD);
     }
 
+    public String getCognitoId() {
+        return authHelper.getCognitoId();
+    }
     public String getDevAccessKey(String username, String password) {
         return authHelper.performSRPAuthentication(username, password);
     }

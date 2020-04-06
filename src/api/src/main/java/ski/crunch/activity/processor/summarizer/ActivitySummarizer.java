@@ -3,7 +3,7 @@ package ski.crunch.activity.processor.summarizer;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import scala.ski.crunch.activity.processor.model.ActivitySummary;
-import ski.crunch.activity.processor.Handler;
+import ski.crunch.patterns.Handler;
 import ski.crunch.activity.processor.model.ActivityEvent;
 import ski.crunch.activity.processor.model.ActivityHolder;
 import ski.crunch.activity.processor.model.EventType;

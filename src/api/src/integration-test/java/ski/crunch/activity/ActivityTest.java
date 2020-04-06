@@ -173,7 +173,7 @@ class ActivityTest {
     @Test
     void testSearchFieldsAreSet() {
 
-        Optional<ActivityItem> item = activityDAO.getActivityItem(this.activityId);
+        Optional<ActivityItem> item = activityDAO.getActivityItem(this.activityId, helper.getCognitoId());
         assertEquals(true, item.isPresent());
 
         assertEquals("RUNNING",item.get().getActivityType());
@@ -225,7 +225,7 @@ class ActivityTest {
     void tearDown() {
 
         try {
-            activityDAO.deleteActivityItemById(activityId);
+            activityDAO.deleteActivityItemById(activityId, helper.getCognitoId());
             activityService.deleteRawActivityFromS3(activityId + ".fit");
             Thread.currentThread().sleep(20000);
             logger.info("deleting from processed bucket " + processedActivityBucket + " for activity: " + activityId + ".pbf");

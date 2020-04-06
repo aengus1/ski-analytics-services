@@ -8,6 +8,7 @@ import scala.ski.crunch.activity.processor.RecordProcessor;
 import scala.ski.crunch.activity.processor.model.ActivityRecord;
 import ski.crunch.activity.processor.model.ActivityEvent;
 import ski.crunch.activity.processor.model.ActivityHolder;
+import ski.crunch.patterns.Handler;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -16,7 +17,7 @@ import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
-public class SetEventIndexHandler implements  Handler<ActivityHolder> {
+public class SetEventIndexHandler implements Handler<ActivityHolder> {
     private Logger logger;
 
     public SetEventIndexHandler() {
