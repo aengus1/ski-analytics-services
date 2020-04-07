@@ -38,19 +38,19 @@ public class DynamoBackupTest {
 
         Item item = new Item().withPrimaryKey("id", "123")
                 .withString("Title", "Book " + 2 + " Title").withString("ISBN", "111-1111111111")
-                .withStringSet("Authors", new HashSet<String>(Arrays.asList("Author1"))).withNumber("Price", 2)
+                .withStringSet("Authors", new HashSet<>(Arrays.asList("Author1"))).withNumber("Price", 2)
                 .withString("Dimensions", "8.5 x 11.0 x 0.5").withNumber("PageCount", 500)
                 .withBoolean("InPublication", true).withString("ProductCategory", "Book");
 
         Item item2 = new Item().withPrimaryKey("id", "12345")
                 .withString("Title", "Book " + 2 + " Title").withString("ISBN", "111-1111111111")
-                .withStringSet("Authors", new HashSet<String>(Arrays.asList("Author1"))).withNumber("Price", 2)
+                .withStringSet("Authors", new HashSet<>(Arrays.asList("Author1"))).withNumber("Price", 2)
                 .withString("Dimensions", "8.5 x 11.0 x 0.5").withNumber("PageCount", 500)
                 .withBoolean("InPublication", true).withString("ProductCategory", "Book");
 
         Item item3 = new Item().withPrimaryKey("id", "123456")
                 .withString("Title", "Book " + 2 + " Title").withString("ISBN", "111-1111111111")
-                .withStringSet("Authors", new HashSet<String>(Arrays.asList("Author1"))).withNumber("Price", 2)
+                .withStringSet("Authors", new HashSet<>(Arrays.asList("Author1"))).withNumber("Price", 2)
                 .withString("Dimensions", "8.5 x 11.0 x 0.5").withNumber("PageCount", 500)
                 .withBoolean("InPublication", true).withString("ProductCategory", "Book");
 
@@ -64,13 +64,16 @@ public class DynamoBackupTest {
 
     @Test
     public void testFullTableBackup() throws Exception {
-        dynamoBackup.fullTableBackup(null,  TABLE_NAME, 2);
-        File output = new File(System.getProperty("java.io.tmpdir"), TABLE_NAME + "-123");
+        File outputDir = new File(System.getProperty("java.io.tmpdir"));
+        File outputBackup = new File(outputDir, TABLE_NAME + "-123");
+
+        dynamoBackup.fullTableBackup( TABLE_NAME, 2, outputDir, TABLE_NAME+"123");
+        //File output = new File(System.getProperty("java.io.tmpdir"), TABLE_NAME + "-123");
 
         int count = 0;
-        try (FileReader fileReader = new FileReader(output)) {
+        try (FileReader fileReader = new FileReader(outputBackup)) {
             try (BufferedReader bufferedReader = new BufferedReader(fileReader)) {
-                String line = null;
+                String line;
                 while ((line = bufferedReader.readLine()) != null) {
                     System.out.println(line);
                     if (line != null && !line.isEmpty()) {

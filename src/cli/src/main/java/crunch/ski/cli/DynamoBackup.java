@@ -5,8 +5,6 @@ import com.amazonaws.services.dynamodbv2.datamodeling.DynamoDBQueryExpression;
 import com.amazonaws.services.dynamodbv2.datamodeling.PaginatedQueryList;
 import com.amazonaws.services.dynamodbv2.datamodeling.S3Link;
 import com.amazonaws.services.dynamodbv2.document.Item;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import ski.crunch.aws.DynamoFacade;
 import ski.crunch.dao.ActivityDAO;
 import ski.crunch.dao.TableScanner;
@@ -24,8 +22,6 @@ import java.util.List;
 
 public class DynamoBackup {
 
-    public static final Logger logger = LoggerFactory.getLogger(DynamoBackup.class);
-    //private DynamoFacade dynamoFacade;
     private String region;
     private AWSCredentialsProvider credentialsProvider;
 
@@ -34,12 +30,21 @@ public class DynamoBackup {
         this.credentialsProvider = credentialsProvider;
     }
 
-    public void userDataBackup(String user, String backupId, String userTableName, File destDir) throws IOException{
+    /**
+     * Performs backup from dynamodb user and activity tables of specific user to local file system
+     * @param user String user to backup (email or id)
+     * @param userTableName String name of user table
+     * @param activitiesTableName String name of activity table
+     * @param destDir File destination directory
+     * @throws IOException on ioerror
+     */
+    public void userDataBackup(String user, String userTableName, String activitiesTableName, File destDir) throws IOException {
 
-        DynamoFacade dynamoFacade = new DynamoFacade(region, userTableName , credentialsProvider);
-        ActivityDAO activityDAO = new ActivityDAO(dynamoFacade, userTableName);
+        DynamoFacade dynamoFacade = new DynamoFacade(region, userTableName, credentialsProvider);
+
         UserSettingsItem userSettingsItem = lookupUser(user, userTableName);
         writeResultToFile(userSettingsItem, new File(destDir, "user.json"));
+        ActivityDAO activityDAO = new ActivityDAO(dynamoFacade, activitiesTableName);
         List<ActivityItem> activityItems = activityDAO.getActivitiesByUser(userSettingsItem.getId());
         writeResultSetToFile(activityItems, new File(destDir, "activities.json"));
         File rawDir = new File(destDir, "raw");
@@ -48,26 +53,38 @@ public class DynamoBackup {
         procDir.mkdir();
         for (ActivityItem activityItem : activityItems) {
             S3Link rawActivityS3Link = activityItem.getRawActivity();
-            rawActivityS3Link.downloadTo(rawDir);
+            if (rawActivityS3Link != null) {
+                rawActivityS3Link.downloadTo(rawDir);
+            }
             S3Link processedActivityS3Link = activityItem.getProcessedActivity();
-            processedActivityS3Link.downloadTo(procDir);
+            if (processedActivityS3Link != null) {
+                processedActivityS3Link.downloadTo(procDir);
+            }
         }
     }
 
-
-    public void fullTableBackup(String backupId, String tableName, int numberOfThreads, File destination, String fileName) throws IOException {
-       DynamoFacade dynamoFacade = new DynamoFacade(region, tableName, credentialsProvider);
-        List<Item> results =  TableScanner.parallelScan(dynamoFacade, tableName,20, numberOfThreads );
+    /**
+     * Performs a full backup of specified table and copies results to local fs
+     * @param tableName String name of table to backup
+     * @param numberOfThreads int n threads to scan table with
+     * @param destination File destination directory
+     * @param fileName String name of output file
+     * @throws IOException on ioerror
+     */
+    public void fullTableBackup(String tableName, int numberOfThreads, File destination, String fileName) throws IOException {
+        DynamoFacade dynamoFacade = new DynamoFacade(region, tableName, credentialsProvider);
+        List<Item> results = TableScanner.parallelScan(dynamoFacade, tableName, 20, numberOfThreads);
         writeItemsToFile(results, new File(destination, fileName));
     }
 
     /**
      * Writes list of Jsonable objects to file
+     *
      * @param resultSet List<Item> resultset to write
-     * @param file File to write to*
-     * @throws IOException
+     * @param file      File to write to*
+     * @throws IOException on ioerror
      */
-    private  void writeItemsToFile(List<Item> resultSet, File file) throws IOException{
+    private void writeItemsToFile(List<Item> resultSet, File file) throws IOException {
         try (FileWriter fw = new FileWriter(file)) {
             try (BufferedWriter bufferedWriter = new BufferedWriter(fw)) {
 
@@ -87,11 +104,12 @@ public class DynamoBackup {
 
     /**
      * Writes list of Jsonable objects to file*
+     *
      * @param file File to write to
-     * @param <E> Dynamodbv2 mapper type that implements Jsonable
-     * @throws IOException
+     * @param <E>  Dynamodbv2 mapper type that implements Jsonable
+     * @throws IOException on ioerror
      */
-    private <E extends Jsonable> void writeResultToFile(E result, File file) throws IOException{
+    private <E extends Jsonable> void writeResultToFile(E result, File file) throws IOException {
         List<E> list = new ArrayList<>();
         list.add(result);
         writeResultSetToFile(list, file);
@@ -99,12 +117,13 @@ public class DynamoBackup {
 
     /**
      * Writes list of Jsonable objects to file
+     *
      * @param resultSet List<E> resultset to write
-     * @param file File to write to
-     * @param <E> Dynamodbv2 mapper type that implements Jsonable
-     * @throws IOException
+     * @param file      File to write to
+     * @param <E>       Dynamodbv2 mapper type that implements Jsonable
+     * @throws IOException on io error
      */
-    private <E extends Jsonable> void writeResultSetToFile(List<E> resultSet, File file) throws IOException{
+    private <E extends Jsonable> void writeResultSetToFile(List<E> resultSet, File file) throws IOException {
         try (FileWriter fw = new FileWriter(file)) {
             try (BufferedWriter bufferedWriter = new BufferedWriter(fw)) {
 
@@ -121,9 +140,16 @@ public class DynamoBackup {
         }
     }
 
+    /**
+     * Fetch User item from dynamodb
+     * @param user String user (email or id)
+     * @param userTableName String name of user table
+     * @return UserSettingsItem result
+     * @throws NotFoundException on user not found
+     */
     private UserSettingsItem lookupUser(String user, String userTableName) throws NotFoundException {
-        DynamoFacade dynamoFacade = new DynamoFacade(region, userTableName , credentialsProvider);
-        UserSettingsItem userItem = null;
+        DynamoFacade dynamoFacade = new DynamoFacade(region, userTableName, credentialsProvider);
+        UserSettingsItem userItem;
 
         if (user.contains("@")) {
             //query email via gsi
@@ -135,9 +161,8 @@ public class DynamoBackup {
             queryExpression.setConsistentRead(false);
 
 
-            final PaginatedQueryList<UserSettingsItem> results =  dynamoFacade.getMapper().query(UserSettingsItem.class, queryExpression);
-            assert(results.size() == 1);
-            if(results.size() < 1) {
+            final PaginatedQueryList<UserSettingsItem> results = dynamoFacade.getMapper().query(UserSettingsItem.class, queryExpression);
+            if (results.size() < 1) {
                 throw new NotFoundException("user " + user + " not found via email");
             }
             userItem = results.get(0);

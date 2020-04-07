@@ -42,7 +42,7 @@ public class ActivityItem implements Jsonable {
     private Set<String> tags;
     private Date lastUpdateTimestamp;
 
-    public enum Status { PENDING, PROCESSED, ERROR, COMPLETE};
+    public enum Status { PENDING, PROCESSED, ERROR, COMPLETE}
 
     @DynamoDBRangeKey(attributeName="id")
     public String getId() {
@@ -51,6 +51,15 @@ public class ActivityItem implements Jsonable {
 
     public void setId(String id) {
         this.id = id;
+    }
+
+    @DynamoDBHashKey(attributeName = "cognitoId")
+    public String getCognitoId() {
+        return cognitoId;
+    }
+
+    public void setCognitoId(String cognitoId) {
+        this.cognitoId = cognitoId;
     }
 
     @DynamoDBAttribute(attributeName = "date")
@@ -127,15 +136,6 @@ public class ActivityItem implements Jsonable {
 
     public void setRawFileType(String rawFileType) {
         this.rawFileType = rawFileType;
-    }
-
-    @DynamoDBHashKey(attributeName = "cognitoId")
-    public String getCognitoId() {
-        return cognitoId;
-    }
-
-    public void setCognitoId(String cognitoId) {
-        this.cognitoId = cognitoId;
     }
 
     // additional fields for search

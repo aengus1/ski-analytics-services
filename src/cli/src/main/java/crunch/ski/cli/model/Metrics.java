@@ -1,5 +1,10 @@
 package crunch.ski.cli.model;
 
+import com.amazonaws.util.json.Jackson;
+
+import java.io.IOException;
+import java.io.OutputStream;
+
 public class Metrics {
     private String[] errors;
     private String dataVolumeRaw;
@@ -38,5 +43,13 @@ public class Metrics {
         this.transferElapsed = transferElapsed;
     }
 
-
+    public void printMetrics(OutputStream os) throws IOException {
+        String output = Jackson.toJsonPrettyString(this);
+        try {
+            os.write(output.getBytes());
+        }finally{
+            os.flush();
+            os.close();
+        }
+    }
 }

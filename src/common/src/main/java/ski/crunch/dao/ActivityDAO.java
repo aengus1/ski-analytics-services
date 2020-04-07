@@ -2,17 +2,15 @@ package ski.crunch.dao;
 
 import com.amazonaws.services.dynamodbv2.datamodeling.DynamoDBMapperConfig;
 import com.amazonaws.services.dynamodbv2.datamodeling.DynamoDBQueryExpression;
-import com.amazonaws.services.dynamodbv2.datamodeling.PaginatedQueryList;
 import com.amazonaws.services.dynamodbv2.datamodeling.S3Link;
+import com.amazonaws.services.dynamodbv2.model.AttributeValue;
 import ski.crunch.aws.DynamoFacade;
 import ski.crunch.model.ActivityItem;
 import ski.crunch.model.ActivityOuterClass;
 import ski.crunch.utils.LambdaProxyConfig;
 import ski.crunch.utils.SaveException;
 
-import java.util.Date;
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
 import java.util.stream.Collectors;
 
 public class ActivityDAO extends AbstractDAO {
@@ -48,7 +46,7 @@ public class ActivityDAO extends AbstractDAO {
     public boolean saveActivitySearchFields(ActivityOuterClass.Activity activity, String cognitoId) {
         dynamoDBService.updateTableName(tableName);
         logger.info("activity id = " + activity.getId());
-        ActivityItem item = null;
+        ActivityItem item;
         Optional<ActivityItem> itemo = getActivityItem(activity.getId(), cognitoId);
 
         if (!itemo.isPresent()) {
@@ -106,8 +104,9 @@ public class ActivityDAO extends AbstractDAO {
     /**
      * Method hard deletes activity record from table
      *
-     * @param id
-     * @return
+     * @param id String activity id
+     * @param cognitoId String user id
+     * @return boolean success
      */
     public boolean deleteActivityItemById(String id, String cognitoId) {
         dynamoDBService.updateTableName(tableName);
@@ -132,12 +131,15 @@ public class ActivityDAO extends AbstractDAO {
     }
 
     public List<ActivityItem> getActivitiesByUser(String cognitoId) {
+        System.out.println("called with " + cognitoId);
         dynamoDBService.updateTableName(tableName);
+
         DynamoDBQueryExpression<ActivityItem> queryExp = new DynamoDBQueryExpression<>();
-        ActivityItem itemToQuery = new ActivityItem();
-        itemToQuery.setCognitoId(cognitoId);
-        queryExp.setHashKeyValues(itemToQuery);
-        final PaginatedQueryList<ActivityItem> results = dynamoDBService.getMapper().query(ActivityItem.class, queryExp);
+        Map<String, AttributeValue> eav = new HashMap<>();
+        eav.put(":val1", new AttributeValue().withS(cognitoId));
+        queryExp.setKeyConditionExpression("cognitoId = :val1");
+        queryExp.setExpressionAttributeValues(eav);
+        final List<ActivityItem> results = dynamoDBService.getMapper().query(ActivityItem.class, queryExp);
         return results.stream().collect(Collectors.toList());
     }
 }

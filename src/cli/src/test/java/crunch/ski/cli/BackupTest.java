@@ -13,8 +13,7 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Optional;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 
@@ -40,25 +39,24 @@ public class BackupTest {
     }
 
     @Test
-    public void testInitializeNoOverrides() throws Exception {
+    public void testInitializeNoOverrides()  {
         Map<String, String> configMap = new HashMap<>();
         configMap.put("PROJECT_NAME", PROJECT_NAME);
         configMap.put("PROFILE_NAME", PROFILE_NAME);
         configMap.put("DATA_REGION", DATA_REGION);
         File destDir = new File(System.getProperty("java.io.tmpdir"), "clitest");
 
-        backup = new Backup(parent, credentialsProviderFactory, configMap, ENV, destDir, false);
+        backup = new Backup(parent, credentialsProviderFactory, configMap, ENV, destDir.getAbsolutePath(), false, 1, "", null, true);
         backup.initialize();
 
         verify(credentialsProviderFactory, times(1))
                 .newCredentialsProvider(CredentialsProviderType.PROFILE, Optional.of(PROFILE_NAME));
-        assertEquals(false, backup.getS3Backup().getS3Facade().getTransferAcceleration());
-        assertTrue(backup.getBackupId().startsWith(ENV + "-"));
-        assertTrue(backup.getS3Backup().getS3Facade().getRegion().equals(DATA_REGION));
+        assertFalse( backup.getS3Backup().getS3Facade().getTransferAcceleration());
+        assertEquals(DATA_REGION, backup.getS3Backup().getS3Facade().getRegion());
     }
 
     @Test
-    public void testInitializationWithOverrides() throws Exception{
+    public void testInitializationWithOverrides() {
 
         parent.setAwsProfile("newProfile");
         parent.setDataRegion("newRegion");
@@ -69,14 +67,14 @@ public class BackupTest {
         configMap.put("DATA_REGION", DATA_REGION);
         File destDir = new File(System.getProperty("java.io.tmpdir"), "clitest");
 
-        backup = new Backup(parent, credentialsProviderFactory, configMap, ENV, destDir, true);
+        backup = new Backup(parent, credentialsProviderFactory, configMap, ENV, destDir.getAbsolutePath(), false, 1, "", null, true);
         backup.initialize();
 
         verify(credentialsProviderFactory, times(1))
                 .newCredentialsProvider(CredentialsProviderType.PROFILE, Optional.of("newProfile"));
-        assertEquals(true, backup.getS3Backup().getS3Facade().getTransferAcceleration());
+        assertFalse(backup.getS3Backup().getS3Facade().getTransferAcceleration());
         assertTrue(backup.calcBucketName("my-bucket").endsWith("test-test-project"));
-        assertTrue(backup.getS3Backup().getS3Facade().getRegion().equals("newRegion"));
+        assertEquals("newRegion", backup.getS3Backup().getS3Facade().getRegion());
     }
 
 }

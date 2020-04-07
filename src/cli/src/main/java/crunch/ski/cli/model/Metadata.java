@@ -1,12 +1,11 @@
 package crunch.ski.cli.model;
 
-import java.time.LocalDateTime;
 import java.util.List;
 
 public class Metadata {
     public static final int VERSION = 1;
     private String backupId;
-    private LocalDateTime timestamp;
+    private String timestamp;
     private String environment;
     private BackupType backupType;
     private String user;
@@ -21,15 +20,14 @@ public class Metadata {
     private List<String> exportUsers;
     private EncryptionType encryptionType;
     private CompressionType compressionType;
-    private Metrics metrics;
 
 
-    public Metadata(String backupId, LocalDateTime timestamp, String environment, BackupType backupType, String user,
+    public Metadata(String backupId, String timestamp, String environment, BackupType backupType, String user,
                     String host,
                     String profile, String projectName, String dataRegion,
                     boolean transferAcceleration, int threads, String destination, DestinationType destinationType,
                     List<String> exportUsers, EncryptionType encryptionType,
-                    CompressionType compressionType, Metrics metrics){
+                    CompressionType compressionType){
         this.backupId = backupId;
         this.timestamp = timestamp;
         this.environment = environment;
@@ -46,7 +44,6 @@ public class Metadata {
         this.exportUsers = exportUsers;
         this.encryptionType = encryptionType;
         this.compressionType = compressionType;
-        this.metrics = metrics;
 
     }
     public String getBackupId() {
@@ -57,11 +54,11 @@ public class Metadata {
         this.backupId = backupId;
     }
 
-    public LocalDateTime getTimestamp() {
+    public String getTimestamp() {
         return timestamp;
     }
 
-    public void setTimestamp(LocalDateTime timestamp) {
+    public void setTimestamp(String timestamp) {
         this.timestamp = timestamp;
     }
 
@@ -161,13 +158,6 @@ public class Metadata {
         this.compressionType = compressionType;
     }
 
-    public Metrics getMetrics() {
-        return metrics;
-    }
-
-    public void setMetrics(Metrics metrics) {
-        this.metrics = metrics;
-    }
 
     public String getHost() {
         return host;

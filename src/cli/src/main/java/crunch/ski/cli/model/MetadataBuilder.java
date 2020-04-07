@@ -1,11 +1,10 @@
 package crunch.ski.cli.model;
 
-import java.time.LocalDateTime;
 import java.util.List;
 
 public class MetadataBuilder {
     private String backupId;
-    private LocalDateTime timestamp;
+    private String timestamp;
     private String environment;
     private BackupType backupType;
     private String user;
@@ -20,14 +19,13 @@ public class MetadataBuilder {
     private List<String> exportUsers;
     private EncryptionType encryptionType;
     private CompressionType compressionType;
-    private Metrics metrics;
 
     public MetadataBuilder setBackupId(String backupId) {
         this.backupId = backupId;
         return this;
     }
 
-    public MetadataBuilder setTimestamp(LocalDateTime timestamp) {
+    public MetadataBuilder setTimestamp(String timestamp) {
         this.timestamp = timestamp;
         return this;
     }
@@ -101,14 +99,11 @@ public class MetadataBuilder {
         this.exportUsers = exportUsers;
         return this;
     }
-    public MetadataBuilder setMetrics(Metrics metrics) {
-        this.metrics = metrics;
-        return this;
-    }
+
 
     public Metadata createMetadata() {
 
         return new Metadata(backupId, timestamp, environment, backupType, user, host, profile, projectName, dataRegion,
-                transferAcceleration, threads, destination, destinationType, exportUsers, encryptionType, compressionType, metrics);
+                transferAcceleration, threads, destination, destinationType, exportUsers, encryptionType, compressionType);
     }
 }

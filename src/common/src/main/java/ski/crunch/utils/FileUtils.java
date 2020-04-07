@@ -50,13 +50,22 @@ public class FileUtils {
         }
     }
 
+    public static boolean deleteDirectory(File directoryToBeDeleted) {
+        File[] allContents = directoryToBeDeleted.listFiles();
+        if (allContents != null) {
+            for (File file : allContents) {
+                deleteDirectory(file);
+            }
+        }
+        return directoryToBeDeleted.delete();
+    }
+
     public static long getFolderSizeBytes(Path folder) throws IOException {
         AtomicLong size = new AtomicLong(0);
 
         Files.walkFileTree(folder, new SimpleFileVisitor<Path>() {
             @Override
-            public FileVisitResult visitFile(Path file, BasicFileAttributes attrs)
-                    throws IOException {
+            public FileVisitResult visitFile(Path file, BasicFileAttributes attrs) {
                 size.addAndGet(attrs.size());
                 return FileVisitResult.CONTINUE;
             }

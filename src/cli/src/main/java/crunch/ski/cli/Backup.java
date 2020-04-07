@@ -2,6 +2,7 @@ package crunch.ski.cli;
 
 import com.amazonaws.auth.AWSCredentialsProvider;
 import com.amazonaws.util.json.Jackson;
+import com.google.common.annotations.VisibleForTesting;
 import crunch.ski.cli.model.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -15,13 +16,19 @@ import ski.crunch.utils.FileUtils;
 import ski.crunch.utils.GZipUtils;
 
 import java.io.File;
+import java.io.IOException;
 import java.net.UnknownHostException;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
+import java.time.format.DateTimeFormatterBuilder;
 import java.util.*;
 import java.util.concurrent.Callable;
+import java.util.concurrent.TimeUnit;
+
+import static java.time.format.DateTimeFormatter.ISO_LOCAL_DATE;
+import static java.time.temporal.ChronoField.*;
 
 
 @Command(name = "backup",
@@ -31,32 +38,52 @@ import java.util.concurrent.Callable;
         description = "Creates a backup dump of user data from a live environment to file or another S3 bucket")
 public class Backup implements Callable<Integer> {
 
-    public static final DateTimeFormatter dtf = DateTimeFormatter.ISO_DATE_TIME;
-    private static Logger logger = LoggerFactory.getLogger(Backup.class);
+    public static final Logger logger = LoggerFactory.getLogger(Backup.class);
+    public static final DateTimeFormatter ISO_LOCAL_DATE_TIME_FILE = new DateTimeFormatterBuilder()
+            .parseCaseInsensitive()
+            .append(ISO_LOCAL_DATE)
+            .appendLiteral('T')
+            .appendValue(HOUR_OF_DAY, 2)
+            .appendLiteral('-')
+            .appendValue(MINUTE_OF_HOUR, 2)
+            .appendLiteral('-')
+            .appendValue(SECOND_OF_MINUTE, 2)
+            .toFormatter(Locale.ENGLISH);
+
+    public static final DateTimeFormatter ISO_LOCAL_DATE_TIME_NO_NANO = new DateTimeFormatterBuilder()
+            .parseCaseInsensitive()
+            .append(ISO_LOCAL_DATE)
+            .appendLiteral('T')
+            .appendValue(HOUR_OF_DAY, 2)
+            .appendLiteral(':')
+            .appendValue(MINUTE_OF_HOUR, 2)
+            .appendLiteral(':')
+            .appendValue(SECOND_OF_MINUTE, 2)
+            .toFormatter(Locale.ENGLISH);
 
 
     @ParentCommand
     private App parent;
 
-    @Option(names = {"-e", "--env"}, required = true, description = "Name of the environment to backup.  E.g. dev, ci, prod")
-    private String environment;
-
-    @Option(names = {"-ta", "--transfer-acceleration"}, description = "Enable S3 Transfer Acceleration")
+    @Option(names = {"-a", "--transfer-acceleration"}, description = "Enable S3 Transfer Acceleration")
     private boolean transferAcceleration = false;
 
     @Option(names = {"-t", "--threads"}, description = "Number of parallel threads to use for DynamoDB table scan")
     private int nThreads = 2;
 
-    @Option(names = {"-u", "--users"}, description = "Limit backup to specific user data (email address of user-id, comma separated")
+    @Option(names = {"--users"}, description = "Limit backup to specific user data (email address or user-id, comma separated")
     private String usersString;
 
-    @Option(names = {"-en", "--encryption"}, description = "Encryption type: NONE (default), AES_256")
+    @Option(names = {"-en", "--encryption"}, description = "Encryption type: NONE (default), AES_256 - not yet supported!")
     private String encryptionType;
 
-    @Option(names = {"-c", "--compression"}, description = "Compression type: NONE (default), GZIP, BZIP2")
-    private String compressionType;
+    @Option(names = {"-u", "--uncompressed"}, description = "Do not compress the output")
+    private boolean uncompressed;
 
-    @Parameters(index = "0")
+    @Parameters(index = "0", description = "name of environment to backup (e.g. dev / ci / prod)")
+    private String environment;
+
+    @Parameters(index = "1", description = "destination path for backup archive.  Local file or S3 location")
     private String destination;
 
     private CredentialsProviderFactory credentialsProviderFactory;
@@ -69,23 +96,22 @@ public class Backup implements Callable<Integer> {
     private LocalDateTime backupDateTime;
     private List<String> users;
     private File destDir;
-
-
     private long startTs;
     private long endTs;
 
+    /**
+     * no arg constructor required by picocli
+     */
     public Backup() {
 
     }
-
-
     public Backup(App parent, CredentialsProviderFactory credentialsProviderFactory,
                   Map<String, String> configMap, String environment, String destination,
                   boolean transferAcceleration,
                   int nThreads,
                   String users,
                   String encryptionType,
-                  String compressionType) {
+                  boolean uncompressed) {
         this.parent = parent;
         this.credentialsProviderFactory = credentialsProviderFactory;
         this.configMap = configMap;
@@ -94,56 +120,55 @@ public class Backup implements Callable<Integer> {
         this.nThreads = nThreads;
         this.usersString = users;
         this.encryptionType = encryptionType;
-        this.compressionType = compressionType;
+        this.uncompressed = uncompressed;
         this.destination = destination;
     }
 
     @Override
     public Integer call() throws Exception {
         // pre backup checks:  //connectivity, free space on destination, permissions,
-        startTs = System.currentTimeMillis();
+
         initialize();
-        backupId = UUID.randomUUID().toString();
-        backupDateTime = LocalDateTime.now();
-        users = usersString == null ? null : Arrays.asList(usersString.split(","));
+
         System.out.println("Backing up data....");
         System.out.println("Backup ID: " + backupId);
-        if (destination.startsWith("s3://")) {
-            isS3Destination = true;
-        }
-        String destPath = environment+"-"+configMap.get("PROJECT_NAME")+"-"+backupDateTime.toString();
-        destDir = new File(destination, destPath );
+
+        mkDestDir();
+
         MetadataBuilder metadataBuilder = buildMetadata();
+
+        // do backup
         if (users == null) {
-            fullLocalBackup(isS3Destination);
+            fullLocalBackup();
         } else {
             userLocalBackup(users);
         }
 
-        endTs = System.currentTimeMillis();
-        Metrics metrics = new Metrics();
-        Path folder = Paths.get(destDir.getAbsolutePath());
-        metrics.setDataVolumeRaw(org.apache.commons.io.FileUtils.byteCountToDisplaySize(FileUtils.getFolderSizeBytes(folder)));
-        metrics.setTransferElapsed(String.valueOf((endTs - startTs / 1000l)));
-        metadataBuilder.setMetrics(metrics);
+        //write metadata
         Metadata metadata = metadataBuilder.createMetadata();
         String jsonMetadata = Jackson.toJsonPrettyString(metadata);
-        FileUtils.writeStringToFile(jsonMetadata, destDir);
+        FileUtils.writeStringToFile(jsonMetadata, new File(destDir, ".metadata.json"));
 
-        File compressed = new File(destDir.getAbsolutePath()+".gzip");
-        GZipUtils.compressGzipFile(destDir, compressed);
+        // gzip
+        if(!uncompressed) {
+            GZipUtils.createTarGzFile(destDir);
+        }
 
+        endTs = System.currentTimeMillis();
 
+        //write metrics
+        writeMetrics();
 
-
-
-
-
+        // clean up
+        if(!uncompressed) {
+            FileUtils.deleteDirectory(destDir);
+        }
 
         return 0;
     }
 
-    public String calcTableName(String tableType) {
+    @VisibleForTesting
+    String calcTableName(String tableType) {
         return new StringBuilder()
                 .append(environment).append("-")
                 .append(configMap.get("PROJECT_NAME")).append("-")
@@ -151,7 +176,8 @@ public class Backup implements Callable<Integer> {
                 .toString();
     }
 
-    public String calcBucketName(String bucketType) {
+    @VisibleForTesting
+    String calcBucketName(String bucketType) {
         return new StringBuilder()
                 .append(environment).append("-")
                 .append(bucketType).append("-")
@@ -163,29 +189,39 @@ public class Backup implements Callable<Integer> {
         return this.backupId;
     }
 
-    S3Backup getS3Backup() {
-        return this.s3Backup;
-    }
-
-    public void fullLocalBackup(boolean isS3Destination) throws Exception {
+    /**
+     * Performs full backup to local file system
+     * @throws Exception on error
+     */
+    private void fullLocalBackup() throws Exception {
         File rawDir = new File(destDir, "raw_activities");
         File procDir = new File(destDir, "processed_activities");
         rawDir.mkdir();
         procDir.mkdir();
-        s3Backup.backupS3BucketToTempDir(backupId, calcBucketName("activity"), procDir);
-        s3Backup.backupS3BucketToTempDir(backupId, calcBucketName("raw-activity"), rawDir);
-        dynamoBackup.fullTableBackup(backupId, calcTableName("userTable"), 2, destDir, "users.json");
-        dynamoBackup.fullTableBackup(backupId, calcTableName("Activity"), 2, destDir, "activities.json");
+        s3Backup.backupS3BucketToDirectory( calcBucketName("activity"), procDir);
+        s3Backup.backupS3BucketToDirectory( calcBucketName("raw-activity"), rawDir);
+        dynamoBackup.fullTableBackup( calcTableName("userTable"), 2, destDir, "users.json");
+        dynamoBackup.fullTableBackup( calcTableName("Activity"), 2, destDir, "activities.json");
     }
 
-    public void userLocalBackup(List<String> users) throws Exception {
+    /**
+     * Performs user specific backup to local file system
+     * @param users List<String> user-id's or email addresses
+     * @throws Exception on error
+     */
+    private void userLocalBackup(List<String> users) throws Exception {
         for (String user : users) {
-            dynamoBackup.userDataBackup(user, backupId, calcTableName("userTable"),destDir );
+            dynamoBackup.userDataBackup(user, calcTableName("userTable"), calcTableName("Activity"), destDir);
         }
     }
 
-   private void initialize() {
+    /**
+     * Parses configuration and sets up local variables
+     */
+    @VisibleForTesting
+    void initialize() {
         try {
+            startTs = System.currentTimeMillis();
             Config config = new Config();
             configMap = config.readConfiguration();
             if (credentialsProviderFactory == null) {
@@ -204,24 +240,34 @@ public class Backup implements Callable<Integer> {
                     credentialsProviderFactory.newCredentialsProvider(CredentialsProviderType.PROFILE, Optional.of(configMap.get("PROFILE_NAME")));
             s3Backup = new S3Backup(configMap.get("DATA_REGION"), credentialsProvider, transferAcceleration);
             dynamoBackup = new DynamoBackup(configMap.get("DATA_REGION"), credentialsProvider);
-            //s3Facade = new S3Facade(configMap.get("DATA_REGION"), credentialsProvider, transferAcceleration);
-            backupId = environment + "-" + dtf.format(LocalDateTime.now());
+            backupId = UUID.randomUUID().toString();
+            backupDateTime = LocalDateTime.now();
+            users = (usersString == null || usersString.isEmpty()) ? null : Arrays.asList(usersString.split(","));
+            if (destination.startsWith("s3://")) {
+                isS3Destination = true;
+            }
         } catch (Exception ex) {
             ex.printStackTrace();
             logger.error("Initialization Error.  Ensure you have run crunch config", ex);
         }
     }
 
+    /**
+     * Build metadata file for output
+     * @return MetadataBuilder builder
+     */
     private MetadataBuilder buildMetadata() {
         MetadataBuilder metadataBuilder = new MetadataBuilder();
         metadataBuilder.setProjectName(configMap.get("PROJECT_NAME"))
                 .setProfile(configMap.get("PROFILE_NAME"))
                 .setDataRegion(configMap.get("DATA_REGION"))
                 .setBackupId(backupId)
+                .setBackupType(users == null ? BackupType.FULL : BackupType.USER)
                 .setThreads(nThreads)
                 .setTransferAcceleration(transferAcceleration)
-                .setTimestamp(backupDateTime)
+                .setTimestamp(backupDateTime.format(ISO_LOCAL_DATE_TIME_NO_NANO))
                 .setEnvironment(environment)
+                .setExportUsers(users)
                 .setUser(System.getProperty("user.name"));
         try {
             metadataBuilder.setHost(java.net.InetAddress.getLocalHost().getHostName());
@@ -232,39 +278,43 @@ public class Backup implements Callable<Integer> {
                 .setDestinationType(destination.startsWith("s3://") ? DestinationType.S3 : DestinationType.LOCAL)
                 .setEncryptionType(encryptionType == null || encryptionType.equalsIgnoreCase("NONE")
                         ? EncryptionType.NONE : EncryptionType.AES_256)
-                .setCompressionType(compressionType == null ? CompressionType.NONE :
-                        CompressionType.valueOf(compressionType));
+                .setCompressionType(uncompressed ? CompressionType.NONE :
+                        CompressionType.GZIP);
         return metadataBuilder;
     }
 
-    private File createArchive(List<String> users, String destination) {
-        File destinationDirectory = new File(destination, environment+"-"+configMap.get("PROJECT_NAME")+backupDateTime.toString());
-        destinationDirectory.mkdir();
-        if(users == null || users.isEmpty()) {
-            //FULL
-            File rawActivityDir = new File(destinationDirectory, "raw_activities");
-            File procActivityDir = new File(destinationDirectory, "processed_activities");
-            rawActivityDir.mkdir();
-            procActivityDir.mkdir();
-        } else {
-            //PER USER
-            for (String user : users) {
-                File userDir = new File(destinationDirectory, user);
-                userDir.mkdir();
-                File rawActivityDir = new File(userDir, "raw_activities");
-                File procActivityDir = new File(userDir, "processed_activities");
-                rawActivityDir.mkdir();
-                procActivityDir.mkdir();
-            }
+    /**
+     * Create the destination directory
+     */
+    private void mkDestDir() {
+        String destPath = environment + "-" + configMap.get("PROJECT_NAME") + "-" + backupDateTime.format(ISO_LOCAL_DATE_TIME_FILE);
+        destDir = new File(destination, destPath);
+        destDir.mkdir();
+    }
+
+    /**
+     * Output transfer metrics
+     * @throws IOException on io error
+     */
+    private void writeMetrics() throws IOException {
+        Metrics metrics = new Metrics();
+        Path folder = Paths.get(destDir.getAbsolutePath());
+        Path compressedFolder = Paths.get(new File(destDir+".tar.gz").getAbsolutePath());
+        metrics.setDataVolumeRaw(org.apache.commons.io.FileUtils.byteCountToDisplaySize(FileUtils.getFolderSizeBytes(folder)));
+        if(!uncompressed) {
+            metrics.setDataVolumeCompressed(org.apache.commons.io.FileUtils.byteCountToDisplaySize(FileUtils.getFolderSizeBytes(compressedFolder)));
         }
-        return destinationDirectory;
+        metrics.setTransferElapsed(String.format("%02d min, %02d sec",
+                TimeUnit.MILLISECONDS.toMinutes(endTs - startTs),
+                TimeUnit.MILLISECONDS.toSeconds(endTs - startTs) -
+                        TimeUnit.MINUTES.toSeconds(TimeUnit.MILLISECONDS.toMinutes(endTs - startTs))
+        ));
+        metrics.printMetrics(System.out);
     }
 
-    private void moveToOutDir(File tmpDir) {
-
-    }
-    private void writeMetadataFile() {
-
+    @VisibleForTesting
+    S3Backup getS3Backup() {
+        return s3Backup;
     }
 
 }

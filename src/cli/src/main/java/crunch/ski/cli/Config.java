@@ -1,13 +1,17 @@
 package crunch.ski.cli;
 
 import picocli.CommandLine;
-
 import java.io.*;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Scanner;
 import java.util.concurrent.Callable;
 
+/**
+ * CLI Command for setting configuration.  Config is stored locally in user's home dir in hidden file .crunch
+ * Config will be referenced by other commands on execution to avoid user having to input common variables on each
+ * invokation.
+ */
 @CommandLine.Command(name = "config",
         description = "Configure CLI",
         subcommands = {
@@ -29,7 +33,7 @@ public class Config implements Callable<Integer> {
     private Map<Variable, String> values = new HashMap<>();
 
     @Override
-    public Integer call() throws Exception {
+    public Integer call()  {
         try {
             createConfigIfNotExists();
 
@@ -53,7 +57,7 @@ public class Config implements Callable<Integer> {
 
                 while ((line = bufferedReader.readLine()) != null) {
                     String[] kvp = line.split("=");
-                    String key = kvp[0]; //.substring(0, kvp[0].length() - 1);
+                    String key = kvp[0];
                     for (Variable variable : Variable.values()) {
                         if (variable.name().equalsIgnoreCase(key)) {
                             values.put(variable, kvp[1]);
@@ -123,7 +127,7 @@ public class Config implements Callable<Integer> {
         Map<String, String> result = new HashMap<>();
         try (FileReader fileReader = new FileReader(configFile)) {
             try (BufferedReader bufferedReader = new BufferedReader(fileReader)) {
-                String line = null;
+                String line;
                 while ((line = bufferedReader.readLine()) != null) {
                     String[] kvp = line.split("=");
                     result.put(kvp[0], kvp[1]);

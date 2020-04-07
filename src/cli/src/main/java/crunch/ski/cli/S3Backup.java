@@ -26,16 +26,14 @@ public class S3Backup {
     }
 
     /**
-     * Copies all contents of a bucket to "java.io.tmpdir"/bucketName-backupId and performs checksum validation
-     * @param backupId
-     * @param bucketName
-     * @throws Exception
+     * Copies all contents of a bucket to "java.io.tmpdir"/bucketName-backupId and performs checksum validation*
+     * @param bucketName String name of bucket
+     * @param destinationDir File destination directory
+     * @throws IOException on io error
+     * @throws ChecksumFailedException on failed checksum validation
      */
-    public void backupS3BucketToTempDir(String backupId, String bucketName, File destinationDir) throws IOException, ChecksumFailedException {
+    public void backupS3BucketToDirectory( String bucketName, File destinationDir) throws IOException, ChecksumFailedException {
         List<String> objectKeys = s3Facade.listObjects(bucketName);
-//        String tmpDirKey = bucketName + "-" + backupId;
-//        File tmpDir = new File(System.getProperty("java.io.tmpdir"), tmpDirKey);
-//        tmpDir.mkdir();
 
         for (String objectKey : objectKeys) {
             File destFile = new File(destinationDir, objectKey);
@@ -44,12 +42,15 @@ public class S3Backup {
             try (S3ObjectInputStream s3is = o.getObjectContent()) {
                 try (FileOutputStream fos = new FileOutputStream(destFile)) {
                     byte[] read_buf = new byte[1024];
-                    int read_len = 0;
-                    while ((read_len = s3is.read(read_buf)) > 0) {
+                    int read_len;
+                    while ((read_len = s3is.read(read_buf)) > -1) {
                         fos.write(read_buf, 0, read_len);
                     }
+                    fos.flush();
+//                }finally {
+//                    // safeguard in case
+//                    s3is.abort();
                 }
-                s3is.abort();
             }
             //checksum validation
             logger.info("checking md5...");
@@ -62,6 +63,6 @@ public class S3Backup {
     }
 
     public S3Facade getS3Facade() {
-        return this.s3Facade;
+        return s3Facade;
     }
 }
