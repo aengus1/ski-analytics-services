@@ -2,7 +2,7 @@
     <Appenders>
         <Lambda name="Lambda">
             <PatternLayout>
-                <pattern>%d{yyyy-MM-dd HH:mm:ss} %X{AWSRequestId} %-5p %c{1} - %m%n</pattern>
+                <pattern>%d{yyyy-MM-dd HH:mm:ss} [%t] %X{AWSRequestId} %-5p %c{10}.%M:%L - %m%n</pattern>
             </PatternLayout>
         </Lambda>
     </Appenders>
@@ -12,5 +12,7 @@
         </Root>
         <Logger name="software.amazon.awssdk" level="WARN" />
         <Logger name="software.amazon.awssdk.request" level="DEBUG" />
+        <Logger name="com.amazonaws.monitoring" level="ERROR"/>
+        <Logger name="com.amazonaws.http" level="ERROR"/>
     </Loggers>
 </Configuration>

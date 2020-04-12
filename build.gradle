@@ -9,7 +9,7 @@ import ski.crunch.build.DeployServerless
 buildscript {
     ext {
         gradleVersion = "6.0.1"
-        jacksonVersion = "2.10.2"
+        jacksonVersion = "2.10.3"
         awsVersion = "1.11.728"
     }
     repositories {

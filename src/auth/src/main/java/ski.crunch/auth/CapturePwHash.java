@@ -72,7 +72,7 @@ public class CapturePwHash implements RequestStreamHandler {
         try {
             LazySodiumJava lazySodium = new LazySodiumJava(new SodiumJava());
             PwHash.Lazy pwHashLazy = (PwHash.Lazy) lazySodium;
-            return pwHashLazy.cryptoPwHashStr(password, 2L, new NativeLong(65536));
+            return pwHashLazy.cryptoPwHashStr(password, 20L, new NativeLong(131072));
         } catch (SodiumException ex) {
             ex.printStackTrace();
         }

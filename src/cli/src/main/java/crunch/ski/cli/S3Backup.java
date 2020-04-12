@@ -27,6 +27,7 @@ public class S3Backup {
 
     /**
      * Copies all contents of a bucket to "java.io.tmpdir"/bucketName-backupId and performs checksum validation*
+     * Handles first level folders only.
      * @param bucketName String name of bucket
      * @param destinationDir File destination directory
      * @throws IOException on io error
@@ -36,7 +37,22 @@ public class S3Backup {
         List<String> objectKeys = s3Facade.listObjects(bucketName);
 
         for (String objectKey : objectKeys) {
-            File destFile = new File(destinationDir, objectKey);
+
+            logger.debug("object key = " + objectKey);
+            File destDir = destinationDir;
+            File destFile = new File(destDir, objectKey);
+            if(objectKey.contains("/")){
+              String[] keyS = objectKey.split("/");
+              destDir = new File(destinationDir, keyS[0]);
+              if(!destDir.isDirectory()) {
+                  destDir.mkdir();
+              }
+              destFile = new File(destDir, keyS[1]);
+            }
+
+            //System.out.println("destdir = " + destDir.getAbsolutePath());
+            //System.out.println("destfile = " + destFile.getAbsolutePath());
+            //File destFile = new File(destDir, objectKey);
             S3Object o = s3Facade.getS3Client().getObject(bucketName, objectKey);
 
             try (S3ObjectInputStream s3is = o.getObjectContent()) {

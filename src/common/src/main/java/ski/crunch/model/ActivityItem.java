@@ -1,6 +1,7 @@
 package ski.crunch.model;
 
 import com.amazonaws.services.dynamodbv2.datamodeling.*;
+import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import ski.crunch.utils.Jsonable;
 
 import java.util.Date;
@@ -10,6 +11,7 @@ import java.util.Set;
  * Created by aengusmccullough on 2018-09-17.
  */
 
+@JsonDeserialize(using = ActivityItemDeserializer.class)
 @DynamoDBTable(tableName="ActivityTable")  //override this on call
 public class ActivityItem implements Jsonable {
 

@@ -15,6 +15,8 @@ provider:
     - Effect: Allow
       Action:
         - s3:ListBucket
+        - s3:GetAccelerateConfiguration
+        - s3:PutAccelerateConfiguration
       Resource: "arn:aws:s3:::${{self:custom.activityBucketName}}"
     - Effect: Allow
       Action:
@@ -30,6 +32,8 @@ provider:
       Action:
         - s3:PutBucketNotification
         - s3:ListBucket
+        - s3:GetAccelerateConfiguration
+        - s3:PutAccelerateConfiguration
       Resource: "arn:aws:s3:::${{self:custom.rawActivityBucketName}}"
     - Effect: Allow
       Action:

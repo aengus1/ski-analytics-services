@@ -149,16 +149,16 @@ class ActivityTest {
             boolean exists = false;
             while((sleep -=5) >=0 && !exists) {
                 Thread.currentThread().sleep(5000l);
-                exists = s3.doesObjectExist(processedActivityBucket, activityId + ".pbf");
+                exists = s3.doesObjectExist(processedActivityBucket, helper.getCognitoId()+"/"+activityId + ".pbf");
             }
-                logger.info("checking processed bucket " + processedActivityBucket + " for activity: " + activityId + ".pbf");
+                logger.info("checking processed bucket " + processedActivityBucket + " for activity: " + helper.getCognitoId()+"/"+activityId + ".pbf");
                 assertTrue(exists);
         } catch (InterruptedException ex) {
             System.err.println("Thread interrupted");
         }
 
         try {
-            byte[] buffer = s3.getObject(processedActivityBucket, activityId + ".pbf");
+            byte[] buffer = s3.getObject(processedActivityBucket, helper.getCognitoId()+"/"+activityId + ".pbf");
             ActivityOuterClass.Activity finalActivity = ActivityOuterClass.Activity.parseFrom(buffer);
             assertEquals(1, finalActivity.getSessionsCount());
             assertNotNull(finalActivity.getSessions(0).getSport());
@@ -180,8 +180,8 @@ class ActivityTest {
         assertEquals("GENERIC_SUBSPORT",item.get().getActivitySubType());
         assertEquals(Double.valueOf(5459), item.get().getDistance());
         assertEquals(Double.valueOf(2052), item.get().getDuration());
-        assertEquals(Double.valueOf(231), item.get().getDescent());
-        assertEquals(Double.valueOf(179), item.get().getAscent());
+        assertEquals(Double.valueOf(222), item.get().getDescent());
+        assertEquals(Double.valueOf(170), item.get().getAscent());
         assertEquals(Integer.valueOf(-998), item.get().getAvHr());
         assertEquals(Integer.valueOf(0), item.get().getMaxHr());
         assertNotEquals("", item.get().getLastUpdateTimestamp());
@@ -225,11 +225,11 @@ class ActivityTest {
     void tearDown() {
 
         try {
-            activityDAO.deleteActivityItemById(activityId, helper.getCognitoId());
-            activityService.deleteRawActivityFromS3(activityId + ".fit");
+            //activityDAO.deleteActivityItemById(activityId, helper.getCognitoId());
+            //activityService.deleteRawActivityFromS3(activityId + ".fit");
             Thread.currentThread().sleep(20000);
-            logger.info("deleting from processed bucket " + processedActivityBucket + " for activity: " + activityId + ".pbf");
-            activityService.deleteProcessedActivityFromS3(activityId + ".pbf");
+            //logger.info("deleting from processed bucket " + processedActivityBucket + " for activity: " + activityId + ".pbf");
+            //activityService.deleteProcessedActivityFromS3(activityId + ".pbf");
         } catch (InterruptedException ex) {
             System.err.println("Interrupted Thread");
         } finally {

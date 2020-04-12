@@ -88,9 +88,17 @@ public class S3Facade {
 
     public void saveObjectToTmpDir(String bucket, String key) throws IOException {
         setTransferAcceleration(bucket);
+        File dest;
+        if(key.contains("/")){
+            String[] keyS = key.split("/");
+            dest = new File(System.getProperty("java.io.tmpdir")+keyS[0]);
+            key = keyS[1];
+        }else {
+            dest = new File(System.getProperty("java.io.tmpdir"));
+        }
         S3Object o = this.s3Client.getObject(bucket, key);
         try (S3ObjectInputStream s3is = o.getObjectContent()) {
-            try (FileOutputStream fos = new FileOutputStream(new File("/tmp", key))) {
+            try (FileOutputStream fos = new FileOutputStream(new File(dest, key))) {
                 byte[] read_buf = new byte[1024];
                 int read_len = 0;
                 while ((read_len = s3is.read(read_buf)) > 0) {
@@ -163,6 +171,12 @@ public class S3Facade {
     public List<String> listObjects(String bucket) {
         setTransferAcceleration(bucket);
         ObjectListing objectListing = this.s3Client.listObjects(bucket);
+        return objectListing.getObjectSummaries().stream().map(x -> x.getKey()).collect(Collectors.toList());
+    }
+
+    public List<String> listObjects(String bucket, String prefix) {
+        setTransferAcceleration(bucket);
+        ObjectListing objectListing = this.s3Client.listObjects(bucket, prefix);
         return objectListing.getObjectSummaries().stream().map(x -> x.getKey()).collect(Collectors.toList());
     }
 

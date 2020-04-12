@@ -47,7 +47,7 @@ test {
 task buildZip(type: Zip) {
 
     // set the base name of the zip file
-    baseName = "template"
+    archiveBaseName = "template"
     from compileJava
     from processResources
     into('lib') {

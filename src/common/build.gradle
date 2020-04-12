@@ -50,6 +50,8 @@ dependencies {
     integrationTestRuntimeOnly(
             'org.junit.jupiter:junit-jupiter-engine:5.4.0'
     )
+
+
 }
 compileJava {
     sourceCompatibility = '1.8'
@@ -69,7 +71,7 @@ task allJar(type: Jar) {
     includeEmptyDirs = false
     from compileJava
     from processResources
-    from ([ configurations.runtimeClasspath ] - [ configurations.compileOnly ])
+    from([configurations.runtimeClasspath] - [configurations.compileOnly])
     include "**\\ski\\crunch\\**"
 }
 
@@ -115,9 +117,9 @@ artifacts {
 }
 
 build.dependsOn utilsJar
-build.dependsOn cloudformationJar
 build.dependsOn buildUtilsZip
 build.dependsOn buildCommonZip
+buildCustomCloudformationZip.dependsOn cloudformationJar
 build.dependsOn buildCustomCloudformationZip
 build.dependsOn testJar
 build.dependsOn allJar

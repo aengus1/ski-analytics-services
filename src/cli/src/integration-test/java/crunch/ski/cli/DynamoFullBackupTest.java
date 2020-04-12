@@ -19,7 +19,7 @@ import java.util.*;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 @TestInstance(TestInstance.Lifecycle.PER_METHOD)
-public class DynamoBackupTest {
+public class DynamoFullBackupTest {
 
     private DynamoBackup dynamoBackup;
     private DynamoFacade dynamoFacade;

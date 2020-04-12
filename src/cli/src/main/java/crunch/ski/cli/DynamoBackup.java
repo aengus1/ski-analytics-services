@@ -19,6 +19,7 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 public class DynamoBackup {
 
@@ -87,15 +88,19 @@ public class DynamoBackup {
     private void writeItemsToFile(List<Item> resultSet, File file) throws IOException {
         try (FileWriter fw = new FileWriter(file)) {
             try (BufferedWriter bufferedWriter = new BufferedWriter(fw)) {
-
-                for (Item item : resultSet) {
-                    try {
-                        System.out.println(item.toJSON());
-                        bufferedWriter.write(item.toJSON() + System.lineSeparator());
-                    } catch (Exception ex) {
-                        ex.printStackTrace();
-                    }
-                }
+                bufferedWriter.write("[" + System.lineSeparator());
+                String res = resultSet.stream().map(x -> x.toJSONPretty()+System.lineSeparator()).collect(Collectors.joining(","));
+//                int i = 0;
+//                for (Item item : resultSet) {
+//                    try {
+//                        System.out.println(item.toJSON());
+//                        bufferedWriter.write(item.toJSON() + (resultSet.size()System.lineSeparator());
+//                    } catch (Exception ex) {
+//                        ex.printStackTrace();
+//                    }
+//                }
+                bufferedWriter.write(res);
+                bufferedWriter.write("]" + System.lineSeparator());
                 bufferedWriter.flush();
             }
         }

@@ -1,9 +1,14 @@
 package crunch.ski.cli.model;
 
+import com.amazonaws.util.json.Jackson;
+
+import java.io.File;
+import java.io.IOException;
 import java.util.List;
 
 public class Metadata {
     public static final int VERSION = 1;
+    private int version  = VERSION;
     private String backupId;
     private String timestamp;
     private String environment;
@@ -21,13 +26,19 @@ public class Metadata {
     private EncryptionType encryptionType;
     private CompressionType compressionType;
 
+    /**
+     * no-arg constructor required for jackson deserialization
+     */
+    public Metadata() {
+
+    }
 
     public Metadata(String backupId, String timestamp, String environment, BackupType backupType, String user,
                     String host,
                     String profile, String projectName, String dataRegion,
                     boolean transferAcceleration, int threads, String destination, DestinationType destinationType,
                     List<String> exportUsers, EncryptionType encryptionType,
-                    CompressionType compressionType){
+                    CompressionType compressionType) {
         this.backupId = backupId;
         this.timestamp = timestamp;
         this.environment = environment;
@@ -44,8 +55,10 @@ public class Metadata {
         this.exportUsers = exportUsers;
         this.encryptionType = encryptionType;
         this.compressionType = compressionType;
+        this.version = VERSION;
 
     }
+
     public String getBackupId() {
         return backupId;
     }
@@ -173,5 +186,9 @@ public class Metadata {
 
     public void setExportUsers(List<String> exportUsers) {
         this.exportUsers = exportUsers;
+    }
+
+    public static Metadata fromArchive(File file) throws IOException {
+        return Jackson.loadFrom(file, Metadata.class);
     }
 }

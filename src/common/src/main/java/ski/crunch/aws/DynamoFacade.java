@@ -28,6 +28,17 @@ public class DynamoFacade {
 
     }
 
+    public DynamoFacade(String region, String tableName, DynamoDBMapperConfig.SaveBehavior saveBehavior) {
+        this.client = AmazonDynamoDBClientBuilder.standard().withRegion(region).build();
+        config = new DynamoDBMapperConfig.Builder()
+                .withTableNameOverride(DynamoDBMapperConfig.TableNameOverride.withTableNameReplacement(tableName))
+                .withSaveBehavior(saveBehavior)
+                .build();
+        this.dynamo = new DynamoDB(client);
+        this.mapper = new DynamoDBMapper(client, config);
+
+    }
+
 
     /**
      * Use this constructor if you need to use the S3link
@@ -46,9 +57,10 @@ public class DynamoFacade {
     }
 
     public void updateTableName(String tableName) {
+        DynamoDBMapperConfig.SaveBehavior saveBehavior = config.getSaveBehavior();
         config = new DynamoDBMapperConfig.Builder().withTableNameOverride(DynamoDBMapperConfig.TableNameOverride.withTableNameReplacement(tableName))
+                .withSaveBehavior(saveBehavior)
                 .build();
-
         this.mapper = credentialsProvider!=null ? new DynamoDBMapper(client, config, credentialsProvider) : new DynamoDBMapper(client, config);
     }
 

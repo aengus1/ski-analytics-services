@@ -39,6 +39,7 @@ public class ActivityDAO extends AbstractDAO {
     }
 
     public void saveLinkToProcessed(String activityId, String userId, S3Link s3LinkToProcessed) {
+        System.out.println("attempting to load activity with: " + userId + " " + activityId);
         ActivityItem activityItem = dynamoDBService.getMapper().load(ActivityItem.class, userId, activityId);
         activityItem.setProcessedActivity(s3LinkToProcessed);
         dynamoDBService.getMapper().save(activityItem);
@@ -48,7 +49,7 @@ public class ActivityDAO extends AbstractDAO {
         logger.info("activity id = " + activity.getId());
         ActivityItem item;
         Optional<ActivityItem> itemo = getActivityItem(activity.getId(), cognitoId);
-
+        logger.debug("itemo = " + itemo.isPresent());
         if (!itemo.isPresent()) {
             logger.error("activity item " + activity.getId() + " not found");
             return false;
@@ -81,7 +82,7 @@ public class ActivityDAO extends AbstractDAO {
         }
     }
 
-    public void saveMetadata(String activityId, LambdaProxyConfig.RequestContext.Identity identity, String contentType, String S3region) throws SaveException {
+    public void saveMetadata(String activityId, LambdaProxyConfig.RequestContext.Identity identity, String contentType, String rawActivityBucketName) throws SaveException {
         dynamoDBService.updateTableName(tableName);
         try {
             ActivityItem activity = new ActivityItem();
@@ -89,7 +90,7 @@ public class ActivityDAO extends AbstractDAO {
             activity.setUserId(identity.getEmail());
             activity.setCognitoId(identity.getCognitoIdentityId());
             activity.setDateOfUpload(new Date(System.currentTimeMillis()));
-            activity.setRawActivity(dynamoDBService.getMapper().createS3Link(S3region, activityId));
+            activity.setRawActivity(dynamoDBService.getMapper().createS3Link(rawActivityBucketName, activityId));
             activity.setUserAgent(identity.getUserAgent());
             activity.setSourceIp(identity.getSourceIp());
             activity.setStatus(ActivityItem.Status.PENDING);

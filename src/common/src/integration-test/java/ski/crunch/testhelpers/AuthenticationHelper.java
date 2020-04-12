@@ -100,6 +100,7 @@ import static java.util.Base64.getEncoder;
     private String region;
     private String profileName;
     private String cognitoId;
+    boolean retryAfterDeletingUser = true;
 
      AuthenticationHelper(String userPoolID, String userPoolClientId, String region, String profileName) {
         do {
@@ -180,7 +181,7 @@ AWSCredentials awsCreds = new ProfileCredentialsProvider(profileName).getCredent
             AWSCognitoIdentityProvider cognitoIdentityProvider = buildIdpWithCreds(profileName);
 
             SignUpResult result = cognitoIdentityProvider.signUp(request);
-           /// System.out.println("signup result =" + result.getUserSub());
+            /// System.out.println("signup result =" + result.getUserSub());
             cognitoId = result.getUserSub();
 
 
@@ -193,6 +194,14 @@ AWSCredentials awsCreds = new ProfileCredentialsProvider(profileName).getCredent
 
             System.out.println("confirm result = " + confirmResult.toString());
             return Optional.of(result.getUserSub());
+        } catch(com.amazonaws.services.cognitoidp.model.UsernameExistsException une) {
+            if (retryAfterDeletingUser) {
+                this.deleteUser(username);
+                retryAfterDeletingUser = false;
+                return performAdminSignup(username, password);
+            } else {
+                return Optional.empty();
+            }
         } catch (final Exception ex) {
             ex.printStackTrace();
             System.out.println("Exception" + ex);

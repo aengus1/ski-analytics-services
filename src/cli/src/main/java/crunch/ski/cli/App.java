@@ -9,6 +9,7 @@ import java.util.concurrent.Callable;
 @Command(
         subcommands = {
                 Backup.class,
+                Restore.class,
                 Config.class
         },
         name = "crunch",
