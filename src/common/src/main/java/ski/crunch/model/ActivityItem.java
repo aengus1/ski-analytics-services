@@ -2,6 +2,7 @@ package ski.crunch.model;
 
 import com.amazonaws.services.dynamodbv2.datamodeling.*;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import ski.crunch.utils.Jsonable;
 
 import java.util.Date;
@@ -11,11 +12,13 @@ import java.util.Set;
  * Created by aengusmccullough on 2018-09-17.
  */
 
+@JsonSerialize(using = ActivityItemSerializer.class)
 @JsonDeserialize(using = ActivityItemDeserializer.class)
 @DynamoDBTable(tableName="ActivityTable")  //override this on call
 public class ActivityItem implements Jsonable {
 
     private String id;
+    private String cognitoId;
     private Date dateOfUpload;
     private S3Link rawActivity;
     private S3Link processedActivity;
@@ -24,7 +27,6 @@ public class ActivityItem implements Jsonable {
     private String rawFileType;
     private String userAgent;
     private String userId;
-    private String cognitoId;
     //possible states: PENDING, PROCESSED, ERROR
     private Status status;
     private String activityType;

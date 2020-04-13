@@ -1,63 +1,116 @@
 package crunch.ski.cli;
 
 import com.amazonaws.auth.AWSCredentialsProvider;
-import com.amazonaws.services.dynamodbv2.document.Item;
-import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.TestInstance;
+import com.fasterxml.jackson.databind.JsonNode;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.node.ArrayNode;
+import org.junit.jupiter.api.*;
 import ski.crunch.aws.CredentialsProviderFactory;
 import ski.crunch.aws.CredentialsProviderType;
 import ski.crunch.aws.DynamoFacade;
+import ski.crunch.model.ActivityItem;
+import ski.crunch.model.UserSettingsItem;
 import ski.crunch.testhelpers.DynamoDbHelpers;
 import ski.crunch.testhelpers.IntegrationTestPropertiesReader;
 
+import java.io.File;
 import java.io.IOException;
-import java.util.*;
+import java.util.Date;
+import java.util.Optional;
 
-@TestInstance(TestInstance.Lifecycle.PER_METHOD)
+import static org.junit.jupiter.api.Assertions.assertEquals;
+
+@TestInstance(TestInstance.Lifecycle.PER_CLASS)
 public class DynamoUserBackupTest {
 
     private DynamoBackup dynamoBackup;
     private DynamoFacade dynamoFacade;
-    private String TABLE_NAME;
+    private String ACTIVITY_TABLE_NAME;
+    private String USER_TABLE_NAME;
     private String PROFILE_NAME;
     private String REGION;
+    private static final String userToExport = "user2";
+
+    @BeforeAll
+    public void setUp() throws IOException {
+        ACTIVITY_TABLE_NAME = IntegrationTestPropertiesReader.get("test-table");
+        USER_TABLE_NAME = IntegrationTestPropertiesReader.get("test-table-user");
+        PROFILE_NAME = IntegrationTestPropertiesReader.get("profile");
+        REGION = IntegrationTestPropertiesReader.get("region");
+        CredentialsProviderFactory credentialsProviderFactory = CredentialsProviderFactory.getInstance();
+        AWSCredentialsProvider provider = credentialsProviderFactory.newCredentialsProvider(CredentialsProviderType.PROFILE, Optional.of(PROFILE_NAME));
+        dynamoFacade = new DynamoFacade(REGION, ACTIVITY_TABLE_NAME);
+        dynamoBackup = new DynamoBackup(REGION, provider);
+        DynamoDbHelpers.createTable(REGION, PROFILE_NAME, ACTIVITY_TABLE_NAME,
+                1, 1, "cognitoId", "S", "id", "S");
+
+        ActivityItem activityItem = new ActivityItem();
+        activityItem.setId("12345");
+        activityItem.setUserId("user1@email.com");
+        activityItem.setCognitoId("user1");
+        activityItem.setLastUpdateTimestamp(new Date());
 
 
-        @BeforeEach
-        public void setUp() throws IOException {
-            TABLE_NAME = IntegrationTestPropertiesReader.get("test-table");
-            PROFILE_NAME = IntegrationTestPropertiesReader.get("profile");
-            REGION = IntegrationTestPropertiesReader.get("region");
-            CredentialsProviderFactory credentialsProviderFactory = CredentialsProviderFactory.getInstance();
-            AWSCredentialsProvider provider = credentialsProviderFactory.newCredentialsProvider(CredentialsProviderType.PROFILE, Optional.of(PROFILE_NAME));
-            dynamoFacade = new DynamoFacade(REGION, TABLE_NAME);
-            dynamoBackup = new DynamoBackup(REGION, provider);
-            DynamoDbHelpers.createTable(REGION, PROFILE_NAME, TABLE_NAME,
-                    1,1,"id", "S", null, null);
+        ActivityItem activityItem2 = new ActivityItem();
+        activityItem2.setId("678910");
+        activityItem.setUserId("user2@email.com");
+        activityItem2.setCognitoId(userToExport);
+        activityItem2.setLastUpdateTimestamp(new Date());
 
-            Item item = new Item().withPrimaryKey("id", "123")
-                    .withString("Title", "Book " + 2 + " Title").withString("ISBN", "111-1111111111")
-                    .withStringSet("Authors", new HashSet<>(Arrays.asList("Author1"))).withNumber("Price", 2)
-                    .withString("Dimensions", "8.5 x 11.0 x 0.5").withNumber("PageCount", 500)
-                    .withBoolean("InPublication", true).withString("ProductCategory", "Book");
 
-            Item item2 = new Item().withPrimaryKey("id", "12345")
-                    .withString("Title", "Book " + 2 + " Title").withString("ISBN", "111-1111111111")
-                    .withStringSet("Authors", new HashSet<>(Arrays.asList("Author1"))).withNumber("Price", 2)
-                    .withString("Dimensions", "8.5 x 11.0 x 0.5").withNumber("PageCount", 500)
-                    .withBoolean("InPublication", true).withString("ProductCategory", "Book");
+        ActivityItem activityItem3 = new ActivityItem();
+        activityItem3.setId("11121314");
+        activityItem.setUserId("user2@email.com");
+        activityItem3.setCognitoId(userToExport);
+        activityItem3.setLastUpdateTimestamp(new Date());
 
-            Item item3 = new Item().withPrimaryKey("id", "123456")
-                    .withString("Title", "Book " + 2 + " Title").withString("ISBN", "111-1111111111")
-                    .withStringSet("Authors", new HashSet<>(Arrays.asList("Author1"))).withNumber("Price", 2)
-                    .withString("Dimensions", "8.5 x 11.0 x 0.5").withNumber("PageCount", 500)
-                    .withBoolean("InPublication", true).withString("ProductCategory", "Book");
+        dynamoFacade.getMapper().save(activityItem);
+        dynamoFacade.getMapper().save(activityItem2);
+        dynamoFacade.getMapper().save(activityItem3);
 
-            List<Item> items = new ArrayList<>();
-            items.add(item);
-            items.add(item2);
-            items.add(item3);
-            DynamoDbHelpers.insertItems(dynamoFacade, TABLE_NAME,items);
 
+        dynamoFacade.updateTableName(USER_TABLE_NAME);
+        DynamoDbHelpers.createTable(REGION, PROFILE_NAME, USER_TABLE_NAME,
+                1, 1, "id", "S", null, null);
+
+        UserSettingsItem userSettingsItem = new UserSettingsItem();
+        userSettingsItem.setId(userToExport);
+        userSettingsItem.setEmail("user2@email.com");
+
+        UserSettingsItem userSettingsItem2 = new UserSettingsItem();
+        userSettingsItem2.setId("user1");
+        userSettingsItem2.setEmail("user@email.com");
+
+        dynamoFacade.getMapper().save(userSettingsItem);
+        dynamoFacade.getMapper().save(userSettingsItem2);
+    }
+
+    @Test
+    public void testUserBackup() throws IOException{
+        File destDir = new File(System.getProperty("java.io.tmpdir")+"/userbackuptest");
+        destDir.mkdir();
+        dynamoBackup.userDataBackup(userToExport, USER_TABLE_NAME, ACTIVITY_TABLE_NAME, destDir);
+
+        // confirm that the archive contains only activities from user2
+        File activitiesJson = new File(destDir,"activities.json");
+
+        ObjectMapper objectMapper = new ObjectMapper();
+        ArrayNode node = (ArrayNode) objectMapper.readTree(activitiesJson);
+        int count = 0;
+        for (JsonNode jsonNode : node) {
+            System.out.println(jsonNode.get("cognitoId").textValue());
+            if (jsonNode.get("cognitoId").textValue().equals(userToExport)) {
+                count++;
+            }
         }
+        assertEquals(2, count);
+
+
+    }
+    @AfterAll
+    public void tearDown() {
+        DynamoDbHelpers.deleteTable(dynamoFacade, ACTIVITY_TABLE_NAME);
+
+        DynamoDbHelpers.deleteTable(dynamoFacade, USER_TABLE_NAME);
+    }
 }

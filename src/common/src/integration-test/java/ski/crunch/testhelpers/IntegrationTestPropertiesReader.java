@@ -7,7 +7,7 @@ import java.util.Properties;
 public class IntegrationTestPropertiesReader {
 
     public static String get(String variableName) throws IOException {
-        InputStream is = TestPropertiesReader.class.getResourceAsStream("/integration-test.properties");
+        InputStream is = IntegrationTestPropertiesReader.class.getResourceAsStream("/integration-test.properties");
 
         Properties properties = new Properties();
         properties.load(is);

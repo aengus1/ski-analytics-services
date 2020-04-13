@@ -5,6 +5,11 @@ import com.amazonaws.services.dynamodbv2.datamodeling.DynamoDBQueryExpression;
 import com.amazonaws.services.dynamodbv2.datamodeling.PaginatedQueryList;
 import com.amazonaws.services.dynamodbv2.datamodeling.S3Link;
 import com.amazonaws.services.dynamodbv2.document.Item;
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.SerializationFeature;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import ski.crunch.aws.DynamoFacade;
 import ski.crunch.dao.ActivityDAO;
 import ski.crunch.dao.TableScanner;
@@ -25,6 +30,7 @@ public class DynamoBackup {
 
     private String region;
     private AWSCredentialsProvider credentialsProvider;
+    private static final Logger logger = LoggerFactory.getLogger(DynamoBackup.class);
 
     public DynamoBackup(String region, AWSCredentialsProvider credentialsProvider) {
         this.region = region;
@@ -33,10 +39,11 @@ public class DynamoBackup {
 
     /**
      * Performs backup from dynamodb user and activity tables of specific user to local file system
-     * @param user String user to backup (email or id)
-     * @param userTableName String name of user table
+     *
+     * @param user                String user to backup (email or id)
+     * @param userTableName       String name of user table
      * @param activitiesTableName String name of activity table
-     * @param destDir File destination directory
+     * @param destDir             File destination directory
      * @throws IOException on ioerror
      */
     public void userDataBackup(String user, String userTableName, String activitiesTableName, File destDir) throws IOException {
@@ -47,29 +54,40 @@ public class DynamoBackup {
         writeResultToFile(userSettingsItem, new File(destDir, "user.json"));
         ActivityDAO activityDAO = new ActivityDAO(dynamoFacade, activitiesTableName);
         List<ActivityItem> activityItems = activityDAO.getActivitiesByUser(userSettingsItem.getId());
+
         writeResultSetToFile(activityItems, new File(destDir, "activities.json"));
         File rawDir = new File(destDir, "raw");
         File procDir = new File(destDir, "proc");
         rawDir.mkdir();
         procDir.mkdir();
         for (ActivityItem activityItem : activityItems) {
+            System.out.println(activityItem.getId());
             S3Link rawActivityS3Link = activityItem.getRawActivity();
             if (rawActivityS3Link != null) {
-                rawActivityS3Link.downloadTo(rawDir);
+                try {
+                    rawActivityS3Link.downloadTo(rawDir);
+                } catch (Exception ex) {
+                    logger.warn("error downloading raw activity {} from {}", rawActivityS3Link.getKey(), rawActivityS3Link.getBucketName());
+                }
             }
             S3Link processedActivityS3Link = activityItem.getProcessedActivity();
             if (processedActivityS3Link != null) {
-                processedActivityS3Link.downloadTo(procDir);
+                try {
+                    processedActivityS3Link.downloadTo(procDir);
+                } catch (Exception ex) {
+                    logger.warn("error downloading processed activity {} from {}", rawActivityS3Link.getKey(), rawActivityS3Link.getBucketName());
+                }
             }
         }
     }
 
     /**
      * Performs a full backup of specified table and copies results to local fs
-     * @param tableName String name of table to backup
+     *
+     * @param tableName       String name of table to backup
      * @param numberOfThreads int n threads to scan table with
-     * @param destination File destination directory
-     * @param fileName String name of output file
+     * @param destination     File destination directory
+     * @param fileName        String name of output file
      * @throws IOException on ioerror
      */
     public void fullTableBackup(String tableName, int numberOfThreads, File destination, String fileName) throws IOException {
@@ -89,7 +107,7 @@ public class DynamoBackup {
         try (FileWriter fw = new FileWriter(file)) {
             try (BufferedWriter bufferedWriter = new BufferedWriter(fw)) {
                 bufferedWriter.write("[" + System.lineSeparator());
-                String res = resultSet.stream().map(x -> x.toJSONPretty()+System.lineSeparator()).collect(Collectors.joining(","));
+                String res = resultSet.stream().map(x -> x.toJSONPretty() + System.lineSeparator()).collect(Collectors.joining(","));
 //                int i = 0;
 //                for (Item item : resultSet) {
 //                    try {
@@ -128,18 +146,24 @@ public class DynamoBackup {
      * @param <E>       Dynamodbv2 mapper type that implements Jsonable
      * @throws IOException on io error
      */
-    private <E extends Jsonable> void writeResultSetToFile(List<E> resultSet, File file) throws IOException {
+    private <E> void writeResultSetToFile(List<E> resultSet, File file) throws IOException {
+        ObjectMapper objectMapper = new ObjectMapper();
+        objectMapper.configure(SerializationFeature.FAIL_ON_EMPTY_BEANS, false);
+
         try (FileWriter fw = new FileWriter(file)) {
             try (BufferedWriter bufferedWriter = new BufferedWriter(fw)) {
-
-                for (E item : resultSet) {
-                    try {
-                        System.out.println(item.toJsonString());
-                        bufferedWriter.write(item.toJsonString() + System.lineSeparator());
-                    } catch (Exception ex) {
-                        ex.printStackTrace();
-                    }
-                }
+                bufferedWriter.write("[" + System.lineSeparator());
+                String res = resultSet.stream().map(x -> {
+                            try {
+                                return objectMapper.writeValueAsString(x) + System.lineSeparator();
+                            } catch (JsonProcessingException ex) {
+                                logger.warn("error writing {}", x);
+                                return "";
+                            }
+                        }
+                ).collect(Collectors.joining(","));
+                bufferedWriter.write(res);
+                bufferedWriter.write("]" + System.lineSeparator());
                 bufferedWriter.flush();
             }
         }
@@ -147,7 +171,8 @@ public class DynamoBackup {
 
     /**
      * Fetch User item from dynamodb
-     * @param user String user (email or id)
+     *
+     * @param user          String user (email or id)
      * @param userTableName String name of user table
      * @return UserSettingsItem result
      * @throws NotFoundException on user not found
