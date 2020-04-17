@@ -7,6 +7,19 @@ import com.amazonaws.services.dynamodbv2.datamodeling.DynamoDBMapper;
 import com.amazonaws.services.dynamodbv2.datamodeling.DynamoDBMapperConfig;
 import com.amazonaws.services.dynamodbv2.document.DynamoDB;
 import com.amazonaws.services.dynamodbv2.document.Table;
+import com.fasterxml.jackson.core.JsonProcessingException;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import ski.crunch.dao.SerialScanner;
+import ski.crunch.utils.Jsonable;
+
+import java.io.BufferedWriter;
+import java.io.File;
+import java.io.FileWriter;
+import java.io.IOException;
+import java.util.function.Function;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 /**
  * Created by aengusmccullough on 2018-09-19.
@@ -18,6 +31,7 @@ public class DynamoFacade {
     private DynamoDBMapper mapper;
     private DynamoDBMapperConfig config;
     private AWSCredentialsProvider credentialsProvider;
+    private static final Logger logger = LoggerFactory.getLogger(DynamoFacade.class);
 
     public DynamoFacade(String region, String tableName) {
         this.client = AmazonDynamoDBClientBuilder.standard().withRegion(region).build();
@@ -42,8 +56,9 @@ public class DynamoFacade {
 
     /**
      * Use this constructor if you need to use the S3link
-     * @param region String aws region
-     * @param tableName String name of table
+     *
+     * @param region              String aws region
+     * @param tableName           String name of table
      * @param credentialsProvider AWSCredentialsProvider
      */
     public DynamoFacade(String region, String tableName, AWSCredentialsProvider credentialsProvider) {
@@ -61,11 +76,11 @@ public class DynamoFacade {
         config = new DynamoDBMapperConfig.Builder().withTableNameOverride(DynamoDBMapperConfig.TableNameOverride.withTableNameReplacement(tableName))
                 .withSaveBehavior(saveBehavior)
                 .build();
-        this.mapper = credentialsProvider!=null ? new DynamoDBMapper(client, config, credentialsProvider) : new DynamoDBMapper(client, config);
+        this.mapper = credentialsProvider != null ? new DynamoDBMapper(client, config, credentialsProvider) : new DynamoDBMapper(client, config);
     }
 
 
-    public DynamoDBMapper getMapper(){
+    public DynamoDBMapper getMapper() {
         return this.mapper;
     }
 
@@ -73,11 +88,50 @@ public class DynamoFacade {
         return dynamo;
     }
 
-    public Table getTable(String tableName){
+    public Table getTable(String tableName) {
         return this.dynamo.getTable(tableName);
     }
 
+    /**
+     * Performs a full backup of specified table and copies results to local fs
+     *
+     * @param tableName   String name of table to backup
+     * @param destination File destination directory
+     * @param fileName    String name of output file
+     * @throws IOException on ioerror
+     */
+    public void fullTableBackup(Class mapperClass, String tableName, File destination, String fileName) throws IOException {
 
+        // stream all results into a single temporary file
+        File output = new File(destination, fileName);
+        //File tempOutput = new File(System.getProperty("java.io.tmpdir"), fileName+"tmp");
+        Function<Stream<Jsonable>, Void> fileWriter = items -> {
+            try (FileWriter fw = new FileWriter(output, true)) {
+                try (BufferedWriter bufferedWriter = new BufferedWriter(fw)) {
+                    bufferedWriter.write("[" + System.lineSeparator());
+                    String res = items.map(x -> {
+                        try {
+                            return x.toJsonString() + System.lineSeparator();
+                        } catch (JsonProcessingException e) {
+                            e.printStackTrace();
+                            return null;
+                        }
+                    }).collect(Collectors.joining(","));
+                    bufferedWriter.write(res);
+                    bufferedWriter.write(System.lineSeparator() + "]");
+                    bufferedWriter.flush();
+                }
+            } catch (IOException ex) {
+                logger.error("IO Exception", ex);
+                ex.printStackTrace();
+            } catch (Exception ex) {
+                ex.printStackTrace();
+            } finally {
+                return null;
+            }
+        };
+        SerialScanner.scan(this, fileWriter, tableName,  mapperClass);
+    }
 
 
     public DynamoDBMapperConfig getConfig() {

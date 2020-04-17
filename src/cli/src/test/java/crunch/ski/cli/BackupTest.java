@@ -13,7 +13,6 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Optional;
 
-import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 
@@ -46,7 +45,7 @@ public class BackupTest {
         configMap.put("DATA_REGION", DATA_REGION);
         File destDir = new File(System.getProperty("java.io.tmpdir"), "clitest");
 
-        backup = new Backup(parent, credentialsProviderFactory, configMap, ENV, destDir.getAbsolutePath(), false, 1, "", null, true);
+        backup = new Backup(parent, configMap, ENV, destDir.getAbsolutePath(), false, 1, "", null, true);
         backup.initialize();
 
         verify(credentialsProviderFactory, times(1))
@@ -67,13 +66,13 @@ public class BackupTest {
         configMap.put("DATA_REGION", DATA_REGION);
         File destDir = new File(System.getProperty("java.io.tmpdir"), "clitest");
 
-        backup = new Backup(parent, credentialsProviderFactory, configMap, ENV, destDir.getAbsolutePath(), false, 1, "", null, true);
+        backup = new Backup(parent, configMap, ENV, destDir.getAbsolutePath(), false, 1, "", null, true);
         backup.initialize();
 
         verify(credentialsProviderFactory, times(1))
                 .newCredentialsProvider(CredentialsProviderType.PROFILE, Optional.of("newProfile"));
-        assertFalse(backup.getS3Backup().getS3Facade().getTransferAcceleration());
-        assertTrue(backup.calcBucketName("my-bucket").endsWith("test-test-project"));
+        assertFalse(backup.getOptions().getTransferAcceleration());
+        assertTrue(backup.getService().calcBucketName("my-bucket").endsWith("test-test-project"));
         assertEquals("newRegion", backup.getS3Backup().getS3Facade().getRegion());
     }
 

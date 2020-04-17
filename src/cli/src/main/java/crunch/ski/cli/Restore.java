@@ -1,29 +1,21 @@
 package crunch.ski.cli;
 
 import com.amazonaws.auth.AWSCredentialsProvider;
-import com.amazonaws.services.dynamodbv2.datamodeling.DynamoDBMapperConfig;
-import com.amazonaws.util.json.Jackson;
-import com.fasterxml.jackson.databind.InjectableValues;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.common.annotations.VisibleForTesting;
-import crunch.ski.cli.model.BackupType;
-import crunch.ski.cli.model.Metadata;
-import org.apache.commons.io.FileUtils;
+import crunch.ski.cli.model.RestoreOptions;
+import crunch.ski.cli.services.BackupRestoreService;
+import crunch.ski.cli.services.LocalRestoreService;
+import crunch.ski.cli.services.S3RestoreService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import picocli.CommandLine;
 import ski.crunch.aws.CredentialsProviderFactory;
-import ski.crunch.aws.CredentialsProviderType;
-import ski.crunch.aws.DynamoFacade;
-import ski.crunch.model.ActivityItem;
-import ski.crunch.model.UserSettingsItem;
 
 import java.io.File;
-import java.nio.charset.StandardCharsets;
+import java.time.LocalDateTime;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
-import java.util.Optional;
 import java.util.concurrent.Callable;
 
 @CommandLine.Command(name = "restore",
@@ -40,6 +32,9 @@ public class Restore implements Callable<Integer> {
     @CommandLine.Option(names = {"-a", "--transfer-acceleration"}, description = "Enable S3 Transfer Acceleration")
     private boolean transferAcceleration = false;
 
+    @CommandLine.Option(names = {"-t", "--threads"}, description = "Number of parallel threads to use for DynamoDB table scan")
+    private int nThreads = 2;
+
     @CommandLine.Option(names = {"--users"}, description = "Only restore specific user data from archive (email address or user-id, comma separated")
     private String usersString;
 
@@ -48,6 +43,9 @@ public class Restore implements Callable<Integer> {
 
     @CommandLine.Option(names = {"-o", "--overwrite"}, description = "Overwrite existing data")
     private boolean overwrite;
+
+    @CommandLine.Option(names = {"-v", "--verbose"}, description = "Verbose output")
+    private boolean verbose;
 
     @CommandLine.Parameters(index = "0", description = "input file for archive to restore.  Fully qualified Local file or S3 location")
     private String backupArchive;
@@ -64,13 +62,15 @@ public class Restore implements Callable<Integer> {
     private File archive;
     private long startTs;
     private long endTs;
+    private RestoreOptions options;
+    private BackupRestoreService service;
 
 
     /**
      * no arg constructor required by picocli
      */
     public Restore() {
-
+        this.options = new RestoreOptions();
     }
 
     public Restore(App parent, CredentialsProviderFactory credentialsProviderFactory,
@@ -93,99 +93,13 @@ public class Restore implements Callable<Integer> {
     public Integer call() throws Exception {
 
         initialize();
-        System.out.println("Restoring data....");
-
-        // decrypt if necessary
-        //determine if the archive is compressed and decompress if necessary
-        if(inputDir.getName().endsWith(""))
-        // archive = decrypted and decompressed file
-        archive = inputDir;
-        //parse metadata
-        Metadata metadata = Metadata.fromArchive(new File(archive, ".metadata.json"));
-        System.out.println("metadata: " + Jackson.toJsonPrettyString(metadata));
-        System.out.println("Restoring backup ID: " + metadata.getBackupId() + " to " + environment);
-        if (metadata.getBackupType().equals(BackupType.FULL)) {
-            fullLocalRestore(metadata);
-
-            //convert users.json to List<UserSettingsItems>
-            // filter list to users if specified
-
-            //load list to db
-
-            //convert activities to List<ActivityItem>
-            //load list to db
-
-            //copy files to S3
-
-            //deal with cognito
+        initialize();
+        if(options.isS3Source()) {
+              service = new S3RestoreService(options);
         } else {
-            // for each user
+            service = new LocalRestoreService(options);
         }
-
-        return 0;
-    }
-
-    @VisibleForTesting
-    String calcTableName(String tableType) {
-        return new StringBuilder()
-                .append(environment).append("-")
-                .append(configMap.get("PROJECT_NAME")).append("-")
-                .append(tableType)
-                .toString();
-    }
-
-    @VisibleForTesting
-    String calcBucketName(String bucketType) {
-        return new StringBuilder()
-                .append(environment).append("-")
-                .append(bucketType).append("-")
-                .append(configMap.get("PROJECT_NAME"))
-                .toString();
-    }
-
-
-    private InjectableValues newActivityDeserializerInjectables() {
-        DynamoFacade dynamoFacade = new DynamoFacade(configMap.get("DATA_REGION"), calcTableName("userTable"), CredentialsProviderFactory.getDefaultCredentialsProvider());
-        return new InjectableValues.Std()
-                .addValue("mapper", dynamoFacade.getMapper())
-                .addValue("region", configMap.get("DATA_REGION"))
-                .addValue("proc_bucket", calcBucketName("activity"))
-                .addValue("raw_bucket", calcBucketName("raw-activity"));
-    }
-
-    /**
-     * Performs full backup to local file system
-     *
-     * @throws Exception on error
-     */
-    private void fullLocalRestore(Metadata metadata) throws Exception {
-        String usersJson = FileUtils.readFileToString(new File(archive, "users.json"), StandardCharsets.UTF_8);
-        String activitiesJson = FileUtils.readFileToString(new File(archive, "activities.json"), StandardCharsets.UTF_8);
-        ObjectMapper mapper = new ObjectMapper();
-        List<UserSettingsItem> users = Arrays.asList(mapper.readValue(usersJson, UserSettingsItem[].class));
-        List<ActivityItem> activityItems = Arrays.asList(mapper.reader(newActivityDeserializerInjectables()).forType(ActivityItem[].class).readValue(activitiesJson));
-
-        // save to dynamo
-        DynamoFacade dynamoFacade = new DynamoFacade(configMap.get("DATA_REGION"), calcTableName("userTable"),
-                overwrite ? DynamoDBMapperConfig.SaveBehavior.CLOBBER : DynamoDBMapperConfig.SaveBehavior.UPDATE);
-
-        dynamoFacade.getMapper().batchSave(users);
-        dynamoFacade.updateTableName(calcTableName("Activity"));
-        dynamoFacade.getMapper().batchSave(activityItems);
-
-        // restore s3
-        File rawDir = new File(archive, "raw_activities");
-        File procDir = new File(archive, "processed_activities");
-        for (ActivityItem activityItem : activityItems) {
-            if (activityItem.getRawActivity() != null) {
-                System.out.println("uploading " + activityItem.getRawActivity().getKey());
-                activityItem.getRawActivity().uploadFrom(new File(rawDir, activityItem.getRawActivity().getKey()));
-            }
-            if (activityItem.getProcessedActivity() != null) {
-                System.out.println("uploading " + activityItem.getProcessedActivity().getKey());
-                activityItem.getProcessedActivity().uploadFrom(new File(procDir, activityItem.getProcessedActivity().getKey()));
-            }
-        }
+        return service.apply();
     }
 
         /**
@@ -194,26 +108,34 @@ public class Restore implements Callable<Integer> {
         @VisibleForTesting
         void initialize () {
             try {
-                startTs = System.currentTimeMillis();
+                options.setStartTs(System.currentTimeMillis());
                 Config config = new Config();
-                configMap = config.readConfiguration();
-                if (credentialsProviderFactory == null) {
-                    credentialsProviderFactory = CredentialsProviderFactory.getInstance();
-                }
+                options.setConfigMap(config.readConfiguration());
+
                 if (parent.getProjectName() != null) {
-                    configMap.put("PROJECT_NAME", parent.getProjectName());
+                    options.getConfigMap().put("PROJECT_NAME", parent.getProjectName());
                 }
                 if (parent.getDataRegion() != null) {
-                    configMap.put("DATA_REGION", parent.getDataRegion());
+                    options.getConfigMap().put("DATA_REGION", parent.getDataRegion());
                 }
                 if (parent.getAwsProfile() != null) {
-                    configMap.put("PROFILE_NAME", parent.getAwsProfile());
+                    options.getConfigMap().put("PROFILE_NAME", parent.getAwsProfile());
                 }
-                credentialsProvider =
-                        credentialsProviderFactory.newCredentialsProvider(CredentialsProviderType.PROFILE, Optional.of(configMap.get("PROFILE_NAME")));
 
-                users = (usersString == null || usersString.isEmpty()) ? null : Arrays.asList(usersString.split(","));
-                inputDir = new File(backupArchive);
+                options.setUsers((usersString == null || usersString.isEmpty()) ? null : Arrays.asList(usersString.split(",")));
+                options.setSourceDir(new File(backupArchive));
+                options.setRestoreDateTime(LocalDateTime.now());
+                options.setnThreads(nThreads);
+                options.setTransferAcceleration(transferAcceleration);
+                options.setEnvironment(environment);
+                options.setDecryptKey(decryptKey);
+                options.setDestination(environment);
+                options.setVerbose(verbose);
+                options.setOverwrite(overwrite);
+                if (options.getBackupArchive().startsWith("s3://")) {
+                    options.setS3Source(true);
+                }
+
             } catch (Exception ex) {
                 ex.printStackTrace();
                 logger.error("Initialization Error.  Ensure you have run crunch config", ex);

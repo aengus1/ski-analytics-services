@@ -6,14 +6,13 @@ import com.amazonaws.services.s3.AmazonS3;
 import com.amazonaws.services.s3.AmazonS3ClientBuilder;
 import com.amazonaws.services.s3.model.*;
 import com.amazonaws.util.IOUtils;
+import org.apache.commons.codec.digest.DigestUtils;
 import org.apache.commons.io.FileUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import ski.crunch.utils.ChecksumFailedException;
 
-import java.io.File;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.io.InputStream;
+import java.io.*;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
@@ -191,6 +190,61 @@ public class S3Facade {
                     new SetBucketAccelerateConfigurationRequest(bucket,
                             new BucketAccelerateConfiguration(
                                     BucketAccelerateStatus.Suspended)));
+        }
+    }
+
+    /**
+     * Copies all contents of a bucket to destination and performs checksum validation*
+     * Handles first level folders only.
+     *
+     * @param bucketName     String name of bucket
+     * @param destinationDir File destination directory
+     * @throws IOException             on io error
+     * @throws ChecksumFailedException on failed checksum validation
+     */
+    public void backupS3BucketToDirectory(String bucketName, File destinationDir) throws IOException, ChecksumFailedException {
+        List<String> objectKeys = listObjects(bucketName);
+
+        for (String objectKey : objectKeys) {
+
+            logger.debug("object key = " + objectKey);
+            File destDir = destinationDir;
+            File destFile = new File(destDir, objectKey);
+            if (objectKey.contains("/")) {
+                String[] keyS = objectKey.split("/");
+                destDir = new File(destinationDir, keyS[0]);
+                if (!destDir.isDirectory()) {
+                    destDir.mkdir();
+                }
+                destFile = new File(destDir, keyS[1]);
+            }
+
+            S3Object o = getS3Client().getObject(bucketName, objectKey);
+
+            try (S3ObjectInputStream s3is = o.getObjectContent()) {
+                try (FileOutputStream fos = new FileOutputStream(destFile)) {
+                    byte[] read_buf = new byte[1024];
+                    int read_len;
+                    while ((read_len = s3is.read(read_buf)) > -1) {
+                        fos.write(read_buf, 0, read_len);
+                    }
+                    fos.flush();
+                }
+            }
+            //checksum validation
+            logger.info("checking md5...");
+            logger.info("file: " + DigestUtils.md5Hex(new FileInputStream(destFile)));
+            logger.info("s3  : " + o.getObjectMetadata().getETag());
+            if (!DigestUtils.md5Hex(new FileInputStream(destFile)).equals(o.getObjectMetadata().getETag())) {
+                throw new ChecksumFailedException("md5 checksum failed for " + objectKey);
+            }
+        }
+    }
+
+    public void backupS3BucketToS3(String sourceBucketName, String destBucketName, String destPrefix) throws IOException {
+        List<String> objectKeys = listObjects(sourceBucketName);
+        for (String objectKey : objectKeys) {
+            getS3Client().copyObject(sourceBucketName, objectKey, destBucketName, destPrefix + "/" + objectKey);
         }
     }
 

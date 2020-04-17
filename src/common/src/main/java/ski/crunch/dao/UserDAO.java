@@ -2,9 +2,11 @@ package ski.crunch.dao;
 
 import com.amazonaws.services.dynamodbv2.datamodeling.DynamoDBMapperConfig;
 import com.amazonaws.services.dynamodbv2.datamodeling.DynamoDBQueryExpression;
+import com.amazonaws.services.dynamodbv2.datamodeling.PaginatedQueryList;
 import com.amazonaws.services.dynamodbv2.model.AttributeValue;
 import ski.crunch.aws.DynamoFacade;
 import ski.crunch.model.UserSettingsItem;
+import ski.crunch.utils.NotFoundException;
 
 import java.util.*;
 
@@ -98,5 +100,36 @@ public class UserDAO extends AbstractDAO {
             logger.error("Error saving password hash", e);
 
         }
+    }
+
+    /**
+     * Fetch User item from dynamodb
+     *
+     * @param user          String user (email or id)*
+     * @return UserSettingsItem result
+     * @throws NotFoundException on user not found
+     */
+    public UserSettingsItem lookupUser(String user) throws NotFoundException {
+        UserSettingsItem userItem;
+
+        if (user.contains("@")) {
+            //query email via gsi
+            final UserSettingsItem userSettingsItem = new UserSettingsItem();
+            userSettingsItem.setEmail(user);
+            final DynamoDBQueryExpression<UserSettingsItem> queryExpression = new DynamoDBQueryExpression<>();
+            queryExpression.setHashKeyValues(userSettingsItem);
+            queryExpression.setIndexName("email-index");
+            queryExpression.setConsistentRead(false);
+
+
+            final PaginatedQueryList<UserSettingsItem> results = super.dynamoDBService.getMapper().query(UserSettingsItem.class, queryExpression);
+            if (results.size() < 1) {
+                throw new NotFoundException("user " + user + " not found via email");
+            }
+            userItem = results.get(0);
+        } else {
+            userItem = super.dynamoDBService.getMapper().load(UserSettingsItem.class, user);
+        }
+        return userItem;
     }
 }
