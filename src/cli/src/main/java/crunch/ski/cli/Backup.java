@@ -40,8 +40,8 @@ public class Backup implements Callable<Integer> {
     @Option(names = {"--users"}, description = "Limit backup to specific user data (email address or user-id, comma separated")
     private String usersString;
 
-    @Option(names = {"-en", "--encryption"}, description = "Encryption type: NONE (default), AES_256 - not yet supported!")
-    private String encryptionType;
+    @Option(names = {"-en", "--encryption"}, description = "Encryption key")
+    private String encryptionKey;
 
     @Option(names = {"-u", "--uncompressed"}, description = "Do not compress the output")
     private boolean uncompressed;
@@ -68,15 +68,14 @@ public class Backup implements Callable<Integer> {
                   boolean transferAcceleration,
                   int nThreads,
                   String users,
-                  String encryptionType,
+                  String encryptionKey,
                   boolean uncompressed) {
         this();
         this.parent = parent;
         this.environment = environment;
         this.transferAcceleration = transferAcceleration;
-        this.nThreads = nThreads;
         this.usersString = users;
-        this.encryptionType = encryptionType;
+        this.encryptionKey = encryptionKey;
         this.uncompressed = uncompressed;
         this.destination = destination;
         this.backupOptions = new BackupOptions();
@@ -118,10 +117,9 @@ public class Backup implements Callable<Integer> {
             backupOptions.setBackupId(UUID.randomUUID().toString());
             backupOptions.setBackupDateTime(LocalDateTime.now());
             backupOptions.setUsers((usersString == null || usersString.isEmpty()) ? null : Arrays.asList(usersString.split(",")));
-            backupOptions.setnThreads(nThreads);
             backupOptions.setTransferAcceleration(transferAcceleration);
             backupOptions.setEnvironment(environment);
-            backupOptions.setEncryptionType(encryptionType);
+            backupOptions.setEncryptionKey(encryptionKey);
             backupOptions.setDestination(destination);
             backupOptions.setUncompressed(uncompressed);
             backupOptions.setVerbose(verbose);

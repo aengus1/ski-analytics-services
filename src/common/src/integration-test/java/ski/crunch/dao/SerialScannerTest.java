@@ -91,7 +91,7 @@ public class SerialScannerTest {
             outputFile.delete();
         }
 
-        dynamoFacade.fullTableBackup(BookItem.class, TABLE_NAME,outputDir,outputFilename);
+        dynamoFacade.fullTableBackup(BookItem.class, TABLE_NAME,outputDir,outputFilename,null);
 
 
             int count = 0;

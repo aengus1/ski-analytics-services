@@ -41,20 +41,53 @@ public class JsonUtils {
 
         try (FileWriter fw = new FileWriter(file, append)) {
             try (BufferedWriter bufferedWriter = new BufferedWriter(fw)) {
-                bufferedWriter.write("[" + System.lineSeparator());
-                String res = resultSet.stream().map(x -> {
-                            try {
-                                return objectMapper.writeValueAsString(x) + System.lineSeparator();
-                            } catch (JsonProcessingException ex) {
-                                ex.printStackTrace();
-                                return "";
-                            }
-                        }
-                ).collect(Collectors.joining(","));
-                bufferedWriter.write(res);
-                bufferedWriter.write("]" + System.lineSeparator());
-                bufferedWriter.flush();
+                writeJsonList(bufferedWriter, resultSet, objectMapper);
             }
         }
+    }
+
+
+//    /**
+//     * Writes list of Jsonable objects to file*
+//     *
+//     * @param file File to write to
+//     * @param <E>  Dynamodbv2 mapper type that implements Jsonable
+//     * @throws IOException on ioerror
+//     */
+//    public static <E> void writeJsonToEncryptedFile(E result, File file, boolean append, String encryptionKey) throws IOException, GeneralSecurityException {
+//        List<E> list = new ArrayList<>();
+//        list.add(result);
+//        writeJsonListToEncryptedFile(list, file, append, encryptionKey);
+//    }
+//
+//    public static <E> void writeJsonListToEncryptedFile(List<E> resultSet, File file, boolean append, String encryptionKey) throws IOException, GeneralSecurityException {
+//        ObjectMapper objectMapper = new ObjectMapper();
+//        objectMapper.configure(SerializationFeature.FAIL_ON_EMPTY_BEANS, false);
+//
+//        try( CryptoFileOutputStream cryptoFileOutputStream = new CryptoFileOutputStream(file, encryptionKey) ) {
+//            writeJsonList();
+//        }
+////        try (FileWriter fw = new FileWriter(file, append)) {
+////            try (EncryptedBufferedWriter bufferedWriter = new EncryptedBufferedWriter(fw, encryptionKey)) {
+////                writeJsonList(bufferedWriter, resultSet, objectMapper);
+////            }
+////        }
+//    }
+
+    private static <E> void writeJsonList(BufferedWriter writer, List<E> result, ObjectMapper objectMapper) throws IOException {
+        writer.write("[" + System.lineSeparator());
+        String res = result.stream().map(x -> {
+                    try {
+                        return objectMapper.writeValueAsString(x) + System.lineSeparator();
+                    } catch (JsonProcessingException ex) {
+                        ex.printStackTrace();
+                        return "";
+                    }
+                }
+        ).collect(Collectors.joining(","));
+        writer.write( res );
+        writer.write( "]" + System.lineSeparator());
+        writer.flush();
+
     }
 }

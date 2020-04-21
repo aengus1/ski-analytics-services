@@ -36,7 +36,7 @@ public class Metadata {
     public Metadata(String backupId, String timestamp, String environment, BackupType backupType, String user,
                     String host,
                     String profile, String projectName, String dataRegion,
-                    boolean transferAcceleration, int threads, String destination, DestinationType destinationType,
+                    boolean transferAcceleration, String destination, DestinationType destinationType,
                     List<String> exportUsers, EncryptionType encryptionType,
                     CompressionType compressionType) {
         this.backupId = backupId;
@@ -49,7 +49,6 @@ public class Metadata {
         this.projectName = projectName;
         this.dataRegion = dataRegion;
         this.transferAcceleration = transferAcceleration;
-        this.threads = threads;
         this.destination = destination;
         this.destinationType = destinationType;
         this.exportUsers = exportUsers;

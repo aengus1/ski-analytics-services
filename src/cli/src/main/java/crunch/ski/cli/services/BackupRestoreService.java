@@ -1,6 +1,8 @@
 package crunch.ski.cli.services;
 
 import crunch.ski.cli.model.*;
+import ski.crunch.aws.DynamoFacade;
+import ski.crunch.aws.S3Facade;
 
 import java.net.UnknownHostException;
 import java.time.format.DateTimeFormatter;
@@ -92,7 +94,6 @@ public interface BackupRestoreService {
                 .setDataRegion(options.getConfigMap().get("DATA_REGION"))
                 .setBackupId(options.getBackupId())
                 .setBackupType(options.getUsers() == null ? BackupType.FULL : BackupType.USER)
-                .setThreads(options.getnThreads())
                 .setTransferAcceleration(options.isTransferAcceleration())
                 .setTimestamp(options.getBackupDateTime().format(ISO_LOCAL_DATE_TIME_NO_NANO))
                 .setEnvironment(options.getEnvironment())
@@ -106,10 +107,14 @@ public interface BackupRestoreService {
         }
         metadataBuilder.setDestination(options.getDestination())
                 .setDestinationType(options.getDestination().startsWith("s3://") ? DestinationType.S3 : DestinationType.LOCAL)
-                .setEncryptionType(options.getEncryptionType() == null || options.getEncryptionType().equalsIgnoreCase("NONE")
+                .setEncryptionType(options.getEncryptionKey() == null || options.getEncryptionKey().equalsIgnoreCase("NONE")
                         ? EncryptionType.NONE : EncryptionType.AES_256)
                 .setCompressionType(options.isUncompressed() ? CompressionType.NONE :
                         CompressionType.GZIP);
         return metadataBuilder;
     }
+
+    S3Facade getS3();
+    DynamoFacade getDynamo();
+
 }

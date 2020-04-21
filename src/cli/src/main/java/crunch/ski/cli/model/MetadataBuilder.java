@@ -13,7 +13,6 @@ public class MetadataBuilder {
     private String projectName;
     private String dataRegion;
     private boolean transferAcceleration;
-    private int threads;
     private String destination;
     private DestinationType destinationType;
     private List<String> exportUsers;
@@ -70,10 +69,6 @@ public class MetadataBuilder {
         return this;
     }
 
-    public MetadataBuilder setThreads(int threads) {
-        this.threads = threads;
-        return this;
-    }
 
     public MetadataBuilder setDestination(String destination) {
         this.destination = destination;
@@ -104,6 +99,6 @@ public class MetadataBuilder {
     public Metadata createMetadata() {
 
         return new Metadata(backupId, timestamp, environment, backupType, user, host, profile, projectName, dataRegion,
-                transferAcceleration, threads, destination, destinationType, exportUsers, encryptionType, compressionType);
+                transferAcceleration, destination, destinationType, exportUsers, encryptionType, compressionType);
     }
 }

@@ -11,8 +11,10 @@ import org.apache.commons.io.FileUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import ski.crunch.utils.ChecksumFailedException;
+import ski.crunch.utils.CryptoFileOutputStream;
 
 import java.io.*;
+import java.security.GeneralSecurityException;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
@@ -88,11 +90,11 @@ public class S3Facade {
     public void saveObjectToTmpDir(String bucket, String key) throws IOException {
         setTransferAcceleration(bucket);
         File dest;
-        if(key.contains("/")){
+        if (key.contains("/")) {
             String[] keyS = key.split("/");
-            dest = new File(System.getProperty("java.io.tmpdir")+keyS[0]);
+            dest = new File(System.getProperty("java.io.tmpdir") + keyS[0]);
             key = keyS[1];
-        }else {
+        } else {
             dest = new File(System.getProperty("java.io.tmpdir"));
         }
         S3Object o = this.s3Client.getObject(bucket, key);
@@ -193,6 +195,7 @@ public class S3Facade {
         }
     }
 
+
     /**
      * Copies all contents of a bucket to destination and performs checksum validation*
      * Handles first level folders only.
@@ -202,12 +205,13 @@ public class S3Facade {
      * @throws IOException             on io error
      * @throws ChecksumFailedException on failed checksum validation
      */
-    public void backupS3BucketToDirectory(String bucketName, File destinationDir) throws IOException, ChecksumFailedException {
+    public void backupS3BucketToDirectory(String bucketName, File destinationDir, boolean verbose, String encryptionKey) throws IOException, ChecksumFailedException, GeneralSecurityException {
         List<String> objectKeys = listObjects(bucketName);
 
         for (String objectKey : objectKeys) {
-
-            logger.debug("object key = " + objectKey);
+            if(verbose) {
+                logger.info("backing up: " + objectKey);
+            }
             File destDir = destinationDir;
             File destFile = new File(destDir, objectKey);
             if (objectKey.contains("/")) {
@@ -221,39 +225,80 @@ public class S3Facade {
 
             S3Object o = getS3Client().getObject(bucketName, objectKey);
 
-            try (S3ObjectInputStream s3is = o.getObjectContent()) {
-                try (FileOutputStream fos = new FileOutputStream(destFile)) {
-                    byte[] read_buf = new byte[1024];
-                    int read_len;
-                    while ((read_len = s3is.read(read_buf)) > -1) {
-                        fos.write(read_buf, 0, read_len);
-                    }
-                    fos.flush();
-                }
+            if (encryptionKey == null) {
+                readToFile(bucketName, objectKey, destFile);
+            } else {
+                readToEncryptedFile(bucketName, objectKey, destFile, encryptionKey);
             }
-            //checksum validation
-            logger.info("checking md5...");
-            logger.info("file: " + DigestUtils.md5Hex(new FileInputStream(destFile)));
-            logger.info("s3  : " + o.getObjectMetadata().getETag());
-            if (!DigestUtils.md5Hex(new FileInputStream(destFile)).equals(o.getObjectMetadata().getETag())) {
+
+
+            //checksum validation (non encrypted only)
+            if (verbose) {
+                logger.info("checking md5...");
+                logger.info("file: " + DigestUtils.md5Hex(new FileInputStream(destFile)));
+                logger.info("s3  : " + o.getObjectMetadata().getETag());
+            }
+            if (encryptionKey == null && !DigestUtils.md5Hex(new FileInputStream(destFile)).equals(o.getObjectMetadata().getETag())) {
                 throw new ChecksumFailedException("md5 checksum failed for " + objectKey);
             }
         }
     }
 
-    public void backupS3BucketToS3(String sourceBucketName, String destBucketName, String destPrefix) throws IOException {
+    public void backupS3BucketToS3(String sourceBucketName, String destBucketName, String destPrefix, String encryptionKey) throws IOException, GeneralSecurityException {
         List<String> objectKeys = listObjects(sourceBucketName);
-        for (String objectKey : objectKeys) {
-            getS3Client().copyObject(sourceBucketName, objectKey, destBucketName, destPrefix + "/" + objectKey);
+        if (encryptionKey == null) {
+            for (String objectKey : objectKeys) {
+                getS3Client().copyObject(sourceBucketName, objectKey, destBucketName, destPrefix + "/" + objectKey);
+            }
+        } else {
+            File tempFile = new File(System.getProperty("java.io.tmpdir") + "/" + destPrefix);
+            tempFile.mkdir();
+            for (String objectKey : objectKeys) {
+                S3Object object = getS3Client().getObject(sourceBucketName, objectKey);
+                File dest = new File(tempFile, destPrefix);
+                readToEncryptedFile(sourceBucketName, objectKey, dest, encryptionKey);
+                putObject(destBucketName, destPrefix+"/" + objectKey, dest);
+            }
         }
     }
 
-    public String getRegion(){
+    public String getRegion() {
         return this.region;
     }
 
-   public boolean getTransferAcceleration() {
+    public boolean getTransferAcceleration() {
         return transferAcceleration;
     }
+
+    private void readToFile(String bucket, String key, File file) throws IOException {
+        S3Object o = getS3Client().getObject(bucket, key);
+
+        try (S3ObjectInputStream s3is = o.getObjectContent()) {
+            try (FileOutputStream fos = new FileOutputStream(file)) {
+                byte[] read_buf = new byte[1024];
+                int read_len;
+                while ((read_len = s3is.read(read_buf)) > -1) {
+                    fos.write(read_buf, 0, read_len);
+                }
+                fos.flush();
+            }
+        }
+    }
+
+    private void readToEncryptedFile(String bucket, String key, File file, String secret) throws IOException, GeneralSecurityException {
+        S3Object o = getS3Client().getObject(bucket, key);
+
+        try (S3ObjectInputStream s3is = o.getObjectContent()) {
+            try (CryptoFileOutputStream fos = new CryptoFileOutputStream(file, secret)) {
+                byte[] read_buf = new byte[1024];
+                int read_len;
+                while ((read_len = s3is.read(read_buf)) > -1) {
+                    fos.write(read_buf, 0, read_len);
+                }
+                fos.flush();
+            }
+        }
+    }
+
 
 }

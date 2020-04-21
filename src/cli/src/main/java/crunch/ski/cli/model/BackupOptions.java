@@ -17,9 +17,7 @@ public class BackupOptions {
     private String destBucket;
     private String destKey;
     private boolean transferAcceleration = false;
-    private int nThreads = 2;
-    private String usersString;
-    private String encryptionType;
+    private String encryptionKey;
     private boolean uncompressed;
     private String environment;
     private String destination;
@@ -34,6 +32,13 @@ public class BackupOptions {
     }
 
 
+    /**
+     * ConfigMap is a map of CLI configuration options.
+     * DATA_REGION the AWS region in which the data layer being backed up resides
+     * PROJECT_NAME the configured name of the project. used to determine AWS resource names
+     * PROFILE_NAME the name of the AWS profile to use
+     * @return Map<String, String> config
+     */
     public Map<String, String> getConfigMap() {
         return configMap;
     }
@@ -42,6 +47,9 @@ public class BackupOptions {
         this.configMap = configMap;
     }
 
+    /**
+     * @return the UUID of this backup
+     */
     public String getBackupId() {
         return backupId;
     }
@@ -50,6 +58,10 @@ public class BackupOptions {
         this.backupId = backupId;
     }
 
+    /**
+     *
+     * @return  boolean true if the configured destination is an S3 bucket
+     */
     public boolean isS3Destination() {
         return isS3Destination;
     }
@@ -58,6 +70,10 @@ public class BackupOptions {
         isS3Destination = s3Destination;
     }
 
+    /**
+     *
+     * @return LocalDateTime the timestamp this backup occurred
+     */
     public LocalDateTime getBackupDateTime() {
         return backupDateTime;
     }
@@ -66,6 +82,11 @@ public class BackupOptions {
         this.backupDateTime = backupDateTime;
     }
 
+    /**
+     * If a list of users is present then only data from these users will be backed up.  Results in a different
+     * backup archive format than a full backup
+     * @return List<String> user id's or email addresses
+     */
     public List<String> getUsers() {
         return users;
     }
@@ -74,6 +95,10 @@ public class BackupOptions {
         this.users = users;
     }
 
+    /**
+     * The output destination when backing up to local file system
+     * @return File output destination
+     */
     public File getDestDir() {
         return destDir;
     }
@@ -82,6 +107,10 @@ public class BackupOptions {
         this.destDir = destDir;
     }
 
+    /**
+     *  The output destination bucket when backing up to S3
+     * @return String bucket name
+     */
     public String getDestBucket() {
         return destBucket;
     }
@@ -90,6 +119,10 @@ public class BackupOptions {
         this.destBucket = destBucket;
     }
 
+    /**
+     * The output destination key when backing up to S3
+     * @return String destinationKey
+     */
     public String getDestKey() {
         return destKey;
     }
@@ -98,6 +131,10 @@ public class BackupOptions {
         this.destKey = destKey;
     }
 
+    /**
+     * Use S3 transfer acceleration
+     * @return boolean S3TransferAcceleration
+     */
     public boolean isTransferAcceleration() {
         return transferAcceleration;
     }
@@ -106,30 +143,22 @@ public class BackupOptions {
         this.transferAcceleration = transferAcceleration;
     }
 
-    public int getnThreads() {
-        return nThreads;
+    /**
+     * Encryption key used in backup.  (optional)
+     * @return String encryption key.  Leave null for unencrypted backup
+     */
+    public String getEncryptionKey() {
+        return encryptionKey;
     }
 
-    public void setnThreads(int nThreads) {
-        this.nThreads = nThreads;
+    public void setEncryptionKey(String encryptionKey) {
+        this.encryptionKey = encryptionKey;
     }
 
-    public String getUsersString() {
-        return usersString;
-    }
-
-    public void setUsersString(String usersString) {
-        this.usersString = usersString;
-    }
-
-    public String getEncryptionType() {
-        return encryptionType;
-    }
-
-    public void setEncryptionType(String encryptionType) {
-        this.encryptionType = encryptionType;
-    }
-
+    /**
+     * If this flag is set the backup will not be compressed
+     * @return boolean isUncompressed
+     */
     public boolean isUncompressed() {
         return uncompressed;
     }
@@ -138,6 +167,10 @@ public class BackupOptions {
         this.uncompressed = uncompressed;
     }
 
+    /**
+     * The name of the AWS environment to backup
+     * @return
+     */
     public String getEnvironment() {
         return environment;
     }
@@ -146,6 +179,10 @@ public class BackupOptions {
         this.environment = environment;
     }
 
+    /**
+     * The raw destination string (file path or S3 path)
+     * @return String destination
+     */
     public String getDestination() {
         return destination;
     }
@@ -154,6 +191,10 @@ public class BackupOptions {
         this.destination = destination;
     }
 
+    /**
+     * timestamp (ms) of backup start time
+     * @return long startTs
+     */
     public long getStartTs() {
         return startTs;
     }
@@ -162,6 +203,10 @@ public class BackupOptions {
         this.startTs = startTs;
     }
 
+    /**
+     * timestamp (ms) of backup end time
+     * @return long endTs
+     */
     public long getEndTs() {
         return endTs;
     }
@@ -170,6 +215,10 @@ public class BackupOptions {
         this.endTs = endTs;
     }
 
+    /**
+     * Verbose output
+     * @return boolean isVerbose
+     */
     public boolean isVerbose() {
         return this.verbose;
     }

@@ -1,0 +1,182 @@
+package crunch.ski.cli.services;
+
+import com.amazonaws.auth.AWSCredentialsProvider;
+import crunch.ski.cli.model.BackupOptions;
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.TestInstance;
+import org.mockito.ArgumentCaptor;
+import org.mockito.Captor;
+import org.mockito.Mock;
+import org.mockito.MockitoAnnotations;
+import ski.crunch.aws.DynamoFacade;
+import ski.crunch.aws.S3Facade;
+import ski.crunch.dao.ActivityDAO;
+import ski.crunch.dao.UserDAO;
+import ski.crunch.model.ActivityItem;
+import ski.crunch.model.UserSettingsItem;
+import ski.crunch.utils.ChecksumFailedException;
+import ski.crunch.utils.FileUtils;
+
+import java.io.File;
+import java.io.IOException;
+import java.security.GeneralSecurityException;
+import java.time.LocalDateTime;
+import java.util.Arrays;
+import java.util.HashMap;
+import java.util.List;
+
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.mockito.Mockito.*;
+
+@TestInstance(TestInstance.Lifecycle.PER_CLASS)
+public class LocalBackupServiceTest {
+
+    private BackupOptions backupOptions;
+
+    private LocalBackupService backupService;
+
+    @Mock
+    AWSCredentialsProvider credentialsProvider;
+
+    @Mock
+    S3Facade s3Facade;
+
+    @Mock
+    DynamoFacade dynamoFacade;
+
+    @Mock
+    UserDAO userDAO;
+
+    @Mock
+    ActivityDAO activityDAO;
+
+    @Captor
+    ArgumentCaptor<String> keyCaptor;
+
+    @Captor
+    ArgumentCaptor<Boolean> boolCaptor;
+
+    @Captor
+    ArgumentCaptor<File> fileCaptor;
+
+    @Captor
+    ArgumentCaptor<Class> classCaptor;
+
+    @BeforeEach
+    public void setup() {
+
+        // set options
+        backupOptions = new BackupOptions();
+        HashMap<String, String> config = new HashMap<>();
+        config.put("DATA_REGION", "ca-central-1");
+        config.put("PROJECT_NAME", "crunch-ski");
+        config.put("PROFILE_NAME", "default");
+        backupOptions.setConfigMap(config);
+        backupOptions.setEnvironment("dev");
+        backupOptions.setBackupId("12345");
+        backupOptions.setUsers(null);
+        backupOptions.setVerbose(false);
+        backupOptions.setUncompressed(true);
+        backupOptions.setEncryptionKey(null);
+        backupOptions.setDestination(System.getProperty("java.io.tmpdir")+"/localbackuptest");
+        backupOptions.setBackupDateTime(LocalDateTime.now());
+
+        MockitoAnnotations.initMocks(this);
+        backupService = new LocalBackupService(credentialsProvider,  dynamoFacade, s3Facade, userDAO, activityDAO, backupOptions);
+    }
+
+    @Test
+    public void testCalcBucketName() {
+        String bucketName = backupService.calcBucketName("Activity", backupOptions);
+        assertEquals("dev-Activity-crunch-ski", bucketName);
+    }
+
+    @Test
+    public void testFullLocalBackupCallsS3FacadeWithCorrectArgs() throws IOException, ChecksumFailedException, GeneralSecurityException {
+
+        File destRaw = new File(System.getProperty("java.io.tmpdir")+"/localbackuptest/dev-crunch-ski-"
+                + BackupRestoreService.ISO_LOCAL_DATE_TIME_FILE.format(backupOptions.getBackupDateTime())
+                +"/raw_activities");
+        File destProc = new File(System.getProperty("java.io.tmpdir")+"/localbackuptest/dev-crunch-ski-"
+                + BackupRestoreService.ISO_LOCAL_DATE_TIME_FILE.format(backupOptions.getBackupDateTime())
+                +"/processed_activities");
+
+        try {
+            backupService.mkDestDir();
+            backupService.fullLocalBackup();
+        } catch ( Exception ex) {
+            ex.printStackTrace();
+        }
+
+        verify(s3Facade, times(2)).backupS3BucketToDirectory(keyCaptor.capture(), fileCaptor.capture(), boolCaptor.capture(), keyCaptor.capture());
+
+        List<String> strings = keyCaptor.getAllValues();
+        List<File> files = fileCaptor.getAllValues();
+        List<Boolean> booleans = boolCaptor.getAllValues();
+
+        assertEquals(4, strings.size());
+        assertEquals(Arrays.asList("dev-activity-crunch-ski", null, "dev-raw-activity-crunch-ski", null), strings);
+
+        assertEquals(2, files.size());
+        assertEquals(Arrays.asList(destProc, destRaw), files);
+
+        assertEquals(Arrays.asList(false, false), booleans);
+
+        }
+
+
+    @Test
+    public void testFullLocalBackupCallsDynamoFacadeWithCorrectArgs() throws IOException, ChecksumFailedException, GeneralSecurityException {
+
+        File dest = new File(System.getProperty("java.io.tmpdir")+"/localbackuptest/dev-crunch-ski-"
+                + BackupRestoreService.ISO_LOCAL_DATE_TIME_FILE.format(backupOptions.getBackupDateTime())
+        );
+
+        try {
+            backupService.mkDestDir();
+            backupService.fullLocalBackup();
+        } catch ( Exception ex) {
+            ex.printStackTrace();
+        }
+
+        verify(dynamoFacade, times(2)).fullTableBackup(classCaptor.capture(), keyCaptor.capture(), fileCaptor.capture(), keyCaptor.capture(), keyCaptor.capture());
+
+
+        List<String> strings = keyCaptor.getAllValues();
+        List<File> files = fileCaptor.getAllValues();
+        List<Class> classes = classCaptor.getAllValues();
+
+        assertEquals(Arrays.asList(UserSettingsItem.class, ActivityItem.class), classes);
+
+        assertEquals(Arrays.asList(dest, dest), files);
+
+        assertEquals(Arrays.asList("dev-crunch-ski-userTable", "users.json", null, "dev-crunch-ski-Activity", "activities.json", null), strings);
+
+    }
+
+    @Test
+    public void testUserBackupCalledInLieuOfFullBackupWhenUserStringIsSet() throws IOException{
+
+        UserSettingsItem userSettingsItem = new UserSettingsItem();
+        userSettingsItem.setEmail("aengusmccullough@hotmail.com");
+        userSettingsItem.setId("123");
+        when(userDAO.lookupUser("aengusmccullough@hotmail.com")).thenReturn(userSettingsItem);
+
+        backupOptions.setUsers(Arrays.asList("aengusmccullough@hotmail.com"));
+        backupService.apply();
+
+        // ab ab -> can't call verify on a not mock
+        //verify(backupService, times(1)).userDataBackup("aengusmccullough@hotmail.com",  backupOptions.getDestDir());
+    }
+
+    @AfterEach
+    public void tearDown() {
+        try {
+            FileUtils.deleteDirectory(backupOptions.getDestDir());
+        }catch(Exception ex){
+            ex.printStackTrace();
+        }
+    }
+}

@@ -11,12 +11,15 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import ski.crunch.dao.SerialScanner;
+import ski.crunch.utils.CryptoFileOutputStream;
 import ski.crunch.utils.Jsonable;
 
 import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.nio.charset.StandardCharsets;
+import java.security.GeneralSecurityException;
 import java.util.function.Function;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
@@ -100,15 +103,41 @@ public class DynamoFacade {
      * @param fileName    String name of output file
      * @throws IOException on ioerror
      */
-    public void fullTableBackup(Class mapperClass, String tableName, File destination, String fileName) throws IOException {
+    public void fullTableBackup(Class mapperClass, String tableName, File destination, String fileName, String encryptionKey) throws IOException, GeneralSecurityException {
 
         // stream all results into a single temporary file
         File output = new File(destination, fileName);
         //File tempOutput = new File(System.getProperty("java.io.tmpdir"), fileName+"tmp");
         Function<Stream<Jsonable>, Void> fileWriter = items -> {
-            try (FileWriter fw = new FileWriter(output, true)) {
-                try (BufferedWriter bufferedWriter = new BufferedWriter(fw)) {
-                    bufferedWriter.write("[" + System.lineSeparator());
+                try (FileWriter fw = new FileWriter(output, true)) {
+                    try (BufferedWriter bufferedWriter = new BufferedWriter(fw)) {
+                        bufferedWriter.write("[" + System.lineSeparator());
+                        String res = items.map(x -> {
+                            try {
+                                return x.toJsonString() + System.lineSeparator();
+                            } catch (JsonProcessingException e) {
+                                e.printStackTrace();
+                                return null;
+                            }
+                        }).collect(Collectors.joining(","));
+
+                        bufferedWriter.write(res);
+                        bufferedWriter.write(System.lineSeparator() + "]");
+                        bufferedWriter.flush();
+                    }
+                } catch (IOException ex) {
+                    logger.error("IO Exception", ex);
+                    ex.printStackTrace();
+                } catch (Exception ex) {
+                    ex.printStackTrace();
+                } finally {
+                    return null;
+                }
+        };
+
+        Function<Stream<Jsonable>, Void> encryptedFileWriter = items -> {
+            try (CryptoFileOutputStream fw = new CryptoFileOutputStream(output, encryptionKey )) {
+                    fw.write( ("[" + System.lineSeparator()).getBytes(StandardCharsets.UTF_8));
                     String res = items.map(x -> {
                         try {
                             return x.toJsonString() + System.lineSeparator();
@@ -117,10 +146,11 @@ public class DynamoFacade {
                             return null;
                         }
                     }).collect(Collectors.joining(","));
-                    bufferedWriter.write(res);
-                    bufferedWriter.write(System.lineSeparator() + "]");
-                    bufferedWriter.flush();
-                }
+
+                    fw.write(res.getBytes(StandardCharsets.UTF_8));
+                    fw.write( (System.lineSeparator() + "]").getBytes(StandardCharsets.UTF_8));
+                    fw.flush();
+
             } catch (IOException ex) {
                 logger.error("IO Exception", ex);
                 ex.printStackTrace();
@@ -130,7 +160,8 @@ public class DynamoFacade {
                 return null;
             }
         };
-        SerialScanner.scan(this, fileWriter, tableName,  mapperClass);
+
+        SerialScanner.scan(this, encryptionKey == null ? fileWriter : encryptedFileWriter, tableName,  mapperClass);
     }
 
 

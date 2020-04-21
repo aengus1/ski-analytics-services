@@ -44,6 +44,19 @@ public class FileUtils {
         }
     }
 
+    public static String readFileToString(File file) throws IOException {
+        StringBuilder stringBuilder = new StringBuilder();
+        try(FileReader fileReader = new FileReader(file)) {
+            try( BufferedReader bufferedReader = new BufferedReader(fileReader)) {
+                String line;
+                while (( line = bufferedReader.readLine()) != null ) {
+                    stringBuilder.append(line);
+                }
+            }
+        }
+        return stringBuilder.toString();
+    }
+
     public static void deleteIfExists(File file) {
         if (file.exists()) {
             file.delete();

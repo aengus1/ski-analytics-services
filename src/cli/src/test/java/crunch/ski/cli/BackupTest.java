@@ -13,6 +13,7 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Optional;
 
+import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 
@@ -50,8 +51,8 @@ public class BackupTest {
 
         verify(credentialsProviderFactory, times(1))
                 .newCredentialsProvider(CredentialsProviderType.PROFILE, Optional.of(PROFILE_NAME));
-        assertFalse( backup.getS3Backup().getS3Facade().getTransferAcceleration());
-        assertEquals(DATA_REGION, backup.getS3Backup().getS3Facade().getRegion());
+        assertFalse( backup.getService().getS3().getTransferAcceleration());
+        assertEquals(DATA_REGION, backup.getService().getS3().getRegion());
     }
 
     @Test
@@ -71,9 +72,9 @@ public class BackupTest {
 
         verify(credentialsProviderFactory, times(1))
                 .newCredentialsProvider(CredentialsProviderType.PROFILE, Optional.of("newProfile"));
-        assertFalse(backup.getOptions().getTransferAcceleration());
-        assertTrue(backup.getService().calcBucketName("my-bucket").endsWith("test-test-project"));
-        assertEquals("newRegion", backup.getS3Backup().getS3Facade().getRegion());
+        assertFalse(backup.getService().getS3().getTransferAcceleration());
+        assertTrue(backup.getService().calcBucketName("my-bucket", backup.getOptions()).endsWith("test-test-project"));
+        assertEquals("newRegion", backup.getService().getS3().getRegion());
     }
 
 }

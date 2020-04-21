@@ -23,6 +23,7 @@ import ski.crunch.utils.JsonUtils;
 
 import java.io.File;
 import java.io.IOException;
+import java.security.GeneralSecurityException;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
 
@@ -42,10 +43,10 @@ public class S3BackupService implements BackupRestoreService {
     public S3BackupService(BackupOptions options) {
         this.options = options;
         this.credentialsProvider = CredentialsProviderFactory.getDefaultCredentialsProvider();
-        this.userTableName  = calcTableName(USER_TABLE_IDENTIFIER, options);
-        this.activityTableName  = calcTableName(ACTIVITY_TABLE_IDENTIFIER, options);
+        this.userTableName = calcTableName(USER_TABLE_IDENTIFIER, options);
+        this.activityTableName = calcTableName(ACTIVITY_TABLE_IDENTIFIER, options);
         this.s3Facade = new S3Facade(options.getConfigMap().get("DATA_REGION"), credentialsProvider, options.isTransferAcceleration());
-        this.dynamoFacade = new DynamoFacade(options.getConfigMap().get("DATA_REGION"),userTableName, credentialsProvider);
+        this.dynamoFacade = new DynamoFacade(options.getConfigMap().get("DATA_REGION"), userTableName, credentialsProvider);
         this.userDAO = new UserDAO(dynamoFacade, userTableName);
         this.activityDAO = new ActivityDAO(dynamoFacade, activityTableName);
         this.metrics = new Metrics();
@@ -86,7 +87,14 @@ public class S3BackupService implements BackupRestoreService {
             FileUtils.deleteDirectory(new File(System.getProperty("java.io.tmpdir"), options.getBackupId()));
 
         } catch (IOException ex) {
-            logger.error("Error occurred attempting backup.  Exiting");
+            logger.error("IO Error occurred attempting backup.  Exiting");
+            if (options.isVerbose()) {
+                ex.printStackTrace();
+            }
+            return 1;
+
+        } catch (GeneralSecurityException ex) {
+            logger.error("Security exception occurred attempting backup.  Exiting");
             if (options.isVerbose()) {
                 ex.printStackTrace();
             }
@@ -102,10 +110,11 @@ public class S3BackupService implements BackupRestoreService {
         }
 
     }
+
     private void userCloudBackup(String user) throws IOException {
 
 
-        File tempDir = new File(System.getProperty("java.io.tmpdir") , options.getBackupId());
+        File tempDir = new File(System.getProperty("java.io.tmpdir"), options.getBackupId());
         tempDir.mkdir();
 
         UserSettingsItem userSettingsItem = userDAO.lookupUser(user);
@@ -114,7 +123,7 @@ public class S3BackupService implements BackupRestoreService {
         JsonUtils.writeJsonToFile(userSettingsItem, new File(userDir, USER_FILENAME), false);
 
         List<ActivityItem> activityItems = activityDAO.getActivitiesByUser(userSettingsItem.getId());
-        JsonUtils.writeJsonListToFile(activityItems, new File(userDir,ACTIVITY_FILENAME), false);
+        JsonUtils.writeJsonListToFile(activityItems, new File(userDir, ACTIVITY_FILENAME), false);
 
         File rawDir = new File(userDir, RAW_ACTIVITY_FOLDER);
         File procDir = new File(userDir, PROCESSED_ACTIVITY_FOLDER);
@@ -126,7 +135,7 @@ public class S3BackupService implements BackupRestoreService {
                 try {
                     rawActivityS3Link.getTransferManager().copy(RAW_ACTIVITY_BUCKET, rawActivityS3Link.getKey(),
                             options.getDestBucket(),
-                            userSettingsItem.getId() + "/" + RAW_ACTIVITY_FOLDER + "/" +options.getDestKey());
+                            userSettingsItem.getId() + "/" + RAW_ACTIVITY_FOLDER + "/" + options.getDestKey());
                 } catch (Exception ex) {
                     logger.warn("error downloading raw activity {} from {}", rawActivityS3Link.getKey(), rawActivityS3Link.getBucketName());
                 }
@@ -136,32 +145,32 @@ public class S3BackupService implements BackupRestoreService {
                 try {
                     processedActivityS3Link.getTransferManager().copy(PROCESSED_ACTIVITY_FOLDER, processedActivityS3Link.getKey(),
                             options.getDestBucket(),
-                            userSettingsItem.getId() + "/" + PROCESSED_ACTIVITY_FOLDER + "/" +options.getDestKey());
+                            userSettingsItem.getId() + "/" + PROCESSED_ACTIVITY_FOLDER + "/" + options.getDestKey());
                 } catch (Exception ex) {
                     logger.warn("error downloading processed activity {} from {}", rawActivityS3Link.getKey(), rawActivityS3Link.getBucketName());
                 }
             }
         }
-        s3Facade.getS3Client().putObject(options.getDestBucket(), options.getDestKey() + "/" +userSettingsItem.getId() +"/" + USER_FILENAME, new File(userDir, USER_FILENAME));
-        s3Facade.getS3Client().putObject(options.getDestBucket(), options.getDestKey() + "/" +userSettingsItem.getId() +"/" + ACTIVITY_FILENAME, new File(userDir, ACTIVITY_FILENAME));
+        s3Facade.getS3Client().putObject(options.getDestBucket(), options.getDestKey() + "/" + userSettingsItem.getId() + "/" + USER_FILENAME, new File(userDir, USER_FILENAME));
+        s3Facade.getS3Client().putObject(options.getDestBucket(), options.getDestKey() + "/" + userSettingsItem.getId() + "/" + ACTIVITY_FILENAME, new File(userDir, ACTIVITY_FILENAME));
 
 
     }
 
-    private void fullCloudBackup(MetadataBuilder metadataBuilder) throws IOException {
+    private void fullCloudBackup(MetadataBuilder metadataBuilder) throws IOException, GeneralSecurityException {
         System.out.println("backing up to " + options.getDestBucket() + " key: " + options.getDestKey() + "/" + PROCESSED_ACTIVITY_FOLDER);
 
         // transfer data from S3 buckets
-        s3Facade.backupS3BucketToS3(calcBucketName(ACTIVITY_BUCKET, options), options.getDestBucket(), options.getDestKey() + "/" + PROCESSED_ACTIVITY_FOLDER);
-        s3Facade.backupS3BucketToS3(calcBucketName(RAW_ACTIVITY_BUCKET, options), options.getDestBucket(), options.getDestKey() + "/" + RAW_ACTIVITY_FOLDER);
+        s3Facade.backupS3BucketToS3(calcBucketName(ACTIVITY_BUCKET, options), options.getDestBucket(), options.getDestKey() + "/" + PROCESSED_ACTIVITY_FOLDER, options.getEncryptionKey());
+        s3Facade.backupS3BucketToS3(calcBucketName(RAW_ACTIVITY_BUCKET, options), options.getDestBucket(), options.getDestKey() + "/" + RAW_ACTIVITY_FOLDER, options.getEncryptionKey());
 
         // write dynamodb contents to file and then push to S3
         File tempFile = new File(System.getProperty("java.io.tmpdir"), options.getBackupId());
         tempFile.mkdir();
         dynamoFacade.updateTableName(userTableName);
-        dynamoFacade.fullTableBackup(UserSettingsItem.class, userTableName, tempFile, USER_FILENAME);
+        dynamoFacade.fullTableBackup(UserSettingsItem.class, userTableName, tempFile, USER_FILENAME, options.getEncryptionKey());
         dynamoFacade.updateTableName(activityTableName);
-        dynamoFacade.fullTableBackup(ActivityItem.class,activityTableName, tempFile, ACTIVITY_FILENAME);
+        dynamoFacade.fullTableBackup(ActivityItem.class, activityTableName, tempFile, ACTIVITY_FILENAME, options.getEncryptionKey());
 
         s3Facade.getS3Client().putObject(options.getDestBucket(), options.getDestKey() + "/" + USER_FILENAME, new File(tempFile, USER_FILENAME));
         s3Facade.getS3Client().putObject(options.getDestBucket(), options.getDestKey() + "/" + ACTIVITY_FILENAME, new File(tempFile, ACTIVITY_FILENAME));
@@ -192,7 +201,7 @@ public class S3BackupService implements BackupRestoreService {
         //write metadata and push to S3
         Metadata metadata = metadataBuilder.createMetadata();
         String jsonMetadata = Jackson.toJsonPrettyString(metadata);
-        File metadataFile = new File(System.getProperty("java.io.tmpdir")+"/"+options.getBackupId(), METADATA_FILENAME);
+        File metadataFile = new File(System.getProperty("java.io.tmpdir") + "/" + options.getBackupId(), METADATA_FILENAME);
         FileUtils.writeStringToFile(jsonMetadata, new File(metadataFile, METADATA_FILENAME));
         s3Facade.getS3Client().putObject(options.getDestBucket(), options.getDestKey() + "/" + METADATA_FILENAME, metadataFile);
     }
@@ -212,5 +221,13 @@ public class S3BackupService implements BackupRestoreService {
         options.setDestKey(s3Dest.substring(s3Dest.indexOf("/") + 1) + "/" + destPath);
         options.setDestDir(new File(System.getProperty("java.io.tmpdir"), destPath));
         options.getDestDir().mkdir();
+    }
+
+    public S3Facade getS3() {
+        return s3Facade;
+    }
+
+    public DynamoFacade getDynamo() {
+        return dynamoFacade;
     }
 }

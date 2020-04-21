@@ -87,4 +87,12 @@ public class LocalRestoreService implements BackupRestoreService {
             }
         }
     }
+
+    public S3Facade getS3() {
+        return s3Facade;
+    }
+
+    public DynamoFacade getDynamo() {
+        return dynamoFacade;
+    }
 }
