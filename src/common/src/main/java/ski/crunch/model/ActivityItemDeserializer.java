@@ -14,9 +14,9 @@ import org.slf4j.LoggerFactory;
 import java.io.IOException;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
-import java.util.HashSet;
-import java.util.Set;
+import java.util.List;
 
 public class ActivityItemDeserializer extends StdDeserializer<ActivityItem> {
 
@@ -152,7 +152,7 @@ public class ActivityItemDeserializer extends StdDeserializer<ActivityItem> {
                 activityItem.setNotes(notes);
             }
             if (node.get("tags") != null) {
-                final Set<String> tags = new HashSet<>();
+                final List<String> tags = new ArrayList<>();
                 ArrayNode arrayNode = (ArrayNode) node.get("tags");
                 arrayNode.iterator().forEachRemaining(t -> {
                     tags.add(t.textValue());
@@ -177,11 +177,11 @@ public class ActivityItemDeserializer extends StdDeserializer<ActivityItem> {
                                 DynamoDBMapper mapper, ActivityItem activityItem) throws IOException {
         if (node.get(nodeName) != null && ctxt.findInjectableValue("mapper", null, null) != null) {
             String processedActivityLink = node.get(nodeName).asText().replaceAll("\\\\\"", "\"");
-            ;
+
             ObjectMapper objectMapper = new ObjectMapper();
             JsonNode jsonNode = objectMapper.readTree(processedActivityLink);
-            System.out.println("key = " + jsonNode.get("s3").get("key").asText());
-            System.out.println("bucket = " + jsonNode.get("s3").get("bucket").asText());
+            //System.out.println("key = " + jsonNode.get("s3").get("key").asText());
+            //System.out.println("bucket = " + jsonNode.get("s3").get("bucket").asText());
             return mapper.createS3Link(region, jsonNode.get("s3").get("bucket").asText(), jsonNode.get("s3").get("key").asText());
         }
         return null;

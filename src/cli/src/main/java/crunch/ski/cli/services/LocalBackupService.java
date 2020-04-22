@@ -46,6 +46,7 @@ public class LocalBackupService implements BackupRestoreService {
     private DynamoFacade dynamoFacade;
     private UserDAO userDAO;
     private ActivityDAO activityDAO;
+    private Metrics metrics;
 
 
     public LocalBackupService(BackupOptions options) {
@@ -56,9 +57,10 @@ public class LocalBackupService implements BackupRestoreService {
         this.userTableName = calcTableName(USER_TABLE_IDENTIFIER, options);
         this.activityTableName = calcTableName(ACTIVITY_TABLE_IDENTIFIER, options);
         this.s3Facade = new S3Facade(options.getConfigMap().get("DATA_REGION"), credentialsProvider, options.isTransferAcceleration());
-        this.dynamoFacade = new DynamoFacade(options.getConfigMap().get("DATA_REGION"),userTableName, credentialsProvider);
+        this.dynamoFacade = new DynamoFacade(options.getConfigMap().get("DATA_REGION"), userTableName, credentialsProvider);
         this.userDAO = new UserDAO(dynamoFacade, userTableName);
         this.activityDAO = new ActivityDAO(dynamoFacade, activityTableName);
+        this.metrics = new Metrics();
     }
 
     /**
@@ -74,6 +76,7 @@ public class LocalBackupService implements BackupRestoreService {
         this.activityDAO = activityDAO;
         this.userTableName = calcTableName(USER_TABLE_IDENTIFIER, options);
         this.activityTableName = calcTableName(ACTIVITY_TABLE_IDENTIFIER, options);
+        this.metrics = new Metrics();
     }
 
 
@@ -110,17 +113,20 @@ public class LocalBackupService implements BackupRestoreService {
                 FileUtils.deleteDirectory(options.getDestDir());
             }
 
-        } catch (IOException ex) {
-            logger.error("IO Error occurred attempting backup.  Exiting");
+        } catch (IOException | GeneralSecurityException ex) {
+
+            if (ex instanceof IOException) {
+                logger.error("IO Error occurred attempting backup.  Exiting");
+            }
+            if (ex instanceof GeneralSecurityException) {
+                logger.error("Security exception occurred", ex);
+            }
+
             if (options.isVerbose()) {
                 ex.printStackTrace();
             }
-            return 1;
-        } catch (GeneralSecurityException ex ) {
-            logger.error("Security exception occurred", ex);
-            if (options.isVerbose()) {
-                ex.printStackTrace();
-            }
+            metrics.setErrors(new String[]{ex.getMessage()});
+            writeMetrics();
             return 1;
         }
         return 0;
@@ -147,9 +153,9 @@ public class LocalBackupService implements BackupRestoreService {
             throw new IOException(ex);
         }
         dynamoFacade.updateTableName(userTableName);
-        dynamoFacade.fullTableBackup(UserSettingsItem.class, calcTableName(USER_TABLE_IDENTIFIER, options),  options.getDestDir(), USER_FILENAME, options.getEncryptionKey());
+        dynamoFacade.fullTableBackup(UserSettingsItem.class, calcTableName(USER_TABLE_IDENTIFIER, options), options.getDestDir(), USER_FILENAME, options.getEncryptionKey());
         dynamoFacade.updateTableName(calcTableName(ACTIVITY_TABLE_IDENTIFIER, options));
-        dynamoFacade.fullTableBackup(ActivityItem.class, calcTableName(ACTIVITY_TABLE_IDENTIFIER, options),  options.getDestDir(), ACTIVITY_FILENAME, options.getEncryptionKey());
+        dynamoFacade.fullTableBackup(ActivityItem.class, calcTableName(ACTIVITY_TABLE_IDENTIFIER, options), options.getDestDir(), ACTIVITY_FILENAME, options.getEncryptionKey());
 
         //TODO -> backup SSM parameters
     }
@@ -173,6 +179,10 @@ public class LocalBackupService implements BackupRestoreService {
      */
     @VisibleForTesting
     void mkDestDir() {
+        if (!new File(options.getDestination()).exists()) {
+            File f = new File(options.getDestination());
+            f.mkdir();
+        }
         String destPath = options.getEnvironment() + "-" + options.getConfigMap().get("PROJECT_NAME") + "-"
                 + options.getBackupDateTime().format(ISO_LOCAL_DATE_TIME_FILE);
         options.setDestDir(new File(options.getDestination(), destPath));
@@ -193,20 +203,26 @@ public class LocalBackupService implements BackupRestoreService {
      *
      * @throws IOException on io error
      */
-    private void writeMetrics() throws IOException {
-        Metrics metrics = new Metrics();
-        Path folder = Paths.get(options.getDestDir().getAbsolutePath());
-        Path compressedFolder = Paths.get(new File(options.getDestDir() + ".tar.gz").getAbsolutePath());
-        metrics.setDataVolumeRaw(org.apache.commons.io.FileUtils.byteCountToDisplaySize(FileUtils.getFolderSizeBytes(folder)));
-        if (!options.isUncompressed()) {
-            metrics.setDataVolumeCompressed(org.apache.commons.io.FileUtils.byteCountToDisplaySize(FileUtils.getFolderSizeBytes(compressedFolder)));
+    private void writeMetrics() {
+        try {
+            Path folder = Paths.get(options.getDestDir().getAbsolutePath());
+            Path compressedFolder = Paths.get(new File(options.getDestDir() + ".tar.gz").getAbsolutePath());
+            metrics.setDataVolumeRaw(org.apache.commons.io.FileUtils.byteCountToDisplaySize(FileUtils.getFolderSizeBytes(folder)));
+            if (!options.isUncompressed()) {
+                metrics.setDataVolumeCompressed(org.apache.commons.io.FileUtils.byteCountToDisplaySize(FileUtils.getFolderSizeBytes(compressedFolder)));
+            }
+            metrics.setTransferElapsed(String.format("%02d min, %02d sec",
+                    TimeUnit.MILLISECONDS.toMinutes(options.getEndTs() - options.getStartTs()),
+                    TimeUnit.MILLISECONDS.toSeconds(options.getEndTs() - options.getStartTs()) -
+                            TimeUnit.MINUTES.toSeconds(TimeUnit.MILLISECONDS.toMinutes(options.getEndTs() - options.getStartTs()))
+            ));
+            metrics.printMetrics(System.out);
+        } catch (IOException ex) {
+            logger.error("IO Exception writing metrics.  Not fatal");
+            if (options.isVerbose()) {
+                ex.printStackTrace();
+            }
         }
-        metrics.setTransferElapsed(String.format("%02d min, %02d sec",
-                TimeUnit.MILLISECONDS.toMinutes(options.getEndTs() - options.getStartTs()),
-                TimeUnit.MILLISECONDS.toSeconds(options.getEndTs() - options.getStartTs()) -
-                        TimeUnit.MINUTES.toSeconds(TimeUnit.MILLISECONDS.toMinutes(options.getEndTs() - options.getStartTs()))
-        ));
-        metrics.printMetrics(System.out);
     }
 
     private void writeMetadata(MetadataBuilder metadataBuilder) throws IOException {
@@ -219,26 +235,26 @@ public class LocalBackupService implements BackupRestoreService {
     /**
      * Performs backup from dynamodb user and activity tables of specific user to local file system
      *
-     * @param user                String user to backup (email or id)*
-     * @param destDir             File destination directory
+     * @param user    String user to backup (email or id)*
+     * @param destDir File destination directory
      * @throws IOException on ioerror
      */
     @VisibleForTesting
-    void userDataBackup(String user,  File destDir) throws IOException {
+    void userDataBackup(String user, File destDir) throws IOException {
 
         UserSettingsItem userSettingsItem = userDAO.lookupUser(user);
         File userDestination = new File(destDir, userSettingsItem.getId());
+        userDestination.mkdir();
         String userStr = options.getEncryptionKey() == null ? userSettingsItem.toJsonString() :
                 EncryptionUtils.encrypt(userSettingsItem.toJsonString(), options.getEncryptionKey());
 
         List<ActivityItem> activityItems = activityDAO.getActivitiesByUser(userSettingsItem.getId());
 
-        String activitiesStr = activityItems.stream().map( x -> {
+        String activitiesStr = activityItems.stream().map(x -> {
             try {
-                return options.getEncryptionKey() == null ? x.toJsonString() :
-                        EncryptionUtils.encrypt(x.toJsonString(), options.getEncryptionKey());
-            }catch(JsonProcessingException ex) {
-                if(options.isVerbose()) {
+                return x.toJsonString();
+            } catch (JsonProcessingException ex) {
+                if (options.isVerbose()) {
                     ex.printStackTrace();
                 }
                 logger.error("error converting activities to Json", ex);
@@ -246,9 +262,18 @@ public class LocalBackupService implements BackupRestoreService {
             }
         }).collect(Collectors.joining(","));
 
-            FileUtils.writeStringToFile(userStr, new File(userDestination, USER_FILENAME));
-            FileUtils.writeStringToFile("[" + activitiesStr + "]", new File(userDestination, ACTIVITY_FILENAME));
+        FileUtils.writeStringToFile(userStr, new File(userDestination, USER_FILENAME));
+        FileUtils.writeStringToFile(options.getEncryptionKey() == null ? "[" + activitiesStr + "]"
+                        : EncryptionUtils.encrypt("[" + activitiesStr + "]", options.getEncryptionKey()),
+                new File(userDestination, ACTIVITY_FILENAME));
 
+
+        backupS3ActivityFiles(activityItems, userSettingsItem, userDestination);
+
+    }
+
+    @VisibleForTesting
+    void backupS3ActivityFiles(List<ActivityItem> activityItems, UserSettingsItem userSettingsItem, File userDestination) {
         File rawDir = new File(userDestination, RAW_ACTIVITY_FOLDER);
         File procDir = new File(userDestination, PROCESSED_ACTIVITY_FOLDER);
         File tempDir = new File(System.getProperty("java.io.tmpdir", userSettingsItem.getId()));
@@ -260,14 +285,13 @@ public class LocalBackupService implements BackupRestoreService {
         tempRaw.mkdir();
         tempProc.mkdir();
 
-
         for (ActivityItem activityItem : activityItems) {
             System.out.println(activityItem.getId());
             S3Link rawActivityS3Link = activityItem.getRawActivity();
             if (rawActivityS3Link != null) {
                 try {
                     rawActivityS3Link.downloadTo(options.getEncryptionKey() == null ? rawDir : tempRaw);
-                    if(options.getEncryptionKey() != null) {
+                    if (options.getEncryptionKey() != null) {
                         EncryptionUtils.copyEncrypt(new File(tempRaw, rawActivityS3Link.getKey()), new File(rawDir, rawActivityS3Link.getKey()), options.getEncryptionKey());
                     }
                 } catch (Exception ex) {
@@ -278,7 +302,7 @@ public class LocalBackupService implements BackupRestoreService {
             if (processedActivityS3Link != null) {
                 try {
                     processedActivityS3Link.downloadTo(options.getEncryptionKey() == null ? procDir : tempProc);
-                    if(options.getEncryptionKey() != null) {
+                    if (options.getEncryptionKey() != null) {
                         EncryptionUtils.copyEncrypt(new File(tempProc, processedActivityS3Link.getKey()), new File(procDir, processedActivityS3Link.getKey()), options.getEncryptionKey());
                     }
                 } catch (Exception ex) {
@@ -291,6 +315,5 @@ public class LocalBackupService implements BackupRestoreService {
         FileUtils.deleteDirectory(tempRaw);
         FileUtils.deleteDirectory(tempDir);
     }
-
 
 }

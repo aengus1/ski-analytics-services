@@ -66,7 +66,20 @@ public class DynamoFacade {
      */
     public DynamoFacade(String region, String tableName, AWSCredentialsProvider credentialsProvider) {
         this.client = AmazonDynamoDBClientBuilder.standard().withRegion(region).build();
-        config = new DynamoDBMapperConfig.Builder().withTableNameOverride(DynamoDBMapperConfig.TableNameOverride.withTableNameReplacement(tableName))
+        config = new DynamoDBMapperConfig.Builder()
+                .withTableNameOverride(DynamoDBMapperConfig.TableNameOverride.withTableNameReplacement(tableName))
+                .build();
+
+        this.mapper = new DynamoDBMapper(client, config, credentialsProvider);
+        this.dynamo = new DynamoDB(client);
+        this.credentialsProvider = credentialsProvider;
+    }
+
+    public DynamoFacade(String region, String tableName, AWSCredentialsProvider credentialsProvider, DynamoDBMapperConfig.SaveBehavior saveBehavior) {
+        this.client = AmazonDynamoDBClientBuilder.standard().withRegion(region).build();
+        config = new DynamoDBMapperConfig.Builder()
+                .withTableNameOverride(DynamoDBMapperConfig.TableNameOverride.withTableNameReplacement(tableName))
+                .withSaveBehavior(saveBehavior)
                 .build();
 
         this.mapper = new DynamoDBMapper(client, config, credentialsProvider);

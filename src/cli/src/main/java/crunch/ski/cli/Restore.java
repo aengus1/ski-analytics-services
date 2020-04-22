@@ -16,6 +16,7 @@ import java.time.LocalDateTime;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
+import java.util.UUID;
 import java.util.concurrent.Callable;
 
 @CommandLine.Command(name = "restore",
@@ -31,9 +32,6 @@ public class Restore implements Callable<Integer> {
 
     @CommandLine.Option(names = {"-a", "--transfer-acceleration"}, description = "Enable S3 Transfer Acceleration")
     private boolean transferAcceleration = false;
-
-    @CommandLine.Option(names = {"-t", "--threads"}, description = "Number of parallel threads to use for DynamoDB table scan")
-    private int nThreads = 2;
 
     @CommandLine.Option(names = {"--users"}, description = "Only restore specific user data from archive (email address or user-id, comma separated")
     private String usersString;
@@ -93,7 +91,6 @@ public class Restore implements Callable<Integer> {
     public Integer call() throws Exception {
 
         initialize();
-        initialize();
         if(options.isS3Source()) {
               service = new S3RestoreService(options);
         } else {
@@ -125,16 +122,16 @@ public class Restore implements Callable<Integer> {
                 options.setUsers((usersString == null || usersString.isEmpty()) ? null : Arrays.asList(usersString.split(",")));
                 options.setSourceDir(new File(backupArchive));
                 options.setRestoreDateTime(LocalDateTime.now());
-                options.setnThreads(nThreads);
                 options.setTransferAcceleration(transferAcceleration);
                 options.setEnvironment(environment);
                 options.setDecryptKey(decryptKey);
-                options.setDestination(environment);
+                options.setRestoreId(UUID.randomUUID().toString());
                 options.setVerbose(verbose);
                 options.setOverwrite(overwrite);
                 if (options.getBackupArchive().startsWith("s3://")) {
                     options.setS3Source(true);
                 }
+
 
             } catch (Exception ex) {
                 ex.printStackTrace();

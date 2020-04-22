@@ -23,6 +23,7 @@ import java.io.File;
 import java.io.IOException;
 import java.security.GeneralSecurityException;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
@@ -159,16 +160,65 @@ public class LocalBackupServiceTest {
     @Test
     public void testUserBackupCalledInLieuOfFullBackupWhenUserStringIsSet() throws IOException{
 
+        // use a spy because can't call verify on a not-mock
+        LocalBackupService service = spy(new LocalBackupService(credentialsProvider,  dynamoFacade, s3Facade, userDAO, activityDAO, backupOptions));
+
         UserSettingsItem userSettingsItem = new UserSettingsItem();
         userSettingsItem.setEmail("aengusmccullough@hotmail.com");
         userSettingsItem.setId("123");
         when(userDAO.lookupUser("aengusmccullough@hotmail.com")).thenReturn(userSettingsItem);
 
         backupOptions.setUsers(Arrays.asList("aengusmccullough@hotmail.com"));
-        backupService.apply();
+        service.apply();
 
-        // ab ab -> can't call verify on a not mock
-        //verify(backupService, times(1)).userDataBackup("aengusmccullough@hotmail.com",  backupOptions.getDestDir());
+
+        verify(service, times(1)).userDataBackup("aengusmccullough@hotmail.com",  backupOptions.getDestDir());
+    }
+
+
+    @Test
+    public void testUserBackupCorrectlyBuildsActivitiesString() throws IOException {
+
+        StringBuilder expectedSb = new StringBuilder();
+        expectedSb.append("[ {\"id\":\"actid1\",\"cognitoId\":\"abc123\",\"date\":\"\",\"rawActivity\":{\"s3\":{\"bucket\":\"null\",\"key\":\"null\"}},\"processedActivity\":{\"s3\":{\"bucket\":\"null\",\"key\":\"null\"}},\"sourceIp\":\"\",\"userAgent\":\"\",\"userId\":\"123\",\"status\":\"\",\"rawFileType\":\"\",\"timeOfDay\":\"\",\"activityType\":\"\",\"activitySubType\":\"\",\"activityDate\":\"\",\"device\":\"\",\"distance\":-998.0,\"duration\":-998.0,\"avHr\":-998,\"maxHr\":-998,\"avSpeed\":-998.0,\"maxSpeed\":-998.0,\"ascent\":10.0,\"descent\":-998.0,\"notes\":\"test notes\",\"lastUpdateTimestamp\":\"\"}")
+                .append(", {\"id\":\"actid2\",\"cognitoId\":\"abc123\",\"date\":\"\",\"rawActivity\":{\"s3\":{\"bucket\":\"null\",\"key\":\"null\"}},\"processedActivity\":{\"s3\":{\"bucket\":\"null\",\"key\":\"null\"}},\"sourceIp\":\"\",\"userAgent\":\"\",\"userId\":\"123\",\"status\":\"\",\"rawFileType\":\"\",\"timeOfDay\":\"\",\"activityType\":\"\",\"activitySubType\":\"\",\"activityDate\":\"\",\"device\":\"\",\"distance\":-998.0,\"duration\":-998.0,\"avHr\":-998,\"maxHr\":-998,\"avSpeed\":-998.0,\"maxSpeed\":-998.0,\"ascent\":12.0,\"descent\":-998.0,\"notes\":\"test again\",\"lastUpdateTimestamp\":\"\"}]");
+
+        List<ActivityItem> activityItems = new ArrayList<>();
+        ActivityItem item1 = new ActivityItem();
+        item1.setUserId("123");
+        item1.setId("actid1");
+        item1.setCognitoId("abc123");
+        item1.setNotes("test notes");
+        item1.setAscent(10d);
+
+        ActivityItem item2 = new ActivityItem();
+        item2.setId("actid2");
+        item2.setUserId("123");
+        item2.setCognitoId("abc123");
+        item2.setNotes("test again");
+        item2.setAscent(12d);
+
+        activityItems.add(item1);
+        activityItems.add(item2);
+
+        UserSettingsItem userSettingsItem = new UserSettingsItem();
+        userSettingsItem.setEmail("aengusmccullough@hotmail.com");
+        userSettingsItem.setId("123");
+        backupOptions.setUsers(Arrays.asList("aengusmccullough@hotmail.com"));
+        when(userDAO.lookupUser("aengusmccullough@hotmail.com")).thenReturn(userSettingsItem);
+
+        when(activityDAO.getActivitiesByUser(userSettingsItem.getId())).thenReturn(activityItems);
+
+        try {
+            backupService.apply();
+        } catch ( Exception ex) {
+            ex.printStackTrace();
+        }
+
+
+        File userDestination = new File(backupOptions.getDestDir()+"/" + userSettingsItem.getId(), "activities.json");
+        assertEquals(expectedSb.toString().replaceAll(" ", "").replaceAll(System.lineSeparator(), ""),
+                FileUtils.readFileToString(userDestination).replaceAll(" ", "").replaceAll(System.lineSeparator(),""));
     }
 
     @AfterEach

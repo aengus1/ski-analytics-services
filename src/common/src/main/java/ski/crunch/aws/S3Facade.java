@@ -169,7 +169,7 @@ public class S3Facade {
         }
     }
 
-    public List<String> listObjects(String bucket) {
+    public List<String> listObjects(String bucket) throws SdkClientException {
         setTransferAcceleration(bucket);
         ObjectListing objectListing = this.s3Client.listObjects(bucket);
         return objectListing.getObjectSummaries().stream().map(x -> x.getKey()).collect(Collectors.toList());
@@ -254,7 +254,6 @@ public class S3Facade {
             File tempFile = new File(System.getProperty("java.io.tmpdir") + "/" + destPrefix);
             tempFile.mkdir();
             for (String objectKey : objectKeys) {
-                S3Object object = getS3Client().getObject(sourceBucketName, objectKey);
                 File dest = new File(tempFile, destPrefix);
                 readToEncryptedFile(sourceBucketName, objectKey, dest, encryptionKey);
                 putObject(destBucketName, destPrefix+"/" + objectKey, dest);

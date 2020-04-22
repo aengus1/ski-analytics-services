@@ -21,21 +21,6 @@ public class ActivityDAO extends AbstractDAO {
 
     public Optional<ActivityItem> getActivityItem(String activityId, String cognitoId) {
         return Optional.ofNullable(dynamoDBService.getMapper().load(ActivityItem.class, cognitoId, activityId));
-//        dynamoDBService.updateTableName(tableName);
-//        System.out.println("attempting to fetch " + activityId + " from " + tableName);
-//        Map<String, AttributeValue> eav = new HashMap<String, AttributeValue>();
-//        if (activityId.endsWith(".pbf")) {
-//            activityId = activityId.substring(0, activityId.length() - 4);
-//        }
-//        eav.put(":val1", new AttributeValue().withS(activityId));
-//
-//        DynamoDBQueryExpression<ActivityItem> queryExpression = new DynamoDBQueryExpression<ActivityItem>()
-//                .withKeyConditionExpression("id = :val1")
-//                .withExpressionAttributeValues(eav);
-//        List<ActivityItem> items = dynamoDBService.getMapper().query(ActivityItem.class, queryExpression);
-//        System.out.println("returned " + items.size());
-//        return items.isEmpty() ? Optional.empty() : Optional.of(items.get(0));
-
     }
 
     public void saveLinkToProcessed(String activityId, String userId, S3Link s3LinkToProcessed) {

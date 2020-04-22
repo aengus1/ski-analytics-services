@@ -9,7 +9,7 @@ public class RestoreOptions {
 
 
     private Map<String, String> configMap;
-    private String backupId;
+    private String restoreId;
     private boolean isS3Source = false;
     private LocalDateTime restoreDateTime;
     private List<String> users;
@@ -17,12 +17,8 @@ public class RestoreOptions {
     private String sourceBucket;
     private String sourceKey;
     private boolean transferAcceleration = false;
-    private int nThreads = 2;
-    private String usersString;
     private String decryptKey;
-    private boolean uncompressed;
     private String environment;
-    private String destination;
     private boolean overwrite;
     private String backupArchive;
     private long startTs;
@@ -36,12 +32,12 @@ public class RestoreOptions {
         this.configMap = configMap;
     }
 
-    public String getBackupId() {
-        return backupId;
+    public String getRestoreId() {
+        return restoreId;
     }
 
-    public void setBackupId(String backupId) {
-        this.backupId = backupId;
+    public void setRestoreId(String backupId) {
+        this.restoreId = backupId;
     }
 
     public boolean isS3Source() {
@@ -100,22 +96,6 @@ public class RestoreOptions {
         this.transferAcceleration = transferAcceleration;
     }
 
-    public int getnThreads() {
-        return nThreads;
-    }
-
-    public void setnThreads(int nThreads) {
-        this.nThreads = nThreads;
-    }
-
-    public String getUsersString() {
-        return usersString;
-    }
-
-    public void setUsersString(String usersString) {
-        this.usersString = usersString;
-    }
-
     public String getDecryptKey() {
         return decryptKey;
     }
@@ -124,13 +104,13 @@ public class RestoreOptions {
         this.decryptKey = decryptKey;
     }
 
-    public boolean isUncompressed() {
-        return uncompressed;
-    }
-
-    public void setUncompressed(boolean uncompressed) {
-        this.uncompressed = uncompressed;
-    }
+//    public boolean isUncompressed() {
+//        return uncompressed;
+//    }
+//
+//    public void setUncompressed(boolean uncompressed) {
+//        this.uncompressed = uncompressed;
+//    }
 
     public String getEnvironment() {
         return environment;
@@ -140,13 +120,13 @@ public class RestoreOptions {
         this.environment = environment;
     }
 
-    public String getDestination() {
-        return destination;
-    }
-
-    public void setDestination(String destination) {
-        this.destination = destination;
-    }
+//    public String getDestination() {
+//        return destination;
+//    }
+//
+//    public void setDestination(String destination) {
+//        this.destination = destination;
+//    }
 
     public long getStartTs() {
         return startTs;

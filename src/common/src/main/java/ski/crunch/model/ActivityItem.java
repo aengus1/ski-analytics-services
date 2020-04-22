@@ -6,7 +6,7 @@ import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import ski.crunch.utils.Jsonable;
 
 import java.util.Date;
-import java.util.Set;
+import java.util.List;
 
 /**
  * Created by aengusmccullough on 2018-09-17.
@@ -43,7 +43,7 @@ public class ActivityItem implements Jsonable {
     private Double ascent;
     private Double descent;
     private String notes;
-    private Set<String> tags;
+    private List<String> tags;
     private Date lastUpdateTimestamp;
 
     public enum Status { PENDING, PROCESSED, ERROR, COMPLETE}
@@ -272,11 +272,11 @@ public class ActivityItem implements Jsonable {
     }
 
     @DynamoDBAttribute(attributeName = "tags")
-    public Set<String> getTags() {
+    public List<String> getTags() {
         return tags;
     }
 
-    public void setTags(Set<String> tags) {
+    public void setTags(List<String> tags) {
         this.tags = tags;
     }
 
