@@ -46,7 +46,7 @@ public class ActivityItem implements Jsonable {
     private List<String> tags;
     private Date lastUpdateTimestamp;
 
-    public enum Status { PENDING, PROCESSED, ERROR, COMPLETE}
+    public enum Status { PENDING, PROCESSED, ERROR, COMPLETE, NA}
 
     @DynamoDBRangeKey(attributeName="id")
     public String getId() {

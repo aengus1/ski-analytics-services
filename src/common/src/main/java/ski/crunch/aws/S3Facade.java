@@ -210,7 +210,7 @@ public class S3Facade {
 
         for (String objectKey : objectKeys) {
             if(verbose) {
-                logger.info("backing up: " + objectKey);
+                logger.info("backing up: " + objectKey + " to: " + destinationDir.getAbsolutePath());
             }
             File destDir = destinationDir;
             File destFile = new File(destDir, objectKey);

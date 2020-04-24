@@ -125,11 +125,11 @@ public class LocalBackupService implements BackupRestoreService {
             if (options.isVerbose()) {
                 ex.printStackTrace();
             }
-            metrics.setErrors(new String[]{ex.getMessage()});
+            metrics.getErrors().add(ex.getMessage());
             writeMetrics();
             return 1;
         }
-        return 0;
+        return metrics.getErrors().isEmpty() ? 0 : 1;
     }
 
 
@@ -158,6 +158,7 @@ public class LocalBackupService implements BackupRestoreService {
         dynamoFacade.fullTableBackup(ActivityItem.class, calcTableName(ACTIVITY_TABLE_IDENTIFIER, options), options.getDestDir(), ACTIVITY_FILENAME, options.getEncryptionKey());
 
         //TODO -> backup SSM parameters
+        //TODO -> backup logs
     }
 
     /**
@@ -216,6 +217,9 @@ public class LocalBackupService implements BackupRestoreService {
                     TimeUnit.MILLISECONDS.toSeconds(options.getEndTs() - options.getStartTs()) -
                             TimeUnit.MINUTES.toSeconds(TimeUnit.MILLISECONDS.toMinutes(options.getEndTs() - options.getStartTs()))
             ));
+            metrics.setBackupArchiveName(options.getEnvironment() + "-" + options.getConfigMap().get("PROJECT_NAME") + "-"
+                    + options.getBackupDateTime().format(ISO_LOCAL_DATE_TIME_FILE) + (options.isUncompressed() ? "" : ".tar.gz"));
+            metrics.setBackupId(options.getBackupId());
             metrics.printMetrics(System.out);
         } catch (IOException ex) {
             logger.error("IO Exception writing metrics.  Not fatal");

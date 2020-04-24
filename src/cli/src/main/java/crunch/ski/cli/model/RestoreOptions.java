@@ -14,13 +14,14 @@ public class RestoreOptions {
     private LocalDateTime restoreDateTime;
     private List<String> users;
     private File sourceDir;
+    private String backupArchive;
+    private String fullyQualifiedArchive;
     private String sourceBucket;
     private String sourceKey;
     private boolean transferAcceleration = false;
     private String decryptKey;
     private String environment;
     private boolean overwrite;
-    private String backupArchive;
     private long startTs;
     private long endTs;
 
@@ -175,5 +176,13 @@ public class RestoreOptions {
 
     public void setBackupArchive(String backupArchive) {
         this.backupArchive = backupArchive;
+    }
+
+    public String getFullyQualifiedArchive() {
+        return fullyQualifiedArchive;
+    }
+
+    public void setFullyQualifiedArchive(String fullyQualifiedArchive) {
+        this.fullyQualifiedArchive = fullyQualifiedArchive;
     }
 }

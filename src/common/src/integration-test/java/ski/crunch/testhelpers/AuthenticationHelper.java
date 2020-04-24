@@ -164,6 +164,7 @@ import static java.util.Base64.getEncoder;
                     .build();
     }
 
+
     private AWSCognitoIdentityProvider buildIdpWithCreds(String profileName)  {
 
 
@@ -209,6 +210,24 @@ AWSCredentials awsCreds = new ProfileCredentialsProvider(profileName).getCredent
         }
     }
 
+    void performForgotPassword(String userName, String newPassword, String userPoolID) {
+         AdminResetUserPasswordRequest resetUserPasswordRequest = new AdminResetUserPasswordRequest();
+         resetUserPasswordRequest.setUsername(userName);
+         resetUserPasswordRequest.setUserPoolId(userPoolID);
+        try {
+            AWSCognitoIdentityProvider cognitoIdentityProvider = buildIdpWithCreds(profileName);
+            AdminResetUserPasswordResult result = cognitoIdentityProvider.adminResetUserPassword(resetUserPasswordRequest);
+            System.out.println(result.toString());
+
+        }catch(Exception ex) {
+            ex.printStackTrace();
+        }
+    }
+
+    public String getUserPoolID() {
+        return userPoolID;
+    }
+
      void deleteUser(String userName) {
         AdminDeleteUserRequest deleteUserRequest = new AdminDeleteUserRequest();
         deleteUserRequest.setUsername(userName);
@@ -221,8 +240,6 @@ AWSCredentials awsCreds = new ProfileCredentialsProvider(profileName).getCredent
         }catch(final Exception ex) {
             ex.printStackTrace();
         }
-
-
     }
 
     public String getCognitoId() {

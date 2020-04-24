@@ -129,10 +129,10 @@ public class ActivityPipelineTest {
         }
 
         assertEquals(1,records.size());
-//        double expected = (0.4 + 0.7) / 2;
-//        System.out.println("expected = " + expected);
-//        System.out.println("actual = " + records.get(0).hrv());
-        assertEquals(records.get(0).hrv(), (0.4 + 0.7) / 2);
+        double expected = (0.4 + 0.7) / 2;
+        System.out.println("expected = " + expected);
+        System.out.println("actual = " + records.get(0).hrv());
+        assertEquals(records.get(0).hrv(), (0.4 + 0.7) / 2.0);
     }
 
 

@@ -227,7 +227,7 @@ class ActivityTest {
         try {
             //activityDAO.deleteActivityItemById(activityId, helper.getCognitoId());
             //activityService.deleteRawActivityFromS3(activityId + ".fit");
-            Thread.currentThread().sleep(20000);
+            Thread.currentThread().sleep(2000);
             //logger.info("deleting from processed bucket " + processedActivityBucket + " for activity: " + activityId + ".pbf");
             //activityService.deleteProcessedActivityFromS3(activityId + ".pbf");
         } catch (InterruptedException ex) {

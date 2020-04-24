@@ -6,13 +6,9 @@ import com.amazonaws.services.lambda.runtime.Context;
 import com.amazonaws.services.lambda.runtime.RequestStreamHandler;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.goterl.lazycode.lazysodium.LazySodiumJava;
-import com.goterl.lazycode.lazysodium.SodiumJava;
-import com.goterl.lazycode.lazysodium.exceptions.SodiumException;
-import com.goterl.lazycode.lazysodium.interfaces.PwHash;
-import com.sun.jna.NativeLong;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import ski.crunch.auth.utils.PasswordUtil;
 import ski.crunch.aws.CredentialsProviderFactory;
 import ski.crunch.aws.DynamoFacade;
 import ski.crunch.dao.UserDAO;
@@ -37,7 +33,7 @@ public class CapturePwHash implements RequestStreamHandler {
         JsonNode eventNode = objectMapper.readTree(input);
         String tableName = System.getenv("userTable");
         String pw = eventNode.path("request").path("validationData").path("pw").asText();
-        String hash = hashPassword(pw);
+        String hash = PasswordUtil.hashPassword(pw);
 
         logger.debug("user table =  {}", tableName);
 
@@ -68,15 +64,6 @@ public class CapturePwHash implements RequestStreamHandler {
     }
 
 
-    public String hashPassword(String password) {
-        try {
-            LazySodiumJava lazySodium = new LazySodiumJava(new SodiumJava());
-            PwHash.Lazy pwHashLazy = (PwHash.Lazy) lazySodium;
-            return pwHashLazy.cryptoPwHashStr(password, 20L, new NativeLong(131072));
-        } catch (SodiumException ex) {
-            ex.printStackTrace();
-        }
-        return null;
-    }
+
 
 }

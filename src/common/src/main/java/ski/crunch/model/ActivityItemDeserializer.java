@@ -5,14 +5,12 @@ import com.amazonaws.services.dynamodbv2.datamodeling.S3Link;
 import com.fasterxml.jackson.core.JsonParser;
 import com.fasterxml.jackson.databind.DeserializationContext;
 import com.fasterxml.jackson.databind.JsonNode;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.deser.std.StdDeserializer;
 import com.fasterxml.jackson.databind.node.ArrayNode;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.io.IOException;
-import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
@@ -54,12 +52,12 @@ public class ActivityItemDeserializer extends StdDeserializer<ActivityItem> {
             String cognitoId = node.get("cognitoId").textValue();
             activityItem.setCognitoId(cognitoId);
 
-            if (node.get("date") != null) {
-                Date date = sdf.parse(node.get("date").asText());
+            if (node.get("date") != null && !node.get("date").asText().isEmpty()) {
+                Date date = attemptDateParse(node.get("date").asText());
                 activityItem.setDateOfUpload(date);
             }
 
-            S3Link rawLink = createS3Link("rawActivity", node, ctxt, region, mapper, activityItem);
+            S3Link rawLink = createS3Link("rawActivity", node, ctxt, region, mapper);
 
             if (rawLink == null) {
                 logger.warn("s3 link to raw activity not set");
@@ -67,7 +65,7 @@ public class ActivityItemDeserializer extends StdDeserializer<ActivityItem> {
                 activityItem.setRawActivity(rawLink);
             }
 
-            S3Link procLink = createS3Link("processedActivity", node, ctxt, region, mapper, activityItem);
+            S3Link procLink = createS3Link("processedActivity", node, ctxt, region, mapper);
 
             if (procLink == null) {
                 logger.warn("s3 link to processed activity not set");
@@ -88,7 +86,12 @@ public class ActivityItemDeserializer extends StdDeserializer<ActivityItem> {
                 activityItem.setUserId(userId);
             }
             if (node.get("status") != null) {
-                ActivityItem.Status status = ActivityItem.Status.valueOf(node.get("status").asText());
+                ActivityItem.Status status;
+                try {
+                    status  = ActivityItem.Status.valueOf(node.get("status").asText());
+                } catch (IllegalArgumentException ex) {
+                    status = ActivityItem.Status.NA;
+                }
                 activityItem.setStatus(status);
             }
             if (node.get("rawFileType") != null) {
@@ -107,8 +110,8 @@ public class ActivityItemDeserializer extends StdDeserializer<ActivityItem> {
                 String activitySubType = node.get("activitySubType").asText();
                 activityItem.setActivitySubType(activitySubType);
             }
-            if (node.get("activityDate") != null) {
-                Date activityDate = sdf.parse(node.get("activityDate").asText());
+            if (node.get("activityDate") != null && !node.get("activityDate").asText().isEmpty()) {
+                Date activityDate = attemptDateParse(node.get("activityDate").asText());
                 activityItem.setActivityDate(activityDate);
             }
             if (node.get("device") != null) {
@@ -160,13 +163,13 @@ public class ActivityItemDeserializer extends StdDeserializer<ActivityItem> {
 
                 activityItem.setTags(tags);
             }
-            if (node.get("lastUpdateTimestamp") != null) {
-                Date lastUpdateTs = sdf.parse(node.get("lastUpdateTimestamp").asText());
+            if (node.get("lastUpdateTimestamp") != null && !node.get("lastUpdateTimestamp").asText().isEmpty()) {
+                Date lastUpdateTs = attemptDateParse(node.get("lastUpdateTimestamp").asText());
                 activityItem.setLastUpdateTimestamp(lastUpdateTs);
             }
 
             return activityItem;
-        } catch (ParseException ex) {
+        } catch (Exception ex) {
             ex.printStackTrace();
             logger.error("deserialization exception", ex);
             return null;
@@ -174,16 +177,24 @@ public class ActivityItemDeserializer extends StdDeserializer<ActivityItem> {
     }
 
     private S3Link createS3Link(String nodeName, JsonNode node, DeserializationContext ctxt, String region,
-                                DynamoDBMapper mapper, ActivityItem activityItem) throws IOException {
+                                DynamoDBMapper mapper) throws IOException {
         if (node.get(nodeName) != null && ctxt.findInjectableValue("mapper", null, null) != null) {
-            String processedActivityLink = node.get(nodeName).asText().replaceAll("\\\\\"", "\"");
 
-            ObjectMapper objectMapper = new ObjectMapper();
-            JsonNode jsonNode = objectMapper.readTree(processedActivityLink);
+            JsonNode jsonNode = node.get(nodeName);
             //System.out.println("key = " + jsonNode.get("s3").get("key").asText());
             //System.out.println("bucket = " + jsonNode.get("s3").get("bucket").asText());
-            return mapper.createS3Link(region, jsonNode.get("s3").get("bucket").asText(), jsonNode.get("s3").get("key").asText());
+            if (jsonNode.has("s3") && jsonNode.get("s3").has("bucket") && jsonNode.get("s3").has("key")) {
+                return mapper.createS3Link(region, jsonNode.get("s3").get("bucket").asText(), jsonNode.get("s3").get("key").asText());
+            }
         }
         return null;
+    }
+
+    private Date attemptDateParse(String string) {
+        try{
+            return sdf.parse(string);
+        } catch (Exception ex) {
+            return null;
+        }
     }
 }

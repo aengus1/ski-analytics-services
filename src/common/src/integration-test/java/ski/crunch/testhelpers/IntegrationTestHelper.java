@@ -83,8 +83,21 @@ public class IntegrationTestHelper {
         return authHelper.performAdminSignup(INTEGRATION_TEST_USERNAME, INTEGRATION_TEST_PASSWORD);
     }
 
+    public Optional<String> signup(String userName, String password) {
+
+        return authHelper.performAdminSignup(userName, password);
+    }
+
+    public void resetPassword(String userName, String newPassword, String userPoolId) {
+         authHelper.performForgotPassword(userName, newPassword, userPoolId);
+    }
+
     public String getCognitoId() {
         return authHelper.getCognitoId();
+    }
+
+    public String getUserPoolId() {
+        return authHelper.getUserPoolID();
     }
     public String getDevAccessKey(String username, String password) {
         return authHelper.performSRPAuthentication(username, password);
@@ -92,6 +105,10 @@ public class IntegrationTestHelper {
 
     public String retrieveAccessToken() {
         return authHelper.performSRPAuthentication(INTEGRATION_TEST_USERNAME, INTEGRATION_TEST_PASSWORD);
+    }
+
+    public String retrieveAccessToken(String username, String password) {
+        return authHelper.performSRPAuthentication(username, password);
     }
 
     public void insertUserSettings(String userId) {
@@ -161,6 +178,10 @@ public class IntegrationTestHelper {
 
     public void destroySignupUser() {
         authHelper.deleteUser(INTEGRATION_TEST_USERNAME);
+    }
+
+    public void destroyUser(String userName) {
+        authHelper.deleteUser(userName);
     }
 
 

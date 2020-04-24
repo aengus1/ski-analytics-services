@@ -119,8 +119,12 @@ public class Restore implements Callable<Integer> {
                     options.getConfigMap().put("PROFILE_NAME", parent.getAwsProfile());
                 }
 
+                options.setFullyQualifiedArchive(backupArchive);
+                String archive = backupArchive.substring(backupArchive.lastIndexOf("/"));
+                String sourceDir = backupArchive.substring(0, backupArchive.lastIndexOf("/"));
                 options.setUsers((usersString == null || usersString.isEmpty()) ? null : Arrays.asList(usersString.split(",")));
-                options.setSourceDir(new File(backupArchive));
+                options.setBackupArchive(archive);
+                options.setSourceDir(new File(sourceDir));
                 options.setRestoreDateTime(LocalDateTime.now());
                 options.setTransferAcceleration(transferAcceleration);
                 options.setEnvironment(environment);
@@ -128,7 +132,7 @@ public class Restore implements Callable<Integer> {
                 options.setRestoreId(UUID.randomUUID().toString());
                 options.setVerbose(verbose);
                 options.setOverwrite(overwrite);
-                if (options.getBackupArchive().startsWith("s3://")) {
+                if (archive.startsWith("s3://")) {
                     options.setS3Source(true);
                 }
 

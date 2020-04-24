@@ -97,6 +97,7 @@ public class GZipUtils {
 
         private static void addFilesToTarGZ (File file, String parent, TarArchiveOutputStream tarArchive) throws
         IOException {
+            tarArchive.setLongFileMode(TarArchiveOutputStream.LONGFILE_POSIX);
             // Create entry name relative to parent file path
             String entryName = parent + file.getName();
             // add tar ArchiveEntry

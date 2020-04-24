@@ -14,6 +14,21 @@ dependencies {
             "net.java.dev.jna:jna:5.5.0"
     )
 
+    integrationTestImplementation(
+            "org.junit.jupiter:junit-jupiter-api:5.4.0",
+            "org.glassfish.jersey.core:jersey-client:2.5.1",
+            "com.fasterxml.jackson.core:jackson-core:${jacksonVersion}",
+            "org.mockito:mockito-all:1.10.19",
+            project(path: ':common', configuration: 'testClasses'),
+            project(':common')
+    )
+    integrationTestRuntimeOnly(
+            "org.junit.jupiter:junit-jupiter-engine:5.1.0",
+            "javax.xml.bind:jaxb-api:2.3.1",
+            project(':common'),
+            project(path: ':common', configuration: 'testClasses')
+    )
+
 }
 
 test {

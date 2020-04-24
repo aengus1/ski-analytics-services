@@ -2,6 +2,7 @@ package crunch.ski.cli.services;
 
 import com.amazonaws.SdkClientException;
 import com.amazonaws.auth.AWSCredentialsProvider;
+import com.amazonaws.services.dynamodbv2.datamodeling.DynamoDBMapper;
 import com.amazonaws.services.dynamodbv2.datamodeling.DynamoDBMapperConfig;
 import com.fasterxml.jackson.databind.InjectableValues;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -76,9 +77,9 @@ public class LocalRestoreService implements BackupRestoreService {
 
 
             // does archive exist ?
-            File archive = new File(options.getBackupArchive());
+            File archive = new File(options.getFullyQualifiedArchive());
             if (!archive.exists()) {
-                logger.error("Error.  Backup archive " + options.getBackupArchive() + " not found");
+                logger.error("Error.  Backup archive " + options.getFullyQualifiedArchive() + " not found");
                 return 1;
             }
 
@@ -127,11 +128,11 @@ public class LocalRestoreService implements BackupRestoreService {
             if (options.isVerbose()) {
                 ex.printStackTrace();
             }
-            metrics.setErrors(new String[]{ex.getMessage()});
+            metrics.getErrors().add(ex.getMessage());
             writeMetrics();
             return 1;
         }
-        return 0;
+        return metrics.getErrors().isEmpty() ? 0 : 1;
     }
 
 
@@ -151,18 +152,28 @@ public class LocalRestoreService implements BackupRestoreService {
      */
     private void fullLocalRestore() throws IOException, GeneralSecurityException {
 
-        List<UserSettingsItem> users = deserializeUserJson(options.getSourceDir());
-        List<ActivityItem> activityItems = deserializeActivityJson(options.getSourceDir());
+        List<UserSettingsItem> users = deserializeUserJson(new File(options.getFullyQualifiedArchive()));
+        List<ActivityItem> activityItems = deserializeActivityJson(new File(options.getFullyQualifiedArchive()));
 
         // save to dynamo
         dynamoFacade.updateTableName(userTableName);
-        dynamoFacade.getMapper().batchSave(users);
+        List<DynamoDBMapper.FailedBatch> failedUsers = dynamoFacade.getMapper().batchSave(users);
         dynamoFacade.updateTableName(activityTableName);
-        dynamoFacade.getMapper().batchSave(activityItems);
+        List<DynamoDBMapper.FailedBatch> failedActivities = dynamoFacade.getMapper().batchSave(activityItems);
 
+        if(!failedUsers.isEmpty()) {
+            failedUsers.stream().forEach(x -> metrics.getErrors().add(x.getException().getMessage()
+                    + " userid:" + x.getUnprocessedItems().get("id")));
+        }
+
+        if(!failedActivities.isEmpty()) {
+            failedActivities.stream().forEach(x -> metrics.getErrors().add(x.getException().getMessage()
+                    + " activityId:" + x.getUnprocessedItems().get("id")
+                    + " userId:" + x.getUnprocessedItems().get("cognitoId")));
+        }
         // restore s3
-        File rawDir = new File(options.getSourceDir(), RAW_ACTIVITY_FOLDER);
-        File procDir = new File(options.getSourceDir(), PROCESSED_ACTIVITY_FOLDER);
+        File rawDir = new File(options.getFullyQualifiedArchive(), RAW_ACTIVITY_FOLDER);
+        File procDir = new File(options.getFullyQualifiedArchive(), PROCESSED_ACTIVITY_FOLDER);
         // temp dir for holding decrypted data
         File tempDir = new File(System.getProperty("java.io.tmpdir"), options.getRestoreId() + "_s3");
         tempDir.mkdir();
@@ -191,12 +202,12 @@ public class LocalRestoreService implements BackupRestoreService {
             user = userItem.getId();
         }
 
-        File userDir =  filter ? new File(options.getBackupArchive()) : new File(options.getBackupArchive(), user);
+        File userDir = filter ? new File(options.getFullyQualifiedArchive()) : new File(options.getFullyQualifiedArchive(), user);
 
         UserSettingsItem users = deserializeUserJson(userDir).get(0);
         List<ActivityItem> activities = deserializeActivityJson(userDir);
 
-        if(filter) {
+        if (filter) {
             activities = activities.stream().filter(x -> x.getUserId().equals(users.getId())).collect(Collectors.toList());
         }
 
@@ -239,15 +250,16 @@ public class LocalRestoreService implements BackupRestoreService {
         return Arrays.asList(objectMapper.reader(newActivityDeserializerInjectables()).forType(ActivityItem[].class).readValue(json));
     }
 
+    //todo -> deal with s3 files now being in user directory.  full, user, encrypted cases
     private void uploadS3Files(List<ActivityItem> activities, File rawDir, File procDir, File tempDir) throws IOException, GeneralSecurityException {
         for (ActivityItem activityItem : activities) {
             if (activityItem.getRawActivity() != null) {
-                File rawFile = new File(rawDir, activityItem.getRawActivity().getKey());
+                File rawFile = new File(rawDir +"/"+ activityItem.getUserId()+"/"+activityItem.getRawActivity().getKey());
                 if (options.isVerbose()) {
                     System.out.println("uploading " + activityItem.getRawActivity().getKey());
                 }
                 if (options.getDecryptKey() != null) {
-                    File rawTemp = new File(tempDir, activityItem.getRawActivity().getKey());
+                    File rawTemp = new File(tempDir + "/" + activityItem.getUserId(), activityItem.getRawActivity().getKey());
                     EncryptionUtils.copyDecrypt(rawFile, rawTemp, options.getDecryptKey());
                     activityItem.getRawActivity().uploadFrom(rawTemp);
                 } else {
@@ -255,12 +267,12 @@ public class LocalRestoreService implements BackupRestoreService {
                 }
             }
             if (activityItem.getProcessedActivity() != null) {
-                File procFile = new File(procDir, activityItem.getProcessedActivity().getKey());
+                File procFile = new File(procDir + "/" + activityItem.getUserId(), activityItem.getProcessedActivity().getKey());
                 if (options.isVerbose()) {
                     System.out.println("uploading " + activityItem.getProcessedActivity().getKey());
                 }
                 if (options.getDecryptKey() != null) {
-                    File procTemp = new File(tempDir, activityItem.getProcessedActivity().getKey());
+                    File procTemp = new File(tempDir + "/" + activityItem.getUserId(), activityItem.getProcessedActivity().getKey());
                     EncryptionUtils.copyDecrypt(procFile, procTemp, options.getDecryptKey());
                     activityItem.getProcessedActivity().uploadFrom(procTemp);
                 } else {
@@ -286,13 +298,15 @@ public class LocalRestoreService implements BackupRestoreService {
         }
         File tempDecompressedDir = new File(System.getProperty("java.io.tmpdir"), options.getRestoreId());
         tempDecompressedDir.mkdir();
-        GZipUtils.extractTarGZ(options.getSourceDir(), tempDecompressedDir);
+        GZipUtils.extractTarGZ(new File(options.getFullyQualifiedArchive()), tempDecompressedDir);
         options.setSourceDir(tempDecompressedDir);
+        options.setFullyQualifiedArchive(tempDecompressedDir.getAbsolutePath()+"/"+options.getBackupArchive().substring(0, options.getBackupArchive().lastIndexOf(".tar.gz")));
     }
 
     private void readMetadata() throws IOException {
-        File metadataFile = new File(options.getBackupArchive(), ".metadata.json");
+        File metadataFile = new File(options.getFullyQualifiedArchive(), ".metadata.json");
         metadata = Metadata.fromArchive(metadataFile);
+
     }
 
     private void writeMetrics() {
@@ -304,6 +318,8 @@ public class LocalRestoreService implements BackupRestoreService {
                     TimeUnit.MILLISECONDS.toSeconds(options.getEndTs() - options.getStartTs()) -
                             TimeUnit.MINUTES.toSeconds(TimeUnit.MILLISECONDS.toMinutes(options.getEndTs() - options.getStartTs()))
             ));
+            metrics.setBackupId(metadata.getBackupId());
+            metrics.setRestoreId(options.getRestoreId());
             metrics.printMetrics(System.out);
         } catch (IOException ex) {
             logger.error("IOException occurred writing metrics. Not fatal");
@@ -318,7 +334,7 @@ public class LocalRestoreService implements BackupRestoreService {
         if (temp.exists()) {
             FileUtils.deleteDirectory(temp);
         }
-        File tempDir = new File(System.getProperty("java.io.tmpdir"), options.getRestoreId()+ "_s3");
+        File tempDir = new File(System.getProperty("java.io.tmpdir"), options.getRestoreId() + "_s3");
         if (tempDir.exists()) {
             FileUtils.deleteDirectory(tempDir);
         }

@@ -12,10 +12,12 @@ import org.slf4j.LoggerFactory;
 
 import java.io.IOException;
 import java.text.SimpleDateFormat;
+import java.util.Date;
 
 public class ActivityItemSerializer extends StdSerializer<ActivityItem> {
 
     public static final SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss");
+    public static final SimpleDateFormat stf = new SimpleDateFormat("HH:mm:ss");
     public static final Logger logger = LoggerFactory.getLogger(ActivityItemSerializer.class);
 
     public ActivityItemSerializer() {
@@ -32,7 +34,7 @@ public class ActivityItemSerializer extends StdSerializer<ActivityItem> {
         gen.writeStartObject();
         gen.writeStringField("id", value.getId());
         gen.writeStringField("cognitoId", value.getCognitoId());
-        gen.writeStringField("date", value.getDateOfUpload() == null ? "" : sdf.format(value.getDateOfUpload()));
+        gen.writeStringField("date", value.getDateOfUpload() == null ? "" : attemptDateFormat(value.getDateOfUpload()));
         gen.writeObjectField("rawActivity", buildS3Link(value.getRawActivity()));
         gen.writeObjectField("processedActivity", buildS3Link(value.getProcessedActivity()));
         gen.writeStringField("sourceIp", value.getSourceIp() == null ? "" : value.getSourceIp());
@@ -40,10 +42,10 @@ public class ActivityItemSerializer extends StdSerializer<ActivityItem> {
         gen.writeStringField("userId", value.getUserId() == null ? "" : value.getUserId());
         gen.writeStringField("status", value.getStatus() == null ? "" : value.getStatus().name());
         gen.writeStringField("rawFileType", value.getRawFileType() == null ? "" : value.getRawFileType());
-        gen.writeStringField("timeOfDay", value.getTimeOfDay() == null ? "" : sdf.format(value.getTimeOfDay()));
+        gen.writeStringField("timeOfDay", value.getTimeOfDay() == null ? "" : attemptTimeFormat(value.getTimeOfDay()));
         gen.writeStringField("activityType", value.getActivityType() == null ? "" : value.getActivityType());
         gen.writeStringField("activitySubType", value.getActivitySubType() == null ? "" : value.getActivitySubType());
-        gen.writeStringField("activityDate", value.getActivityDate() == null ? "" : sdf.format(value.getActivityDate()));
+        gen.writeStringField("activityDate", value.getActivityDate() == null ? "" : attemptDateFormat(value.getActivityDate()));
         gen.writeStringField("device", value.getDevice() == null ? "" : value.getDevice());
         gen.writeNumberField("distance", value.getDistance() == null ? -998 : value.getDistance());
         gen.writeNumberField("duration", value.getDuration() == null ? -998 : value.getDuration());
@@ -61,7 +63,7 @@ public class ActivityItemSerializer extends StdSerializer<ActivityItem> {
             }
             gen.writeEndArray();
         }
-        gen.writeStringField("lastUpdateTimestamp", value.getLastUpdateTimestamp() == null ? "" : sdf.format(value.getLastUpdateTimestamp()));
+        gen.writeStringField("lastUpdateTimestamp", value.getLastUpdateTimestamp() == null ? "" : attemptDateFormat(value.getLastUpdateTimestamp()));
         gen.writeEndObject();
     }
 
@@ -73,5 +75,29 @@ public class ActivityItemSerializer extends StdSerializer<ActivityItem> {
         ((ObjectNode) childNode1).put("key", s3Link == null ? "null" : s3Link.getKey());
         ((ObjectNode) rootNode).set("s3", childNode1);
         return rootNode;
+    }
+
+    private String attemptDateFormat(Date date) {
+        try {
+            return sdf.format(date);
+        } catch (Exception ex) {
+            return "";
+        }
+    }
+
+    private String attemptDateFormat(int date) {
+        try {
+            return sdf.format(date);
+        } catch (Exception ex) {
+            return "";
+        }
+    }
+
+    private String attemptTimeFormat(int date) {
+        try {
+            return stf.format(date);
+        } catch (Exception ex) {
+            return "";
+        }
     }
 }
