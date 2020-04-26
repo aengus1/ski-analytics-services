@@ -4,6 +4,8 @@ import com.amazonaws.services.lambda.runtime.Context;
 import com.amazonaws.services.lambda.runtime.RequestStreamHandler;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.node.ArrayNode;
+import com.fasterxml.jackson.databind.node.ObjectNode;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import ski.crunch.auth.utils.PasswordUtil;
@@ -18,20 +20,22 @@ import java.io.OutputStream;
 
 public class UserMigration implements RequestStreamHandler {
 
-    private static final Logger logger = LoggerFactory.getLogger(AddUserSettings.class);
+    private static final Logger logger = LoggerFactory.getLogger(UserMigration.class);
 
     private static final ObjectMapper objectMapper = new ObjectMapper();
     private UserDAO userDAO;
 
     @Override
     public void handleRequest(InputStream input, OutputStream os, Context context) throws IOException {
+        System.out.println("user migration called");
+        logger.info("user migration called");
         JsonNode eventNode = objectMapper.readTree(input);
 
         String tableName = System.getenv("userTable");
         String region = System.getenv("region");
         logger.debug("user table =  {}", tableName);
 
-        logger.info("input = " + eventNode.toPrettyString());
+        logger.info("input = " + eventNode.asText());
 
         DynamoFacade dynamoFacade = new DynamoFacade(region, tableName);
         userDAO = new UserDAO(dynamoFacade, tableName);
@@ -52,19 +56,22 @@ public class UserMigration implements RequestStreamHandler {
 
             if (PasswordUtil.verifyPassword(user.getPwhash(), password)) {
                 if (triggerSource.equals("UserMigration_Authentication")) {
-                    // TODO return success response
+                    writeSuccessResponse(os, eventNode, user);
                 } else if (triggerSource.equals("UserMigration_ForgotPassword")) {
-                    // TODO update user
+                    user.setPwhash(PasswordUtil.hashPassword(password));
+                    userDAO.updateUser(user);
+                    writeUpdatePasswordResponse(os, eventNode, user);
                 } else {
                     logger.error("unknown trigger source: {}", triggerSource);
-                    // TODO return error response
+
+                    objectMapper.writeValue(os, "Unknown Trigger Source");
                 }
             } else {
                 //failure
                 logger.warn("password verification failed for user: {} ( {} )", user.getId(), user.getEmail());
             }
         } catch (NotFoundException ex) {
-            // TODO return error response
+            objectMapper.writeValue(os, "User not found");
             logger.warn("user {} not found", eventNode.get("userName").asText());
 
         } catch (Exception ex) {
@@ -74,11 +81,34 @@ public class UserMigration implements RequestStreamHandler {
         }
     }
 
-    private void writeErrorResponse() throws IOException {
 
+    private void writeUpdatePasswordResponse(OutputStream os, JsonNode eventNode, UserSettingsItem user) throws IOException {
+        ObjectNode responseNode = (ObjectNode) eventNode.get("response");
+        ObjectNode userAttributes = (ObjectNode) responseNode.get("userAttributes");
+        userAttributes.put("email", user.getEmail());
+        userAttributes.put("email_verified", "true");
+
+        objectMapper.writeValue(os, eventNode);
     }
+    private void writeSuccessResponse(OutputStream os, JsonNode eventNode, UserSettingsItem user) throws IOException{
 
-    private void writeSuccessResponse(OutputStream os, JsonNode eventNode) throws IOException{
+        ObjectNode responseNode = (ObjectNode) eventNode.get("response");
+        ObjectNode userAttributes = (ObjectNode) responseNode.get("userAttributes");
+        userAttributes.put("email", user.getEmail());
+        userAttributes.put("email_verified", "true");
+        userAttributes.put("custom:familyName", user.getLastName());
+
+        responseNode.remove("finalUserStatus");
+        responseNode.remove("messageAction");
+        responseNode.remove("desiredDeliveryMediums");
+        responseNode.remove("forceAliasCreation");
+
+        responseNode.put("finalUserStatus", "CONFIRMED");
+        responseNode.put("messageAction", "SUPPRESS");
+        ArrayNode deliveryMedium = responseNode.putArray("desiredDeliveryMediums");
+        deliveryMedium.add("EMAIL");
+        responseNode.put("forceAliasCreation", "false");
+
         objectMapper.writeValue(os, eventNode);
     }
 }

@@ -7,6 +7,7 @@ provider:
   region: ${{file(../../infra/envs/global.tfvars.json):primary_region}}
   stage: ${{opt:stage}}
   stackName: ${{opt:stage}}-${{self:custom.projectName}}-${{self:service}}
+  deploymentBucket: ${{opt:stage}}-deployment-${{self:custom.projectName}}
   iamRoleStatements:
     - Effect: Allow
       Action:

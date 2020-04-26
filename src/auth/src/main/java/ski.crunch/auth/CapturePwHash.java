@@ -6,6 +6,7 @@ import com.amazonaws.services.lambda.runtime.Context;
 import com.amazonaws.services.lambda.runtime.RequestStreamHandler;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.node.ObjectNode;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import ski.crunch.auth.utils.PasswordUtil;
@@ -58,6 +59,21 @@ public class CapturePwHash implements RequestStreamHandler {
         userDAO.storeUserPwHash(eventNode.path("userName").asText(), hash, email, firstName.orElse(""), lastName.orElse(""));
         logger.info(objectMapper.writeValueAsString(eventNode));
 
+        if (email.endsWith("@simulator.amazonses.com")) {
+            ObjectNode responseNode = (ObjectNode) eventNode.get("response");
+            responseNode.remove("autoVerifyEmail");
+            responseNode.remove("autoConfirmUser");
+            responseNode.put("autoVerifyEmail", "true");
+            responseNode.put("autoConfirmUser", "true");
+        }
+//        eventNode.get("response").get("autoVerifyEmail")
+//        ObjectNode root = objectMapper.createObjectNode();
+//        ObjectNode response = objectMapper.createObjectNode();
+//
+//        response.put("autoVerifyEmail", email.endsWith("@simulator.amazonses.com") ? "true" : "false");
+//        response.put("autoVerifyPhone", "false");
+//        response.put("autoConfirmUser", "false");
+//        root.set("response", response);
 
         objectMapper.writeValue(os, eventNode);
 

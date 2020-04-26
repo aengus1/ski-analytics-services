@@ -197,9 +197,12 @@ class ActivityTest {
     @Test
     void generateDevAccessKey() {
         helper.signup();
-
-        String devAccessKey = helper.getDevAccessKey(devUserName, devPassword);
-        logger.info("DEV ACCESS KEY: " + devAccessKey);
+        try {
+            String devAccessKey = helper.getDevAccessKey(devUserName, devPassword);
+            logger.info("DEV ACCESS KEY: " + devAccessKey);
+        } catch (Exception ex) {
+            ex.printStackTrace();
+        }
     }
 
     @Disabled

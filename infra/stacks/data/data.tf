@@ -12,6 +12,7 @@
 ##                SSM parameters to store locationIq API key and Weather API Key
 ##                S3 bucket to store raw activity data
 ##                S3 bucket to store processed activity data
+##                S3 bucket to store deployment artifacts (sls lambdas)
 ##                Cloudformation stack to export variables to Serverless
 ##
 ## Dependencies:
@@ -237,6 +238,15 @@ resource aws_s3_bucket "activityBucket" {
 
 resource aws_s3_bucket "rawActivityBucket" {
   bucket = "${var.stage}-raw-activity-${var.project_name}"
+  tags = {
+    module = "data"
+    project = var.project_name
+    stage = var.stage
+  }
+}
+
+resource aws_s3_bucket "deploymentBucket" {
+  bucket = "${var.stage}-deployment-${var.project_name}"
   tags = {
     module = "data"
     project = var.project_name

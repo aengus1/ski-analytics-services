@@ -37,7 +37,7 @@ import static org.junit.jupiter.api.Assertions.*;
     private String jwtToken;
 
     @BeforeAll()
-      void setUp() throws IOException{
+      void setUp() throws Exception{
         helper = new IntegrationTestHelper();
         this.userId = helper.signup().orElseThrow(() -> new RuntimeException("Error occurred signing up"));
         this.jwtToken = helper.retrieveAccessToken();

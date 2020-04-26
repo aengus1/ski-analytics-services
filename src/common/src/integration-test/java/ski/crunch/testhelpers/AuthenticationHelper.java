@@ -210,6 +210,42 @@ AWSCredentials awsCreds = new ProfileCredentialsProvider(profileName).getCredent
         }
     }
 
+    Optional<String> performSignup(String username, String password) {
+        SignUpRequest request;
+        request = createSignupRequest(this.clientId, username, password);
+        try {
+            AWSCognitoIdentityProvider cognitoIdentityProvider = buildIdpWithCreds(profileName);
+
+            SignUpResult result = cognitoIdentityProvider.signUp(request);
+            /// System.out.println("signup result =" + result.getUserSub());
+            cognitoId = result.getUserSub();
+            return Optional.of(result.getUserSub());
+//
+//
+//            AdminConfirmSignUpRequest confirmSignUpRequest = new AdminConfirmSignUpRequest();
+//            confirmSignUpRequest.setUsername(username);
+//
+//            confirmSignUpRequest.setUserPoolId(this.userPoolID);
+//
+//            AdminConfirmSignUpResult confirmResult = cognitoIdentityProvider.adminConfirmSignUp(confirmSignUpRequest);
+//
+//            System.out.println("confirm result = " + confirmResult.toString());
+//            return Optional.of(result.getUserSub());
+        } catch(com.amazonaws.services.cognitoidp.model.UsernameExistsException une) {
+            if (retryAfterDeletingUser) {
+                this.deleteUser(username);
+                retryAfterDeletingUser = false;
+                return performAdminSignup(username, password);
+            } else {
+                return Optional.empty();
+            }
+        } catch (final Exception ex) {
+            ex.printStackTrace();
+            System.out.println("Exception" + ex);
+            return Optional.empty();
+        }
+    }
+
     void performForgotPassword(String userName, String newPassword, String userPoolID) {
          AdminResetUserPasswordRequest resetUserPasswordRequest = new AdminResetUserPasswordRequest();
          resetUserPasswordRequest.setUsername(userName);
@@ -252,11 +288,11 @@ AWSCredentials awsCreds = new ProfileCredentialsProvider(profileName).getCredent
      * @param password Password for the SRP request
      * @return the JWT token if the request is successful else null.
      */
-     String performSRPAuthentication(String username, String password) {
+     String performSRPAuthentication(String username, String password) throws Exception {
         String authresult = null;
 
         InitiateAuthRequest initiateAuthRequest = initiateUserSrpAuthRequest(username);
-        try {
+
             AWSCognitoIdentityProvider cognitoIdentityProvider = buildIdp();
             InitiateAuthResult initiateAuthResult = cognitoIdentityProvider.initiateAuth(initiateAuthRequest);
             if (ChallengeNameType.PASSWORD_VERIFIER.toString().equals(initiateAuthResult.getChallengeName())) {
@@ -265,10 +301,7 @@ AWSCredentials awsCreds = new ProfileCredentialsProvider(profileName).getCredent
                 //System.out.println(result);
                 authresult = result.getAuthenticationResult().getIdToken();
             }
-        } catch (final Exception ex) {
-            System.out.println("Exception" + ex);
 
-        }
         return authresult;
     }
 
@@ -288,6 +321,19 @@ AWSCredentials awsCreds = new ProfileCredentialsProvider(profileName).getCredent
         initiateAuthRequest.addAuthParametersEntry("USERNAME", username);
         initiateAuthRequest.addAuthParametersEntry("SRP_A", this.getA().toString(16));
         return initiateAuthRequest;
+    }
+
+    public String initiateUserPasswordAuthRequest(String username, String password) {
+
+        InitiateAuthRequest initiateAuthRequest = new InitiateAuthRequest();
+        initiateAuthRequest.setAuthFlow(AuthFlowType.USER_PASSWORD_AUTH);
+        initiateAuthRequest.setClientId(this.clientId);
+        //Only to be used if the pool contains the secret key.
+        //initiateAuthRequest.addAuthParametersEntry("SECRET_HASH", this.calculateSecretHash(this.clientId,this.secretKey,username));
+        initiateAuthRequest.addAuthParametersEntry("USERNAME", username);
+        initiateAuthRequest.addAuthParametersEntry("PASSWORD", password);
+
+        return initiateAuthRequest.getClientId();
     }
 
     private SignUpRequest createSignupRequest(String clientId, String userName, String password) {

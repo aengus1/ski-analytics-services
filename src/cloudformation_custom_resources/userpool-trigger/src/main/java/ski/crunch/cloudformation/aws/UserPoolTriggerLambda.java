@@ -23,7 +23,8 @@ public class UserPoolTriggerLambda extends AbstractCustomResourceLambda {
     @Override
     public CloudformationResponse doUpdate(CloudformationRequest request) throws Exception {
         logger.info("physical resource id on update: " + request.getPhysicalResourceId());
-        return processRequest(request, request.getPhysicalResourceId());
+        //return processRequest(request, request.getPhysicalResourceId());
+        return doCreate(request);
 //        CloudformationResponse response = doCreate(request);
 //        if (response.getStatus().equals(CloudformationResponse.ResponseStatus.SUCCESS)) {
 //            CloudformationResponse deleteResponse = doDelete(request);

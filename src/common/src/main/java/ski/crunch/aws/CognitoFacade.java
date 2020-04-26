@@ -2,10 +2,7 @@ package ski.crunch.aws;
 
 import com.amazonaws.services.cognitoidp.AWSCognitoIdentityProvider;
 import com.amazonaws.services.cognitoidp.AWSCognitoIdentityProviderClientBuilder;
-import com.amazonaws.services.cognitoidp.model.DescribeUserPoolRequest;
-import com.amazonaws.services.cognitoidp.model.DescribeUserPoolResult;
-import com.amazonaws.services.cognitoidp.model.UpdateUserPoolRequest;
-import com.amazonaws.services.cognitoidp.model.UpdateUserPoolResult;
+import com.amazonaws.services.cognitoidp.model.*;
 
 public class CognitoFacade {
 
@@ -27,4 +24,11 @@ public class CognitoFacade {
         return cognitoIdpClient.describeUserPool(describeUserPoolRequest);
     }
 
+    public GetUserResult getUser(GetUserRequest getUserRequest) {
+        return cognitoIdpClient.getUser(getUserRequest);
+    }
+
+    public AdminGetUserResult adminGetUser(AdminGetUserRequest getUserRequest) throws UserNotFoundException {
+        return cognitoIdpClient.adminGetUser(getUserRequest);
+    }
 }

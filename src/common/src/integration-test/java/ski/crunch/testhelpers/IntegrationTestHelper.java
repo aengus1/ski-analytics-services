@@ -83,9 +83,13 @@ public class IntegrationTestHelper {
         return authHelper.performAdminSignup(INTEGRATION_TEST_USERNAME, INTEGRATION_TEST_PASSWORD);
     }
 
-    public Optional<String> signup(String userName, String password) {
+    public Optional<String> signup(String userName, String password, boolean dontAutoConfirm) {
 
-        return authHelper.performAdminSignup(userName, password);
+        if(dontAutoConfirm) {
+            return authHelper.performSignup(userName, password);
+        } else {
+            return authHelper.performAdminSignup(userName, password);
+        }
     }
 
     public void resetPassword(String userName, String newPassword, String userPoolId) {
@@ -99,15 +103,18 @@ public class IntegrationTestHelper {
     public String getUserPoolId() {
         return authHelper.getUserPoolID();
     }
-    public String getDevAccessKey(String username, String password) {
+    public String getDevAccessKey(String username, String password) throws Exception{
         return authHelper.performSRPAuthentication(username, password);
     }
 
-    public String retrieveAccessToken() {
+    public String signIn(String username, String password) throws Exception {
+        return authHelper.initiateUserPasswordAuthRequest(username, password);
+    }
+    public String retrieveAccessToken() throws Exception{
         return authHelper.performSRPAuthentication(INTEGRATION_TEST_USERNAME, INTEGRATION_TEST_PASSWORD);
     }
 
-    public String retrieveAccessToken(String username, String password) {
+    public String retrieveAccessToken(String username, String password) throws  Exception{
         return authHelper.performSRPAuthentication(username, password);
     }
 

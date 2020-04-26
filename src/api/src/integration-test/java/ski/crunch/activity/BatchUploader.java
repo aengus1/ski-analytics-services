@@ -24,7 +24,7 @@ public class BatchUploader {
     private String jwtToken;
     private IntegrationTestHelper helper;
 
-    public BatchUploader() throws IOException {
+    public BatchUploader() throws Exception {
         helper = new IntegrationTestHelper();
         this.userId = helper.signup().orElseThrow(() -> new RuntimeException("Error occurred signing up"));
         this.jwtToken = helper.retrieveAccessToken();

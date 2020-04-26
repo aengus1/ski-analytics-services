@@ -8,10 +8,12 @@ import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import ski.crunch.auth.utils.PasswordUtil;
 import ski.crunch.aws.CredentialsProviderFactory;
 import ski.crunch.aws.CredentialsProviderType;
 import ski.crunch.aws.DynamoFacade;
 import ski.crunch.dao.UserDAO;
+import ski.crunch.model.UserSettingsItem;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -47,9 +49,23 @@ public class AddUserSettings implements RequestStreamHandler {
             logger.error("Unable to obtain default aws credentials", e);
         }
 
-        userDAO.initializeUserSettings(eventNode.path("userName").asText());
-        logger.info(objectMapper.writeValueAsString(eventNode));
+        if (eventNode.get("triggerSource").asText().equals("PostConfirmation_ConfirmSignUp")
+                || eventNode.get("triggerSource").equals("PostConfirmation_AdminConfirmSignUp")) {
+            userDAO.initializeUserSettings(eventNode.path("userName").asText());
+            logger.info(objectMapper.writeValueAsString(eventNode));
 
+        } else if (eventNode.get("triggerSource").asText().equals("PostConfirmation_ConfirmForgotPassword")) {
+            String pw = eventNode.path("request").path("validationData").path("pw").asText();
+
+            //TODO -> remove this UNSECURE
+            logger.info("hit forgot password: " + pw);
+
+            UserSettingsItem user = userDAO.lookupUser(eventNode.path("userName").asText());
+            user.setPwhash(PasswordUtil.hashPassword(pw));
+            userDAO.updateUser(user);
+        } else {
+            logger.warn("UNKNOWN TRIGGER SOURCE" + eventNode.get("triggerSource"));
+        }
 
         objectMapper.writeValue(os, eventNode);
 
