@@ -57,11 +57,9 @@ public class AddUserSettings implements RequestStreamHandler {
         } else if (eventNode.get("triggerSource").asText().equals("PostConfirmation_ConfirmForgotPassword")) {
             String pw = eventNode.path("request").path("validationData").path("pw").asText();
 
-            //TODO -> remove this UNSECURE
-            logger.info("hit forgot password: " + pw);
-
             UserSettingsItem user = userDAO.lookupUser(eventNode.path("userName").asText());
             user.setPwhash(PasswordUtil.hashPassword(pw));
+
             userDAO.updateUser(user);
         } else {
             logger.warn("UNKNOWN TRIGGER SOURCE" + eventNode.get("triggerSource"));

@@ -40,6 +40,7 @@ public abstract class AbstractCustomResourceLambda implements RequestHandler<Map
 
     public Context execute(Map<String, Object> input, Context context) {
         logger.info("Input: " + input);
+        logger.info("Log stream name: " + context.getLogStreamName());
         if (executorService.isShutdown()) {
             executorService = Executors.newSingleThreadExecutor();
         }
@@ -117,6 +118,7 @@ public abstract class AbstractCustomResourceLambda implements RequestHandler<Map
 
         logger.info("response = "  + response);
         String responseUrl = (String) input.get("ResponseURL");
+        //response = response.withPhysicalResourceId(context.getLogStreamName());
 
         try {
 

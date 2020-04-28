@@ -332,8 +332,8 @@ AWSCredentials awsCreds = new ProfileCredentialsProvider(profileName).getCredent
         //initiateAuthRequest.addAuthParametersEntry("SECRET_HASH", this.calculateSecretHash(this.clientId,this.secretKey,username));
         initiateAuthRequest.addAuthParametersEntry("USERNAME", username);
         initiateAuthRequest.addAuthParametersEntry("PASSWORD", password);
-
-        return initiateAuthRequest.getClientId();
+        AWSCognitoIdentityProvider cognitoIdentityProvider = buildIdpWithCreds(profileName);
+        return  cognitoIdentityProvider.initiateAuth(initiateAuthRequest).getAuthenticationResult().getAccessToken();
     }
 
     private SignUpRequest createSignupRequest(String clientId, String userName, String password) {

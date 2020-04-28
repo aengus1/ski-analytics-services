@@ -1,6 +1,5 @@
 package ski.crunch.auth;
 
-import com.amazonaws.auth.profile.ProfileCredentialsProvider;
 import com.amazonaws.services.cognitoidp.model.AdminGetUserRequest;
 import com.amazonaws.services.cognitoidp.model.AdminGetUserResult;
 import com.amazonaws.services.cognitoidp.model.AttributeType;
@@ -20,8 +19,12 @@ import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.*;
 
+/**
+ * This class provides integration tests for the cognito triggers that are set up.  Collectively they verify that
+ * the user migration trigger, post confirmation trigger and pre-signup triggers are behaving as expected.
+ */
 @TestMethodOrder(MethodOrderer.OrderAnnotation.class)
-@TestInstance(TestInstance.Lifecycle.PER_CLASS)
+@TestInstance(TestInstance.Lifecycle.PER_METHOD)
 public class AuthIntegrationTest {
 
     private static final Logger logger = LoggerFactory.getLogger(AuthIntegrationTest.class);
@@ -29,7 +32,7 @@ public class AuthIntegrationTest {
     private String accessKey = null;
     private String cognitoId = null;
     private String initialPwHash = null;
-    private final String devUserName = "success@simulator.amazonses.com";
+    private final String devUserName = "success-user1@simulator.amazonses.com";
     private final String devPassword = "authTestPassword123";
     private IntegrationTestHelper helper;
     private DynamoFacade dynamo = null;
@@ -38,7 +41,7 @@ public class AuthIntegrationTest {
 
 
 
-    @BeforeAll
+    @BeforeEach
     public void setup() throws IOException {
         // sign up a user
 
@@ -46,8 +49,6 @@ public class AuthIntegrationTest {
         this.cognitoId = helper.signup(devUserName, devPassword, true).orElseThrow(() -> new RuntimeException("Error occurred signing up"));
 
         String authRegion = helper.getServerlessState(helper.getPrefix()+"auth").getRegion();
-        ProfileCredentialsProvider profileCredentialsProvider = helper.getCredentialsProvider();
-        System.out.println("auth region = " + authRegion);
 
         this.dynamo = new DynamoFacade(helper.getServerlessState(helper.getPrefix()+"auth").getRegion(),
                 helper.getUserTable(), helper.getCredentialsProvider());
@@ -55,7 +56,6 @@ public class AuthIntegrationTest {
         this.cognitoFacade = new CognitoFacade(authRegion);
     }
 
-    @Order(1)
     @Test
     public void testSignup() {
 
@@ -75,7 +75,6 @@ public class AuthIntegrationTest {
 
     }
 
-    @Order(2)
     @Test
     public void testForgotPassword() {
         String userPoolId = helper.getUserPoolId();
@@ -86,7 +85,6 @@ public class AuthIntegrationTest {
 
     }
 
-    @Order(3)
     @Test
     public void testUserMigrationIsSecure() {
         String nonExistantUser = "notArealUser";
@@ -98,12 +96,11 @@ public class AuthIntegrationTest {
         assertThrows(Exception.class, () -> helper.retrieveAccessToken(devUserName, nonExistantUsersPassword));
     }
 
-    @Order(4)
     @Test
     public void testUserMigration() throws UserNotFoundException, Exception {
         // delete the user from cognito
+            helper.destroyUser(devUserName);
             // attempt sign in
-            //String accessToken = helper.signIn(devUserName, devPassword);
             assertThrows(Exception.class, () -> {
                 String accessToken = helper.signIn("success-user1@simulator.amazonses.com", "crapPass12!");
                 System.out.println("access token = " + accessToken);
@@ -113,7 +110,7 @@ public class AuthIntegrationTest {
 
     }
 
-    @Order(5)
+
     @Test
     public void testUserMigrationRecreatesUser() throws UserNotFoundException, Exception {
         // delete the user from cognito
@@ -121,10 +118,10 @@ public class AuthIntegrationTest {
         try {
             // attempt sign in
             //String accessToken = helper.signIn(devUserName, devPassword);
-            String clientId = helper.signIn(devUserName, "crapPass12!");
-            System.out.println("client id = " + clientId);
+            String accessToken = helper.signIn(devUserName, devPassword);
+            System.out.println("access token = " + accessToken);
             // verify that sign in is successful
-            assertNotNull(clientId);
+            assertNotNull(accessToken);
         }catch(Exception ex) {
             fail("expected user migration trigger to allow sign in", ex);
         }
@@ -140,6 +137,8 @@ public class AuthIntegrationTest {
             Optional<AttributeType> email = result.getUserAttributes().stream().filter(x -> x.getName().equals("email")).findFirst();
             Optional<AttributeType> familyName = result.getUserAttributes().stream().filter(x -> x.getName().equals("custom:familyName")).findFirst();
 
+            result.getUserAttributes().stream().forEach(x -> System.out.println(x.getName()));
+
             assertTrue(email.isPresent());
             //assertTrue(familyName.isPresent());
 
@@ -148,15 +147,41 @@ public class AuthIntegrationTest {
             //assertEquals(user.getLastName(), familyName);
             //assertEquals(cognitoId, result.getUsername());
 
+        } else {
+            fail("did not find email user attribute");
+        }
+
+        // remove the user settings item
+        try{
+            dynamo.getMapper().delete(userDAO.lookupUser(devUserName));
+        } catch (Exception ex) {
+            ex.printStackTrace();
         }
     }
 
-    @AfterAll
+
+    @Test
+    public void testUserMigrationDisallowsWrongPassword() throws UserNotFoundException, Exception {
+        // delete the user from cognito
+        helper.destroyUser(devUserName);
+        assertThrows(Exception.class, () -> {
+            helper.signIn(devUserName, "wrongPassword12!");
+        });
+
+    }
+
+
+    @AfterEach
     public void tearDown() {
         try {
             helper.destroyUser(devUserName);
-            helper.removeUserSettings(cognitoId);
         }catch(Exception ex) {
+            ex.printStackTrace();
+        }
+
+        try {
+            helper.removeUserSettings(cognitoId);
+        } catch(Exception ex) {
             ex.printStackTrace();
         }
     }

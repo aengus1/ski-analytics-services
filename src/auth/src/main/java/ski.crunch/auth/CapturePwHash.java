@@ -58,13 +58,14 @@ public class CapturePwHash implements RequestStreamHandler {
         Optional<String> lastName = Optional.of(eventNode.path("request").path("userAttributes").path("custom:familyName").asText());
         userDAO.storeUserPwHash(eventNode.path("userName").asText(), hash, email, firstName.orElse(""), lastName.orElse(""));
         logger.info(objectMapper.writeValueAsString(eventNode));
-
+        logger.info("email = {}", email);
         if (email.endsWith("@simulator.amazonses.com")) {
             ObjectNode responseNode = (ObjectNode) eventNode.get("response");
             responseNode.remove("autoVerifyEmail");
             responseNode.remove("autoConfirmUser");
             responseNode.put("autoVerifyEmail", "true");
             responseNode.put("autoConfirmUser", "true");
+            ((ObjectNode)eventNode).set("response", responseNode);
         }
 //        eventNode.get("response").get("autoVerifyEmail")
 //        ObjectNode root = objectMapper.createObjectNode();

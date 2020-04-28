@@ -13,6 +13,7 @@ import ski.crunch.aws.DynamoFacade;
 import ski.crunch.dao.UserDAO;
 import ski.crunch.model.UserSettingsItem;
 import ski.crunch.utils.NotFoundException;
+import ski.crunch.utils.StreamUtils;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -28,14 +29,19 @@ public class UserMigration implements RequestStreamHandler {
     @Override
     public void handleRequest(InputStream input, OutputStream os, Context context) throws IOException {
         System.out.println("user migration called");
-        logger.info("user migration called");
-        JsonNode eventNode = objectMapper.readTree(input);
+        logger.info("user migration called - attempting to force update");
+        String inputStr = StreamUtils.convertStreamToString(input);
+        logger.info("input from string = " + inputStr);
+        JsonNode eventNode = objectMapper.readTree(inputStr);
+
+        //input.reset();
+        //JsonNode eventNode = objectMapper.readTree(input);
 
         String tableName = System.getenv("userTable");
         String region = System.getenv("region");
         logger.debug("user table =  {}", tableName);
 
-        logger.info("input = " + eventNode.asText());
+        logger.info("input = {}", eventNode.asText());
 
         DynamoFacade dynamoFacade = new DynamoFacade(region, tableName);
         userDAO = new UserDAO(dynamoFacade, tableName);
@@ -45,7 +51,7 @@ public class UserMigration implements RequestStreamHandler {
             logger.info("trigger source = {}", eventNode.get("triggerSource").asText());
 
             logger.info("user = {}", eventNode.get("userName").asText());
-            logger.info("pw = {}", eventNode.get("request").get("password").asText());
+ 
             logger.info("validation data = {}", eventNode.get("request").get("validationData").asText());
 
             String password = eventNode.get("request").get("password").asText();
@@ -93,10 +99,13 @@ public class UserMigration implements RequestStreamHandler {
     private void writeSuccessResponse(OutputStream os, JsonNode eventNode, UserSettingsItem user) throws IOException{
 
         ObjectNode responseNode = (ObjectNode) eventNode.get("response");
-        ObjectNode userAttributes = (ObjectNode) responseNode.get("userAttributes");
+        responseNode.remove("userAttributes");
+        ObjectNode userAttributes = responseNode.putObject("userAttributes");
+
         userAttributes.put("email", user.getEmail());
         userAttributes.put("email_verified", "true");
-        userAttributes.put("custom:familyName", user.getLastName());
+        userAttributes.put("custom:familyName", user.getLastName() == null ? "" : user.getLastName());
+        logger.info("user last name = {}",user.getLastName());
 
         responseNode.remove("finalUserStatus");
         responseNode.remove("messageAction");
@@ -109,6 +118,8 @@ public class UserMigration implements RequestStreamHandler {
         deliveryMedium.add("EMAIL");
         responseNode.put("forceAliasCreation", "false");
 
+        ((ObjectNode) eventNode).set("response", responseNode);
+        logger.info("response = " + objectMapper.writeValueAsString(eventNode));
         objectMapper.writeValue(os, eventNode);
     }
 }
