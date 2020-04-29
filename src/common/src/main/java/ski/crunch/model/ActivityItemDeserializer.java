@@ -5,6 +5,7 @@ import com.amazonaws.services.dynamodbv2.datamodeling.S3Link;
 import com.fasterxml.jackson.core.JsonParser;
 import com.fasterxml.jackson.databind.DeserializationContext;
 import com.fasterxml.jackson.databind.JsonNode;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.deser.std.StdDeserializer;
 import com.fasterxml.jackson.databind.node.ArrayNode;
 import org.slf4j.Logger;
@@ -41,16 +42,16 @@ public class ActivityItemDeserializer extends StdDeserializer<ActivityItem> {
         }
 
         ActivityItem activityItem = new ActivityItem();
-        try {
+
             JsonNode node = p.getCodec().readTree(p);
-            if (node.get("id") == null || node.get("cognitoId") == null) {
+            if (node.get("id") == null || node.get("userId") == null) {
                 throw new IOException("Missing key");
             }
             String id = node.get("id").textValue();
             activityItem.setId(id);
 
-            String cognitoId = node.get("cognitoId").textValue();
-            activityItem.setCognitoId(cognitoId);
+//            String cognitoId = node.get("cognitoId").textValue();
+//            activityItem.setCognitoId(cognitoId);
 
             if (node.get("date") != null && !node.get("date").asText().isEmpty()) {
                 Date date = attemptDateParse(node.get("date").asText());
@@ -169,20 +170,20 @@ public class ActivityItemDeserializer extends StdDeserializer<ActivityItem> {
             }
 
             return activityItem;
-        } catch (Exception ex) {
-            ex.printStackTrace();
-            logger.error("deserialization exception", ex);
-            return null;
-        }
+
     }
 
     private S3Link createS3Link(String nodeName, JsonNode node, DeserializationContext ctxt, String region,
                                 DynamoDBMapper mapper) throws IOException {
         if (node.get(nodeName) != null && ctxt.findInjectableValue("mapper", null, null) != null) {
 
-            JsonNode jsonNode = node.get(nodeName);
-            //System.out.println("key = " + jsonNode.get("s3").get("key").asText());
-            //System.out.println("bucket = " + jsonNode.get("s3").get("bucket").asText());
+            JsonNode jsonNode =  node.get(nodeName);
+//            System.out.println("key = " + jsonNode.get("s3").get("key").asText());
+//            System.out.println("bucket = " + jsonNode.get("s3").get("bucket").asText());
+            try {
+                ObjectMapper objectMapper = new ObjectMapper();
+                jsonNode  = objectMapper.readTree(node.get(nodeName).asText());
+            } catch (Exception ex) {}
             if (jsonNode.has("s3") && jsonNode.get("s3").has("bucket") && jsonNode.get("s3").has("key")) {
                 return mapper.createS3Link(region, jsonNode.get("s3").get("bucket").asText(), jsonNode.get("s3").get("key").asText());
             }

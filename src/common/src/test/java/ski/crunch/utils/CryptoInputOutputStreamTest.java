@@ -108,7 +108,11 @@ public class CryptoInputOutputStreamTest {
 
     @AfterAll
     public void tearDown() throws IOException {
-        Files.delete(destFile.toPath());
-        Files.delete(sourceFile.toPath());
+        try {
+            Files.delete(destFile.toPath());
+        }catch ( Exception ex ) {}
+        try {
+            Files.delete(sourceFile.toPath());
+        }catch(Exception ex) {}
     }
 }

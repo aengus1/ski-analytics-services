@@ -16,7 +16,7 @@
     "ascent" : 170,
     "sourceIp" : "64.180.10.247",
     "rawActivity" : "{\"s3\":{\"bucket\":\"dev-raw-activity-crunch-ski\",\"key\":\"4feb05ae-e3de-44e6-8267-53080dfed3b7\",\"region\":null}}",
-    "processedActivity" : "{\"s3\":{\"bucket\":\"dev-activity-crunch-ski\",\"key\":\"5ad104cd-6ed5-4b2b-bf34-77760e5344b6/4feb05ae-e3de-44e6-8267-53080dfed3b7.pbf\",\"region\":null}}",
+    "processedActivity" : "{\"s3\":{\"bucket\":\"dev-activity-crunch-ski\",\"key\":\"integration_test_user@crunch.ski/4feb05ae-e3de-44e6-8267-53080dfed3b7.pbf\",\"region\":null}}",
     "id" : "4feb05ae-e3de-44e6-8267-53080dfed3b7",
     "activitySubType" : "GENERIC_SUBSPORT",
     "activityType" : "RUNNING",

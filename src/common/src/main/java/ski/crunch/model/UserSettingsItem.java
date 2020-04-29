@@ -38,6 +38,15 @@ public class UserSettingsItem implements Jsonable {
         this.id = id;
     }
 
+    @DynamoDBIndexHashKey(globalSecondaryIndexName = "email-index")
+    @DynamoDBAttribute(attributeName = "email")
+    public String getEmail() {
+        return this.email;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
+    }
 
     @DynamoDBAttribute(attributeName = "height")
     public int getHeight() {
@@ -146,15 +155,6 @@ public class UserSettingsItem implements Jsonable {
         this.firstName = firstName;
     }
 
-    @DynamoDBIndexHashKey(globalSecondaryIndexName = "email-index")
-    @DynamoDBAttribute(attributeName = "email")
-    public String getEmail() {
-        return this.email;
-    }
-
-    public void setEmail(String email) {
-        this.email = email;
-    }
 
     @DynamoDBAttribute(attributeName = "lastName")
     public String getLastName() {

@@ -176,7 +176,7 @@ public class ActivityService {
         }
 
         //2. check this user owns the resource
-        if (!confirmActivityOwner(id, cognitoId)) {
+        if (!confirmActivityOwner(id, email)) {
             //return error response
             logger.info("user: " + email + " attempted to access resource " + id + " that they don't own");
             return ApiGatewayResponse.builder()
@@ -231,7 +231,7 @@ public class ActivityService {
         String bucket = null;
         String id = "";
         String key = "";
-        final String cognitoId;
+        final String emailAddress;
         String newKey = "";
         try {
 
@@ -264,9 +264,9 @@ public class ActivityService {
 
             //2. extract activity id
             id = extractActivityId(key);
-            cognitoId = extractCognitoId(key);
+            emailAddress = extractEmailAddress(key);
             System.out.println("id = " + id);
-            System.out.println("cognitoId = " + cognitoId);
+            System.out.println("email address = " + emailAddress);
             newKey = id.concat(".pbf");
 
         } catch (ParseException ex) {
@@ -338,8 +338,8 @@ public class ActivityService {
             ConvertibleOutputStream cos = new ConvertibleOutputStream();
             result.writeTo(cos);
             System.out.println("processed bucket = " + s3ProcessedActivityBucket);
-            s3Service.putObject(s3ProcessedActivityBucket, cognitoId+"/"+newKey, cos.toInputStream());
-            S3Link s3Link = dynamo.getMapper().createS3Link(s3ProcessedActivityBucket, cognitoId+"/"+result.getId()+".pbf");
+            s3Service.putObject(s3ProcessedActivityBucket, emailAddress+"/"+newKey, cos.toInputStream());
+            S3Link s3Link = dynamo.getMapper().createS3Link(s3ProcessedActivityBucket, emailAddress+"/"+result.getId()+".pbf");
             System.out.println("s3 link = " + s3Link.toJson());
 
 //            String cognitoIdentityId = null;
@@ -353,14 +353,14 @@ public class ActivityService {
 //            System.out.println("id1 = " + context.getIdentity());
 //            System.out.println("id = " + context.getIdentity().getIdentityId());
             // save the link to the processed file
-            activityDAO.saveLinkToProcessed(result.getId(), cognitoId, s3Link);
+            activityDAO.saveLinkToProcessed(result.getId(), emailAddress, s3Link);
 
             //6. add search fields to activity table
-            activityDAO.saveActivitySearchFields(result, cognitoId);
+            activityDAO.saveActivitySearchFields(result, emailAddress);
 
 
             //7. update user settings with possible new devices / activityTypes
-            Optional<ActivityItem> activityItemOptional = activityDAO.getActivityItem(id, cognitoId);
+            Optional<ActivityItem> activityItemOptional = activityDAO.getActivityItem(id, emailAddress);
             if (!activityItemOptional.isPresent()) {
                 logger.error("Activity Item " + id + " not present");
                 return ApiGatewayResponse.builder()
@@ -375,7 +375,7 @@ public class ActivityService {
             Set<String> activityTypes = result.getSessionsList().stream().map(x -> x.getSport().toString()).collect(Collectors.toSet());
             try {
                 userDAO.addDeviceAndActivityType(
-                        activityItem.getCognitoId(),
+                        activityItem.getUserId(),
                         device,
                         activityTypes
                 );
@@ -389,8 +389,8 @@ public class ActivityService {
             //9. call back the client
 
             String connectionId = "";
-            Optional<UserSettingsItem> user = userDAO.getUserSettings(cognitoId);
-            connectionId = user.orElseThrow(() -> new NotFoundException(("User " + cognitoId + " not found"))).getConnectionId();
+            Optional<UserSettingsItem> user = userDAO.getUserByEmailAddress(emailAddress);
+            connectionId = user.orElseThrow(() -> new NotFoundException(("User " + emailAddress + " not found"))).getConnectionId();
             logger.info("connection Id = " + connectionId);
 
 
@@ -450,12 +450,12 @@ public class ActivityService {
     }
 
 
-    public String extractCognitoId(String key) throws ParseException {
+    public String extractEmailAddress(String key) throws ParseException {
         String id = "";
 
         if (key != null && key.length() > 1 && key.contains("/")) {
             id = key.substring(0, key.indexOf("/"));
-            logger.debug("extracted CognitoId: " + id);
+            logger.debug("extracted Email Address: " + id);
         } else {
             logger.error("invalid key name: " + key);
             throw new ParseException("invalid key name for activity " + key);
@@ -530,11 +530,11 @@ public class ActivityService {
     }
 
 
-    private boolean confirmActivityOwner(String activityId, String cognitoId) {
+    private boolean confirmActivityOwner(String activityId, String email) {
 
-        Optional<ActivityItem> item = activityDAO.getActivityItem(activityId, cognitoId);
+        Optional<ActivityItem> item = activityDAO.getActivityItem(activityId, email);
         if (item.isPresent()) {
-            return item.get().getCognitoId().trim().equalsIgnoreCase(cognitoId.trim());
+            return item.get().getUserId().trim().equalsIgnoreCase(email.trim());
         } else {
             return false;
         }

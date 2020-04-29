@@ -33,7 +33,7 @@ public class ActivityItemSerializer extends StdSerializer<ActivityItem> {
     public void serialize(ActivityItem value, JsonGenerator gen, SerializerProvider provider) throws IOException {
         gen.writeStartObject();
         gen.writeStringField("id", value.getId());
-        gen.writeStringField("cognitoId", value.getCognitoId());
+        //gen.writeStringField("cognitoId", value.getCognitoId());
         gen.writeStringField("date", value.getDateOfUpload() == null ? "" : attemptDateFormat(value.getDateOfUpload()));
         gen.writeObjectField("rawActivity", buildS3Link(value.getRawActivity()));
         gen.writeObjectField("processedActivity", buildS3Link(value.getProcessedActivity()));

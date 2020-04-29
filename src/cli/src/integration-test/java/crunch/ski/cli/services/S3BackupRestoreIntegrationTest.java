@@ -13,7 +13,7 @@ import org.junit.jupiter.api.TestInstance;
  * assert data equality with initial
  */
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
-public class LocalBackupRestoreIntegrationTest {
+public class S3BackupRestoreIntegrationTest {
 
     @BeforeAll
     public void setup() {

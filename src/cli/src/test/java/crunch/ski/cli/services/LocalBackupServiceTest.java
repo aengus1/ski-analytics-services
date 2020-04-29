@@ -180,21 +180,19 @@ public class LocalBackupServiceTest {
     public void testUserBackupCorrectlyBuildsActivitiesString() throws IOException {
 
         StringBuilder expectedSb = new StringBuilder();
-        expectedSb.append("[ {\"id\":\"actid1\",\"cognitoId\":\"abc123\",\"date\":\"\",\"rawActivity\":{\"s3\":{\"bucket\":\"null\",\"key\":\"null\"}},\"processedActivity\":{\"s3\":{\"bucket\":\"null\",\"key\":\"null\"}},\"sourceIp\":\"\",\"userAgent\":\"\",\"userId\":\"123\",\"status\":\"\",\"rawFileType\":\"\",\"timeOfDay\":\"\",\"activityType\":\"\",\"activitySubType\":\"\",\"activityDate\":\"\",\"device\":\"\",\"distance\":-998.0,\"duration\":-998.0,\"avHr\":-998,\"maxHr\":-998,\"avSpeed\":-998.0,\"maxSpeed\":-998.0,\"ascent\":10.0,\"descent\":-998.0,\"notes\":\"test notes\",\"lastUpdateTimestamp\":\"\"}")
-                .append(", {\"id\":\"actid2\",\"cognitoId\":\"abc123\",\"date\":\"\",\"rawActivity\":{\"s3\":{\"bucket\":\"null\",\"key\":\"null\"}},\"processedActivity\":{\"s3\":{\"bucket\":\"null\",\"key\":\"null\"}},\"sourceIp\":\"\",\"userAgent\":\"\",\"userId\":\"123\",\"status\":\"\",\"rawFileType\":\"\",\"timeOfDay\":\"\",\"activityType\":\"\",\"activitySubType\":\"\",\"activityDate\":\"\",\"device\":\"\",\"distance\":-998.0,\"duration\":-998.0,\"avHr\":-998,\"maxHr\":-998,\"avSpeed\":-998.0,\"maxSpeed\":-998.0,\"ascent\":12.0,\"descent\":-998.0,\"notes\":\"test again\",\"lastUpdateTimestamp\":\"\"}]");
+        expectedSb.append("[ {\"id\":\"actid1\",\"date\":\"\",\"rawActivity\":{\"s3\":{\"bucket\":\"null\",\"key\":\"null\"}},\"processedActivity\":{\"s3\":{\"bucket\":\"null\",\"key\":\"null\"}},\"sourceIp\":\"\",\"userAgent\":\"\",\"userId\":\"aengusmccullough@hotmail.com\",\"status\":\"\",\"rawFileType\":\"\",\"timeOfDay\":\"\",\"activityType\":\"\",\"activitySubType\":\"\",\"activityDate\":\"\",\"device\":\"\",\"distance\":-998.0,\"duration\":-998.0,\"avHr\":-998,\"maxHr\":-998,\"avSpeed\":-998.0,\"maxSpeed\":-998.0,\"ascent\":10.0,\"descent\":-998.0,\"notes\":\"test notes\",\"lastUpdateTimestamp\":\"\"}")
+                .append(", {\"id\":\"123\",\"date\":\"\",\"rawActivity\":{\"s3\":{\"bucket\":\"null\",\"key\":\"null\"}},\"processedActivity\":{\"s3\":{\"bucket\":\"null\",\"key\":\"null\"}},\"sourceIp\":\"\",\"userAgent\":\"\",\"userId\":\"aengusmccullough@hotmail.com\",\"status\":\"\",\"rawFileType\":\"\",\"timeOfDay\":\"\",\"activityType\":\"\",\"activitySubType\":\"\",\"activityDate\":\"\",\"device\":\"\",\"distance\":-998.0,\"duration\":-998.0,\"avHr\":-998,\"maxHr\":-998,\"avSpeed\":-998.0,\"maxSpeed\":-998.0,\"ascent\":12.0,\"descent\":-998.0,\"notes\":\"test again\",\"lastUpdateTimestamp\":\"\"}]");
 
         List<ActivityItem> activityItems = new ArrayList<>();
         ActivityItem item1 = new ActivityItem();
-        item1.setUserId("123");
+        item1.setUserId("aengusmccullough@hotmail.com");
         item1.setId("actid1");
-        item1.setCognitoId("abc123");
         item1.setNotes("test notes");
         item1.setAscent(10d);
 
         ActivityItem item2 = new ActivityItem();
-        item2.setId("actid2");
-        item2.setUserId("123");
-        item2.setCognitoId("abc123");
+        item2.setId("123");
+        item2.setUserId("aengusmccullough@hotmail.com");
         item2.setNotes("test again");
         item2.setAscent(12d);
 
@@ -207,7 +205,7 @@ public class LocalBackupServiceTest {
         backupOptions.setUsers(Arrays.asList("aengusmccullough@hotmail.com"));
         when(userDAO.lookupUser("aengusmccullough@hotmail.com")).thenReturn(userSettingsItem);
 
-        when(activityDAO.getActivitiesByUser(userSettingsItem.getId())).thenReturn(activityItems);
+        when(activityDAO.getActivitiesByUser(userSettingsItem.getEmail())).thenReturn(activityItems);
 
         try {
             backupService.apply();
@@ -216,7 +214,7 @@ public class LocalBackupServiceTest {
         }
 
 
-        File userDestination = new File(backupOptions.getDestDir()+"/" + userSettingsItem.getId(), "activities.json");
+        File userDestination = new File(backupOptions.getDestDir()+"/" + userSettingsItem.getEmail(), "activities.json");
         assertEquals(expectedSb.toString().replaceAll(" ", "").replaceAll(System.lineSeparator(), ""),
                 FileUtils.readFileToString(userDestination).replaceAll(" ", "").replaceAll(System.lineSeparator(),""));
     }

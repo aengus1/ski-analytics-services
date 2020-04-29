@@ -247,12 +247,12 @@ public class LocalBackupService implements BackupRestoreService {
     void userDataBackup(String user, File destDir) throws IOException {
 
         UserSettingsItem userSettingsItem = userDAO.lookupUser(user);
-        File userDestination = new File(destDir, userSettingsItem.getId());
+        File userDestination = new File(destDir, userSettingsItem.getEmail());
         userDestination.mkdir();
         String userStr = options.getEncryptionKey() == null ? userSettingsItem.toJsonString() :
                 EncryptionUtils.encrypt(userSettingsItem.toJsonString(), options.getEncryptionKey());
 
-        List<ActivityItem> activityItems = activityDAO.getActivitiesByUser(userSettingsItem.getId());
+        List<ActivityItem> activityItems = activityDAO.getActivitiesByUser(userSettingsItem.getEmail());
 
         String activitiesStr = activityItems.stream().map(x -> {
             try {
@@ -280,7 +280,8 @@ public class LocalBackupService implements BackupRestoreService {
     void backupS3ActivityFiles(List<ActivityItem> activityItems, UserSettingsItem userSettingsItem, File userDestination) {
         File rawDir = new File(userDestination, RAW_ACTIVITY_FOLDER);
         File procDir = new File(userDestination, PROCESSED_ACTIVITY_FOLDER);
-        File tempDir = new File(System.getProperty("java.io.tmpdir", userSettingsItem.getId()));
+
+        File tempDir = new File(System.getProperty("java.io.tmpdir"), userSettingsItem.getEmail()+"_tmp");
         tempDir.mkdir();
         File tempRaw = new File(tempDir, RAW_ACTIVITY_FOLDER);
         File tempProc = new File(tempDir, PROCESSED_ACTIVITY_FOLDER);

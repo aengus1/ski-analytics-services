@@ -17,21 +17,16 @@ public class UserDAO extends AbstractDAO {
         super(dynamo, tableName);
     }
 
-    public Optional<UserSettingsItem> getUserSettings(String cognitoId) {
+    public Optional<UserSettingsItem> getUserSettings(String id) {
         dynamoDBService.updateTableName(tableName);
-        logger.info("cognitoId: " + cognitoId);
-        if (cognitoId == null || cognitoId.isEmpty()) {
-            logger.error("cognito id null or empty" );
+        logger.info("id: " + id);
+        if (id == null || id.isEmpty()) {
+            logger.error("id null or empty");
             return Optional.empty();
         }
 
-//        DynamoDBQueryExpression<UserSettingsItem> userQueryExpression = new DynamoDBQueryExpression<>();
-//        UserSettingsItem userToQuery = new UserSettingsItem();
-//        userToQuery.setId(cognitoId);
-
-
         Map<String, AttributeValue> eav = new HashMap<String, AttributeValue>();
-        eav.put(":val1", new AttributeValue().withS(cognitoId));
+        eav.put(":val1", new AttributeValue().withS(id));
 
         DynamoDBQueryExpression<UserSettingsItem> queryExpression = new DynamoDBQueryExpression<UserSettingsItem>()
                 .withKeyConditionExpression("id = :val1")
@@ -39,15 +34,15 @@ public class UserDAO extends AbstractDAO {
         List<UserSettingsItem> result = dynamoDBService.getMapper().query(UserSettingsItem.class, queryExpression);
 
         if (result.isEmpty()) {
-            logger.error("User not found for cognitoId " + cognitoId );
+            logger.error("User not found for id " + id);
             return Optional.empty();
 
         }
         return Optional.of(result.get(0));
     }
 
-    public void addDeviceAndActivityType(String cognitoId, String device, Set<String> activityTypes) {
-        Optional<UserSettingsItem> userToUpdate = getUserSettings(cognitoId);
+    public void addDeviceAndActivityType(String id, String device, Set<String> activityTypes) {
+        Optional<UserSettingsItem> userToUpdate = getUserSettings(id);
         DynamoDBMapperConfig dynamoDBMapperConfig = new DynamoDBMapperConfig.Builder()
                 .withConsistentReads(DynamoDBMapperConfig.ConsistentReads.CONSISTENT)
                 .withSaveBehavior(DynamoDBMapperConfig.SaveBehavior.UPDATE)
@@ -62,7 +57,7 @@ public class UserDAO extends AbstractDAO {
             user.setActivityTypes(activityTypes);
             try {
                 dynamoDBService.getMapper().save(user, dynamoDBMapperConfig);
-            }catch(Exception ex ) {
+            } catch (Exception ex) {
                 ex.printStackTrace();
             }
         }
@@ -86,7 +81,7 @@ public class UserDAO extends AbstractDAO {
         }
     }
 
-    public void storeUserPwHash(String username, String hash,String email, String firstName, String lastName) {
+    public void storeUserPwHash(String username, String hash, String email, String firstName, String lastName) {
         try {
             UserSettingsItem userSettings = new UserSettingsItem();
             userSettings.setEmail(email);
@@ -109,7 +104,7 @@ public class UserDAO extends AbstractDAO {
     /**
      * Fetch User item from dynamodb
      *
-     * @param user          String user (email or id)*
+     * @param user String user (email or id)*
      * @return UserSettingsItem result
      * @throws NotFoundException on user not found
      */
@@ -117,23 +112,39 @@ public class UserDAO extends AbstractDAO {
         UserSettingsItem userItem;
 
         if (user.contains("@")) {
-            //query email via gsi
-            final UserSettingsItem userSettingsItem = new UserSettingsItem();
-            userSettingsItem.setEmail(user);
-            final DynamoDBQueryExpression<UserSettingsItem> queryExpression = new DynamoDBQueryExpression<>();
-            queryExpression.setHashKeyValues(userSettingsItem);
-            queryExpression.setIndexName("email-index");
-            queryExpression.setConsistentRead(false);
+            Optional<UserSettingsItem> userSettingsItem = getUserByEmailAddress(user);
 
-
-            final PaginatedQueryList<UserSettingsItem> results = super.dynamoDBService.getMapper().query(UserSettingsItem.class, queryExpression);
-            if (results.size() < 1) {
+            if (userSettingsItem.isPresent()) {
+                return userSettingsItem.get();
+            } else {
                 throw new NotFoundException("user " + user + " not found via email");
             }
-            userItem = results.get(0);
+
         } else {
             userItem = super.dynamoDBService.getMapper().load(UserSettingsItem.class, user);
         }
         return userItem;
+    }
+
+
+    public Optional<UserSettingsItem> getUserByEmailAddress(String email) {
+        UserSettingsItem userItem;
+
+        //query email via gsi
+        final UserSettingsItem userSettingsItem = new UserSettingsItem();
+        userSettingsItem.setEmail(email);
+        final DynamoDBQueryExpression<UserSettingsItem> queryExpression = new DynamoDBQueryExpression<>();
+        queryExpression.setHashKeyValues(userSettingsItem);
+        queryExpression.setIndexName("email-index");
+        queryExpression.setConsistentRead(false);
+
+
+        final PaginatedQueryList<UserSettingsItem> results = super.dynamoDBService.getMapper().query(UserSettingsItem.class, queryExpression);
+        if (results.size() < 1) {
+            return Optional.empty();
+        }
+        userItem = results.get(0);
+
+        return Optional.of(userItem);
     }
 }

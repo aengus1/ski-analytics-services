@@ -86,5 +86,8 @@ public class FileUtils {
         return size.longValue();
     }
 
+    public static InputStream readFromResourcesDirectory(Class clazz, String fileName) throws IOException {
+        return clazz.getResourceAsStream(fileName);
+    }
 
 }

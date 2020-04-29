@@ -173,7 +173,7 @@ class ActivityTest {
     @Test
     void testSearchFieldsAreSet() {
 
-        Optional<ActivityItem> item = activityDAO.getActivityItem(this.activityId, helper.getCognitoId());
+        Optional<ActivityItem> item = activityDAO.getActivityItem(this.activityId, devUserName);
         assertEquals(true, item.isPresent());
 
         assertEquals("RUNNING",item.get().getActivityType());

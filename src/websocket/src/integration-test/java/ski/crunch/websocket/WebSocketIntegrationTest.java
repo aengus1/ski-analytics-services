@@ -42,7 +42,7 @@ import static org.junit.jupiter.api.Assertions.*;
         this.userId = helper.signup().orElseThrow(() -> new RuntimeException("Error occurred signing up"));
         this.jwtToken = helper.retrieveAccessToken();
 
-        helper.insertUserSettings(userId);  // TODO -> check if this is actually needed
+        helper.insertUserSettings(userId);
         this.endpoint = helper.getWebsocketEndpoint();
         System.out.println("key = " + jwtToken);
     }

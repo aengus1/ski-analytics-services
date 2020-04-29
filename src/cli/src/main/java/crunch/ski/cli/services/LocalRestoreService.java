@@ -150,7 +150,8 @@ public class LocalRestoreService implements BackupRestoreService {
      *
      * @throws Exception on error
      */
-    private void fullLocalRestore() throws IOException, GeneralSecurityException {
+    private void
+    fullLocalRestore() throws IOException, GeneralSecurityException {
 
         List<UserSettingsItem> users = deserializeUserJson(new File(options.getFullyQualifiedArchive()));
         List<ActivityItem> activityItems = deserializeActivityJson(new File(options.getFullyQualifiedArchive()));
@@ -199,7 +200,7 @@ public class LocalRestoreService implements BackupRestoreService {
     private void restoreUser(String user, boolean filter) throws IOException, GeneralSecurityException {
         if (user.contains("@")) {
             UserSettingsItem userItem = userDAO.lookupUser(user);
-            user = userItem.getId();
+            user = userItem.getEmail();
         }
 
         File userDir = filter ? new File(options.getFullyQualifiedArchive()) : new File(options.getFullyQualifiedArchive(), user);
@@ -208,7 +209,7 @@ public class LocalRestoreService implements BackupRestoreService {
         List<ActivityItem> activities = deserializeActivityJson(userDir);
 
         if (filter) {
-            activities = activities.stream().filter(x -> x.getUserId().equals(users.getId())).collect(Collectors.toList());
+            activities = activities.stream().filter(x -> x.getUserId().equals(users.getEmail())).collect(Collectors.toList());
         }
 
         // save to dynamo

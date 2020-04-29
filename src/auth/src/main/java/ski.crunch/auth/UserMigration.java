@@ -51,7 +51,7 @@ public class UserMigration implements RequestStreamHandler {
             logger.info("trigger source = {}", eventNode.get("triggerSource").asText());
 
             logger.info("user = {}", eventNode.get("userName").asText());
- 
+
             logger.info("validation data = {}", eventNode.get("request").get("validationData").asText());
 
             String password = eventNode.get("request").get("password").asText();

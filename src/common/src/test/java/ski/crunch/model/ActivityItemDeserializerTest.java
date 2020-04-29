@@ -80,7 +80,7 @@ public class ActivityItemDeserializerTest {
         List<ActivityItem> activityItems = Arrays.asList(mapper.reader(newActivityDeserializerInjectables()).forType(ActivityItem[].class).readValue(json));
         ActivityItem item = activityItems.get(0);
         assertEquals("fit", item.getRawFileType());
-        assertNotNull("cognitoId", item.getCognitoId());
+        assertNotNull( item.getUserId());
         assertEquals("integration_test_user@crunch.ski", item.getUserId());
         String date = sdf.format(item.getDateOfUpload());
         System.out.println("date = " + date);
@@ -115,7 +115,7 @@ public class ActivityItemDeserializerTest {
         List<ActivityItem> activityItems = Arrays.asList(mapper.reader(newActivityDeserializerInjectables()).forType(ActivityItem[].class).readValue(extraProperties));
         for (ActivityItem item : activityItems) {
             assertEquals("fit", item.getRawFileType());
-            assertNotNull("cognitoId", item.getCognitoId());
+            assertNotNull( item.getUserId());
             assertEquals("integration_test_user@crunch.ski", item.getUserId());
             String date = sdf.format(item.getDateOfUpload());
             System.out.println("date = " + date);
@@ -132,7 +132,7 @@ public class ActivityItemDeserializerTest {
         List<ActivityItem> activityItems = Arrays.asList(mapper.reader(newActivityDeserializerInjectables()).forType(ActivityItem[].class).readValue(missingProperties));
         for (ActivityItem item : activityItems) {
             assertEquals("fit", item.getRawFileType());
-            assertNotNull("cognitoId", item.getCognitoId());
+            assertNotNull(item.getUserId());
             assertEquals("integration_test_user@crunch.ski", item.getUserId());
             assertEquals("64.180.10.247", item.getSourceIp());
             assertEquals("RUNNING", item.getActivityType());

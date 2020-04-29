@@ -5,7 +5,6 @@
     "distance" : 5459,
     "userAgent" : "Jersey/2.5.1 (HttpUrlConnection 11.0.5)",
     "maxSpeed" : 15.120000000000001,
-    "userId" : "integration_test_user@crunch.ski",
     "duration" : 2052,
     "descent" : 222,
     "lastUpdateTimestamp" : "2020-04-10T20:45:18.734Z",

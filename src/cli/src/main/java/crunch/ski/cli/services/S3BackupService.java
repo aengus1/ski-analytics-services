@@ -149,13 +149,13 @@ public class S3BackupService implements BackupRestoreService {
         tempDir.mkdir();
 
         UserSettingsItem userSettingsItem = userDAO.lookupUser(user);
-        File userDir = new File(tempDir, userSettingsItem.getId());
+        File userDir = new File(tempDir, userSettingsItem.getEmail());
         userDir.mkdir();
 
         String userStr = options.getEncryptionKey() == null ? userSettingsItem.toJsonString() :
                 EncryptionUtils.encrypt(userSettingsItem.toJsonString(), options.getEncryptionKey());
 
-        List<ActivityItem> activityItems = activityDAO.getActivitiesByUser(userSettingsItem.getId());
+        List<ActivityItem> activityItems = activityDAO.getActivitiesByUser(userSettingsItem.getEmail());
         String activitiesStr = activityItems.stream().map(x -> {
             try {
                 return x.toJsonString();
@@ -174,8 +174,8 @@ public class S3BackupService implements BackupRestoreService {
                 new File(userDir, ACTIVITY_FILENAME));
 
         backupS3ActivityFiles(activityItems, userSettingsItem, userDir);
-        s3Facade.putObject(options.getDestBucket(), options.getDestKey() + "/" + userSettingsItem.getId() + "/" + USER_FILENAME, new File(userDir, USER_FILENAME));
-        s3Facade.putObject(options.getDestBucket(), options.getDestKey() + "/" + userSettingsItem.getId() + "/" + ACTIVITY_FILENAME, new File(userDir, ACTIVITY_FILENAME));
+        s3Facade.putObject(options.getDestBucket(), options.getDestKey() + "/" + userSettingsItem.getEmail() + "/" + USER_FILENAME, new File(userDir, USER_FILENAME));
+        s3Facade.putObject(options.getDestBucket(), options.getDestKey() + "/" + userSettingsItem.getEmail() + "/" + ACTIVITY_FILENAME, new File(userDir, ACTIVITY_FILENAME));
 
 
     }
@@ -193,7 +193,7 @@ public class S3BackupService implements BackupRestoreService {
                 try {
                     rawActivityS3Link.getTransferManager().copy(RAW_ACTIVITY_BUCKET, rawActivityS3Link.getKey(),
                             options.getDestBucket(),
-                            userSettingsItem.getId() + "/" + RAW_ACTIVITY_FOLDER + "/" + options.getDestKey());
+                            userSettingsItem.getEmail() + "/" + RAW_ACTIVITY_FOLDER + "/" + options.getDestKey());
                 } catch (Exception ex) {
                     logger.warn("error downloading raw activity {} from {}", rawActivityS3Link.getKey(), rawActivityS3Link.getBucketName());
                 }
@@ -203,7 +203,7 @@ public class S3BackupService implements BackupRestoreService {
                 try {
                     processedActivityS3Link.getTransferManager().copy(PROCESSED_ACTIVITY_FOLDER, processedActivityS3Link.getKey(),
                             options.getDestBucket(),
-                            userSettingsItem.getId() + "/" + PROCESSED_ACTIVITY_FOLDER + "/" + options.getDestKey());
+                            userSettingsItem.getEmail() + "/" + PROCESSED_ACTIVITY_FOLDER + "/" + options.getDestKey());
                 } catch (Exception ex) {
                     logger.warn("error downloading processed activity {} from {}", rawActivityS3Link.getKey(), rawActivityS3Link.getBucketName());
                 }

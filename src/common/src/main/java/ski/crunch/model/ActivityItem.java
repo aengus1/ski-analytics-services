@@ -18,7 +18,7 @@ import java.util.List;
 public class ActivityItem implements Jsonable {
 
     private String id;
-    private String cognitoId;
+    private String userId;
     private Date dateOfUpload;
     private S3Link rawActivity;
     private S3Link processedActivity;
@@ -26,7 +26,6 @@ public class ActivityItem implements Jsonable {
 
     private String rawFileType;
     private String userAgent;
-    private String userId;
     //possible states: PENDING, PROCESSED, ERROR
     private Status status;
     private String activityType;
@@ -57,13 +56,13 @@ public class ActivityItem implements Jsonable {
         this.id = id;
     }
 
-    @DynamoDBHashKey(attributeName = "cognitoId")
-    public String getCognitoId() {
-        return cognitoId;
+    @DynamoDBHashKey(attributeName = "userId")
+    public String getUserId() {
+        return userId;
     }
 
-    public void setCognitoId(String cognitoId) {
-        this.cognitoId = cognitoId;
+    public void setUserId(String userId) {
+        this.userId = userId;
     }
 
     @DynamoDBAttribute(attributeName = "date")
@@ -109,16 +108,6 @@ public class ActivityItem implements Jsonable {
 
     public void setUserAgent(String userAgent) {
         this.userAgent = userAgent;
-    }
-
-
-    @DynamoDBAttribute(attributeName = "userId")
-    public String getUserId() {
-        return userId;
-    }
-
-    public void setUserId(String userId) {
-        this.userId = userId;
     }
 
 

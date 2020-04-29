@@ -186,7 +186,7 @@ resource aws_dynamodb_table "activityTable" {
   billing_mode = var.activity_table_billing_mode
   read_capacity = var.activity_table_read_capacity
   write_capacity = var.activity_table_write_capacity
-  hash_key = "cognitoId"
+  hash_key = "userId"
   range_key = "id"
 
   attribute {
@@ -195,7 +195,7 @@ resource aws_dynamodb_table "activityTable" {
   }
 
   attribute {
-    name = "cognitoId"
+    name = "userId"
     type = "S"
   }
   point_in_time_recovery {
