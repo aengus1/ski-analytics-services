@@ -1,6 +1,5 @@
 package crunch.ski.cli;
 
-import com.amazonaws.auth.AWSCredentialsProvider;
 import com.google.common.annotations.VisibleForTesting;
 import crunch.ski.cli.model.RestoreOptions;
 import crunch.ski.cli.services.BackupRestoreService;
@@ -9,7 +8,6 @@ import crunch.ski.cli.services.S3RestoreService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import picocli.CommandLine;
-import ski.crunch.aws.CredentialsProviderFactory;
 
 import java.io.File;
 import java.time.LocalDateTime;
@@ -51,8 +49,8 @@ public class Restore implements Callable<Integer> {
     @CommandLine.Parameters(index = "1", description = "name of environment to restore data to (e.g. dev / ci / prod)")
     private String environment;
 
-    private CredentialsProviderFactory credentialsProviderFactory;
-    private AWSCredentialsProvider credentialsProvider;
+    //private CredentialsProviderFactory credentialsProviderFactory;
+
     private Map<String, String> configMap;
     private boolean isS3Source = false;
     private List<String> users;
@@ -71,20 +69,21 @@ public class Restore implements Callable<Integer> {
         this.options = new RestoreOptions();
     }
 
-    public Restore(App parent, CredentialsProviderFactory credentialsProviderFactory,
-                   Map<String, String> configMap, String environment, String backupArchive,
+    public Restore(App parent, Map<String, String> configMap, String environment, String backupArchive,
                    boolean transferAcceleration,
                    String users,
                    String decryptKey
     ) {
         this.parent = parent;
-        this.credentialsProviderFactory = credentialsProviderFactory;
         this.configMap = configMap;
         this.environment = environment;
         this.transferAcceleration = transferAcceleration;
         this.usersString = users;
         this.backupArchive = backupArchive;
         this.decryptKey = decryptKey;
+        this.configMap = configMap;
+        this.options = new RestoreOptions();
+        options.setConfigMap(configMap);
     }
 
     @Override
@@ -106,9 +105,11 @@ public class Restore implements Callable<Integer> {
         void initialize () {
             try {
                 options.setStartTs(System.currentTimeMillis());
-                Config config = new Config();
-                options.setConfigMap(config.readConfiguration());
 
+                if(options.getConfigMap() == null ) {
+                    Config config = new Config();
+                    options.setConfigMap(config.readConfiguration());
+                }
                 if (parent.getProjectName() != null) {
                     options.getConfigMap().put("PROJECT_NAME", parent.getProjectName());
                 }

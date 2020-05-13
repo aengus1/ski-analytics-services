@@ -101,6 +101,11 @@ public class UserDAO extends AbstractDAO {
         dynamoDBService.getMapper().save(user);
     }
 
+    public void deleteUser(UserSettingsItem user) {
+        dynamoDBService.getMapper().delete(user);
+    }
+
+
     /**
      * Fetch User item from dynamodb
      *

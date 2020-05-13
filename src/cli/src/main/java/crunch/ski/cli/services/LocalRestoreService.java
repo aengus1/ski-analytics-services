@@ -4,8 +4,12 @@ import com.amazonaws.SdkClientException;
 import com.amazonaws.auth.AWSCredentialsProvider;
 import com.amazonaws.services.dynamodbv2.datamodeling.DynamoDBMapper;
 import com.amazonaws.services.dynamodbv2.datamodeling.DynamoDBMapperConfig;
+import com.amazonaws.services.simplesystemsmanagement.model.Tag;
 import com.fasterxml.jackson.databind.InjectableValues;
+import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.node.ArrayNode;
+import com.google.common.annotations.VisibleForTesting;
 import com.google.common.collect.Sets;
 import crunch.ski.cli.model.BackupType;
 import crunch.ski.cli.model.Metadata;
@@ -16,19 +20,19 @@ import org.slf4j.LoggerFactory;
 import ski.crunch.aws.CredentialsProviderFactory;
 import ski.crunch.aws.DynamoFacade;
 import ski.crunch.aws.S3Facade;
+import ski.crunch.aws.SSMParameterFacade;
 import ski.crunch.dao.UserDAO;
 import ski.crunch.model.ActivityItem;
 import ski.crunch.model.UserSettingsItem;
 import ski.crunch.utils.EncryptionUtils;
 import ski.crunch.utils.FileUtils;
 import ski.crunch.utils.GZipUtils;
+import ski.crunch.utils.NotFoundException;
 
 import java.io.File;
 import java.io.IOException;
 import java.security.GeneralSecurityException;
-import java.util.Arrays;
-import java.util.HashSet;
-import java.util.List;
+import java.util.*;
 import java.util.concurrent.TimeUnit;
 import java.util.stream.Collectors;
 
@@ -37,6 +41,7 @@ public class LocalRestoreService implements BackupRestoreService {
     private static final Logger logger = LoggerFactory.getLogger(LocalRestoreService.class);
     private RestoreOptions options;
     private AWSCredentialsProvider credentialsProvider;
+    private SSMParameterFacade ssmParameterFacade;
     private String userTableName;
     private String activityTableName;
     private S3Facade s3Facade;
@@ -52,6 +57,7 @@ public class LocalRestoreService implements BackupRestoreService {
         this.userTableName = calcTableName(USER_TABLE_IDENTIFIER, options);
         this.activityTableName = calcTableName(ACTIVITY_TABLE_IDENTIFIER, options);
         this.s3Facade = new S3Facade(options.getConfigMap().get("DATA_REGION"), credentialsProvider, options.isTransferAcceleration());
+        this.ssmParameterFacade = new SSMParameterFacade(options.getConfigMap().get("DATA_REGION"), CredentialsProviderFactory.getDefaultCredentialsProvider());
         this.dynamoFacade = new DynamoFacade(options.getConfigMap().get("DATA_REGION"), userTableName, credentialsProvider,
                 options.isOverwrite() ? DynamoDBMapperConfig.SaveBehavior.CLOBBER : DynamoDBMapperConfig.SaveBehavior.UPDATE);
         this.userDAO = new UserDAO(dynamoFacade, userTableName);
@@ -59,11 +65,12 @@ public class LocalRestoreService implements BackupRestoreService {
     }
 
     public LocalRestoreService(AWSCredentialsProvider credentialsProvider, DynamoFacade dynamoFacade, S3Facade s3Facade,
-                               UserDAO userDAO, RestoreOptions options) {
+                               UserDAO userDAO, SSMParameterFacade ssmParameterFacade, RestoreOptions options) {
         this.options = options;
         this.credentialsProvider = credentialsProvider;
         this.s3Facade = s3Facade;
         this.dynamoFacade = dynamoFacade;
+        this.ssmParameterFacade = ssmParameterFacade;
         this.userDAO = userDAO;
         this.userTableName = calcTableName(USER_TABLE_IDENTIFIER, options);
         this.activityTableName = calcTableName(ACTIVITY_TABLE_IDENTIFIER, options);
@@ -85,7 +92,7 @@ public class LocalRestoreService implements BackupRestoreService {
 
             // does destination environment exist?
             if (!checkEnvironment()) {
-                logger.error("Error. Target environment does not exist");
+                logger.error("Error. Target environment {} does not exist", options.getEnvironment());
                 return 1;
             }
 
@@ -162,12 +169,12 @@ public class LocalRestoreService implements BackupRestoreService {
         dynamoFacade.updateTableName(activityTableName);
         List<DynamoDBMapper.FailedBatch> failedActivities = dynamoFacade.getMapper().batchSave(activityItems);
 
-        if(!failedUsers.isEmpty()) {
+        if (!failedUsers.isEmpty()) {
             failedUsers.stream().forEach(x -> metrics.getErrors().add(x.getException().getMessage()
                     + " userid:" + x.getUnprocessedItems().get("id")));
         }
 
-        if(!failedActivities.isEmpty()) {
+        if (!failedActivities.isEmpty()) {
             failedActivities.stream().forEach(x -> metrics.getErrors().add(x.getException().getMessage()
                     + " activityId:" + x.getUnprocessedItems().get("id")
                     + " userId:" + x.getUnprocessedItems().get("cognitoId")));
@@ -180,6 +187,10 @@ public class LocalRestoreService implements BackupRestoreService {
         tempDir.mkdir();
 
         uploadS3Files(activityItems, rawDir, procDir, tempDir);
+
+        if (options.isIncludeSSM()) {
+            restoreSSMParameters();
+        }
     }
 
     /**
@@ -255,7 +266,7 @@ public class LocalRestoreService implements BackupRestoreService {
     private void uploadS3Files(List<ActivityItem> activities, File rawDir, File procDir, File tempDir) throws IOException, GeneralSecurityException {
         for (ActivityItem activityItem : activities) {
             if (activityItem.getRawActivity() != null) {
-                File rawFile = new File(rawDir +"/"+ activityItem.getUserId()+"/"+activityItem.getRawActivity().getKey());
+                File rawFile = new File(rawDir + "/" + activityItem.getUserId() + "/" + activityItem.getRawActivity().getKey());
                 if (options.isVerbose()) {
                     System.out.println("uploading " + activityItem.getRawActivity().getKey());
                 }
@@ -286,7 +297,8 @@ public class LocalRestoreService implements BackupRestoreService {
 
     private boolean checkEnvironment() {
         try {
-            s3Facade.listObjects(calcBucketName(ACTIVITY_BUCKET, options));
+            String bucketName = calcBucketName(ACTIVITY_BUCKET, options);
+            s3Facade.listObjects(bucketName);
         } catch (SdkClientException ex) {
             return false;
         }
@@ -301,7 +313,7 @@ public class LocalRestoreService implements BackupRestoreService {
         tempDecompressedDir.mkdir();
         GZipUtils.extractTarGZ(new File(options.getFullyQualifiedArchive()), tempDecompressedDir);
         options.setSourceDir(tempDecompressedDir);
-        options.setFullyQualifiedArchive(tempDecompressedDir.getAbsolutePath()+"/"+options.getBackupArchive().substring(0, options.getBackupArchive().lastIndexOf(".tar.gz")));
+        options.setFullyQualifiedArchive(tempDecompressedDir.getAbsolutePath() + "/" + options.getBackupArchive().substring(0, options.getBackupArchive().lastIndexOf(".tar.gz")));
     }
 
     private void readMetadata() throws IOException {
@@ -347,5 +359,39 @@ public class LocalRestoreService implements BackupRestoreService {
 
     public DynamoFacade getDynamo() {
         return dynamoFacade;
+    }
+
+
+    @VisibleForTesting
+    void restoreSSMParameters() throws NotFoundException, IOException {
+
+        File ssmFile = new File(options.getBackupArchive(), SSM_FILENAME);
+        String ssmStr = FileUtils.readFileToString(ssmFile);
+        ObjectMapper objectMapper = new ObjectMapper();
+        ArrayNode json = (ArrayNode) objectMapper.readTree(ssmStr);
+        List<Tag> tags = new ArrayList<>();
+        Tag tag = new Tag();
+        tag.setKey("environment");
+        tag.setValue(options.getEnvironment());
+
+        Tag tag2 = new Tag();
+        tag2.setKey("project");
+        tag2.setValue(options.getConfigMap().get("PROJECT_NAME"));
+
+        tags.add(tag);
+        tags.add(tag2);
+
+        for (JsonNode param : json) {
+            String key = param.get("key").textValue();
+            String value = param.get("value").textValue();
+            try{
+                ssmParameterFacade.putParameter(key, value, "", Optional.of(tags));
+            } catch( Exception ex) {
+                ex.printStackTrace();
+                metrics.getErrors().add("Error restoring SSM parameter " + key + ". " + ex.getMessage());
+                ex.printStackTrace();
+                throw new NotFoundException("Error restoring SSM Parameter " );
+            }
+        }
     }
 }

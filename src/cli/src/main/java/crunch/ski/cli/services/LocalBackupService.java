@@ -11,10 +11,7 @@ import crunch.ski.cli.model.MetadataBuilder;
 import crunch.ski.cli.model.Metrics;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import ski.crunch.aws.CredentialsProviderFactory;
-import ski.crunch.aws.CredentialsProviderType;
-import ski.crunch.aws.DynamoFacade;
-import ski.crunch.aws.S3Facade;
+import ski.crunch.aws.*;
 import ski.crunch.dao.ActivityDAO;
 import ski.crunch.dao.UserDAO;
 import ski.crunch.model.ActivityItem;
@@ -26,6 +23,7 @@ import java.io.IOException;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.security.GeneralSecurityException;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
 import java.util.concurrent.TimeUnit;
@@ -43,6 +41,7 @@ public class LocalBackupService implements BackupRestoreService {
     private String userTableName;
     private String activityTableName;
     private S3Facade s3Facade;
+    private SSMParameterFacade ssmParameterFacade;
     private DynamoFacade dynamoFacade;
     private UserDAO userDAO;
     private ActivityDAO activityDAO;
@@ -57,6 +56,7 @@ public class LocalBackupService implements BackupRestoreService {
         this.userTableName = calcTableName(USER_TABLE_IDENTIFIER, options);
         this.activityTableName = calcTableName(ACTIVITY_TABLE_IDENTIFIER, options);
         this.s3Facade = new S3Facade(options.getConfigMap().get("DATA_REGION"), credentialsProvider, options.isTransferAcceleration());
+        this.ssmParameterFacade = new SSMParameterFacade(options.getConfigMap().get("DATA_REGION"), CredentialsProviderFactory.getDefaultCredentialsProvider());
         this.dynamoFacade = new DynamoFacade(options.getConfigMap().get("DATA_REGION"), userTableName, credentialsProvider);
         this.userDAO = new UserDAO(dynamoFacade, userTableName);
         this.activityDAO = new ActivityDAO(dynamoFacade, activityTableName);
@@ -67,7 +67,7 @@ public class LocalBackupService implements BackupRestoreService {
      * Test constructor
      */
     public LocalBackupService(AWSCredentialsProvider credentialsProvider, DynamoFacade dynamoFacade, S3Facade s3Facade,
-                              UserDAO userDAO, ActivityDAO activityDAO, BackupOptions options) {
+                              UserDAO userDAO, ActivityDAO activityDAO, SSMParameterFacade ssmParameterFacade,  BackupOptions options) {
         this.credentialsProvider = credentialsProvider;
         this.dynamoFacade = dynamoFacade;
         this.s3Facade = s3Facade;
@@ -76,6 +76,7 @@ public class LocalBackupService implements BackupRestoreService {
         this.activityDAO = activityDAO;
         this.userTableName = calcTableName(USER_TABLE_IDENTIFIER, options);
         this.activityTableName = calcTableName(ACTIVITY_TABLE_IDENTIFIER, options);
+        this.ssmParameterFacade = ssmParameterFacade;
         this.metrics = new Metrics();
     }
 
@@ -113,13 +114,17 @@ public class LocalBackupService implements BackupRestoreService {
                 FileUtils.deleteDirectory(options.getDestDir());
             }
 
-        } catch (IOException | GeneralSecurityException ex) {
+        } catch (IOException | GeneralSecurityException | NotFoundException ex) {
 
             if (ex instanceof IOException) {
                 logger.error("IO Error occurred attempting backup.  Exiting");
             }
             if (ex instanceof GeneralSecurityException) {
                 logger.error("Security exception occurred", ex);
+            }
+
+            if (ex instanceof NotFoundException) {
+                logger.warn("Not found exception occurred", ex);
             }
 
             if (options.isVerbose()) {
@@ -139,13 +144,15 @@ public class LocalBackupService implements BackupRestoreService {
      * @throws Exception on error
      */
     @VisibleForTesting
-    void fullLocalBackup() throws IOException, GeneralSecurityException {
+    void fullLocalBackup() throws IOException, GeneralSecurityException, NotFoundException {
         File rawDir = new File(options.getDestDir(), RAW_ACTIVITY_FOLDER);
         File procDir = new File(options.getDestDir(), PROCESSED_ACTIVITY_FOLDER);
         rawDir.mkdir();
         procDir.mkdir();
 
         try {
+            String bucketName = calcBucketName(ACTIVITY_BUCKET, options);
+            System.out.println(bucketName);
             s3Facade.backupS3BucketToDirectory(calcBucketName(ACTIVITY_BUCKET, options), procDir, options.isVerbose(), options.getEncryptionKey());
             s3Facade.backupS3BucketToDirectory(calcBucketName(RAW_ACTIVITY_BUCKET, options), rawDir, options.isVerbose(), options.getEncryptionKey());
         } catch (ChecksumFailedException ex) {
@@ -158,6 +165,11 @@ public class LocalBackupService implements BackupRestoreService {
         dynamoFacade.fullTableBackup(ActivityItem.class, calcTableName(ACTIVITY_TABLE_IDENTIFIER, options), options.getDestDir(), ACTIVITY_FILENAME, options.getEncryptionKey());
 
         //TODO -> backup SSM parameters
+
+        if(options.isIncludeSSM()) {
+            backupSSMParameters();
+        }
+
         //TODO -> backup logs
     }
 
@@ -321,4 +333,30 @@ public class LocalBackupService implements BackupRestoreService {
         FileUtils.deleteDirectory(tempDir);
     }
 
+
+    @VisibleForTesting
+    void backupSSMParameters() throws NotFoundException, IOException {
+        File ssmFile = new File(options.getDestDir(), SSM_FILENAME);
+
+        StringBuilder ssmString = new StringBuilder();
+        ssmString.append("[");
+        String params = Arrays.stream(SSM_KEYS).map(x -> {
+            String paramName = options.getEnvironment() + "-"+x+"-api-key";
+            try{
+                String value = ssmParameterFacade.getParameter(paramName);
+                return  "{ \"key\": \"" + paramName + "\", \"value\": \"" +value + "\"}";
+            } catch(Exception ex) {
+                logger.warn("error retrieving ssm parameter {}", paramName);
+                metrics.getErrors().add("Error retrieving ssm parameter " + paramName+ " " + ex.getMessage());
+                throw new NotFoundException(paramName + " could not be retrieved \r\n" + ex.getMessage());
+            }
+        })
+                .collect(Collectors.joining(","));
+        ssmString.append(params).append("]");
+        if(options.getEncryptionKey() == null) {
+            FileUtils.writeStringToFile(ssmString.toString(), ssmFile);
+        } else {
+            FileUtils.writeStringToFile(EncryptionUtils.encrypt(ssmString.toString(), options.getEncryptionKey()), ssmFile);
+        }
+    }
 }

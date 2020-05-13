@@ -1,5 +1,6 @@
 package ski.crunch.dao;
 
+import com.amazonaws.services.dynamodbv2.datamodeling.DynamoDBMapper;
 import com.amazonaws.services.dynamodbv2.datamodeling.DynamoDBMapperConfig;
 import com.amazonaws.services.dynamodbv2.datamodeling.DynamoDBQueryExpression;
 import com.amazonaws.services.dynamodbv2.datamodeling.S3Link;
@@ -19,6 +20,9 @@ public class ActivityDAO extends AbstractDAO {
         super(dynamo, tableName);
     }
 
+    public DynamoDBMapper getMapper() {
+        return dynamoDBService.getMapper();
+    }
     public Optional<ActivityItem> getActivityItem(String activityId, String email) {
         return Optional.ofNullable(dynamoDBService.getMapper().load(ActivityItem.class, email, activityId));
     }

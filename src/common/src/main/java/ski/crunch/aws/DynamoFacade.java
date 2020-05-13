@@ -38,7 +38,8 @@ public class DynamoFacade {
 
     public DynamoFacade(String region, String tableName) {
         this.client = AmazonDynamoDBClientBuilder.standard().withRegion(region).build();
-        config = new DynamoDBMapperConfig.Builder().withTableNameOverride(DynamoDBMapperConfig.TableNameOverride.withTableNameReplacement(tableName))
+        config = new DynamoDBMapperConfig.Builder()
+                .withTableNameOverride(DynamoDBMapperConfig.TableNameOverride.withTableNameReplacement(tableName))
                 .build();
         this.dynamo = new DynamoDB(client);
         this.mapper = new DynamoDBMapper(client, config);

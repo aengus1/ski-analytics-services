@@ -1,6 +1,9 @@
 package crunch.ski.cli.services;
 
 import com.amazonaws.auth.AWSCredentialsProvider;
+import com.fasterxml.jackson.databind.JsonNode;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.node.ArrayNode;
 import crunch.ski.cli.model.BackupOptions;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
@@ -12,6 +15,7 @@ import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 import ski.crunch.aws.DynamoFacade;
 import ski.crunch.aws.S3Facade;
+import ski.crunch.aws.SSMParameterFacade;
 import ski.crunch.dao.ActivityDAO;
 import ski.crunch.dao.UserDAO;
 import ski.crunch.model.ActivityItem;
@@ -29,6 +33,7 @@ import java.util.HashMap;
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.Mockito.*;
 
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
@@ -52,6 +57,9 @@ public class LocalBackupServiceTest {
 
     @Mock
     ActivityDAO activityDAO;
+
+    @Mock
+    SSMParameterFacade ssmParameterFacade;
 
     @Captor
     ArgumentCaptor<String> keyCaptor;
@@ -81,11 +89,11 @@ public class LocalBackupServiceTest {
         backupOptions.setVerbose(false);
         backupOptions.setUncompressed(true);
         backupOptions.setEncryptionKey(null);
-        backupOptions.setDestination(System.getProperty("java.io.tmpdir")+"/localbackuptest");
+        backupOptions.setDestination(System.getProperty("java.io.tmpdir") + "/localbackuptest");
         backupOptions.setBackupDateTime(LocalDateTime.now());
 
         MockitoAnnotations.initMocks(this);
-        backupService = new LocalBackupService(credentialsProvider,  dynamoFacade, s3Facade, userDAO, activityDAO, backupOptions);
+        backupService = new LocalBackupService(credentialsProvider, dynamoFacade, s3Facade, userDAO, activityDAO, ssmParameterFacade, backupOptions);
     }
 
     @Test
@@ -97,17 +105,17 @@ public class LocalBackupServiceTest {
     @Test
     public void testFullLocalBackupCallsS3FacadeWithCorrectArgs() throws IOException, ChecksumFailedException, GeneralSecurityException {
 
-        File destRaw = new File(System.getProperty("java.io.tmpdir")+"/localbackuptest/dev-crunch-ski-"
+        File destRaw = new File(System.getProperty("java.io.tmpdir") + "/localbackuptest/dev-crunch-ski-"
                 + BackupRestoreService.ISO_LOCAL_DATE_TIME_FILE.format(backupOptions.getBackupDateTime())
-                +"/raw_activities");
-        File destProc = new File(System.getProperty("java.io.tmpdir")+"/localbackuptest/dev-crunch-ski-"
+                + "/raw_activities");
+        File destProc = new File(System.getProperty("java.io.tmpdir") + "/localbackuptest/dev-crunch-ski-"
                 + BackupRestoreService.ISO_LOCAL_DATE_TIME_FILE.format(backupOptions.getBackupDateTime())
-                +"/processed_activities");
+                + "/processed_activities");
 
         try {
             backupService.mkDestDir();
             backupService.fullLocalBackup();
-        } catch ( Exception ex) {
+        } catch (Exception ex) {
             ex.printStackTrace();
         }
 
@@ -125,20 +133,20 @@ public class LocalBackupServiceTest {
 
         assertEquals(Arrays.asList(false, false), booleans);
 
-        }
+    }
 
 
     @Test
     public void testFullLocalBackupCallsDynamoFacadeWithCorrectArgs() throws IOException, ChecksumFailedException, GeneralSecurityException {
 
-        File dest = new File(System.getProperty("java.io.tmpdir")+"/localbackuptest/dev-crunch-ski-"
+        File dest = new File(System.getProperty("java.io.tmpdir") + "/localbackuptest/dev-crunch-ski-"
                 + BackupRestoreService.ISO_LOCAL_DATE_TIME_FILE.format(backupOptions.getBackupDateTime())
         );
 
         try {
             backupService.mkDestDir();
             backupService.fullLocalBackup();
-        } catch ( Exception ex) {
+        } catch (Exception ex) {
             ex.printStackTrace();
         }
 
@@ -158,10 +166,10 @@ public class LocalBackupServiceTest {
     }
 
     @Test
-    public void testUserBackupCalledInLieuOfFullBackupWhenUserStringIsSet() throws IOException{
+    public void testUserBackupCalledInLieuOfFullBackupWhenUserStringIsSet() throws IOException {
 
         // use a spy because can't call verify on a not-mock
-        LocalBackupService service = spy(new LocalBackupService(credentialsProvider,  dynamoFacade, s3Facade, userDAO, activityDAO, backupOptions));
+        LocalBackupService service = spy(new LocalBackupService(credentialsProvider, dynamoFacade, s3Facade, userDAO, activityDAO, ssmParameterFacade, backupOptions));
 
         UserSettingsItem userSettingsItem = new UserSettingsItem();
         userSettingsItem.setEmail("aengusmccullough@hotmail.com");
@@ -172,9 +180,38 @@ public class LocalBackupServiceTest {
         service.apply();
 
 
-        verify(service, times(1)).userDataBackup("aengusmccullough@hotmail.com",  backupOptions.getDestDir());
+        verify(service, times(1)).userDataBackup("aengusmccullough@hotmail.com", backupOptions.getDestDir());
     }
 
+
+    @Test
+    public void testFullLocalBackupCorrectlyCallsSSMFacade() throws IOException {
+        backupOptions.setIncludeSSM(true);
+        LocalBackupService service = spy(new LocalBackupService(credentialsProvider, dynamoFacade, s3Facade, userDAO, activityDAO, ssmParameterFacade, backupOptions));
+        when(ssmParameterFacade.getParameter("dev-weather-api-key")).thenReturn("weatherkey123");
+        when(ssmParameterFacade.getParameter("dev-rockset-api-key")).thenReturn("locationkey123");
+        when(ssmParameterFacade.getParameter("dev-location-api-key")).thenReturn("rocksetkey123");
+
+        service.apply();
+
+        verify(service, times(1)).backupSSMParameters();
+        verify(ssmParameterFacade, times(3)).getParameter(keyCaptor.capture());
+        assertTrue(keyCaptor.getAllValues().contains("dev-weather-api-key"));
+        assertTrue(keyCaptor.getAllValues().contains("dev-location-api-key"));
+        assertTrue(keyCaptor.getAllValues().contains("dev-rockset-api-key"));
+
+        //test name is written to file
+        File ssmFile = new File(backupOptions.getDestDir(), "ssm.json");
+        String ssmStr = FileUtils.readFileToString(ssmFile);
+        ObjectMapper objectMapper = new ObjectMapper();
+        ArrayNode json = (ArrayNode) objectMapper.readTree(ssmStr);
+        assertEquals(3, json.size());
+
+        //test values are written correctly
+        assertEquals("dev-weather-api-key", ((JsonNode) json.get(0)).get("key").asText());
+        assertEquals("weatherkey123", ((JsonNode) json.get(0)).get("value").asText());
+
+    }
 
     @Test
     public void testUserBackupCorrectlyBuildsActivitiesString() throws IOException {
@@ -209,21 +246,21 @@ public class LocalBackupServiceTest {
 
         try {
             backupService.apply();
-        } catch ( Exception ex) {
+        } catch (Exception ex) {
             ex.printStackTrace();
         }
 
 
-        File userDestination = new File(backupOptions.getDestDir()+"/" + userSettingsItem.getEmail(), "activities.json");
+        File userDestination = new File(backupOptions.getDestDir() + "/" + userSettingsItem.getEmail(), "activities.json");
         assertEquals(expectedSb.toString().replaceAll(" ", "").replaceAll(System.lineSeparator(), ""),
-                FileUtils.readFileToString(userDestination).replaceAll(" ", "").replaceAll(System.lineSeparator(),""));
+                FileUtils.readFileToString(userDestination).replaceAll(" ", "").replaceAll(System.lineSeparator(), ""));
     }
 
     @AfterEach
     public void tearDown() {
         try {
             FileUtils.deleteDirectory(backupOptions.getDestDir());
-        }catch(Exception ex){
+        } catch (Exception ex) {
             ex.printStackTrace();
         }
     }

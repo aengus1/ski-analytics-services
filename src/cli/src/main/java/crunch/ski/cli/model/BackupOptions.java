@@ -24,6 +24,7 @@ public class BackupOptions {
     private long startTs;
     private long endTs;
     private boolean verbose;
+    private boolean includeSSM;
 
 
 
@@ -225,5 +226,13 @@ public class BackupOptions {
 
     public void setVerbose(boolean verbose) {
         this.verbose = verbose;
+    }
+
+    public boolean isIncludeSSM() {
+        return includeSSM;
+    }
+
+    public void setIncludeSSM(boolean includeSSM) {
+        this.includeSSM = includeSSM;
     }
 }

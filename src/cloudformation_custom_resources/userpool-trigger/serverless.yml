@@ -46,6 +46,7 @@ functions:
     handler: ski.crunch.cloudformation.aws.UserPoolTriggerLambda
     memorySize:  512
     timeout: 240
+    reservedConcurrency: 1  # prevents race conditions from occurring when updating pool
     environment:
       awsAccountId:
         Ref: AWS::AccountId

@@ -24,6 +24,7 @@ public class RestoreOptions {
     private boolean overwrite;
     private long startTs;
     private long endTs;
+    private boolean includeSSM;
 
     public Map<String, String> getConfigMap() {
         return configMap;
@@ -184,5 +185,13 @@ public class RestoreOptions {
 
     public void setFullyQualifiedArchive(String fullyQualifiedArchive) {
         this.fullyQualifiedArchive = fullyQualifiedArchive;
+    }
+
+    public boolean isIncludeSSM() {
+        return includeSSM;
+    }
+
+    public void setIncludeSSM(boolean includeSSM) {
+        this.includeSSM = includeSSM;
     }
 }

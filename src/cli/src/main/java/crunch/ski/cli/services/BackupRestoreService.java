@@ -25,6 +25,7 @@ public interface BackupRestoreService {
     String USER_FILENAME = "users.json";
     String ACTIVITY_FILENAME = "activities.json";
     String SSM_FILENAME = "ssm.json";
+    String[] SSM_KEYS = new String[] { "weather", "location", "rockset"};
     DateTimeFormatter ISO_LOCAL_DATE_TIME_FILE = new DateTimeFormatterBuilder()
             .parseCaseInsensitive()
             .append(ISO_LOCAL_DATE)

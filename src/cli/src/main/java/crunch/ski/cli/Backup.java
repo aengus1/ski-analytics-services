@@ -102,8 +102,9 @@ public class Backup implements Callable<Integer> {
         try {
             backupOptions.setStartTs(System.currentTimeMillis());
             Config config = new Config();
-            backupOptions.setConfigMap(config.readConfiguration());
-
+            if(backupOptions.getConfigMap() == null) {
+                backupOptions.setConfigMap(config.readConfiguration());
+            }
             if (parent.getProjectName() != null) {
                 backupOptions.getConfigMap().put("PROJECT_NAME", parent.getProjectName());
             }

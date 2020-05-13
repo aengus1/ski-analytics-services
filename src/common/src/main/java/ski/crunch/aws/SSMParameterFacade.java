@@ -3,10 +3,12 @@ package ski.crunch.aws;
 import com.amazonaws.auth.AWSCredentialsProvider;
 import com.amazonaws.services.simplesystemsmanagement.AWSSimpleSystemsManagement;
 import com.amazonaws.services.simplesystemsmanagement.AWSSimpleSystemsManagementClientBuilder;
-import com.amazonaws.services.simplesystemsmanagement.model.GetParameterRequest;
-import com.amazonaws.services.simplesystemsmanagement.model.GetParameterResult;
+import com.amazonaws.services.simplesystemsmanagement.model.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
+import java.util.List;
+import java.util.Optional;
 
 public class SSMParameterFacade {
     AWSSimpleSystemsManagement ssmClient;
@@ -27,5 +29,25 @@ public class SSMParameterFacade {
 
         GetParameterResult result = ssmClient.getParameter(request);
         return result.getParameter().getValue();
+    }
+
+    public PutParameterResult putParameter( String name, String value, String description, Optional<List<Tag>> tags ) {
+        logger.info("putting SSM parameter: {}", name);
+        PutParameterRequest request  = new PutParameterRequest();
+        request.withName(name)
+                .withValue(value)
+                .withDescription(description);
+                if(tags.isPresent()) {
+                    request.withTags(tags.get());
+                }
+        PutParameterResult result = ssmClient.putParameter(request);
+                return result;
+    }
+
+    public DeleteParameterResult deleteParameter(String name) {
+        logger.info("deleting parameter {}", name);
+        DeleteParameterRequest request = new DeleteParameterRequest();
+        request.withName(name);
+        return ssmClient.deleteParameter(request);
     }
 }
