@@ -5,8 +5,6 @@ import com.amazonaws.services.cognitoidp.model.AdminGetUserResult;
 import com.amazonaws.services.cognitoidp.model.AttributeType;
 import com.amazonaws.services.cognitoidp.model.UserNotFoundException;
 import org.junit.jupiter.api.*;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import ski.crunch.auth.utils.PasswordUtil;
 import ski.crunch.aws.CognitoFacade;
 import ski.crunch.aws.DynamoFacade;
@@ -27,9 +25,7 @@ import static org.junit.jupiter.api.Assertions.*;
 @TestInstance(TestInstance.Lifecycle.PER_METHOD)
 public class AuthIntegrationTest {
 
-    private static final Logger logger = LoggerFactory.getLogger(AuthIntegrationTest.class);
 
-    private String accessKey = null;
     private String cognitoId = null;
     private String initialPwHash = null;
     private final String devUserName = "success-user1@simulator.amazonses.com";

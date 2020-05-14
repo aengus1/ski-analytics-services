@@ -33,10 +33,7 @@ public class Backup implements Callable<Integer> {
 
     @Option(names = {"-a", "--transfer-acceleration"}, description = "Enable S3 Transfer Acceleration")
     private boolean transferAcceleration = false;
-
-    @Option(names = {"-t", "--threads"}, description = "Number of parallel threads to use for DynamoDB table scan")
-    private int nThreads = 2;
-
+    
     @Option(names = {"--users"}, description = "Limit backup to specific user data (email address or user-id, comma separated")
     private String usersString;
 

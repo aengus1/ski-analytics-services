@@ -23,7 +23,7 @@ import static org.junit.jupiter.api.Assertions.*;
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
 public class FitActivityHolderAdapterTest {
 
-    private static final Logger logger = LoggerFactory.getLogger(ski.crunch.activity.parser.FitActivityHolderAdapterTest.class);
+    private static final Logger logger = LoggerFactory.getLogger(FitActivityHolderAdapterTest.class);
     public static final String testFile = "261217.fit";
 
 

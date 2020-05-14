@@ -27,12 +27,6 @@ public class BackupOptions {
     private boolean includeSSM;
 
 
-
-    public BackupOptions() {
-
-    }
-
-
     /**
      * ConfigMap is a map of CLI configuration options.
      * DATA_REGION the AWS region in which the data layer being backed up resides

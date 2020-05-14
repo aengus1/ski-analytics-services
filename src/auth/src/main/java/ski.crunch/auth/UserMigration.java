@@ -24,7 +24,7 @@ public class UserMigration implements RequestStreamHandler {
     private static final Logger logger = LoggerFactory.getLogger(UserMigration.class);
 
     private static final ObjectMapper objectMapper = new ObjectMapper();
-    private UserDAO userDAO;
+
 
     @Override
     public void handleRequest(InputStream input, OutputStream os, Context context) throws IOException {
@@ -44,7 +44,7 @@ public class UserMigration implements RequestStreamHandler {
         logger.info("input = {}", eventNode.asText());
 
         DynamoFacade dynamoFacade = new DynamoFacade(region, tableName);
-        userDAO = new UserDAO(dynamoFacade, tableName);
+        UserDAO userDAO = new UserDAO(dynamoFacade, tableName);
 
         try {
 
@@ -61,9 +61,9 @@ public class UserMigration implements RequestStreamHandler {
             user = userDAO.lookupUser(eventNode.get("userName").asText());
 
             if (PasswordUtil.verifyPassword(user.getPwhash(), password)) {
-                if (triggerSource.equals("UserMigration_Authentication")) {
+                if ("UserMigration_Authentication".equals(triggerSource)) {
                     writeSuccessResponse(os, eventNode, user);
-                } else if (triggerSource.equals("UserMigration_ForgotPassword")) {
+                } else if ("UserMigration_ForgotPassword".equals(triggerSource)) {
                     user.setPwhash(PasswordUtil.hashPassword(password));
                     userDAO.updateUser(user);
                     writeUpdatePasswordResponse(os, eventNode, user);

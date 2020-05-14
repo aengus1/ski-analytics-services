@@ -106,13 +106,6 @@ public class RestoreOptions {
         this.decryptKey = decryptKey;
     }
 
-//    public boolean isUncompressed() {
-//        return uncompressed;
-//    }
-//
-//    public void setUncompressed(boolean uncompressed) {
-//        this.uncompressed = uncompressed;
-//    }
 
     public String getEnvironment() {
         return environment;
@@ -121,14 +114,6 @@ public class RestoreOptions {
     public void setEnvironment(String environment) {
         this.environment = environment;
     }
-
-//    public String getDestination() {
-//        return destination;
-//    }
-//
-//    public void setDestination(String destination) {
-//        this.destination = destination;
-//    }
 
     public long getStartTs() {
         return startTs;
@@ -155,13 +140,6 @@ public class RestoreOptions {
     }
 
     private boolean verbose;
-
-
-
-    public RestoreOptions() {
-
-    }
-
 
     public boolean isOverwrite() {
         return overwrite;

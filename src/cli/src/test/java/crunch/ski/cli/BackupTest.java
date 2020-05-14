@@ -17,9 +17,6 @@ public class BackupTest {
 
     private Backup backup;
 
-//    @Mock
-//    private CredentialsProviderFactory credentialsProviderFactory;
-
     private App parent;
 
     private static final String DATA_REGION = "ca-central-1";
@@ -28,7 +25,7 @@ public class BackupTest {
     private static final String ENV = "dev-test";
 
     @BeforeEach
-    public void setup() {
+    public void setUp() {
         MockitoAnnotations.initMocks(this);
         parent = new App();
     }

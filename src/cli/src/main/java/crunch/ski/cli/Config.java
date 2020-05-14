@@ -63,7 +63,7 @@ public class Config implements Callable<Integer> {
                             values.put(variable, kvp[1]);
                             System.out.println(variable.name() + ":    " + kvp[1] + "  [Enter to accept]:");
                             String input = scanner.nextLine();
-                            if (!input.equals("")) {
+                            if (!"".equals(input)) {
                                 values.put(variable, input);
                             }
                         }

@@ -25,8 +25,6 @@ public class CapturePwHash implements RequestStreamHandler {
 
     private static final ObjectMapper objectMapper = new ObjectMapper();
     private UserDAO userDAO;
-    private String stage = "";
-    private String test;
 
     @Override
     public void handleRequest(InputStream input, OutputStream os, Context context) throws IOException {

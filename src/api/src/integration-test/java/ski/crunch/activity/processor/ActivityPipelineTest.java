@@ -33,14 +33,12 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
 public class ActivityPipelineTest {
 
-    private static final Logger logger = LoggerFactory.getLogger(ActivityPipelineTest.class);
     private static final SimpleDateFormat targetFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss");
 
     private static final String testFile = "261217.fit";
     private static final String pauseTest = "interval_test.fit";
     private static final String multisport = "multisport.fit";
     private static final String pauseTestGarmin = "garmin_test.fit";
-    // private static final String lapTestGarmin = "garmin_1.fit";
     private PipelineManager<ActivityHolder> manager = new PipelineManager<>();
 
     @BeforeAll

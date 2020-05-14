@@ -114,13 +114,10 @@ public class TestDataLoader {
 
     public void loadActivityData() throws IOException {
 
-        S3Facade s3Facade = new S3Facade(IntegrationTestPropertiesReader.get("region"));
 
         DynamoFacade dynamoFacade = new DynamoFacade(IntegrationTestPropertiesReader.get("region"),
                 IntegrationTestPropertiesReader.get("test-table-act"),
                 CredentialsProviderFactory.getDefaultCredentialsProvider());
-
-        //createActivityTable();
 
         ActivityItem activityItem1 = new ActivityItem();
         activityItem1.setId("act1");
@@ -138,19 +135,12 @@ public class TestDataLoader {
         activityItem1.setStatus(ActivityItem.Status.COMPLETE);
         activityItem1.setRawFileType(".fit");
 
-        String rawJson = "{\"s3\":{\"bucket\":\"" + IntegrationTestPropertiesReader.get("test-raw-bucket")
-                + "\",\"key\":\"integration-test-user@crunch.ski/act1.fit\",\"region\":\"ca-central-1\"}}";
-
-        String procJson = "{\"s3\":{\"bucket\":\"" + IntegrationTestPropertiesReader.get("test-act-bucket")
-                + "\",\"key\":\"integration-test-user@crunch.ski/act1.pbf\",\"region\":\"ca-central-1\"}}";
-
-        S3Link rawLink = dynamoFacade.getMapper().createS3Link(IntegrationTestPropertiesReader.get("test-raw-bucket"), "integration-test-user@crunch.ski/act1.fit");
-        activityItem1.setRawActivity(rawLink);
-        //activityItem1.setRawActivity(S3Link.fromJson(dynamoFacade.getMapper().getS3ClientCache(), rawJson));
+        S3Link rawLink = dynamoFacade.getMapper().createS3Link(IntegrationTestPropertiesReader.get("test-raw-bucket"),
+                "integration-test-user@crunch.ski/act1.fit");
         S3Link procLink = dynamoFacade.getMapper().createS3Link(IntegrationTestPropertiesReader.get("test-act-bucket"),
                 "integration-test-user@crunch.ski/act1.pbf");
+        activityItem1.setRawActivity(rawLink);
         activityItem1.setProcessedActivity(procLink);
-        //activityItem1.setProcessedActivity(S3Link.fromJson(dynamoFacade.getMapper().getS3ClientCache(), procJson));
 
 
         ActivityItem activityItem2 = new ActivityItem();
@@ -201,8 +191,8 @@ public class TestDataLoader {
         String procJson3 = "{\"s3\":{\"bucket\":\"" + IntegrationTestPropertiesReader.get("test-act-bucket")
                 + "\",\"key\":\"integration-test-user2@crunch.ski/act3.pbf\",\"region\":\"ca-central-1\"}}";
 
-        activityItem3.setRawActivity(S3Link.fromJson(dynamoFacade.getMapper().getS3ClientCache(), rawJson2));
-        activityItem3.setProcessedActivity(S3Link.fromJson(dynamoFacade.getMapper().getS3ClientCache(), procJson2));
+        activityItem3.setRawActivity(S3Link.fromJson(dynamoFacade.getMapper().getS3ClientCache(), rawJson3));
+        activityItem3.setProcessedActivity(S3Link.fromJson(dynamoFacade.getMapper().getS3ClientCache(), procJson3));
 
         dynamoFacade.getMapper().save(activityItem1);
         dynamoFacade.getMapper().save(activityItem2);
@@ -235,16 +225,7 @@ public class TestDataLoader {
     public void loadRawFiles() throws IOException {
 
         S3Facade s3Facade = new S3Facade(IntegrationTestPropertiesReader.get("region"));
-//        try {
-//            s3Facade.getS3Client().createBucket(IntegrationTestPropertiesReader.get("test-act-bucket"));
-//        } catch (AmazonS3Exception ex) {
-//            //ignore bucket may already exist
-//        }
-//        try {
-//            s3Facade.getS3Client().createBucket(IntegrationTestPropertiesReader.get("test-raw-bucket"));
-//        } catch (AmazonS3Exception ex) {
-//            //ignore bucket may already exist
-//        }
+
         s3Facade.putObject(
                 IntegrationTestPropertiesReader.get("test-raw-bucket"),
                 "integration-test-user@crunch.ski/act1.fit",
@@ -262,31 +243,6 @@ public class TestDataLoader {
         );
 
     }
-
-
-//    public void loadActFiles() throws IOException {
-//
-//        S3Facade s3Facade = new S3Facade(IntegrationTestPropertiesReader.get("region"));
-//        s3Facade.getS3Client().createBucket(IntegrationTestPropertiesReader.get("test-act-bucket"));
-//
-//        // s3 trigger should auto populate these
-////        s3Facade.putObject(
-////                IntegrationTestPropertiesReader.get("test-act-bucket"),
-////                USER1_ACT1,
-////                FileUtils.readFromResourcesDirectory(TestDataLoader.class, "/"+USER1_ACT1+".pbf")
-////        );
-////        s3Facade.putObject(
-////                IntegrationTestPropertiesReader.get("test-act-bucket"),
-////                USER1_ACT2,
-////                FileUtils.readFromResourcesDirectory(TestDataLoader.class, "/"+USER1_ACT2+".pbf")
-////        );
-////        s3Facade.putObject(
-////                IntegrationTestPropertiesReader.get("test-act-bucket"),
-////                USER2_ACT1,
-////                FileUtils.readFromResourcesDirectory(TestDataLoader.class, "/"+USER2_ACT1+".pbf")
-////        );
-//    }
-
 
     public void dropUserTable() throws IOException {
         DynamoFacade facade = new DynamoFacade(IntegrationTestPropertiesReader.get("region"), IntegrationTestPropertiesReader.get("test-table-user"));
