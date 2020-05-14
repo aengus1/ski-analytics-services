@@ -49,7 +49,7 @@ allprojects {
         }
 
         maven {
-            url "https://mvnrepository.com/"
+            url "https://mvnrepository.com/artifact/"
         }
     }
 
