@@ -7,8 +7,10 @@ import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestInstance;
+import ski.crunch.aws.CredentialsProviderFactory;
 import ski.crunch.aws.DynamoFacade;
 import ski.crunch.aws.S3Facade;
+import ski.crunch.aws.SSMParameterFacade;
 import ski.crunch.dao.ActivityDAO;
 import ski.crunch.dao.UserDAO;
 import ski.crunch.model.ActivityItem;
@@ -51,6 +53,7 @@ public class LocalRestoreIntegrationTest {
             testDataLoader.createS3Buckets();
             testDataLoader.createUserTable();
             testDataLoader.createActivityTable();
+            testDataLoader.createSSMParameters();
         } catch (Exception ex) {
             ex.printStackTrace();
         }
@@ -59,6 +62,7 @@ public class LocalRestoreIntegrationTest {
         testDataLoader.loadUserData();
 
         testDataLoader.loadActivityData();
+
 
 
     }
@@ -113,6 +117,12 @@ public class LocalRestoreIntegrationTest {
         assertEquals(2, restoredItems.size());
 
         //assert that SSM parameters have been correctly restored
+        SSMParameterFacade ssmParameterFacade = new SSMParameterFacade(IntegrationTestPropertiesReader.get("region"),
+                CredentialsProviderFactory.getDefaultCredentialsProvider());
+        String expectedWeatherParam = ENV + "-weather-api-key";
+        String expectedLocationParam = ENV + "-location-api-key";
+        assertEquals("weather123", ssmParameterFacade.getParameter(expectedWeatherParam));
+        assertEquals("location123", ssmParameterFacade.getParameter(expectedLocationParam));
 
 
     }
@@ -134,6 +144,11 @@ public class LocalRestoreIntegrationTest {
         }
         try {
             testDataLoader.dropBucket(IntegrationTestPropertiesReader.get("test-act-bucket"));
+        } catch (Exception ex) {
+        }
+
+        try {
+            testDataLoader.deleteSSMParameters();
         } catch (Exception ex) {
         }
     }

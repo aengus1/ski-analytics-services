@@ -209,7 +209,7 @@ resource aws_dynamodb_table "activityTable" {
   }
 
 }
-
+##TODO -> consider using SecureString type for these SSM Parameters
 resource aws_ssm_parameter "weatherApiKey" {
   name = "${var.stage}-weather-api-key"
   type = "String"

@@ -6,6 +6,7 @@ import com.amazonaws.services.dynamodbv2.model.*;
 import ski.crunch.aws.CredentialsProviderFactory;
 import ski.crunch.aws.DynamoFacade;
 import ski.crunch.aws.S3Facade;
+import ski.crunch.aws.SSMParameterFacade;
 import ski.crunch.dao.ActivityDAO;
 import ski.crunch.dao.UserDAO;
 import ski.crunch.model.ActivityItem;
@@ -15,10 +16,7 @@ import ski.crunch.testhelpers.IntegrationTestPropertiesReader;
 import ski.crunch.utils.FileUtils;
 
 import java.io.IOException;
-import java.util.Arrays;
-import java.util.Date;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 
 public class TestDataLoader {
 
@@ -340,5 +338,28 @@ public class TestDataLoader {
 
 
         DynamoDbHelpers.addGsi(table, globalSecondaryIndexAction, hashKeyDef, null);
+    }
+
+
+    public void createSSMParameters() throws Exception {
+        SSMParameterFacade ssmParameterFacade = new SSMParameterFacade(IntegrationTestPropertiesReader.get("region")
+                ,CredentialsProviderFactory.getDefaultCredentialsProvider());
+        String env = IntegrationTestPropertiesReader.get("test-table").split("-")[0];
+        ssmParameterFacade.putParameter(env+"-weather-api-key","weather123", "weather api key", null);
+        List<com.amazonaws.services.simplesystemsmanagement.model.Tag> tags = new ArrayList<>();
+        com.amazonaws.services.simplesystemsmanagement.model.Tag tag = new com.amazonaws.services.simplesystemsmanagement.model.Tag();
+        tag.setKey("module");
+        tag.setValue("activity");
+        tags.add(tag);
+        ssmParameterFacade.putParameter(env+"-location-api-key","location123", "location api key",
+                Optional.of(tags));
+    }
+
+    public void deleteSSMParameters() throws Exception {
+        SSMParameterFacade ssmParameterFacade = new SSMParameterFacade(IntegrationTestPropertiesReader.get("region")
+                ,CredentialsProviderFactory.getDefaultCredentialsProvider());
+        String env = IntegrationTestPropertiesReader.get("test-table").split("-")[0];
+        ssmParameterFacade.deleteParameter(env+"-weather-api-key");
+        ssmParameterFacade.deleteParameter(env+"-location-api-key");
     }
 }

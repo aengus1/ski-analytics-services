@@ -36,8 +36,9 @@ public class SSMParameterFacade {
         PutParameterRequest request  = new PutParameterRequest();
         request.withName(name)
                 .withValue(value)
+                .withType(ParameterType.String)
                 .withDescription(description);
-                if(tags.isPresent()) {
+                if(tags != null && tags.isPresent()) {
                     request.withTags(tags.get());
                 }
         PutParameterResult result = ssmClient.putParameter(request);
