@@ -52,7 +52,7 @@ package:
 
 functions:
   BucketNotification:
-    name: BucketNotification
+    name: ${{opt:stage}}-BucketNotification
     handler: ski.crunch.cloudformation.aws.BucketNotificationLambda
     memorySize:  512
     timeout: 240

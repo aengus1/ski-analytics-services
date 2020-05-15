@@ -42,7 +42,7 @@ package:
 
 functions:
   UserPoolTriggerLambda:
-    name: UserPoolTrigger
+    name: ${{opt:stage}}-UserPoolTrigger
     handler: ski.crunch.cloudformation.aws.UserPoolTriggerLambda
     memorySize:  512
     timeout: 240

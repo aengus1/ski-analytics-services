@@ -70,7 +70,7 @@ package:
 
 functions:
   RocksetIntegrationLambda:
-    name: RocksetIntegration
+    name: ${{opt:stage}}-RocksetIntegration
     handler: ski.crunch.cloudformation.rockset.RocksetIntegrationLambda
     memorySize:  512
     timeout: 240
@@ -83,7 +83,7 @@ functions:
       - ${{cf:${{opt:stage}}-${{self:custom.projectName}}-common.CommonLambdaLayerQualifiedArn}}
       - ${{cf:${{opt:stage}}-${{self:custom.projectName}}-common.CloudformationLambdaLayerQualifiedArn}}
   RocksetWorkspaceLambda:
-    name: RocksetWorkspace
+    name: ${{opt:stage}}-RocksetWorkspace
     handler: ski.crunch.cloudformation.rockset.RocksetWorkspaceLambda
     memorySize:  512
     timeout: 240
@@ -93,7 +93,7 @@ functions:
       - ${{cf:${{opt:stage}}-${{self:custom.projectName}}-common.CommonLambdaLayerQualifiedArn}}
       - ${{cf:${{opt:stage}}-${{self:custom.projectName}}-common.CloudformationLambdaLayerQualifiedArn}}
   RocksetCollectionLambda:
-    name: RocksetCollection
+    name: ${{opt:stage}}-RocksetCollection
     handler: ski.crunch.cloudformation.rockset.RocksetCollectionLambda
     memorySize:  512
     timeout: 240
