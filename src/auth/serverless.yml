@@ -7,6 +7,7 @@ provider:
   region: ${{file(../../infra/envs/global.tfvars.json):primary_region}}
   stage: ${{opt:stage}}
   stackName: ${{opt:stage}}-${{self:custom.projectName}}-${{self:service}}
+  deploymentBucket: ${{opt:stage}}-deployment-${{self:custom.projectName}}
   iamRoleStatements:
     - Effect: Allow
       Action:
@@ -21,6 +22,15 @@ provider:
         - dynamodb:UpdateItem
         - dynamodb:DeleteItem
       Resource: arn:aws:dynamodb:${{self:provider.region}}:*:table/${{self:custom.userTable}}
+    - Effect: Allow
+      Action:
+        - dynamodb:Query
+        - dynamodb:Scan
+        - dynamodb:GetItem
+        - dynamodb:PutItem
+        - dynamodb:UpdateItem
+        - dynamodb:DeleteItem
+      Resource: arn:aws:dynamodb:${{self:provider.region}}:*:table/${{self:custom.userTable}}/index/email-index
 
 custom: ${{file(../../config/custom.yml)}}
 
@@ -33,6 +43,23 @@ functions:
     handler: ski.crunch.auth.AddUserSettings
     environment:
       userTable: ${{self:custom.userTable}}
+    layers:
+      - ${{cf:${{opt:stage}}-${{self:custom.projectName}}-common.UtilsLambdaLayerQualifiedArn}}
+      - ${{cf:${{opt:stage}}-${{self:custom.projectName}}-common.CommonLambdaLayerQualifiedArn}}
+  # pre sign up trigger to capture password in case of cognito stack termination
+  preSignup:
+    handler: ski.crunch.auth.CapturePwHash
+    environment:
+      userTable: ${{self:custom.userTable}}
+    layers:
+      - ${{cf:${{opt:stage}}-${{self:custom.projectName}}-common.UtilsLambdaLayerQualifiedArn}}
+      - ${{cf:${{opt:stage}}-${{self:custom.projectName}}-common.CommonLambdaLayerQualifiedArn}}
+  # user migration trigger to authenticate user if doesn't exist in cognito
+  userMigration:
+    handler: ski.crunch.auth.UserMigration
+    environment:
+      userTable: ${{self:custom.userTable}}
+      region: ${{self:provider.region}}
     layers:
       - ${{cf:${{opt:stage}}-${{self:custom.projectName}}-common.UtilsLambdaLayerQualifiedArn}}
       - ${{cf:${{opt:stage}}-${{self:custom.projectName}}-common.CommonLambdaLayerQualifiedArn}}
@@ -50,6 +77,8 @@ resources:
         TriggerType: PostConfirmation
         UserPool: ${{self:custom.userPoolId}}
         LambdaFunctionArn: !GetAtt 'PostConfirmationLambdaFunction.Arn'
+        # a UUID forces a refetch from lambda on each deploy
+        UUID: ${{sls:instanceId}}
 
     OnCognitoConfirmationPermission:
       Type: 'AWS::Lambda::Permission'
@@ -61,9 +90,67 @@ resources:
         Principal: "cognito-idp.amazonaws.com"
         SourceArn: ${{self:custom.userPoolArn}}
 
+    UserPoolPreSignupTrigger:
+      Type: Custom::UserPoolTrigger
+      Version: 1.0
+      DependsOn: PreSignupLambdaFunction
+      Properties:
+        ServiceToken: ${{cf:${{opt:stage}}-${{self:custom.projectName}}-cf-userpool-trigger.UserPoolTriggerFunctionArn}}
+        Name: ${{opt:stage}}-userPoolTrigger
+        Region: ${{self:provider.region}}
+        TriggerType: PreSignUp
+        UserPool: ${{self:custom.userPoolId}}
+        LambdaFunctionArn: !GetAtt 'PreSignupLambdaFunction.Arn'
+        # a UUID forces a refetch from lambda on each deploy
+        UUID: ${{sls:instanceId}}
+
+    OnCognitoPreSignupPermission:
+      Type: 'AWS::Lambda::Permission'
+      DependsOn: PreSignupLambdaFunction
+      Properties:
+        Action: lambda:InvokeFunction
+        FunctionName:
+          !GetAtt PreSignupLambdaFunction.Arn
+        Principal: "cognito-idp.amazonaws.com"
+        SourceArn: ${{self:custom.userPoolArn}}
+
+    UserPoolMigrationTrigger:
+      Type: Custom::UserPoolTrigger
+      Version: 1.0
+      DependsOn: UserMigrationLambdaFunction
+      Properties:
+        ServiceToken: ${{cf:${{opt:stage}}-${{self:custom.projectName}}-cf-userpool-trigger.UserPoolTriggerFunctionArn}}
+        Name: ${{opt:stage}}-userPoolTrigger
+        Region: ${{self:provider.region}}
+        TriggerType: UserMigration
+        UserPool: ${{self:custom.userPoolId}}
+        LambdaFunctionArn: !GetAtt 'UserMigrationLambdaFunction.Arn'
+        # a UUID forces a refetch from lambda on each deploy
+        UUID: ${{sls:instanceId}}
+
+    OnCognitoUserMigrationPermission:
+      Type: 'AWS::Lambda::Permission'
+      DependsOn: UserMigrationLambdaFunction
+      Properties:
+        Action: lambda:InvokeFunction
+        FunctionName:
+          !GetAtt UserMigrationLambdaFunction.Arn
+        Principal: "cognito-idp.amazonaws.com"
+        SourceArn: ${{self:custom.userPoolArn}}
+
   Outputs:
     PostConfirmationArn:
       Value:
         Fn::GetAtt: PostConfirmationLambdaFunction.Arn
       Export:
-        Name: PostConfirmationArn-${{opt:stage}}
+       Name: PostConfirmationArn-${{opt:stage}}
+    PreSignupArn:
+      Value:
+        Fn::GetAtt: PreSignupLambdaFunction.Arn
+      Export:
+        Name: PreSignupArn-${{opt:stage}}
+    UserMigrationArn:
+      Value:
+        Fn::GetAtt: UserMigrationLambdaFunction.Arn
+      Export:
+        Name: UserMigrationArn-${{opt:stage}}

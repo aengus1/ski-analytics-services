@@ -12,6 +12,7 @@
 ##                SSM parameters to store locationIq API key and Weather API Key
 ##                S3 bucket to store raw activity data
 ##                S3 bucket to store processed activity data
+##                S3 bucket to store deployment artifacts (sls lambdas)
 ##                Cloudformation stack to export variables to Serverless
 ##
 ## Dependencies:
@@ -154,6 +155,12 @@ resource aws_dynamodb_table "user_table" {
     name = "id"
     type = "S"
   }
+
+  attribute {
+    name = "email"
+    type = "S"
+  }
+
   read_capacity = var.user_table_read_capacity
   write_capacity = var.user_table_write_capacity
 
@@ -164,6 +171,14 @@ resource aws_dynamodb_table "user_table" {
   point_in_time_recovery {
     enabled = var.user_table_point_in_time_recovery
   }
+
+  global_secondary_index {
+    name = "email-index"
+    hash_key = "email"
+    read_capacity = var.user_table_read_capacity
+    write_capacity = var.user_table_write_capacity
+    projection_type = "ALL"
+  }
 }
 
 resource aws_dynamodb_table "activityTable" {
@@ -171,20 +186,22 @@ resource aws_dynamodb_table "activityTable" {
   billing_mode = var.activity_table_billing_mode
   read_capacity = var.activity_table_read_capacity
   write_capacity = var.activity_table_write_capacity
-  hash_key = "id"
-  range_key = "date"
+  hash_key = "userId"
+  range_key = "id"
 
   attribute {
     name = "id"
     type = "S"
   }
+
   attribute {
-    name = "date"
+    name = "userId"
     type = "S"
   }
   point_in_time_recovery {
     enabled = var.activity_table_point_in_time_recovery
   }
+
   tags = {
     module = "data"
     stage = var.stage
@@ -192,7 +209,7 @@ resource aws_dynamodb_table "activityTable" {
   }
 
 }
-
+##TODO -> consider using SecureString type for these SSM Parameters
 resource aws_ssm_parameter "weatherApiKey" {
   name = "${var.stage}-weather-api-key"
   type = "String"
@@ -221,6 +238,15 @@ resource aws_s3_bucket "activityBucket" {
 
 resource aws_s3_bucket "rawActivityBucket" {
   bucket = "${var.stage}-raw-activity-${var.project_name}"
+  tags = {
+    module = "data"
+    project = var.project_name
+    stage = var.stage
+  }
+}
+
+resource aws_s3_bucket "deploymentBucket" {
+  bucket = "${var.stage}-deployment-${var.project_name}"
   tags = {
     module = "data"
     project = var.project_name

@@ -13,7 +13,8 @@ import org.apache.http.client.methods.HttpDelete;
 import org.apache.http.client.methods.HttpPost;
 import org.apache.http.impl.client.CloseableHttpClient;
 import org.apache.http.impl.client.HttpClients;
-import org.apache.log4j.Logger;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import ski.crunch.cloudformation.rockset.model.DataSource;
 import ski.crunch.cloudformation.rockset.model.FieldMapping;
 import ski.crunch.cloudformation.rockset.model.RocksetIntegrationType;
@@ -26,7 +27,7 @@ import java.util.Optional;
 
 public class RocksetRestClient {
 
-    private static final Logger logger = Logger.getLogger(RocksetRestClient.class);
+    private static final Logger logger = LoggerFactory.getLogger(RocksetRestClient.class);
     private static final String INTEGRATION_ENDPOINT = "/v1/orgs/self/integrations";
     private static final String ENDPOINT = "/v1/orgs/self/ws/";
 

@@ -1,4 +1,4 @@
-package ski.crunch.activity.processor;
+package ski.crunch.patterns;
 import java.util.ArrayList;
 import java.util.List;
 

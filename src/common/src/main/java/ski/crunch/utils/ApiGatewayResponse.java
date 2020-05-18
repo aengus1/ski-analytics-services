@@ -2,7 +2,7 @@ package ski.crunch.utils;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import org.apache.log4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.nio.charset.StandardCharsets;
 import java.util.Base64;
@@ -46,7 +46,7 @@ public class ApiGatewayResponse {
 
 	public static class Builder {
 
-		private static final Logger LOG = Logger.getLogger(Builder.class);
+		private static final org.slf4j.Logger logger = LoggerFactory.getLogger(Builder.class);
 
 		private static final ObjectMapper objectMapper = new ObjectMapper();
 
@@ -116,7 +116,7 @@ public class ApiGatewayResponse {
 				try {
 					body = objectMapper.writeValueAsString(objectBody);
 				} catch (JsonProcessingException e) {
-					LOG.error("failed to serialize object", e);
+					logger.error("failed to serialize object", e);
 					throw new RuntimeException(e);
 				}
 			} else if (binaryBody != null) {

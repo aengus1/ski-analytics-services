@@ -8,10 +8,8 @@ task jacocoMergeAll(type: JacocoMerge) {
             File test = new File(subproject.getBuildDir(),"jacoco/test.exec")
 
             if (intTest.exists()) {
-                println "has i test " + subproject.name
                 executionData subproject.tasks.withType(Test)
             } else if (test.exists()) {
-                println "has unit test " + subproject.name
                 executionData subproject.tasks.getByName("test")
             }
         }

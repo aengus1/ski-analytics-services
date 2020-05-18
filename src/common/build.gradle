@@ -23,8 +23,12 @@ dependencies {
             "com.fasterxml.jackson.core:jackson-annotations:${jacksonVersion}",
             "org.apache.httpcomponents:httpclient:4.5.5",
             "commons-io:commons-io:2.5",
-            "com.google.protobuf:protobuf-java:3.5.0"
-
+            "org.apache.commons:commons-compress:1.20",
+            "com.google.protobuf:protobuf-java:3.5.0",
+            "org.apache.logging.log4j:log4j-api:2.13.0",
+            "org.apache.logging.log4j:log4j-core:2.13.0",
+            "org.apache.logging.log4j:log4j-slf4j18-impl:2.13.0",
+            "com.amazonaws:aws-lambda-java-log4j2:1.1.0"
     )
 
     implementation(
@@ -35,7 +39,6 @@ dependencies {
             "com.amazonaws:aws-java-sdk-s3:${awsVersion}",
             "com.amazonaws:aws-java-sdk-dynamodb:${awsVersion}",
             "com.amazonaws:aws-java-sdk-iam:${awsVersion}",
-            "com.amazonaws:aws-lambda-java-log4j:1.0.0",
             "com.fasterxml.jackson.core:jackson-core:${jacksonVersion}",
             "com.fasterxml.jackson.core:jackson-databind:${jacksonVersion}",
             "com.fasterxml.jackson.core:jackson-annotations:${jacksonVersion}",
@@ -47,10 +50,16 @@ dependencies {
     integrationTestRuntimeOnly(
             'org.junit.jupiter:junit-jupiter-engine:5.4.0'
     )
+
+
+}
+compileJava {
+    sourceCompatibility = '1.8'
+    targetCompatibility = '1.8'
 }
 
 task utilsJar(type: Jar) {
-    archiveBaseName = "${project.name}"
+    archiveBaseName = project.name
     includeEmptyDirs = false
     from sourceSets.main.allJava
     include "**\\ski\\crunch\\**"
@@ -62,7 +71,7 @@ task allJar(type: Jar) {
     includeEmptyDirs = false
     from compileJava
     from processResources
-    from ([ configurations.runtimeClasspath ] - [ configurations.compileOnly ])
+    from([configurations.runtimeClasspath] - [configurations.compileOnly])
     include "**\\ski\\crunch\\**"
 }
 
@@ -108,9 +117,9 @@ artifacts {
 }
 
 build.dependsOn utilsJar
-build.dependsOn cloudformationJar
 build.dependsOn buildUtilsZip
 build.dependsOn buildCommonZip
+buildCustomCloudformationZip.dependsOn cloudformationJar
 build.dependsOn buildCustomCloudformationZip
 build.dependsOn testJar
 build.dependsOn allJar

@@ -34,6 +34,7 @@ provider:
   region: ${{file(../../../infra/envs/global.tfvars.json):primary_region}}
   stage: ${{opt:stage}}
   stackName: ${{opt:stage}}-${{self:custom.projectName}}-${{self:service}}
+  deploymentBucket: ${{opt:stage}}-deployment-${{self:custom.projectName}}
   Tags: ${{self:custom.resourceTags}}
   iamRoleStatements:
     - Effect: Allow
@@ -52,7 +53,7 @@ package:
 
 functions:
   BucketNotification:
-    name: BucketNotification
+    name: ${{opt:stage}}-BucketNotification
     handler: ski.crunch.cloudformation.aws.BucketNotificationLambda
     memorySize:  512
     timeout: 240

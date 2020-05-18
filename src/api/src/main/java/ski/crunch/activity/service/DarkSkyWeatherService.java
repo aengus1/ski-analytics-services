@@ -5,7 +5,8 @@ import com.fasterxml.jackson.databind.JsonNode;
 import org.apache.http.client.methods.HttpGet;
 import org.apache.http.impl.client.CloseableHttpClient;
 import org.apache.http.impl.client.HttpClients;
-import org.apache.log4j.Logger;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import ski.crunch.model.ActivityOuterClass;
 import ski.crunch.utils.HttpClientUtil;
 
@@ -18,7 +19,7 @@ import java.util.Map;
 public class DarkSkyWeatherService implements WeatherService {
 
 
-    private static final Logger logger = Logger.getLogger(DarkSkyWeatherService.class);
+    private static final Logger logger = LoggerFactory.getLogger(DarkSkyWeatherService.class);
     public static final String DARK_SKY_API_URL = "https://api.darksky.net/forecast";
     private HttpClientUtil httpClient;
     private HttpGet httpGet;

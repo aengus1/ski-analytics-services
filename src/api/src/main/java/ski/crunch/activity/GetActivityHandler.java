@@ -5,7 +5,8 @@ import com.amazonaws.auth.AWSCredentialsProvider;
 import com.amazonaws.auth.DefaultAWSCredentialsProviderChain;
 import com.amazonaws.services.lambda.runtime.Context;
 import com.amazonaws.services.lambda.runtime.RequestHandler;
-import org.apache.log4j.Logger;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import ski.crunch.activity.service.ActivityService;
 import ski.crunch.activity.service.WeatherService;
 import ski.crunch.aws.DynamoFacade;
@@ -30,7 +31,7 @@ public class GetActivityHandler implements RequestHandler<Map<String, Object>, A
     private SSMParameterFacade parameterService = null;
     private WeatherService weatherService = null;
 
-    private static final Logger LOG = Logger.getLogger(GetActivityHandler.class);
+    private static final Logger logger = LoggerFactory.getLogger(GetActivityHandler.class);
 
     public GetActivityHandler() {
         this.s3Bucket = System.getenv("s3ActivityBucketName");
@@ -47,9 +48,9 @@ public class GetActivityHandler implements RequestHandler<Map<String, Object>, A
         try {
             this.credentialsProvider = DefaultAWSCredentialsProviderChain.getInstance();
             credentialsProvider.getCredentials();
-            LOG.debug("Obtained default aws credentials");
+            logger.debug("Obtained default aws credentials");
         } catch (AmazonClientException e) {
-            LOG.error("Unable to obtain default aws credentials", e);
+            logger.error("Unable to obtain default aws credentials", e);
         }
         this.dynamo = new DynamoFacade(region, activityTable, credentialsProvider);
         this.parameterService = new SSMParameterFacade(region, credentialsProvider);
@@ -60,7 +61,7 @@ public class GetActivityHandler implements RequestHandler<Map<String, Object>, A
 
     @Override
     public ApiGatewayResponse handleRequest(Map<String, Object> input, Context context) {
-        LOG.debug("GetActivityHandler called");
+        logger.debug("GetActivityHandler called");
         return activityService.getActivity(input, context);
     }
 

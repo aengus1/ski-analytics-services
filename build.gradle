@@ -9,7 +9,7 @@ import ski.crunch.build.DeployServerless
 buildscript {
     ext {
         gradleVersion = "6.0.1"
-        jacksonVersion = "2.10.2"
+        jacksonVersion = "2.10.3"
         awsVersion = "1.11.728"
     }
     repositories {
@@ -37,9 +37,10 @@ allprojects {
 
     repositories {
         maven {
-            url "https://download.osgeo.org/webdav/geotools/"
+            url "https://repo.osgeo.org/repository/release/"
         }
         mavenCentral()
+        jcenter()
         maven {
             url "https://oss.sonatype.org/content/repositories/releases/"
         }
@@ -48,7 +49,7 @@ allprojects {
         }
 
         maven {
-            url "https://mvnrepository.com/"
+            url "https://mvnrepository.com/artifact/"
         }
     }
 
@@ -100,7 +101,6 @@ subprojects {
                 project(path: ':common', configuration: 'testClasses')
         )
     }
-
     task deploy(type: DeployServerless)
     deploy.dependsOn build
 

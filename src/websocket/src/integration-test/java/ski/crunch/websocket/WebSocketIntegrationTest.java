@@ -4,10 +4,12 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ObjectNode;
-import org.apache.log4j.Logger;
 import org.java_websocket.client.WebSocketClient;
 import org.java_websocket.handshake.ServerHandshake;
-import org.junit.jupiter.api.*;
+import org.junit.jupiter.api.AfterAll;
+import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.TestInstance;
 import ski.crunch.services.OutgoingWebSocketService;
 import ski.crunch.testhelpers.AbstractAwsTest;
 import ski.crunch.testhelpers.IntegrationTestHelper;
@@ -25,7 +27,6 @@ import static org.junit.jupiter.api.Assertions.*;
  */
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
  class WebSocketIntegrationTest extends AbstractAwsTest {
-    private static final Logger LOG = Logger.getLogger(WebSocketIntegrationTest.class);
     private   String endpoint;
     private String userId;
     private String connectionId;
@@ -36,12 +37,12 @@ import static org.junit.jupiter.api.Assertions.*;
     private String jwtToken;
 
     @BeforeAll()
-      void setUp() throws IOException{
+      void setUp() throws Exception{
         helper = new IntegrationTestHelper();
         this.userId = helper.signup().orElseThrow(() -> new RuntimeException("Error occurred signing up"));
         this.jwtToken = helper.retrieveAccessToken();
 
-        helper.insertUserSettings(userId);  // TODO -> check if this is actually needed
+        helper.insertUserSettings(userId);
         this.endpoint = helper.getWebsocketEndpoint();
         System.out.println("key = " + jwtToken);
     }
@@ -133,7 +134,7 @@ import static org.junit.jupiter.api.Assertions.*;
 
         @Override
         public void onOpen(ServerHandshake handshakedata) {
-            LOG.info("connection opened:  :" + handshakedata.getHttpStatusMessage() + " "  +
+            logger.info("connection opened:  :" + handshakedata.getHttpStatusMessage() + " "  +
                     handshakedata.getHttpStatus());
             opened = true;
 

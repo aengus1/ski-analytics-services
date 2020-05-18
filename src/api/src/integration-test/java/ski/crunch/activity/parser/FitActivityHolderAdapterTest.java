@@ -1,11 +1,12 @@
 package ski.crunch.activity.parser;
 
-import org.apache.log4j.Level;
-import org.apache.log4j.Logger;
+
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestInstance;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import ski.crunch.activity.parser.fit.FitActivityHolderAdapter;
 import ski.crunch.activity.processor.model.ActivityEvent;
 import ski.crunch.activity.processor.model.ActivityHolder;
@@ -22,7 +23,7 @@ import static org.junit.jupiter.api.Assertions.*;
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
 public class FitActivityHolderAdapterTest {
 
-    private static final Logger LOG = Logger.getLogger(ski.crunch.activity.parser.FitActivityHolderAdapterTest.class);
+    private static final Logger logger = LoggerFactory.getLogger(FitActivityHolderAdapterTest.class);
     public static final String testFile = "261217.fit";
 
 
@@ -39,7 +40,6 @@ public class FitActivityHolderAdapterTest {
         } catch (Exception e) {
             e.printStackTrace();
         }
-        LOG.setLevel(Level.DEBUG);
 
     }
 
@@ -65,7 +65,7 @@ public class FitActivityHolderAdapterTest {
         String created = activity.getCreatedTs();
         String manufacturer = activity.getManufacturer();
         int product = activity.getProduct();
-        LOG.debug(created + " " + manufacturer + " " + product);
+        logger.debug(created + " " + manufacturer + " " + product);
 
         assertEquals("26-12-2016 11:24:41", created);
         assertEquals("SUUNTO", manufacturer);
@@ -155,7 +155,7 @@ public class FitActivityHolderAdapterTest {
         try {
             res = Double.parseDouble(value);
         } catch (NumberFormatException ex) {
-            LOG.error(value + " not set");
+            logger.error(value + " not set");
             throw ex;
         }
         return res;

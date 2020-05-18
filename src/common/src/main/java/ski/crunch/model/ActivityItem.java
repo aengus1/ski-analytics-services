@@ -1,26 +1,31 @@
 package ski.crunch.model;
 
 import com.amazonaws.services.dynamodbv2.datamodeling.*;
+import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
+import ski.crunch.utils.Jsonable;
 
 import java.util.Date;
-import java.util.Set;
+import java.util.List;
 
 /**
  * Created by aengusmccullough on 2018-09-17.
  */
 
+@JsonSerialize(using = ActivityItemSerializer.class)
+@JsonDeserialize(using = ActivityItemDeserializer.class)
 @DynamoDBTable(tableName="ActivityTable")  //override this on call
-public class ActivityItem {
+public class ActivityItem implements Jsonable {
 
     private String id;
+    private String userId;
     private Date dateOfUpload;
     private S3Link rawActivity;
+    private S3Link processedActivity;
     private String sourceIp;
 
     private String rawFileType;
     private String userAgent;
-    private String userId;
-    private String cognitoId;
     //possible states: PENDING, PROCESSED, ERROR
     private Status status;
     private String activityType;
@@ -37,12 +42,12 @@ public class ActivityItem {
     private Double ascent;
     private Double descent;
     private String notes;
-    private Set<String> tags;
+    private List<String> tags;
     private Date lastUpdateTimestamp;
 
-    public enum Status { PENDING, PROCESSED, ERROR, COMPLETE};
+    public enum Status { PENDING, PROCESSED, ERROR, COMPLETE, NA}
 
-    @DynamoDBHashKey(attributeName="id")
+    @DynamoDBRangeKey(attributeName="id")
     public String getId() {
         return id;
     }
@@ -51,7 +56,16 @@ public class ActivityItem {
         this.id = id;
     }
 
-    @DynamoDBRangeKey(attributeName="date")
+    @DynamoDBHashKey(attributeName = "userId")
+    public String getUserId() {
+        return userId;
+    }
+
+    public void setUserId(String userId) {
+        this.userId = userId;
+    }
+
+    @DynamoDBAttribute(attributeName = "date")
     public Date getDateOfUpload() {
         return dateOfUpload;
     }
@@ -67,6 +81,15 @@ public class ActivityItem {
 
     public void setRawActivity(S3Link activity) {
         this.rawActivity = activity;
+    }
+
+    @DynamoDBAttribute(attributeName = "processedActivity")
+    public S3Link getProcessedActivity() {
+        return processedActivity;
+    }
+
+    public void setProcessedActivity(S3Link activity) {
+        this.processedActivity = activity;
     }
 
     @DynamoDBAttribute(attributeName = "sourceIp")
@@ -88,16 +111,6 @@ public class ActivityItem {
     }
 
 
-    @DynamoDBAttribute(attributeName = "userId")
-    public String getUserId() {
-        return userId;
-    }
-
-    public void setUserId(String userId) {
-        this.userId = userId;
-    }
-
-
     @DynamoDBTypeConvertedEnum
     @DynamoDBAttribute(attributeName = "status")
     public Status getStatus() {
@@ -116,15 +129,6 @@ public class ActivityItem {
 
     public void setRawFileType(String rawFileType) {
         this.rawFileType = rawFileType;
-    }
-
-    @DynamoDBAttribute(attributeName = "cognitoId")
-    public String getCognitoId() {
-        return cognitoId;
-    }
-
-    public void setCognitoId(String cognitoId) {
-        this.cognitoId = cognitoId;
     }
 
     // additional fields for search
@@ -257,11 +261,11 @@ public class ActivityItem {
     }
 
     @DynamoDBAttribute(attributeName = "tags")
-    public Set<String> getTags() {
+    public List<String> getTags() {
         return tags;
     }
 
-    public void setTags(Set<String> tags) {
+    public void setTags(List<String> tags) {
         this.tags = tags;
     }
 

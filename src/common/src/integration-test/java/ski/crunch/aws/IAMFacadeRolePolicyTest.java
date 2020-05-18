@@ -72,7 +72,7 @@ public class IAMFacadeRolePolicyTest extends AbstractAwsTest {
             integrationTestHelper = new IntegrationTestHelper();
              iam = new IAMFacade(integrationTestHelper.getApiRegion());
         }catch(Exception ex ){
-            LOG.error("error setting up test", ex);
+            logger.error("error setting up test", ex);
             fail("error setting up test");
         }
     }
@@ -87,7 +87,7 @@ public class IAMFacadeRolePolicyTest extends AbstractAwsTest {
         tags.add(stage);
         CreateRoleResult result = iam.createRole(ROLE_NAME, ASSUME_ROLE_POLICY_DOCUMENT, "this is a test role created by integration test for IAMFacade", tags);
         roleArn = result.getRole().getArn();
-        LOG.info("create role result: " + roleArn);
+        logger.info("create role result: " + roleArn);
 
         String findRole = iam.getRole(ROLE_NAME).getRole().getArn();
         assertEquals(roleArn, findRole);
@@ -131,7 +131,7 @@ public class IAMFacadeRolePolicyTest extends AbstractAwsTest {
     @Order(5)
     public void testDeletePolicy(){
         DeletePolicyResult result = iam.deletePolicy(policyArn);
-        LOG.info("delete policy result: " + result.toString());
+        logger.info("delete policy result: " + result.toString());
         assertThrows(NoSuchEntityException.class, () -> iam.getPolicy(policyArn));
     }
 
@@ -142,7 +142,7 @@ public class IAMFacadeRolePolicyTest extends AbstractAwsTest {
     public void testDeleteRole(){
         DeleteRoleResult result = iam.deleteRole(ROLE_NAME);
         roleArn = result.toString();
-        LOG.info("delete role result: " + result.toString());
+        logger.info("delete role result: " + result.toString());
         assertThrows(NoSuchEntityException.class, () -> iam.getRole(ROLE_NAME).getRole().getRoleName());
 
     }
@@ -151,14 +151,14 @@ public class IAMFacadeRolePolicyTest extends AbstractAwsTest {
     public void tearDown() {
         try {
             if(iam.getRole(ROLE_NAME).getRole() != null) {
-                LOG.info("deleting role");
+                logger.info("deleting role");
                 iam.deleteRole(ROLE_NAME);
             }
         }catch(Exception ignored ) {}
 
         try {
             if(iam.getPolicy(policyArn).getPolicy() != null) {
-                LOG.info("deleting policy");
+                logger.info("deleting policy");
                 iam.deletePolicy(policyArn);
             }
         }catch (Exception ignored) { }

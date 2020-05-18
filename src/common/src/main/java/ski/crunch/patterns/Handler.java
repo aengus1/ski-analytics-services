@@ -1,4 +1,4 @@
-package ski.crunch.activity.processor;
+package ski.crunch.patterns;
 
 public interface Handler<T> {
 

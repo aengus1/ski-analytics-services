@@ -10,6 +10,7 @@ provider:
   stage: staging
   region: ca-central-1
   stackName: ${{self:custom.currentStage}}-ski-analytics-frontend-stack
+  deploymentBucket: ${{opt:stage}}-deployment-${{self:custom.projectName}}
 
 
 

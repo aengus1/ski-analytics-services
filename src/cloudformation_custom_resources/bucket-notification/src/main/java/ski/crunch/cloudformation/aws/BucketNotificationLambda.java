@@ -1,7 +1,8 @@
 package ski.crunch.cloudformation.aws;
 
 import com.amazonaws.services.s3.model.*;
-import org.apache.log4j.Logger;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import ski.crunch.aws.S3Facade;
 import ski.crunch.cloudformation.AbstractCustomResourceLambda;
 import ski.crunch.cloudformation.CloudformationRequest;
@@ -10,7 +11,7 @@ import ski.crunch.cloudformation.CloudformationResponse;
 import java.util.UUID;
 
 public class BucketNotificationLambda extends AbstractCustomResourceLambda {
-    private static final Logger LOG = Logger.getLogger(BucketNotificationLambda.class);
+    private static final Logger logger = LoggerFactory.getLogger(BucketNotificationLambda.class);
 
     @Override
     public CloudformationResponse doCreate(CloudformationRequest request) throws Exception {
@@ -18,7 +19,7 @@ public class BucketNotificationLambda extends AbstractCustomResourceLambda {
 
         try {
             BucketNotificationResourceProperties resourceProperties = new BucketNotificationResourceProperties(request.getResourceProperties());
-            LOG.info("sending function arn: " + resourceProperties.getLambdaFunctionArn());
+            logger.info("sending function arn: " + resourceProperties.getLambdaFunctionArn());
             LambdaConfiguration lambdaConfiguration = new LambdaConfiguration(resourceProperties.getLambdaFunctionArn(), resourceProperties.getS3Event());
             if(resourceProperties.getFilters().isPresent()){
                 S3KeyFilter s3KeyFilter = new S3KeyFilter();

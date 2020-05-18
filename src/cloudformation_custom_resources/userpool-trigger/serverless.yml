@@ -22,6 +22,7 @@ provider:
   region: ${{file(../../../infra/envs/global.tfvars.json):primary_region}}
   stage: ${{opt:stage}}
   stackName: ${{opt:stage}}-${{self:custom.projectName}}-${{self:service}}
+  deploymentBucket: ${{opt:stage}}-deployment-${{self:custom.projectName}}
   Tags: ${{self:custom.resourceTags}}
   iamRoleStatements:
     - Effect: Allow
@@ -42,10 +43,11 @@ package:
 
 functions:
   UserPoolTriggerLambda:
-    name: UserPoolTrigger
+    name: ${{opt:stage}}-UserPoolTrigger
     handler: ski.crunch.cloudformation.aws.UserPoolTriggerLambda
     memorySize:  512
     timeout: 240
+    reservedConcurrency: 1  # prevents race conditions from occurring when updating pool
     environment:
       awsAccountId:
         Ref: AWS::AccountId

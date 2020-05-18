@@ -2,7 +2,8 @@ package ski.crunch.utils;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import org.apache.log4j.Logger;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.io.PrintWriter;
 import java.io.StringWriter;
@@ -15,8 +16,7 @@ public class ErrorResponse {
     private String errorCode;
 
     private static final ObjectMapper objectMapper = new ObjectMapper();
-    private static final Logger LOG  = Logger.getLogger(ErrorResponse.class);
-
+    private static final Logger logger = LoggerFactory.getLogger(ErrorResponse.class);
     public ErrorResponse(int status, String developerMessage, String userMessage, String errorCode){
         this.status = status;
         this.developerMessage = developerMessage;
@@ -59,7 +59,7 @@ public class ErrorResponse {
         try {
             return objectMapper.writeValueAsString(this);
         }catch(JsonProcessingException e){
-            LOG.error("JSON exception serializing error response");
+            logger.error("JSON exception serializing error response");
             return "";
         }
     }

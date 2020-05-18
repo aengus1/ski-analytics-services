@@ -2,7 +2,8 @@ package ski.crunch.aws;
 
 import com.amazonaws.auth.AWSCredentialsProvider;
 import com.amazonaws.auth.profile.ProfileCredentialsProvider;
-import org.apache.log4j.Logger;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestInstance;
@@ -16,7 +17,7 @@ public class DynamoFacadeTest {
     //TODO -> create a test base class with access to credentialsn
     public static final String AWS_PROFILE="backend_dev";
     public static final String TABLE_REGION = "ca-central-1"; // this is fragile
-    private static final Logger LOG = Logger.getLogger(DynamoFacadeTest.class);
+    private static final Logger logger = LoggerFactory.getLogger(DynamoFacadeTest.class);
     private DynamoFacade service = null;
 
     @BeforeEach()

@@ -5,7 +5,8 @@ import com.amazonaws.auth.AWSCredentialsProvider;
 import com.amazonaws.auth.DefaultAWSCredentialsProviderChain;
 import com.amazonaws.services.lambda.runtime.Context;
 import com.amazonaws.services.lambda.runtime.RequestHandler;
-import org.apache.log4j.Logger;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import ski.crunch.activity.service.ActivityService;
 import ski.crunch.aws.DynamoFacade;
 import ski.crunch.aws.S3Facade;
@@ -38,16 +39,17 @@ public class PutActivityHandler implements RequestHandler<Map<String, Object>, A
         try {
             this.credentialsProvider = DefaultAWSCredentialsProviderChain.getInstance();
             credentialsProvider.getCredentials();
-            LOG.debug("Obtained default aws credentials");
+            logger.debug("Obtained default aws credentials");
         } catch (AmazonClientException e) {
-            LOG.error("Unable to obtain default aws credentials", e);
+            logger.error("Unable to obtain default aws credentials", e);
         }
         this.dynamo = new DynamoFacade(region,activityTable, credentialsProvider );
         this.activityService = new ActivityService( s3, credentialsProvider, dynamo, region,
                 s3RawActivityBucket,s3ActivityBucket, activityTable, userTable);
     }
 
-    private static final Logger LOG = Logger.getLogger(PutActivityHandler.class);
+    private static final Logger logger = LoggerFactory.getLogger(PutActivityHandler.class);
+
 
 
     @Override
@@ -65,7 +67,7 @@ public class PutActivityHandler implements RequestHandler<Map<String, Object>, A
 //                LOG.debug(url.getFile());
 //            }
 //        }
-        LOG.debug("PutActivityHandler called");
+        logger.debug("PutActivityHandler called");
         return activityService.saveRawActivity(input,context);
     }
 }

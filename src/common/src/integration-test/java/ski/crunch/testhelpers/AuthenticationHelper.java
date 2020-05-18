@@ -99,6 +99,8 @@ import static java.util.Base64.getEncoder;
     private String clientId;
     private String region;
     private String profileName;
+    private String cognitoId;
+    boolean retryAfterDeletingUser = true;
 
      AuthenticationHelper(String userPoolID, String userPoolClientId, String region, String profileName) {
         do {
@@ -162,6 +164,7 @@ import static java.util.Base64.getEncoder;
                     .build();
     }
 
+
     private AWSCognitoIdentityProvider buildIdpWithCreds(String profileName)  {
 
 
@@ -179,22 +182,86 @@ AWSCredentials awsCreds = new ProfileCredentialsProvider(profileName).getCredent
             AWSCognitoIdentityProvider cognitoIdentityProvider = buildIdpWithCreds(profileName);
 
             SignUpResult result = cognitoIdentityProvider.signUp(request);
-           /// System.out.println("signup result =" + result.getUserSub());
+            /// System.out.println("signup result =" + result.getUserSub());
+            cognitoId = result.getUserSub();
 
 
             AdminConfirmSignUpRequest confirmSignUpRequest = new AdminConfirmSignUpRequest();
             confirmSignUpRequest.setUsername(username);
+
             confirmSignUpRequest.setUserPoolId(this.userPoolID);
 
             AdminConfirmSignUpResult confirmResult = cognitoIdentityProvider.adminConfirmSignUp(confirmSignUpRequest);
 
             System.out.println("confirm result = " + confirmResult.toString());
             return Optional.of(result.getUserSub());
+        } catch(com.amazonaws.services.cognitoidp.model.UsernameExistsException une) {
+            if (retryAfterDeletingUser) {
+                this.deleteUser(username);
+                retryAfterDeletingUser = false;
+                return performAdminSignup(username, password);
+            } else {
+                return Optional.empty();
+            }
         } catch (final Exception ex) {
             ex.printStackTrace();
             System.out.println("Exception" + ex);
             return Optional.empty();
         }
+    }
+
+    Optional<String> performSignup(String username, String password) {
+        SignUpRequest request;
+        request = createSignupRequest(this.clientId, username, password);
+        try {
+            AWSCognitoIdentityProvider cognitoIdentityProvider = buildIdpWithCreds(profileName);
+
+            SignUpResult result = cognitoIdentityProvider.signUp(request);
+            /// System.out.println("signup result =" + result.getUserSub());
+            cognitoId = result.getUserSub();
+            return Optional.of(result.getUserSub());
+//
+//
+//            AdminConfirmSignUpRequest confirmSignUpRequest = new AdminConfirmSignUpRequest();
+//            confirmSignUpRequest.setUsername(username);
+//
+//            confirmSignUpRequest.setUserPoolId(this.userPoolID);
+//
+//            AdminConfirmSignUpResult confirmResult = cognitoIdentityProvider.adminConfirmSignUp(confirmSignUpRequest);
+//
+//            System.out.println("confirm result = " + confirmResult.toString());
+//            return Optional.of(result.getUserSub());
+        } catch(com.amazonaws.services.cognitoidp.model.UsernameExistsException une) {
+            if (retryAfterDeletingUser) {
+                this.deleteUser(username);
+                retryAfterDeletingUser = false;
+                return performAdminSignup(username, password);
+            } else {
+                return Optional.empty();
+            }
+        } catch (final Exception ex) {
+            ex.printStackTrace();
+            System.out.println("Exception" + ex);
+            return Optional.empty();
+        }
+    }
+
+    void performForgotPassword(String userName, String newPassword, String userPoolID) {
+         AdminResetUserPasswordRequest resetUserPasswordRequest = new AdminResetUserPasswordRequest();
+         resetUserPasswordRequest.setUsername(userName);
+         resetUserPasswordRequest.setUserPoolId(userPoolID);
+        try {
+            AWSCognitoIdentityProvider cognitoIdentityProvider = buildIdpWithCreds(profileName);
+            AdminResetUserPasswordResult result = cognitoIdentityProvider.adminResetUserPassword(resetUserPasswordRequest);
+            System.out.println(result.toString());
+
+        }catch(Exception ex) {
+            ex.printStackTrace();
+        }
+    }
+
+    public String getUserPoolID() {
+        return userPoolID;
     }
 
      void deleteUser(String userName) {
@@ -209,8 +276,10 @@ AWSCredentials awsCreds = new ProfileCredentialsProvider(profileName).getCredent
         }catch(final Exception ex) {
             ex.printStackTrace();
         }
+    }
 
-
+    public String getCognitoId() {
+         return cognitoId;
     }
     /**
      * Method to orchestrate the SRP Authentication
@@ -219,11 +288,11 @@ AWSCredentials awsCreds = new ProfileCredentialsProvider(profileName).getCredent
      * @param password Password for the SRP request
      * @return the JWT token if the request is successful else null.
      */
-     String performSRPAuthentication(String username, String password) {
+     String performSRPAuthentication(String username, String password) throws Exception {
         String authresult = null;
 
         InitiateAuthRequest initiateAuthRequest = initiateUserSrpAuthRequest(username);
-        try {
+
             AWSCognitoIdentityProvider cognitoIdentityProvider = buildIdp();
             InitiateAuthResult initiateAuthResult = cognitoIdentityProvider.initiateAuth(initiateAuthRequest);
             if (ChallengeNameType.PASSWORD_VERIFIER.toString().equals(initiateAuthResult.getChallengeName())) {
@@ -232,10 +301,7 @@ AWSCredentials awsCreds = new ProfileCredentialsProvider(profileName).getCredent
                 //System.out.println(result);
                 authresult = result.getAuthenticationResult().getIdToken();
             }
-        } catch (final Exception ex) {
-            System.out.println("Exception" + ex);
 
-        }
         return authresult;
     }
 
@@ -257,11 +323,30 @@ AWSCredentials awsCreds = new ProfileCredentialsProvider(profileName).getCredent
         return initiateAuthRequest;
     }
 
+    public String initiateUserPasswordAuthRequest(String username, String password) {
+
+        InitiateAuthRequest initiateAuthRequest = new InitiateAuthRequest();
+        initiateAuthRequest.setAuthFlow(AuthFlowType.USER_PASSWORD_AUTH);
+        initiateAuthRequest.setClientId(this.clientId);
+        //Only to be used if the pool contains the secret key.
+        //initiateAuthRequest.addAuthParametersEntry("SECRET_HASH", this.calculateSecretHash(this.clientId,this.secretKey,username));
+        initiateAuthRequest.addAuthParametersEntry("USERNAME", username);
+        initiateAuthRequest.addAuthParametersEntry("PASSWORD", password);
+        AWSCognitoIdentityProvider cognitoIdentityProvider = buildIdpWithCreds(profileName);
+        return  cognitoIdentityProvider.initiateAuth(initiateAuthRequest).getAuthenticationResult().getAccessToken();
+    }
+
     private SignUpRequest createSignupRequest(String clientId, String userName, String password) {
         SignUpRequest request = new SignUpRequest();
         request.setClientId(clientId);
         request.setUsername(userName);
         request.setPassword(password);
+        List<AttributeType> attributeTypes = new ArrayList<>();
+        AttributeType attributeType = new AttributeType();
+        attributeType.setName("pw");
+        attributeType.setValue(password);
+        attributeTypes.add(attributeType);
+        request.setValidationData(attributeTypes);
         return request;
 
     }

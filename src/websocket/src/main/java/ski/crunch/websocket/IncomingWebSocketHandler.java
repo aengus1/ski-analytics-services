@@ -2,8 +2,10 @@ package ski.crunch.websocket;
 
 import com.amazonaws.services.lambda.runtime.Context;
 import com.amazonaws.services.lambda.runtime.RequestStreamHandler;
-import org.apache.log4j.Logger;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import ski.crunch.aws.DynamoFacade;
+
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
@@ -18,7 +20,7 @@ public class IncomingWebSocketHandler implements RequestStreamHandler {
     private MessageHandler messageHandler  = new MessageHandler();
     private WebSocketService wsService = new WebSocketService(connectHandler, disconnectHandler, messageHandler);
 
-    private static final Logger LOGGER = Logger.getLogger(IncomingWebSocketHandler.class);
+    private static final Logger logger = LoggerFactory.getLogger(IncomingWebSocketHandler.class);
 
 
 
@@ -38,7 +40,7 @@ public class IncomingWebSocketHandler implements RequestStreamHandler {
         try {
             wsService.processRequest(wsContext);
         } catch (Exception e) {
-            LOGGER.error("Error occurred processing the request");
+            logger.error("Error occurred processing the request");
             e.printStackTrace();
         }
 

@@ -1,7 +1,8 @@
 package ski.crunch.testhelpers;
 
 import com.amazonaws.auth.profile.ProfileCredentialsProvider;
-import org.apache.log4j.Logger;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import ski.crunch.aws.DynamoFacade;
 import ski.crunch.model.UserSettingsItem;
 
@@ -20,7 +21,7 @@ public class IntegrationTestHelper {
             "cloudformation_custom_resources/rockset",
             "cloudformation_custom_resources/bucket-notification"
     };
-    private static final Logger LOG = Logger.getLogger(IntegrationTestHelper.class);
+    private static final Logger logger = LoggerFactory.getLogger(IntegrationTestHelper.class);
     private static final String INTEGRATION_TEST_USERNAME = "integration_test_user@crunch.ski";
     private static final String INTEGRATION_TEST_PASSWORD = "abC123Def!";
     private ProfileCredentialsProvider credentialsProvider;
@@ -78,15 +79,43 @@ public class IntegrationTestHelper {
     }
 
     public Optional<String> signup() {
+
         return authHelper.performAdminSignup(INTEGRATION_TEST_USERNAME, INTEGRATION_TEST_PASSWORD);
     }
 
-    public String getDevAccessKey(String username, String password) {
+    public Optional<String> signup(String userName, String password, boolean dontAutoConfirm) {
+
+        if(dontAutoConfirm) {
+            return authHelper.performSignup(userName, password);
+        } else {
+            return authHelper.performAdminSignup(userName, password);
+        }
+    }
+
+    public void resetPassword(String userName, String newPassword, String userPoolId) {
+         authHelper.performForgotPassword(userName, newPassword, userPoolId);
+    }
+
+    public String getCognitoId() {
+        return authHelper.getCognitoId();
+    }
+
+    public String getUserPoolId() {
+        return authHelper.getUserPoolID();
+    }
+    public String getDevAccessKey(String username, String password) throws Exception{
         return authHelper.performSRPAuthentication(username, password);
     }
 
-    public String retrieveAccessToken() {
+    public String signIn(String username, String password) throws Exception {
+        return authHelper.initiateUserPasswordAuthRequest(username, password);
+    }
+    public String retrieveAccessToken() throws Exception{
         return authHelper.performSRPAuthentication(INTEGRATION_TEST_USERNAME, INTEGRATION_TEST_PASSWORD);
+    }
+
+    public String retrieveAccessToken(String username, String password) throws  Exception{
+        return authHelper.performSRPAuthentication(username, password);
     }
 
     public void insertUserSettings(String userId) {
@@ -110,7 +139,7 @@ public class IntegrationTestHelper {
 
             dynamo.getMapper().save(userSettings);
         } catch (Exception e) {
-            LOG.error("Error writing user settings", e);
+            logger.error("Error writing user settings", e);
 
         }
     }
@@ -130,7 +159,7 @@ public class IntegrationTestHelper {
 
             dynamo.getMapper().delete(userSettings);
         } catch (Exception e) {
-            LOG.error("Error removing user settings", e);
+            logger.error("Error removing user settings", e);
 
         }
     }
@@ -158,6 +187,10 @@ public class IntegrationTestHelper {
         authHelper.deleteUser(INTEGRATION_TEST_USERNAME);
     }
 
+    public void destroyUser(String userName) {
+        authHelper.deleteUser(userName);
+    }
+
 
     public ServerlessState getServerlessState(String stackName) {
         return serverlessStateMap.get(stackName);
@@ -174,7 +207,7 @@ public class IntegrationTestHelper {
             //is test being executed from build (test suite) or out (individual) directory
             // this is kinda nasty because it means CI needs to `sls package` before running integration tests
             String buildPath = IntegrationTestHelper.class.getProtectionDomain().getCodeSource().getLocation().getPath();
-            LOG.debug("build path = " + buildPath);
+            logger.debug("build path = " + buildPath);
             int i = 0;
             File srcDirFile = TestUtils.getSrcDirPath();
 
@@ -188,12 +221,12 @@ public class IntegrationTestHelper {
                 File serverlessStateForModule = new File(srcDirFile
                         + (executedFromTestSuite ? "" : "/" + module)
                         + "/.serverless/", "serverless-state.json");
-                LOG.debug("serverless-state.json for " + prefix+module + " = " + serverlessStateForModule.getPath());
+                logger.debug("serverless-state.json for " + prefix+module + " = " + serverlessStateForModule.getPath());
 
                 serverlessStateMap.put(prefix+module, ServerlessState.readServerlessState(serverlessStateForModule.getPath()));
             }
         }catch(Exception ex ){
-            LOG.error("error reading serverless state ", ex);
+            logger.error("error reading serverless state ", ex);
             ex.printStackTrace();
         }
     }

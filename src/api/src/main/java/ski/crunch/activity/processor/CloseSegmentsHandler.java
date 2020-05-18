@@ -1,16 +1,18 @@
 package ski.crunch.activity.processor;
 
-import org.apache.log4j.Logger;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import ski.crunch.activity.processor.model.ActivityEvent;
 import ski.crunch.activity.processor.model.ActivityHolder;
 import ski.crunch.activity.processor.model.EventType;
+import ski.crunch.patterns.Handler;
 
 public class CloseSegmentsHandler implements Handler<ActivityHolder> {
 
     private Logger logger;
 
     public CloseSegmentsHandler() {
-        this.logger = Logger.getLogger(getClass().getName());
+        this.logger = LoggerFactory.getLogger(getClass().getName());
     }
 
     @Override

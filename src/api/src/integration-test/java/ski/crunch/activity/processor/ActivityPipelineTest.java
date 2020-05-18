@@ -1,10 +1,10 @@
 package ski.crunch.activity.processor;
 
-import org.apache.log4j.Level;
-import org.apache.log4j.Logger;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestInstance;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import scala.ski.crunch.activity.processor.model.ActivityRecord;
 import ski.crunch.activity.ActivityWriter;
 import ski.crunch.activity.ActivityWriterImpl;
@@ -14,6 +14,8 @@ import ski.crunch.activity.processor.model.ActivityEvent;
 import ski.crunch.activity.processor.model.ActivityHolder;
 import ski.crunch.activity.processor.model.EventType;
 import ski.crunch.model.ActivityOuterClass;
+import ski.crunch.patterns.Handler;
+import ski.crunch.patterns.PipelineManager;
 import ski.crunch.utils.ParseException;
 
 import java.io.File;
@@ -31,20 +33,17 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
 public class ActivityPipelineTest {
 
-    private static final Logger LOG = Logger.getLogger(ActivityPipelineTest.class);
     private static final SimpleDateFormat targetFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss");
 
     private static final String testFile = "261217.fit";
     private static final String pauseTest = "interval_test.fit";
     private static final String multisport = "multisport.fit";
     private static final String pauseTestGarmin = "garmin_test.fit";
-    // private static final String lapTestGarmin = "garmin_1.fit";
     private PipelineManager<ActivityHolder> manager = new PipelineManager<>();
 
     @BeforeAll
     void setUp() {
 
-        LOG.setLevel(Level.DEBUG);
 
     }
 
@@ -79,8 +78,8 @@ public class ActivityPipelineTest {
         activity.getHrvs().put("2016-12-26T12:01:00", new Double[]{0.35});
 
 
-        Handler createHrvRecords = new CreateHrvRecordHandler();
-        Handler sortByTsHandler = new SortRecordsByTsHandler();
+        Handler<ActivityHolder> createHrvRecords = new CreateHrvRecordHandler();
+        Handler<ActivityHolder> sortByTsHandler = new SortRecordsByTsHandler();
         manager.clear();
         manager.addHandler(sortByTsHandler);
         manager.addHandler(createHrvRecords);
@@ -115,7 +114,7 @@ public class ActivityPipelineTest {
         }
         System.out.println("init records " + initRecords.size());
 
-        Handler mergeDuplicateRecordHandler = new MergeDuplicateRecordHandler();
+        Handler<ActivityHolder> mergeDuplicateRecordHandler = new MergeDuplicateRecordHandler();
         manager.clear();
         manager.addHandler(mergeDuplicateRecordHandler);
         manager.doPipeline(activity);
@@ -128,10 +127,10 @@ public class ActivityPipelineTest {
         }
 
         assertEquals(1,records.size());
-//        double expected = (0.4 + 0.7) / 2;
-//        System.out.println("expected = " + expected);
-//        System.out.println("actual = " + records.get(0).hrv());
-        assertEquals(records.get(0).hrv(), (0.4 + 0.7) / 2);
+        double expected = (0.4 + 0.7) / 2;
+        System.out.println("expected = " + expected);
+        System.out.println("actual = " + records.get(0).hrv());
+        assertEquals(records.get(0).hrv(), (0.4 + 0.7) / 2.0);
     }
 
 
@@ -157,7 +156,7 @@ public class ActivityPipelineTest {
         assertEquals(findRecord("2016-12-26T11:24:49", activity.getRecords()).get().lat(), 49.77981196716428);
         assertEquals(findRecord("2016-12-26T11:24:49", activity.getRecords()).get().lon(), -119.17056497186422);
 
-        Handler replaceNullHandler = new NullReplaceHandler();
+        Handler<ActivityHolder> replaceNullHandler = new NullReplaceHandler();
         manager.clear();
         manager.addHandler(replaceNullHandler);
         manager.doPipeline(activity);
@@ -174,7 +173,7 @@ public class ActivityPipelineTest {
 
         assertTrue(activity.getRecords().get(2).grade() == -999.0);
 
-        Handler calcGradeHandler = new CalcGradeHandler();
+        Handler<ActivityHolder> calcGradeHandler = new CalcGradeHandler();
         localManager.clear();
         localManager.addHandler(calcGradeHandler);
         localManager.doPipeline(activity);
@@ -188,7 +187,7 @@ public class ActivityPipelineTest {
         ActivityHolder activity = setupActivity(testFile);
 
 
-        Handler calcMovingHandler = new CalcMovingHandler();
+        Handler<ActivityHolder> calcMovingHandler = new CalcMovingHandler();
         localManager.clear();
         localManager.addHandler(calcMovingHandler);
         localManager.doPipeline(activity);
@@ -208,7 +207,7 @@ public class ActivityPipelineTest {
         ActivityHolder activity = setupActivity(pauseTest);
 
         assertEquals(activity.getEvents().stream().filter(x -> x.getEventType().equals(EventType.PAUSE_START)).count(),0);
-        Handler calcPauseHandler = new DetectPauseHandler();
+        Handler<ActivityHolder> calcPauseHandler = new DetectPauseHandler();
         localManager.clear();
         localManager.addHandler(calcPauseHandler);
         localManager.doPipeline(activity);
@@ -238,7 +237,7 @@ public class ActivityPipelineTest {
         ActivityHolder activity = setupActivity(pauseTestGarmin);
 
         assertEquals(activity.getEvents().stream().filter(x -> x.getEventType().equals(EventType.PAUSE_START)).count(),0);
-        Handler calcPauseHandler = new DetectPauseHandler();
+        Handler<ActivityHolder> calcPauseHandler = new DetectPauseHandler();
         localManager.clear();
         localManager.addHandler(calcPauseHandler);
         localManager.doPipeline(activity);
@@ -265,8 +264,9 @@ public class ActivityPipelineTest {
     void testCloseSegmentsHandler() {
 
         ActivityHolder holder = setupActivity(multisport);
-        PipelineManager localManager = new PipelineManager();
-        localManager.addHandler(new CloseSegmentsHandler());
+        PipelineManager<ActivityHolder> localManager = new PipelineManager<>();
+        Handler<ActivityHolder> closeSegmentsHandler = new CloseSegmentsHandler();
+        localManager.addHandler(closeSegmentsHandler);
         localManager.doPipeline(holder);
         assertEquals(holder.getEvents().stream().filter(x -> x.getEventType().equals(EventType.ACTIVITY_START)).count(),1);
         assertEquals(holder.getEvents().stream().filter(x -> x.getEventType().equals(EventType.ACTIVITY_STOP)).count(),1);
@@ -284,10 +284,13 @@ public class ActivityPipelineTest {
 
 
         ActivityHolder holder = setupActivity(pauseTest);
-        PipelineManager localManager = new PipelineManager<ActivityHolder>();
-        localManager.addHandler(new CloseSegmentsHandler());
-        localManager.addHandler(new SortRecordsByTsHandler());
-        localManager.addHandler(new SetEventIndexHandler());
+        PipelineManager<ActivityHolder> localManager = new PipelineManager<>();
+        Handler<ActivityHolder> closeSegmentsHandler = new CloseSegmentsHandler();
+        Handler<ActivityHolder> sortRecordsByTsHandler = new SortRecordsByTsHandler();
+        Handler<ActivityHolder> setEventIndexHandler = new SetEventIndexHandler();
+        localManager.addHandler(closeSegmentsHandler);
+        localManager.addHandler(sortRecordsByTsHandler);
+        localManager.addHandler(setEventIndexHandler);
 
         localManager.doPipeline(holder);
 

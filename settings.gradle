@@ -15,6 +15,7 @@ include 'api'
 include 'auth'
 include 'common'
 include 'websocket'
+include 'cli'
 
 include 'cf-rockset'
 include 'cf-userpool-trigger'
@@ -27,6 +28,7 @@ project(':api').projectDir = file("src/api")
 project(":auth").projectDir = file("src/auth")
 project(":common").projectDir = file("src/common")
 project(":websocket").projectDir = file("src/websocket")
+project(":cli").projectDir = file("src/cli")
 
 // Cloudformation custom resources
 project(":cf-rockset").projectDir = file("src/cloudformation_custom_resources/rockset")

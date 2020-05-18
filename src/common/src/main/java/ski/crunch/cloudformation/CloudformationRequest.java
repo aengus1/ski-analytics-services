@@ -1,7 +1,8 @@
 package ski.crunch.cloudformation;
 
 
-import org.apache.log4j.Logger;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import ski.crunch.utils.MissingRequiredParameterException;
 
 import java.util.Map;
@@ -21,7 +22,7 @@ public class CloudformationRequest {
     private Map<String, Object> resourceProperties;
     private Optional<Map<String, Object>> oldResourceProperties;
 
-    private static final Logger logger = Logger.getLogger(CloudformationRequest.class);
+    private static final Logger logger = LoggerFactory.getLogger(CloudformationRequest.class);
 
     public enum RequestLifecycleType {
         CREATE, UPDATE, DELETE

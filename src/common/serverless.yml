@@ -9,6 +9,7 @@ provider:
   stage: ${{opt:stage}}
   variableSyntax: "\\${{([ ~:a-zA-Z0-9._\\'\",\\-\\/\\(\\)]+?)}}" # notice the double quotes for yaml to ignore the escape characters!
   stackName: ${{opt:stage}}-${{self:custom.projectName}}-${{self:service}}
+  deploymentBucket: ${{opt:stage}}-deployment-${{self:custom.projectName}}
 
 custom: ${{file(../../config/custom.yml)}}
 

@@ -1,15 +1,17 @@
 package ski.crunch.activity.processor;
 
-import org.apache.log4j.Logger;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import scala.ski.crunch.activity.processor.EventProcessor;
 import ski.crunch.activity.processor.model.ActivityHolder;
+import ski.crunch.patterns.Handler;
 
 public class DetectMotionHandler implements Handler<ActivityHolder> {
 
     private Logger logger;
 
     public DetectMotionHandler() {
-        this.logger = Logger.getLogger(getClass().getName());
+        this.logger = LoggerFactory.getLogger(getClass().getName());
     }
 
     @Override

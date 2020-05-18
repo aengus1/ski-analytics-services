@@ -1,13 +1,14 @@
 package ski.crunch.websocket;
 
-import org.apache.log4j.Logger;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import ski.crunch.aws.DynamoFacade;
 import ski.crunch.model.UserSettingsItem;
 
 public class ConnectHandler implements WebSocketHandler {
 
     private DynamoFacade dynamo;
-    private Logger LOGGER = Logger.getLogger(ConnectHandler.class);
+    private Logger LOGGER = LoggerFactory.getLogger(ConnectHandler.class);
 
 
     @Override

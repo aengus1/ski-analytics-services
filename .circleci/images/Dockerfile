@@ -57,7 +57,6 @@ RUN cd /tmp && wget https://releases.hashicorp.com/terraform/${TERRAFORM_VERSION
 RUN unzip ./terraform_${TERRAFORM_VERSION}_linux_amd64.zip -d /usr/local/bin
 CMD ["terraform", "-v"]
 
-
 ## Set up ci user
 RUN groupadd -r cigroup
 RUN useradd --no-log-init -r -g cigroup circleci
@@ -68,3 +67,6 @@ RUN chmod -R 777 /home/circleci
 ENV HOME="/home/circleci"
 
 USER circleci
+
+## Install CircleCI CLI
+RUN curl -fLSs https://raw.githubusercontent.com/CircleCI-Public/circleci-cli/master/install.sh | bash

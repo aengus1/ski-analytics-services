@@ -55,7 +55,7 @@ public class IAMFacadeUserPolicyTest extends AbstractAwsTest {
             integrationTestHelper = new IntegrationTestHelper();
              iam = new IAMFacade(integrationTestHelper.getApiRegion());
         }catch(Exception ex ){
-            LOG.error("error setting up test", ex);
+            logger.error("error setting up test", ex);
             fail("error setting up test");
         }
     }
@@ -70,7 +70,7 @@ public class IAMFacadeUserPolicyTest extends AbstractAwsTest {
         tags.add(stage);
         CreateUserResult result = iam.createUser(USER_NAME, "/", tags);
         userArn = result.getUser().getArn();
-        LOG.info("create user result: " + userArn);
+        logger.info("create user result: " + userArn);
 
         String findRole = iam.getUser(USER_NAME).getUser().getArn();
         assertEquals(userArn, findRole);
@@ -114,7 +114,7 @@ public class IAMFacadeUserPolicyTest extends AbstractAwsTest {
     @Order(5)
     public void testDeletePolicy(){
         DeletePolicyResult result = iam.deletePolicy(policyArn);
-        LOG.info("delete policy result: " + result.toString());
+        logger.info("delete policy result: " + result.toString());
         assertThrows(NoSuchEntityException.class, () -> iam.getPolicy(policyArn));
     }
 
@@ -146,7 +146,7 @@ public class IAMFacadeUserPolicyTest extends AbstractAwsTest {
     public void testDeleteUser(){
         DeleteUserResult result = iam.deleteUser(USER_NAME);
         userArn = result.toString();
-        LOG.info("delete user result: " + result.toString());
+        logger.info("delete user result: " + result.toString());
         assertThrows(NoSuchEntityException.class, () -> iam.getUser(USER_NAME).getUser().getUserName());
 
     }
@@ -155,18 +155,18 @@ public class IAMFacadeUserPolicyTest extends AbstractAwsTest {
     public void tearDown() {
         try {
             if(iam.getUser(USER_NAME).getUser() != null && !iam.listAccessKeys(USER_NAME).getAccessKeyMetadata().isEmpty()){
-                LOG.info("deleting user access key");
+                logger.info("deleting user access key");
                 iam.deleteAccessKey(USER_NAME, accessKeyId);
             }
             if(iam.getUser(USER_NAME).getUser() != null) {
-                LOG.info("deleting user");
+                logger.info("deleting user");
                 iam.deleteRole(USER_NAME);
             }
         }catch(Exception ignored ) {}
 
         try {
             if(iam.getPolicy(policyArn).getPolicy() != null) {
-                LOG.info("deleting policy");
+                logger.info("deleting policy");
                 iam.deletePolicy(policyArn);
             }
         }catch (Exception ignored) { }

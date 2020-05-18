@@ -10,11 +10,14 @@ provider:
   variableSyntax: "\\${{([ ~:a-zA-Z0-9._\\'\",\\-\\/\\(\\)]+?)}}" # notice the double quotes for yaml to ignore the escape characters!
   region: ${{file(../../infra/envs/global.tfvars.json):primary_region}}
   stackName: ${{opt:stage}}-${{self:custom.projectName}}-${{self:service}}
+  deploymentBucket: ${{opt:stage}}-deployment-${{self:custom.projectName}}
   stage: ${{opt:stage}}
   iamRoleStatements:
     - Effect: Allow
       Action:
         - s3:ListBucket
+        - s3:GetAccelerateConfiguration
+        - s3:PutAccelerateConfiguration
       Resource: "arn:aws:s3:::${{self:custom.activityBucketName}}"
     - Effect: Allow
       Action:
@@ -30,6 +33,8 @@ provider:
       Action:
         - s3:PutBucketNotification
         - s3:ListBucket
+        - s3:GetAccelerateConfiguration
+        - s3:PutAccelerateConfiguration
       Resource: "arn:aws:s3:::${{self:custom.rawActivityBucketName}}"
     - Effect: Allow
       Action:

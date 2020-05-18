@@ -1,12 +1,13 @@
 package ski.crunch.activity.processor;
 
-import org.apache.log4j.Logger;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import scala.collection.JavaConversions;
 import scala.collection.immutable.List;
 import scala.ski.crunch.activity.processor.RecordProcessor;
 import scala.ski.crunch.activity.processor.model.ActivityRecord;
-import ski.crunch.activity.processor.Handler;
 import ski.crunch.activity.processor.model.ActivityHolder;
+import ski.crunch.patterns.Handler;
 
 import java.util.ArrayList;
 
@@ -14,7 +15,7 @@ public class CalcGradeHandler implements Handler<ActivityHolder> {
     private Logger logger;
 
     public CalcGradeHandler() {
-        this.logger = Logger.getLogger(getClass().getName());
+        this.logger = LoggerFactory.getLogger(getClass().getName());
     }
 
     @Override

@@ -1,6 +1,7 @@
 package ski.crunch.activity.processor;
 
 import ski.crunch.activity.processor.model.ActivityHolder;
+import ski.crunch.patterns.Handler;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;

@@ -1,7 +1,9 @@
 package ski.crunch.dao;
 
+import com.amazonaws.services.dynamodbv2.datamodeling.DynamoDBMapper;
 import com.amazonaws.services.dynamodbv2.datamodeling.DynamoDBMapperConfig;
 import com.amazonaws.services.dynamodbv2.datamodeling.DynamoDBQueryExpression;
+import com.amazonaws.services.dynamodbv2.datamodeling.S3Link;
 import com.amazonaws.services.dynamodbv2.model.AttributeValue;
 import ski.crunch.aws.DynamoFacade;
 import ski.crunch.model.ActivityItem;
@@ -10,6 +12,7 @@ import ski.crunch.utils.LambdaProxyConfig;
 import ski.crunch.utils.SaveException;
 
 import java.util.*;
+import java.util.stream.Collectors;
 
 public class ActivityDAO extends AbstractDAO {
 
@@ -17,33 +20,27 @@ public class ActivityDAO extends AbstractDAO {
         super(dynamo, tableName);
     }
 
-    public Optional<ActivityItem> getActivityItem(String activityId) {
-        dynamoDBService.updateTableName(tableName);
-        System.out.println("attempting to fetch " + activityId + " from " + tableName);
-        Map<String, AttributeValue> eav = new HashMap<String, AttributeValue>();
-        if (activityId.endsWith(".pbf")) {
-            activityId = activityId.substring(0, activityId.length() - 4);
-        }
-        eav.put(":val1", new AttributeValue().withS(activityId));
-
-        DynamoDBQueryExpression<ActivityItem> queryExpression = new DynamoDBQueryExpression<ActivityItem>()
-                .withKeyConditionExpression("id = :val1")
-                .withExpressionAttributeValues(eav);
-        List<ActivityItem> items = dynamoDBService.getMapper().query(ActivityItem.class, queryExpression);
-        System.out.println("returned " + items.size());
-        return items.isEmpty() ? Optional.empty() : Optional.of(items.get(0));
-
+    public DynamoDBMapper getMapper() {
+        return dynamoDBService.getMapper();
+    }
+    public Optional<ActivityItem> getActivityItem(String activityId, String email) {
+        return Optional.ofNullable(dynamoDBService.getMapper().load(ActivityItem.class, email, activityId));
     }
 
-
-    public boolean saveActivitySearchFields(ActivityOuterClass.Activity activity) {
+    public void saveLinkToProcessed(String activityId, String userId, S3Link s3LinkToProcessed) {
+        System.out.println("attempting to load activity with: " + userId + " " + activityId);
+        ActivityItem activityItem = dynamoDBService.getMapper().load(ActivityItem.class, userId, activityId);
+        activityItem.setProcessedActivity(s3LinkToProcessed);
+        dynamoDBService.getMapper().save(activityItem);
+    }
+    public boolean saveActivitySearchFields(ActivityOuterClass.Activity activity, String email) {
         dynamoDBService.updateTableName(tableName);
-        LOG.info("activity id = " + activity.getId());
-        ActivityItem item = null;
-        Optional<ActivityItem> itemo = getActivityItem(activity.getId());
-
+        logger.info("activity id = " + activity.getId());
+        ActivityItem item;
+        Optional<ActivityItem> itemo = getActivityItem(activity.getId(), email);
+        logger.debug("itemo = " + itemo.isPresent());
         if (!itemo.isPresent()) {
-            LOG.error("activity item " + activity.getId() + " not found");
+            logger.error("activity item " + activity.getId() + " not found");
             return false;
         } else {
             item = itemo.get();
@@ -65,31 +62,30 @@ public class ActivityDAO extends AbstractDAO {
 
         try {
 
-            LOG.info("Updated activity " + activity.getId() + "search fields in dynamo");
+            logger.info("Updated activity " + activity.getId() + "search fields in dynamo");
             dynamoDBService.getMapper().save(item);
             return true;
         } catch (Exception ex) {
-            LOG.error("Error updating  activityitem: " + activity.getId() + " from dynamo", ex);
+            logger.error("Error updating  activityitem: " + activity.getId() + " from dynamo", ex);
             return false;
         }
     }
 
-    public void saveMetadata(String activityId, LambdaProxyConfig.RequestContext.Identity identity, String contentType, String S3region) throws SaveException {
+    public void saveMetadata(String activityId, LambdaProxyConfig.RequestContext.Identity identity, String contentType, String rawActivityBucketName) throws SaveException {
         dynamoDBService.updateTableName(tableName);
         try {
             ActivityItem activity = new ActivityItem();
             activity.setId(activityId);
             activity.setUserId(identity.getEmail());
-            activity.setCognitoId(identity.getCognitoIdentityId());
             activity.setDateOfUpload(new Date(System.currentTimeMillis()));
-            activity.setRawActivity(dynamoDBService.getMapper().createS3Link(S3region, activityId));
+            activity.setRawActivity(dynamoDBService.getMapper().createS3Link(rawActivityBucketName, activityId));
             activity.setUserAgent(identity.getUserAgent());
             activity.setSourceIp(identity.getSourceIp());
             activity.setStatus(ActivityItem.Status.PENDING);
             activity.setRawFileType(contentType);
             dynamoDBService.getMapper().save(activity);
         } catch (Exception e) {
-            LOG.error("Error writing metadata to activity table. Rolling back", e);
+            logger.error("Error writing metadata to activity table. Rolling back", e);
             throw new SaveException("Error writing metadata to activity table");
         }
     }
@@ -97,12 +93,13 @@ public class ActivityDAO extends AbstractDAO {
     /**
      * Method hard deletes activity record from table
      *
-     * @param id
-     * @return
+     * @param id String activity id
+     * @param email String user id
+     * @return boolean success
      */
-    public boolean deleteActivityItemById(String id) {
+    public boolean deleteActivityItemById(String id, String email) {
         dynamoDBService.updateTableName(tableName);
-        Optional<ActivityItem> itemOptional = getActivityItem(id);
+        Optional<ActivityItem> itemOptional = getActivityItem(id, email);
         if (itemOptional.isPresent()) {
             dynamoDBService.getMapper().delete(itemOptional.get());
         } else {
@@ -120,6 +117,19 @@ public class ActivityDAO extends AbstractDAO {
                 .build();
         activityItem.setStatus(ActivityItem.Status.COMPLETE);
         dynamoDBService.getMapper().save(activityItem, dynamoDBMapperConfig);
+    }
+
+    public List<ActivityItem> getActivitiesByUser(String email) {
+        System.out.println("called with " + email);
+        dynamoDBService.updateTableName(tableName);
+
+        DynamoDBQueryExpression<ActivityItem> queryExp = new DynamoDBQueryExpression<>();
+        Map<String, AttributeValue> eav = new HashMap<>();
+        eav.put(":val1", new AttributeValue().withS(email));
+        queryExp.setKeyConditionExpression("userId = :val1");
+        queryExp.setExpressionAttributeValues(eav);
+        final List<ActivityItem> results = dynamoDBService.getMapper().query(ActivityItem.class, queryExp);
+        return results.stream().collect(Collectors.toList());
     }
 }
 

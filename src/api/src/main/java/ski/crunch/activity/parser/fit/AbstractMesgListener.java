@@ -1,6 +1,7 @@
 package ski.crunch.activity.parser.fit;
 
-import org.apache.log4j.Logger;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import ski.crunch.activity.processor.model.ActivityHolder;
 
 import java.text.ParseException;
@@ -34,6 +35,6 @@ public abstract class AbstractMesgListener {
 
         this.offset = end.getTime() - begin.getTime();
         this.activityHolder = holder;
-        this.logger= Logger.getLogger(getClass().getName());
+        this.logger= LoggerFactory.getLogger(getClass().getName());
     }
 }

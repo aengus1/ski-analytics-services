@@ -1,0 +1,23 @@
+[
+  {
+    "rawFileType" : "fit",
+    "maxHr" : 0,
+    "distance" : 5459,
+    "userAgent" : "Jersey/2.5.1 (HttpUrlConnection 11.0.5)",
+    "maxSpeed" : 15.120000000000001,
+    "duration" : 2052,
+    "descent" : 222,
+    "lastUpdateTimestamp" : "2020-04-10T20:45:18.734Z",
+    "avHr" : -998,
+    "ascent" : 170,
+    "sourceIp" : "64.180.10.247",
+    "rawActivity" : "{\"s3\":{\"bucket\":\"ca-central-1\",\"key\":\"4feb05ae-e3de-44e6-8267-53080dfed3b7\",\"region\":null}}",
+    "processedActivity" : "{\"s3\":{\"bucket\":\"dev-activity-crunch-ski\",\"key\":\"5ad104cd-6ed5-4b2b-bf34-77760e5344b6/4feb05ae-e3de-44e6-8267-53080dfed3b7.pbf\",\"region\":null}}",
+    "activitySubType" : "GENERIC_SUBSPORT",
+    "activityType" : "RUNNING",
+    "device" : "SUUNTO 20",
+    "status" : "COMPLETE",
+    "notMapped" : "PROPERTY",
+    "another": -999
+  }
+]
