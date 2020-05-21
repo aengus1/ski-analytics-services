@@ -3,6 +3,8 @@ package crunch.ski.cli.services;
 import com.amazonaws.services.dynamodbv2.model.DeleteTableResult;
 import com.amazonaws.services.s3.model.AmazonS3Exception;
 import com.amazonaws.services.simplesystemsmanagement.model.ParameterNotFoundException;
+import crunch.ski.cli.model.ModuleStatus;
+import crunch.ski.cli.model.StatusOptions;
 import crunch.ski.cli.model.WipeOptions;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -11,34 +13,43 @@ import ski.crunch.aws.DynamoFacade;
 import ski.crunch.aws.S3Facade;
 import ski.crunch.aws.SSMParameterFacade;
 
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Scanner;
 
 public class EnvironmentManagementService {
 
+    public static final String[] MODULES = new String[]{"DATA", "API", "FRONTEND", "APPLICATION"};
     private static final Logger logger = LoggerFactory.getLogger(EnvironmentManagementService.class);
     private S3Facade s3Facade;
     private SSMParameterFacade ssmParameterFacade;
-    private WipeOptions options;
+    private WipeOptions wipeOptions;
+    private StatusOptions statusOptions;
 
-    public EnvironmentManagementService(WipeOptions options) {
-        this.s3Facade = new S3Facade(options.getRegion());
-        this.ssmParameterFacade = new SSMParameterFacade(options.getRegion(),
+
+    public EnvironmentManagementService(WipeOptions wipeOptions) {
+        this.s3Facade = new S3Facade(wipeOptions.getRegion());
+        this.ssmParameterFacade = new SSMParameterFacade(wipeOptions.getRegion(),
                 CredentialsProviderFactory.getDefaultCredentialsProvider());
-        this.options = options;
+        this.wipeOptions = wipeOptions;
     }
 
-    public EnvironmentManagementService(S3Facade s3Facade, SSMParameterFacade ssmParameterFacade, WipeOptions options) {
+    public EnvironmentManagementService(StatusOptions statusOptions) {
+        this.statusOptions = statusOptions;
+    }
+
+    public EnvironmentManagementService(S3Facade s3Facade, SSMParameterFacade ssmParameterFacade, WipeOptions wipeOptions) {
         this.s3Facade = s3Facade;
         this.ssmParameterFacade = ssmParameterFacade;
-        this.options = options;
+        this.wipeOptions = wipeOptions;
     }
 
     public boolean wipeEnvironment() throws Exception {
 
-        if(!options.isAutoApprove()) {
+        if(!wipeOptions.isAutoApprove()) {
             System.out.println("Do you really want to wipe "
-                            + (options.isDeploymentBucketOnly() ? " all application code " : "all data ")
-                    + "from " + options.getEnvironment() + " ? (Y/n)");
+                            + (wipeOptions.isDeploymentBucketOnly() ? " all application code " : "all data ")
+                    + "from " + wipeOptions.getEnvironment() + " ? (Y/n)");
             Scanner scanner = new Scanner(System.in);
             if(!scanner.nextLine().trim().equalsIgnoreCase("Y")){
                 logger.info("Aborting data wipe");
@@ -46,17 +57,17 @@ public class EnvironmentManagementService {
             }
         }
 
-        if(options.isDeploymentBucketOnly()) {
-            String deploymentBucket = CliUtils.calcBucketName("deployment", options.getEnvironment(),
-                    options.getConfigMap().get("PROJECT_NAME"));
+        if(wipeOptions.isDeploymentBucketOnly()) {
+            String deploymentBucket = CliUtils.calcBucketName("deployment", wipeOptions.getEnvironment(),
+                    wipeOptions.getConfigMap().get("PROJECT_NAME"));
             return emptyBucket(deploymentBucket);
         }
 
-        if(options.isRemoteStateOnly()) {
-            String remoteStateBucket = options.getEnvironment()+"-"+options.getConfigMap().get("PROJECT_NAME")+"-tf-backend-store";
+        if(wipeOptions.isRemoteStateOnly()) {
+            String remoteStateBucket = wipeOptions.getEnvironment()+"-"+ wipeOptions.getConfigMap().get("PROJECT_NAME")+"-tf-backend-store";
             boolean success =  emptyBucket(remoteStateBucket);
 
-            String remoteStateTable = options.getEnvironment()+"-"+options.getConfigMap().get("PROJECT_NAME")+"-terraform-state-lock-dynamo";
+            String remoteStateTable = wipeOptions.getEnvironment()+"-"+ wipeOptions.getConfigMap().get("PROJECT_NAME")+"-terraform-state-lock-dynamo";
             DynamoFacade dynamoFacade = new DynamoFacade("us-east-1",remoteStateTable);
             try {
                 DeleteTableResult result = dynamoFacade.getTable(remoteStateTable).delete();
@@ -67,20 +78,20 @@ public class EnvironmentManagementService {
             return success;
         }
 
-        String rawActivityBucket = CliUtils.calcBucketName("raw-activity", options.getEnvironment(),
-                options.getConfigMap().get("PROJECT_NAME"));
+        String rawActivityBucket = CliUtils.calcBucketName("raw-activity", wipeOptions.getEnvironment(),
+                wipeOptions.getConfigMap().get("PROJECT_NAME"));
 
-        String activityBucket = CliUtils.calcBucketName("activity", options.getEnvironment(),
-                options.getConfigMap().get("PROJECT_NAME"));
+        String activityBucket = CliUtils.calcBucketName("activity", wipeOptions.getEnvironment(),
+                wipeOptions.getConfigMap().get("PROJECT_NAME"));
 
         emptyBucket(rawActivityBucket);
         emptyBucket(activityBucket);
 
 
-        if (!options.isForDeletionOnly()) {
+        if (!wipeOptions.isForDeletionOnly()) {
             //SSM Parameters
             for (String ssmKey : BackupRestoreService.SSM_KEYS) {
-                String paramName = options.getEnvironment() + "-" + ssmKey + "-api-key";
+                String paramName = wipeOptions.getEnvironment() + "-" + ssmKey + "-api-key";
                 try {
                     ssmParameterFacade.deleteParameter(paramName);
                 }catch(ParameterNotFoundException ex){
@@ -106,6 +117,15 @@ public class EnvironmentManagementService {
         return true;
     }
 
+    public Map<String, ModuleStatus> getStatus()  {
+        Map<String, ModuleStatus> result = new HashMap<>();
+        for (String module : MODULES) {
+            ModuleStatus status = getModuleStatus(module);
+            result.put(module, status);
+        }
+        return result;
+    }
+
     private boolean emptyBucket(String name) throws Exception{
         try {
             logger.info("Emptying bucket {}", name);
@@ -115,5 +135,45 @@ public class EnvironmentManagementService {
             return false;
         }
         return true;
+    }
+
+    private ModuleStatus getModuleStatus(String moduleName) {
+        switch (moduleName) {
+            case "DATA" : {
+                return getDataStatus();
+            }
+            case "API": {
+                return getApiStatus();
+            }
+            case "FRONTEND": {
+                return getFrontendStatus();
+            }
+            case "APPLICATION": {
+                return getApplicationStatus();
+            }
+            default: {
+                return null;
+            }
+        }
+    }
+
+    private ModuleStatus getApplicationStatus() {
+        //TODO
+        return null;
+    }
+
+    private ModuleStatus getFrontendStatus() {
+        //TODO
+        return null;
+    }
+
+    private ModuleStatus getApiStatus() {
+        //TODO
+        return null;
+    }
+
+    private ModuleStatus getDataStatus() {
+        //TODO
+        return null;
     }
 }

@@ -59,7 +59,6 @@ public class EnvironmentManagementServiceTest {
 
         service.wipeEnvironment();
 
-
         verify(s3Facade, times(1)).emptyBucket("dev-raw-activity-crunch-ski");
         verify(s3Facade, times(1)).emptyBucket("dev-activity-crunch-ski");
 
