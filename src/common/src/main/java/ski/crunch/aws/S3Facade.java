@@ -261,6 +261,13 @@ public class S3Facade {
         }
     }
 
+    public void emptyBucket(String bucketName) throws Exception {
+        List<String> objects = listObjects(bucketName);
+        for (String object : objects) {
+            s3Client.deleteObject(bucketName, object);
+        }
+    }
+
     public String getRegion() {
         return this.region;
     }

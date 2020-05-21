@@ -10,7 +10,8 @@ import java.util.concurrent.Callable;
         subcommands = {
                 Backup.class,
                 Restore.class,
-                Config.class
+                Config.class,
+                Wipe.class
         },
         name = "crunch",
         description = "Administrative tool for loading / restoring crunch.ski data",
