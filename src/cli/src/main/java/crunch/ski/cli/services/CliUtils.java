@@ -4,18 +4,26 @@ public class CliUtils {
 
 
     public static String calcTableName(String tableType, String environment, String projectName) {
-        return new StringBuilder()
-                .append(environment).append("-")
-                .append(projectName).append("-")
-                .append(tableType)
-                .toString();
+        return environment + "-" +
+                projectName + "-" +
+                tableType;
     }
 
     public static String calcBucketName(String bucketType, String environment, String projectName) {
-        return new StringBuilder()
-                .append(environment).append("-")
-                .append(bucketType).append("-")
-                .append(projectName)
-                .toString();
+        return environment + "-" +
+                bucketType + "-" +
+                projectName;
+    }
+
+    public static String calcSSMParameterName(String parameterName, String environment) {
+        return environment + "-" +
+                parameterName + "-" +
+                "api-key";
+    }
+
+    public static String calcStackName(String stack, String environment, String projectName) {
+        return environment + "-" +
+                projectName + "-" +
+                stack;
     }
 }
