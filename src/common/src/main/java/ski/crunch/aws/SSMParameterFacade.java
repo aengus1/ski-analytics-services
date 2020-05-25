@@ -41,8 +41,7 @@ public class SSMParameterFacade {
                 if(tags != null && tags.isPresent()) {
                     request.withTags(tags.get());
                 }
-        PutParameterResult result = ssmClient.putParameter(request);
-                return result;
+        return ssmClient.putParameter(request);
     }
 
     public DeleteParameterResult deleteParameter(String name) {
@@ -50,5 +49,14 @@ public class SSMParameterFacade {
         DeleteParameterRequest request = new DeleteParameterRequest();
         request.withName(name);
         return ssmClient.deleteParameter(request);
+    }
+
+    public boolean parameterExists(String parameterName) {
+        try {
+            getParameter(parameterName);
+            return true;
+        } catch( ParameterNotFoundException ex) {
+            return false;
+        }
     }
 }

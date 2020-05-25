@@ -172,5 +172,13 @@ public class IAMFacade {
         return iam.deleteAccessKey(request);
     }
 
+    public boolean userExists(String userName) {
+        try {
+            getUser(userName);
+            return true;
+        } catch(NoSuchEntityException ex) {
+            return false;
+        }
+    }
 
 }

@@ -78,7 +78,7 @@ public class S3Facade {
         return IOUtils.toByteArray(object.getObjectContent());
     }
 
-    public ObjectMetadata getObjectMetadata(String bucket, String key) throws IOException {
+    public ObjectMetadata getObjectMetadata(String bucket, String key) {
         return s3Client.getObjectMetadata(bucket, key);
     }
 
@@ -266,6 +266,10 @@ public class S3Facade {
         for (String object : objects) {
             s3Client.deleteObject(bucketName, object);
         }
+    }
+
+    public boolean bucketExists(String bucketName) {
+        return s3Client.doesBucketExistV2(bucketName);
     }
 
     public String getRegion() {

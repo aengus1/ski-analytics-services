@@ -11,6 +11,8 @@ configurations {
 dependencies {
     api(
             "com.amazonaws:aws-java-sdk-cloudformation:${awsVersion}",
+            "com.amazonaws:aws-java-sdk-cloudfront:${awsVersion}",
+            "com.amazonaws:aws-java-sdk-route53:${awsVersion}",
             "com.amazonaws:aws-java-sdk-cognitoidp:${awsVersion}",
             "com.amazonaws:aws-java-sdk-ssm:${awsVersion}",
             "com.amazonaws:aws-lambda-java-core:1.1.0",
@@ -33,6 +35,8 @@ dependencies {
 
     implementation(
             "com.amazonaws:aws-java-sdk-cloudformation:${awsVersion}",
+            "com.amazonaws:aws-java-sdk-cloudfront:${awsVersion}",
+            "com.amazonaws:aws-java-sdk-route53:${awsVersion}",
             "com.amazonaws:aws-java-sdk-cognitoidp:${awsVersion}",
             "com.amazonaws:aws-java-sdk-ssm:${awsVersion}",
             "com.amazonaws:aws-lambda-java-core:1.1.0",

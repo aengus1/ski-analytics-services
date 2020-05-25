@@ -1,5 +1,6 @@
 package crunch.ski.cli;
 
+import com.google.common.annotations.VisibleForTesting;
 import crunch.ski.cli.model.Colour;
 import crunch.ski.cli.model.ModuleStatus;
 import crunch.ski.cli.model.StatusOptions;
@@ -7,7 +8,9 @@ import crunch.ski.cli.services.EnvironmentManagementService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import picocli.CommandLine;
+import ski.crunch.utils.NotFoundException;
 
+import java.util.HashMap;
 import java.util.Map;
 import java.util.concurrent.Callable;
 
@@ -37,14 +40,38 @@ public class Status implements Callable<Integer> {
      */
     public Status() {
         statusOptions = new StatusOptions();
-        this.environmentManagementService = new EnvironmentManagementService(statusOptions);
+    }
+
+    @VisibleForTesting
+    public void setStatusOptions(StatusOptions options) {
+        this.statusOptions = options;
+    }
+
+    @VisibleForTesting
+    public void setParent(App app) {
+        this.parent = app;
     }
 
 
     @Override
-    public Integer call() throws Exception {
+    public Integer call()  {
         initialize();
-        Map<String, ModuleStatus> statusMap = environmentManagementService.getStatus();
+        this.environmentManagementService = new EnvironmentManagementService(statusOptions);
+        Map<String, ModuleStatus> statusMap;
+
+        if( module != null && !module.equalsIgnoreCase("all")) {
+            try {
+                ModuleStatus status = environmentManagementService.getModuleStatus(module);
+                statusMap = new HashMap<>();
+                statusMap.put(module, status);
+            }catch(NotFoundException ex) {
+                System.err.println("Module " + module + " doesn't exist");
+                return 2;
+            }
+        } else {
+            statusMap = environmentManagementService.getStatus();
+        }
+
         printStatusMap(statusMap);
 
         if (statusMap.containsValue(ModuleStatus.DOWN)) {
@@ -58,20 +85,20 @@ public class Status implements Callable<Integer> {
     private void printStatusMap(Map<String, ModuleStatus> statusMap) {
         System.out.print(Colour.BLACK_BOLD);
         System.out.println("   Module   |   Status   ");
-        for (String s : statusMap.keySet()) {
-            if( statusMap.get(s).equals(ModuleStatus.DOWN)) {
+        for (Map.Entry<String, ModuleStatus> entry : statusMap.entrySet()) {
+            if(entry.getValue().equals(ModuleStatus.DOWN)) {
                 System.out.print(Colour.RED_BOLD);
-                System.out.println("   " + s + "   |   " + statusMap.get(s));
+                System.out.println("   " + entry.getKey() + "   |   " + entry.getValue());
                 System.out.print(Colour.RESET);
             }
-            if( statusMap.get(s).equals(ModuleStatus.ERROR)) {
+            if( entry.getValue().equals(ModuleStatus.ERROR)) {
                 System.out.print(Colour.YELLOW_BOLD);
-                System.out.println("   " + s + "   |   " + statusMap.get(s));
+                System.out.println("   " + entry.getKey() + "   |   " + entry.getValue());
                 System.out.print(Colour.RESET);
             }
-            if( statusMap.get(s).equals(ModuleStatus.UP)) {
+            if( entry.getValue().equals(ModuleStatus.UP)) {
                 System.out.print(Colour.GREEN_BOLD);
-                System.out.println("   " + s + "   |   " + statusMap.get(s));
+                System.out.println("   " + entry.getKey() + "   |   " + entry.getValue());
                 System.out.print(Colour.RESET);
             }
         }

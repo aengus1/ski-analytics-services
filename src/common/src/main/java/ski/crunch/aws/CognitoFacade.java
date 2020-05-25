@@ -20,7 +20,7 @@ public class CognitoFacade {
         return cognitoIdpClient.updateUserPool(updateUserPoolRequest);
     }
 
-    public DescribeUserPoolResult describeUserPool(DescribeUserPoolRequest describeUserPoolRequest){
+    public DescribeUserPoolResult describeUserPool(DescribeUserPoolRequest describeUserPoolRequest) {
         return cognitoIdpClient.describeUserPool(describeUserPoolRequest);
     }
 
@@ -30,5 +30,17 @@ public class CognitoFacade {
 
     public AdminGetUserResult adminGetUser(AdminGetUserRequest getUserRequest) throws UserNotFoundException {
         return cognitoIdpClient.adminGetUser(getUserRequest);
+    }
+
+    public boolean userPoolExists(String userpoolId) {
+        DescribeUserPoolRequest request = new DescribeUserPoolRequest();
+        request.setUserPoolId(userpoolId);
+        request.setRequestCredentialsProvider(CredentialsProviderFactory.getDefaultCredentialsProvider());
+        try {
+            describeUserPool(request);
+            return true;
+        } catch (ResourceNotFoundException ex) {
+            return false;
+        }
     }
 }
