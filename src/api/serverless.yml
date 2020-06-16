@@ -222,7 +222,7 @@ resources:
       Version: 1.0
       DependsOn: ParseFitActivityLambdaLambdaFunction
       Properties:
-        ServiceToken: ${{cf:${{opt:stage}}-${{self:custom.projectName}}-cf-bucket-notification.BucketNotificationLambdaArn}}
+        ServiceToken: ${{cf:${{opt:stage}}-${{self:custom.projectName}}-cf-bucket-notif.BucketNotificationLambdaArn}}
         Name: ${{opt:stage}}-rawBucketNotification
         Region: ${{self:provider.region}}
         S3BucketName: ${{self:custom.rawActivityBucketName}}

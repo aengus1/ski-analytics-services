@@ -1,5 +1,6 @@
 plugins {
     id 'application'
+    id 'java'
     id 'com.palantir.graal' version '0.6.0'
 }
 
@@ -9,7 +10,8 @@ dependencies {
     implementation(
             'com.google.guava:guava:28.1-jre',
             'info.picocli:picocli:4.2.0',
-            "com.amazonaws:aws-lambda-java-log4j:1.0.0",
+            'com.microsoft.terraform:terraform-client:1.0.0',
+            'com.amazonaws:aws-lambda-java-log4j:1.0.0',
             "log4j:log4j:1.2.15",
             project(':common')
 //            'org.apache.logging.log4j:log4j-core:2.8.2',
@@ -29,13 +31,18 @@ dependencies {
             project(path: ':common', configuration: 'testClasses')
     )
 
-   annotationProcessor 'info.picocli:picocli-codegen:4.2.0'
+    annotationProcessor 'info.picocli:picocli-codegen:4.2.0'
 
     // Use JUnit Jupiter API for testing.
-    testImplementation 'org.junit.jupiter:junit-jupiter-api:5.5.2'
+    testImplementation(
+            project(':common'),
+            'org.mockito:mockito-junit-jupiter:2.23.0'
+    )
 
     // Use JUnit Jupiter Engine for testing.
     testRuntimeOnly 'org.junit.jupiter:junit-jupiter-engine:5.5.2'
+
+
 }
 
 application {
@@ -59,5 +66,5 @@ compileJava {
 
 test {
     // Use junit platform for unit tests
-    useJUnitPlatform()
+    include 'ski/crunch/**'
 }

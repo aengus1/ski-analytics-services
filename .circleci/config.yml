@@ -28,7 +28,7 @@ commands:
 
   unit-test:
     steps:
-      - run: gradle wrapper --gradle-version 6.2 --distribution-type all
+      - run: gradle wrapper --gradle-version 6.2.2 --distribution-type all
       - run: ./gradlew clean
       - run: ./gradlew build --stacktrace
   install-sls:
@@ -41,7 +41,7 @@ commands:
       - run:
           name: Save test results
           command: |
-            mkdir ~/repo/build/reports/test-results
+            mkdir -p ~/repo/build/reports/test-results
             find . -type f -regex ".*/build/test-results/.*xml" -exec cp {} ~/repo/build/reports/test-results/ \;
           when: always
       - store_test_results:
@@ -66,9 +66,9 @@ jobs:
       - aws-cli/configure:
           profile-name: backend_dev
       - run: ./gradlew deploy -Dstage="ci" --stacktrace
-      - run: ./gradlew integrationTest
+      - run: ./gradlew clean jacocoRootReport -x cli:integrationTest -Dstage="ci" --stacktrace
       - save-cache
-      - run: ./gradlew jacocoRootReport
+      #- run: ./gradlew jacocoRootReport -x test -x integrationTest
       - run: ./gradlew sendCoverageToCodacy
       - save-test-results
       - store_artifacts:
@@ -80,3 +80,9 @@ workflows:
     jobs:
       - build:
           context: sls-context
+
+## for provisioning script:
+## cd src/graphql &&  npm install serverless-appsync-plugin
+
+## SSM weather and location parameters had disppeared
+## need to pass stage parameter to integration test

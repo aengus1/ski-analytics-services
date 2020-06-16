@@ -1,4 +1,4 @@
-service: cf-userpool-trigger
+service: cf-userpool-trg
 
 custom:
   resourceTags:

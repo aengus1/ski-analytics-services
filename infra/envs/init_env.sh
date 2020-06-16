@@ -1,34 +1,71 @@
 #!/bin/bash
+## Script for CI / CD to automatically initialize, plan and apply terraform commands for a set of modules that
+## collectively make up an environment.  Main Terraform Output / Error is redirected to log file
+##
+## Args:
+####     $1  name of environment to initialize
+####     $2 (optional) name of specific module to init.  If unset will init all modules
+
+
+## Modules to init //order matters!
+declare -a modules=("data" "api" "frontend")
+
+TF_IN_AUTOMATION=true
+export $TF_IN_AUTOMATION
+## log file location
+readonly LOG_FILE="init_env.log"
+
+set -o errexit
+touch $LOG_FILE
+cat /dev/null > $LOG_FILE
 
 env=$1
-echo "Initializing environment " $env
+mod=$2
 
+echo "Initializing environment " $env
 ## Exit if environment not found
-if [ -d $env ]
-then
+if [ -d $env ]; then
   echo "Found environment" $env
 else
-  echo "Environment "$env " not found. Exiting."
+  echo "Environment "$env " not found. Exiting." >&2
   exit 1
 fi
 
-## Initialize Data Module
-#cd ${env}/data && pwd
-#terraform init
-#terraform plan --var-file="../../global.tfvars.json"  --var-file="${env}.terraform.tfvars.json"
-#terraform apply --var-file="../../global.tfvars.json"  --var-file="${env}.terraform.tfvars.json" --auto-approve
-# cd ..
+## Initialize, Plan and Apply ALL modules
+for i in "${modules[@]}"; do
+  # if mod variable is set then only action that module
+  if [ -z ${mod+x} ]; then
+    echo "Init Module ${i}";
+  else
+    if [ ${mod} != ${i} ]; then
+      continue
+      fi
+  fi
 
-## Initialize API Module
-cd ${env}/api && pwd
-terraform init
-terraform plan --var-file="../../global.tfvars.json"  --var-file="${env}.terraform.tfvars.json"
-terraform apply --var-file="../../global.tfvars.json"  --var-file="${env}.terraform.tfvars.json" --auto-approve
-cd ..
+  cd ${env}/$i && pwd
+  terraform init >>$LOG_FILE 2>&1
+  if [ $? -eq 0 ]; then
+    echo "Successfully initialized terraform ${i} module"
+  else
+    echo "Error initializing terraform" >&2
+    exit 1
+  fi
+  ## Plan the Data Module
+  terraform plan --var-file="../../global.tfvars.json" --var-file="${env}.terraform.tfvars.json" \
+  --input=false --out=tfplan_${i} 2>&1 | tee -a $LOG_FILE
+  if [ $? -ne 0 ]; then
+    echo "Error running tf plan for ${i} module" >&2
+    exit 1
+  fi
+  ## Apply the Data Module Plan
+  terraform apply --input=false --auto-approve tfplan_${i} >>$LOG_FILE
+  if [ $? -eq 0 ]; then
+    echo "Successfully provisioned terraform ${i} module"
+  else
+    echo "Error initializing terraform data module" >&2
+    exit 1
+  fi
+  cd ../..
+done
 
-## Initialize Frontend Module
-cd ${env}/frontend && pwd
-terraform init
-terraform plan --var-file="../../global.tfvars.json"  --var-file="${env}.terraform.tfvars"
-terraform apply --var-file="../../global.tfvars.json"  --var-file="${env}.terraform.tfvars" --auto-approve
-cd ..
+exit 0

@@ -23,21 +23,28 @@ public class ActivityDAO extends AbstractDAO {
     public DynamoDBMapper getMapper() {
         return dynamoDBService.getMapper();
     }
-    public Optional<ActivityItem> getActivityItem(String activityId, String email) {
-        return Optional.ofNullable(dynamoDBService.getMapper().load(ActivityItem.class, email, activityId));
+    public Optional<ActivityItem> getActivityItem(String activityId, String userId) {
+        return Optional.ofNullable(dynamoDBService.getMapper().load(ActivityItem.class, userId, activityId));
     }
 
     public void saveLinkToProcessed(String activityId, String userId, S3Link s3LinkToProcessed) {
+
         System.out.println("attempting to load activity with: " + userId + " " + activityId);
+        System.out.println("service = " + dynamoDBService);
+        if(dynamoDBService == null) {
+            System.out.println("null service :(");
+        }
         ActivityItem activityItem = dynamoDBService.getMapper().load(ActivityItem.class, userId, activityId);
+        System.out.println("activity loaded: " + activityItem.getId());
         activityItem.setProcessedActivity(s3LinkToProcessed);
+        System.out.println("dynamo service = " + dynamoDBService);
         dynamoDBService.getMapper().save(activityItem);
     }
-    public boolean saveActivitySearchFields(ActivityOuterClass.Activity activity, String email) {
+    public boolean saveActivitySearchFields(ActivityOuterClass.Activity activity, String userId) {
         dynamoDBService.updateTableName(tableName);
         logger.info("activity id = " + activity.getId());
         ActivityItem item;
-        Optional<ActivityItem> itemo = getActivityItem(activity.getId(), email);
+        Optional<ActivityItem> itemo = getActivityItem(activity.getId(), userId);
         logger.debug("itemo = " + itemo.isPresent());
         if (!itemo.isPresent()) {
             logger.error("activity item " + activity.getId() + " not found");
@@ -76,7 +83,7 @@ public class ActivityDAO extends AbstractDAO {
         try {
             ActivityItem activity = new ActivityItem();
             activity.setId(activityId);
-            activity.setUserId(identity.getEmail());
+            activity.setUserId(identity.getCognitoIdentityId());
             activity.setDateOfUpload(new Date(System.currentTimeMillis()));
             activity.setRawActivity(dynamoDBService.getMapper().createS3Link(rawActivityBucketName, activityId));
             activity.setUserAgent(identity.getUserAgent());
@@ -94,12 +101,12 @@ public class ActivityDAO extends AbstractDAO {
      * Method hard deletes activity record from table
      *
      * @param id String activity id
-     * @param email String user id
+     * @param userId String user id
      * @return boolean success
      */
-    public boolean deleteActivityItemById(String id, String email) {
+    public boolean deleteActivityItemById(String id, String userId) {
         dynamoDBService.updateTableName(tableName);
-        Optional<ActivityItem> itemOptional = getActivityItem(id, email);
+        Optional<ActivityItem> itemOptional = getActivityItem(id, userId);
         if (itemOptional.isPresent()) {
             dynamoDBService.getMapper().delete(itemOptional.get());
         } else {
@@ -119,13 +126,13 @@ public class ActivityDAO extends AbstractDAO {
         dynamoDBService.getMapper().save(activityItem, dynamoDBMapperConfig);
     }
 
-    public List<ActivityItem> getActivitiesByUser(String email) {
-        System.out.println("called with " + email);
+    public List<ActivityItem> getActivitiesByUser(String userId) {
+        System.out.println("called with " + userId);
         dynamoDBService.updateTableName(tableName);
 
         DynamoDBQueryExpression<ActivityItem> queryExp = new DynamoDBQueryExpression<>();
         Map<String, AttributeValue> eav = new HashMap<>();
-        eav.put(":val1", new AttributeValue().withS(email));
+        eav.put(":val1", new AttributeValue().withS(userId));
         queryExp.setKeyConditionExpression("userId = :val1");
         queryExp.setExpressionAttributeValues(eav);
         final List<ActivityItem> results = dynamoDBService.getMapper().query(ActivityItem.class, queryExp);

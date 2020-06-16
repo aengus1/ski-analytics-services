@@ -40,12 +40,12 @@ public class Deploy implements Plugin<Project> {
             } else {
                 Iterator<Project> projectsIterator = target.getParent().getAllprojects().iterator();
                 projectsIterator.forEachRemaining(proj -> {
-                    if (!proj.getName().equals(target.getName())) {
-                        if (extension.getDependencies().get().contains(proj.getName())) {
-                            Task deployTask = proj.getTasksByName("deploy", false).iterator().next();
-                            targetDeployTask.dependsOn(deployTask);
+                        if (!proj.getName().equals(target.getName()) && !target.getName().equals("cli")) {
+                            if (extension.getDependencies().get().contains(proj.getName())) {
+                                Task deployTask = proj.getTasksByName("deploy", false).iterator().next();
+                                targetDeployTask.dependsOn(deployTask);
+                            }
                         }
-                    }
                 });
             }
         });

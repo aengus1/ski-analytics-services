@@ -4,6 +4,7 @@ import org.junit.jupiter.api.*;
 import ski.crunch.aws.IAMFacade;
 import ski.crunch.cloudformation.rockset.RocksetIntegrationLambda;
 import ski.crunch.testhelpers.IntegrationTestHelper;
+import ski.crunch.testhelpers.IntegrationTestPropertiesReader;
 import ski.crunch.testhelpers.ServerlessState;
 
 import java.io.IOException;
@@ -66,8 +67,8 @@ public class RocksetLambdaIntegrationTest {
         resourceProperties.put("Name", INTEGRATION_NAME);
         resourceProperties.put("ApiKeySSM", apiSSM);
         //SET THESE
-        resourceProperties.put("ExternalId", "7f8a915dfc74e3b5aea8f37f34f1d869726a8aca5c6a8e14d36a4825db25d628");
-        resourceProperties.put("RocksetAccountId", "318212636800");
+        resourceProperties.put("ExternalId", IntegrationTestPropertiesReader.get("externalId"));
+        resourceProperties.put("RocksetAccountId", IntegrationTestPropertiesReader.get("rockset-account-id"));
         //
         resourceProperties.put("IntegrationType", "dynamodb");
         resourceProperties.put("AccessibleResources", accessibleResources);

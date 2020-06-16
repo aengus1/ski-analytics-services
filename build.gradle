@@ -23,7 +23,6 @@ buildscript {
 }
 
 
-
 /*
  ####################   All Projects Section  ################################################
  ##   Specify plugins and repositories that are used in all .gradle build files
@@ -72,16 +71,16 @@ allprojects {
 */
 subprojects {
 
-        sourceSets {
-            integrationTest {
-                java {
-                    compileClasspath += sourceSets.main.output + sourceSets.test.output + configurations.testCompileClasspath + configurations.integrationTestCompileClasspath
-                    runtimeClasspath += sourceSets.main.output + sourceSets.test.output + configurations.integrationTestRuntimeClasspath
-                    srcDirs = ['src/integration-test/java']
-                }
-                resources.srcDir file('src/integration-test/resources')
+    sourceSets {
+        integrationTest {
+            java {
+                compileClasspath += sourceSets.main.output + sourceSets.test.output + configurations.testCompileClasspath + configurations.integrationTestCompileClasspath
+                runtimeClasspath += sourceSets.main.output + sourceSets.test.output + configurations.integrationTestRuntimeClasspath
+                srcDirs = ['src/integration-test/java']
             }
+            resources.srcDir file('src/integration-test/resources')
         }
+    }
 
     configurations {
         integrationTestCompile.extendsFrom testImplementation
@@ -101,9 +100,10 @@ subprojects {
                 project(path: ':common', configuration: 'testClasses')
         )
     }
-    task deploy(type: DeployServerless)
-    deploy.dependsOn build
-
+    if(!getProject().getName().equals("cli")) {
+        task deploy(type: DeployServerless)
+        deploy.dependsOn build
+    }
 
     apply from: "${getProject().getParent().getProjectDir()}/gradle/test.gradle"
     apply from: "${getProject().getParent().getProjectDir()}/gradle/integration-test.gradle"

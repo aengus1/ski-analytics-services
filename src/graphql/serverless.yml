@@ -10,7 +10,7 @@ provider:
   ## region hardcoded as appsync is not offered in ca-central-1 yet
   region: us-east-1
   stackName: ${{opt:stage}}-${{self:custom.projectName}}-${{self:service}}
-  deploymentBucket: ${{opt:stage}}-deployment-${{self:custom.projectName}}
+  deploymentBucket: ${{opt:stage}}-deployment2-${{self:custom.projectName}}
   stage: ${{opt:stage}}
   iamRoleStatements:
     - Effect: Allow

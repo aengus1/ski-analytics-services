@@ -71,7 +71,7 @@ resources:
       Version: 1.0
       DependsOn: PostConfirmationLambdaFunction
       Properties:
-        ServiceToken: ${{cf:${{opt:stage}}-${{self:custom.projectName}}-cf-userpool-trigger.UserPoolTriggerFunctionArn}}
+        ServiceToken: ${{cf:${{opt:stage}}-${{self:custom.projectName}}-cf-userpool-trg.UserPoolTriggerFunctionArn}}
         Name: ${{opt:stage}}-userPoolTrigger
         Region: ${{self:provider.region}}
         TriggerType: PostConfirmation
@@ -95,7 +95,7 @@ resources:
       Version: 1.0
       DependsOn: PreSignupLambdaFunction
       Properties:
-        ServiceToken: ${{cf:${{opt:stage}}-${{self:custom.projectName}}-cf-userpool-trigger.UserPoolTriggerFunctionArn}}
+        ServiceToken: ${{cf:${{opt:stage}}-${{self:custom.projectName}}-cf-userpool-trg.UserPoolTriggerFunctionArn}}
         Name: ${{opt:stage}}-userPoolTrigger
         Region: ${{self:provider.region}}
         TriggerType: PreSignUp
@@ -119,7 +119,7 @@ resources:
       Version: 1.0
       DependsOn: UserMigrationLambdaFunction
       Properties:
-        ServiceToken: ${{cf:${{opt:stage}}-${{self:custom.projectName}}-cf-userpool-trigger.UserPoolTriggerFunctionArn}}
+        ServiceToken: ${{cf:${{opt:stage}}-${{self:custom.projectName}}-cf-userpool-trg.UserPoolTriggerFunctionArn}}
         Name: ${{opt:stage}}-userPoolTrigger
         Region: ${{self:provider.region}}
         TriggerType: UserMigration

@@ -26,4 +26,10 @@ public class PasswordUtil {
             PwHash.Lazy pwHashLazy = (PwHash.Lazy) lazySodium;
             return pwHashLazy.cryptoPwHashStrVerify(hash, password);
     }
+
+    public static void main(String[] args) {
+        System.out.println(
+        PasswordUtil.verifyPassword("246172676F6E32696424763D3139246D3D3132382C743D32302C703D312474587932787061463345597934656A593554586D3241247A6678377253637832464F3855474B75654A744F3776517956784F766C514C4E37726B72673375616A75670000000000000000000000000000000000000000000000000000000000000000", "authTestPassword123" )
+        );
+    }
 }

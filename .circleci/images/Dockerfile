@@ -66,6 +66,8 @@ RUN chgrp -R cigroup /home/circleci
 RUN chmod -R 777 /home/circleci
 ENV HOME="/home/circleci"
 
+ENV SLS_DEBUG=*
+
 USER circleci
 
 ## Install CircleCI CLI

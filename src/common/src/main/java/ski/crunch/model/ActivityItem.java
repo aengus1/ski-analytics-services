@@ -65,6 +65,7 @@ public class ActivityItem implements Jsonable {
         this.userId = userId;
     }
 
+
     @DynamoDBAttribute(attributeName = "date")
     public Date getDateOfUpload() {
         return dateOfUpload;

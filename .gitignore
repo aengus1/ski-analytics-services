@@ -30,4 +30,7 @@ ski-analytics-services.iml
 src/common/gradle/wrapper/gradle-wrapper.properties
 /infra/envs/shared/.terraform/
 /infra/stacks/data/.terraform/
+/infra/envs/**/tfplan*
+/infra/envs/**/*.log
+
 /buildSrc/build/

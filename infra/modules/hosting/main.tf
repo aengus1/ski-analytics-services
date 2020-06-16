@@ -210,6 +210,13 @@ resource aws_ssm_parameter "cfdistroparam" {
   overwrite = true
 }
 
+resource aws_ssm_parameter "cfdistroid" {
+  name = "${var.s3_alias}-cfdistro-id"
+  type = "String"
+  value = aws_cloudfront_distribution.web_distribution.id
+  overwrite = true
+}
+
 
 //// commented - awaiting lambda@edge to be available in ca-central-1
 //// lambda function to add headers to response

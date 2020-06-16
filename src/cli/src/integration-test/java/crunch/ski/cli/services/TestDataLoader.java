@@ -29,6 +29,14 @@ public class TestDataLoader {
 
 
     public void createUserTable() throws Exception {
+        DynamoFacade dynamoFacade = new DynamoFacade(IntegrationTestPropertiesReader.get("region"), IntegrationTestPropertiesReader.get("test-table-user"));
+       if( dynamoFacade.tableExists( IntegrationTestPropertiesReader.get("test-table-user"))){
+            try {
+                dropUserTable();
+            } catch (Exception ex) {
+
+            }
+        }
         Table table = DynamoDbHelpers.createTable(
                 IntegrationTestPropertiesReader.get("region"),
                 IntegrationTestPropertiesReader.get("profile"),
@@ -91,6 +99,14 @@ public class TestDataLoader {
 
 
     public void createActivityTable() throws IOException {
+        DynamoFacade dynamoFacade = new DynamoFacade(IntegrationTestPropertiesReader.get("region"), IntegrationTestPropertiesReader.get("test-table-act"));
+        if( dynamoFacade.tableExists( IntegrationTestPropertiesReader.get("test-table-act"))) {
+            try {
+                dropActTable();
+            } catch (Exception ex) {
+
+            }
+        }
         DynamoDbHelpers.createTable(
                 IntegrationTestPropertiesReader.get("region"),
                 IntegrationTestPropertiesReader.get("profile"),

@@ -79,7 +79,7 @@ dependencies {
     )
 }
 
-deploy.dependencies = ['auth', 'cf-bucket-notification', 'common']
+deploy.dependencies = ['auth', 'cf-bucket-notif', 'websocket', 'common']
 
 
 /**

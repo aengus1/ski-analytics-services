@@ -1,4 +1,4 @@
-service: cf-bucket-notification
+service: cf-bucket-notif
 
 custom:
   resourceTags:

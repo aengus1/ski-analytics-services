@@ -15,11 +15,10 @@ include 'api'
 include 'auth'
 include 'common'
 include 'websocket'
-include 'cli'
 
 include 'cf-rockset'
-include 'cf-userpool-trigger'
-include 'cf-bucket-notification'
+include 'cf-userpool-trg'
+include 'cf-bucket-notif'
 
 /*
  * Module Source
@@ -28,14 +27,23 @@ project(':api').projectDir = file("src/api")
 project(":auth").projectDir = file("src/auth")
 project(":common").projectDir = file("src/common")
 project(":websocket").projectDir = file("src/websocket")
-project(":cli").projectDir = file("src/cli")
+
 
 // Cloudformation custom resources
 project(":cf-rockset").projectDir = file("src/cloudformation_custom_resources/rockset")
-project(":cf-bucket-notification").projectDir = file("src/cloudformation_custom_resources/bucket-notification")
-project(":cf-userpool-trigger").projectDir = file("src/cloudformation_custom_resources/userpool-trigger")
+project(":cf-bucket-notif").projectDir = file("src/cloudformation_custom_resources/bucket-notification")
+project(":cf-userpool-trg").projectDir = file("src/cloudformation_custom_resources/userpool-trigger")
 
 /*
  * Module Dependencies
  */
 
+/*
+Special behaviour for calling gradle tasks from inside CLI
+ */
+
+
+if (!System.getenv()['CLI_BUILD']) {
+    include 'cli'
+    project(":cli").projectDir = file("src/cli")
+}

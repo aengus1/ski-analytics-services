@@ -5,6 +5,8 @@ import com.amazonaws.services.cognitoidp.model.AdminGetUserResult;
 import com.amazonaws.services.cognitoidp.model.AttributeType;
 import com.amazonaws.services.cognitoidp.model.UserNotFoundException;
 import org.junit.jupiter.api.*;
+import org.junit.jupiter.api.parallel.Execution;
+import org.junit.jupiter.api.parallel.ExecutionMode;
 import ski.crunch.auth.utils.PasswordUtil;
 import ski.crunch.aws.CognitoFacade;
 import ski.crunch.aws.DynamoFacade;
@@ -22,6 +24,7 @@ import static org.junit.jupiter.api.Assertions.*;
  * the user migration trigger, post confirmation trigger and pre-signup triggers are behaving as expected.
  */
 @TestMethodOrder(MethodOrderer.OrderAnnotation.class)
+@Execution(ExecutionMode.SAME_THREAD)
 @TestInstance(TestInstance.Lifecycle.PER_METHOD)
 public class AuthIntegrationTest {
 
@@ -109,6 +112,7 @@ public class AuthIntegrationTest {
 
     @Test
     public void testUserMigrationRecreatesUser() throws UserNotFoundException, Exception {
+
         // delete the user from cognito
         helper.destroyUser(devUserName);
         try {
@@ -151,7 +155,7 @@ public class AuthIntegrationTest {
         try{
             dynamo.getMapper().delete(userDAO.lookupUser(devUserName));
         } catch (Exception ex) {
-            ex.printStackTrace();
+
         }
     }
 

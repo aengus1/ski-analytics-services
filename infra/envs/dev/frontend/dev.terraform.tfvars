@@ -1,2 +1,0 @@
-app_alias = "dev-app"
-profile="default"

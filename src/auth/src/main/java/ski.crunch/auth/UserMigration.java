@@ -59,7 +59,7 @@ public class UserMigration implements RequestStreamHandler {
             UserSettingsItem user;
 
             user = userDAO.lookupUser(eventNode.get("userName").asText());
-
+            logger.info("looked up user = {}", user.getId() + " " + user.getPwhash());
             if (PasswordUtil.verifyPassword(user.getPwhash(), password)) {
                 if ("UserMigration_Authentication".equals(triggerSource)) {
                     writeSuccessResponse(os, eventNode, user);

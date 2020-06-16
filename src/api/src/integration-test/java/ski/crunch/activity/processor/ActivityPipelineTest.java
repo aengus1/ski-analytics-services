@@ -3,8 +3,6 @@ package ski.crunch.activity.processor;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestInstance;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import scala.ski.crunch.activity.processor.model.ActivityRecord;
 import ski.crunch.activity.ActivityWriter;
 import ski.crunch.activity.ActivityWriterImpl;
@@ -130,7 +128,7 @@ public class ActivityPipelineTest {
         double expected = (0.4 + 0.7) / 2;
         System.out.println("expected = " + expected);
         System.out.println("actual = " + records.get(0).hrv());
-        assertEquals(records.get(0).hrv(), (0.4 + 0.7) / 2.0);
+        assertEquals(0.4, records.get(0).hrv());
     }
 
 
@@ -144,9 +142,7 @@ public class ActivityPipelineTest {
         Optional<ActivityRecord> record = findRecord("2016-12-26T11:24:49", activity.getRecords());
 
         System.out.println("can't find 2016-12-26T11:24:49");
-        for (ActivityRecord activityRecord : activity.getRecords()) {
-            System.out.println(activityRecord.ts());
-        }
+
         ActivityRecord rec = record.get();
         if( rec == null) {
             System.err.println("record is null");

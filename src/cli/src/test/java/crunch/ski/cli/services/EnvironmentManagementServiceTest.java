@@ -1,28 +1,18 @@
 package crunch.ski.cli.services;
 
-import com.amazonaws.services.simplesystemsmanagement.model.DeleteParameterResult;
-import crunch.ski.cli.model.WipeOptions;
-import org.junit.jupiter.api.BeforeEach;
+import crunch.ski.cli.model.Options;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestInstance;
 import org.mockito.Mock;
-import org.mockito.MockitoAnnotations;
-import ski.crunch.aws.S3Facade;
-import ski.crunch.aws.SSMParameterFacade;
+import ski.crunch.aws.*;
 
-import java.io.ByteArrayInputStream;
-import java.io.InputStream;
 import java.util.HashMap;
-
-import static org.junit.jupiter.api.Assertions.assertFalse;
-import static org.junit.jupiter.api.Assertions.assertTrue;
-import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.Mockito.*;
 
 @TestInstance(TestInstance.Lifecycle.PER_METHOD)
 public class EnvironmentManagementServiceTest {
 
-    private WipeOptions options;
+    private Options options;
     private EnvironmentManagementService service;
 
     @Mock
@@ -31,57 +21,57 @@ public class EnvironmentManagementServiceTest {
     @Mock
     private SSMParameterFacade ssmParameterFacade;
 
-    @BeforeEach
-    public void setup() {
-        options = new WipeOptions();
+    @Mock
+    private DynamoFacade dynamoFacade;
+
+    @Mock
+    private CloudfrontFacade cloudfrontFacade;
+
+    @Mock
+    private CognitoFacade cognitoFacade;
+
+    @Mock
+    private CloudformationFacade cloudformationFacade;
+
+//    @BeforeEach
+//    public void setup() {
+//        options = new Options();
+//        HashMap<String, String> config = new HashMap<>();
+//        config.put("DATA_REGION", "ca-central-1");
+//        config.put("PROJECT_NAME", "crunch-ski");
+//        config.put("PROFILE_NAME", "default");
+//        config.put("DOMAIN_NAME", "mccullough-solutions.ca");
+//        config.put("PROJECT_SOURCE_DIR", "/Users/aengus/code/ski-analytics-services/");
+//        options.setConfigMap(config);
+//        options.setEnvironment("dev");
+//
+//
+//        MockitoAnnotations.initMocks(this);
+//        service = new EnvironmentManagementService(s3Facade, ssmParameterFacade,dynamoFacade, cloudformationFacade,
+//                cloudfrontFacade, cognitoFacade, options);
+//    }
+
+
+    //TODO -> add other tests
+
+
+
+    @Test
+    @Disabled //used as entry point for debugging
+    public void testProvision() {
         HashMap<String, String> config = new HashMap<>();
         config.put("DATA_REGION", "ca-central-1");
-        config.put("PROJECT_NAME", "crunch-ski");
+        config.put("PROJECT_NAME", "crunch-test");
         config.put("PROFILE_NAME", "default");
+        config.put("DOMAIN_NAME", "mccullough-solutions.ca");
+        config.put("PROJECT_SOURCE_DIR", "/Users/aengus/code/ski-analytics-services");
+
+        Options options = new Options();
+        options.setEnvironment("staging");
+        options.setModule("application");
         options.setConfigMap(config);
-        options.setEnvironment("dev");
-        options.setForDeletionOnly(true);
-        options.setSkipBackup(false);
-        options.setRegion("ca-central-1");
-        options.setAutoApprove(true);
-        options.setBackupLocation(System.getProperty("java.io.tmpdir")+"/backups");
-
-        MockitoAnnotations.initMocks(this);
-        service = new EnvironmentManagementService(s3Facade, ssmParameterFacade, options);
-    }
-
-
-    @Test
-    public void testWipeEnvironment() throws  Exception {
-
-        doNothing().when(s3Facade).emptyBucket(any());
-        when(ssmParameterFacade.deleteParameter(any())).thenReturn(new DeleteParameterResult());
-
-        service.wipeEnvironment();
-
-        verify(s3Facade, times(1)).emptyBucket("dev-raw-activity-crunch-ski");
-        verify(s3Facade, times(1)).emptyBucket("dev-activity-crunch-ski");
-
-        verify(ssmParameterFacade, times(0)).deleteParameter(any());
-    }
-
-    @Test
-    public void testAutoApprove() throws  Exception {
-
-        options.setAutoApprove(false);
-
-        ByteArrayInputStream in = new ByteArrayInputStream("n".getBytes());
-        InputStream sysInBackup = System.in;
-        System.setIn(in);
-        doNothing().when(s3Facade).emptyBucket(any());
-        when(ssmParameterFacade.deleteParameter(any())).thenReturn(new DeleteParameterResult());
-
-        assertFalse(service.wipeEnvironment());
-
-        in = new ByteArrayInputStream("Y".getBytes());
-        System.setIn(in);
-        assertTrue(service.wipeEnvironment());
-
+        service  = new EnvironmentManagementService(options);
+        service.provision(options);
     }
 
 

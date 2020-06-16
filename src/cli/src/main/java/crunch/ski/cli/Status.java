@@ -3,8 +3,8 @@ package crunch.ski.cli;
 import com.google.common.annotations.VisibleForTesting;
 import crunch.ski.cli.model.Colour;
 import crunch.ski.cli.model.ModuleStatus;
-import crunch.ski.cli.model.StatusOptions;
-import crunch.ski.cli.services.EnvironmentManagementService;
+import crunch.ski.cli.model.Options;
+import crunch.ski.cli.services.StatusService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import picocli.CommandLine;
@@ -32,19 +32,30 @@ public class Status implements Callable<Integer> {
     @CommandLine.Parameters(index = "1", defaultValue = "all", description = "name of environment module to query (e.g. data / frontend / api / app) ")
     private String module;
 
-    private EnvironmentManagementService environmentManagementService;
-    private StatusOptions statusOptions;
+    private StatusService statusService;
+    private Options options;
 
     /**
      * no arg constructor required by picocli
      */
     public Status() {
-        statusOptions = new StatusOptions();
+        options = new Options();
+    }
+
+    /**
+     * test constructor
+     * @param environment
+     * @param module
+     */
+    public Status(String environment, String module) {
+        this();
+        this.environment = environment;
+        this.module = module;
     }
 
     @VisibleForTesting
-    public void setStatusOptions(StatusOptions options) {
-        this.statusOptions = options;
+    public void setOptions(Options options) {
+        this.options = options;
     }
 
     @VisibleForTesting
@@ -56,12 +67,12 @@ public class Status implements Callable<Integer> {
     @Override
     public Integer call()  {
         initialize();
-        this.environmentManagementService = new EnvironmentManagementService(statusOptions);
+        this.statusService = new StatusService(options);
         Map<String, ModuleStatus> statusMap;
 
         if( module != null && !module.equalsIgnoreCase("all")) {
             try {
-                ModuleStatus status = environmentManagementService.getModuleStatus(module);
+                ModuleStatus status = statusService.getModuleStatus(module);
                 statusMap = new HashMap<>();
                 statusMap.put(module, status);
             }catch(NotFoundException ex) {
@@ -69,7 +80,7 @@ public class Status implements Callable<Integer> {
                 return 2;
             }
         } else {
-            statusMap = environmentManagementService.getStatus();
+            statusMap = statusService.getStatus();
         }
 
         printStatusMap(statusMap);
@@ -108,21 +119,21 @@ public class Status implements Callable<Integer> {
         try {
 
             Config config = new Config();
-            if (statusOptions.getConfigMap() == null) {
-                statusOptions.setConfigMap(config.readConfiguration());
+            if (options.getConfigMap() == null) {
+                options.setConfigMap(config.readConfiguration());
             }
             if (parent.getProjectName() != null) {
-                statusOptions.getConfigMap().put("PROJECT_NAME", parent.getProjectName());
+                options.getConfigMap().put("PROJECT_NAME", parent.getProjectName());
             }
             if (parent.getDataRegion() != null) {
-                statusOptions.getConfigMap().put("DATA_REGION", parent.getDataRegion());
+                options.getConfigMap().put("DATA_REGION", parent.getDataRegion());
             }
             if (parent.getAwsProfile() != null) {
-                statusOptions.getConfigMap().put("PROFILE_NAME", parent.getAwsProfile());
+                options.getConfigMap().put("PROFILE_NAME", parent.getAwsProfile());
             }
 
-            statusOptions.setEnvironment(environment);
-            statusOptions.setModule(module);
+            options.setEnvironment(environment);
+            options.setModule(module);
         } catch (Exception ex) {
             ex.printStackTrace();
             logger.error("Initialization Error.  Ensure you have run crunch config", ex);

@@ -3,10 +3,7 @@ package crunch.ski.cli.services;
 import crunch.ski.cli.App;
 import crunch.ski.cli.Backup;
 import crunch.ski.cli.Restore;
-import org.junit.jupiter.api.AfterAll;
-import org.junit.jupiter.api.BeforeAll;
-import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.TestInstance;
+import org.junit.jupiter.api.*;
 import ski.crunch.aws.CredentialsProviderFactory;
 import ski.crunch.aws.DynamoFacade;
 import ski.crunch.aws.S3Facade;
@@ -23,6 +20,7 @@ import java.util.Map;
 
 import static org.junit.jupiter.api.Assertions.*;
 
+@Disabled
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
 public class LocalRestoreIntegrationTest {
 
@@ -68,6 +66,7 @@ public class LocalRestoreIntegrationTest {
     }
 
 
+    @Disabled
     @Test
     public void testFullRestoreNoEncryption() throws Exception {
         // take backup
@@ -109,7 +108,7 @@ public class LocalRestoreIntegrationTest {
         DynamoFacade dynamoFacade = new DynamoFacade(IntegrationTestPropertiesReader.get("region"), IntegrationTestPropertiesReader.get("test-table-user"));
         UserDAO userDAO = new UserDAO(dynamoFacade, IntegrationTestPropertiesReader.get("test-table-user"));
 
-        assertNotNull(userDAO.lookupUser("integration-test-user@crunch.ski"));
+        assertNotNull(userDAO.lookupUser("123"));
 
         //assert that activity records have been correctly restored
         ActivityDAO activityDAO = new ActivityDAO(dynamoFacade, IntegrationTestPropertiesReader.get("test-table-act"));

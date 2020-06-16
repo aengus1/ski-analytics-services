@@ -5,7 +5,7 @@
 ## Resources:
 ##                S3 Bucket for hosting
 ##                Cloudfront distribution for hosting
-##                SSM parameters to store bucket name and CF distro name
+##                SSM parameters to store bucket name and CF distro name and CF distro ID
 ##                IAM uer for continuous deployment
 ##
 ## Dependencies:

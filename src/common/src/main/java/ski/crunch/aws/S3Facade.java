@@ -87,19 +87,37 @@ public class S3Facade {
         return this.s3Client.getObject(new GetObjectRequest(bucket, key)).getObjectContent();
     }
 
-    public void saveObjectToTmpDir(String bucket, String key) throws IOException {
-        setTransferAcceleration(bucket);
+    /**
+     * returns output directory
+     * @param bucket
+     * @param key
+     * @return
+     * @throws IOException
+     */
+    public File saveObjectToTmpDir(String bucket, String key) throws IOException {
+        //setTransferAcceleration(bucket);
+        System.out.println("in save obj to tmp dir");
         File dest;
+        String tmpKey = key;
         if (key.contains("/")) {
+            System.out.println("key: " + key + " contains /");
             String[] keyS = key.split("/");
-            dest = new File(System.getProperty("java.io.tmpdir") + keyS[0]);
-            key = keyS[1];
+            dest = new File(System.getProperty("java.io.tmpdir"), keyS[0]);
+            if(!dest.exists()){
+                dest.mkdir();
+            }
+            tmpKey = keyS[1];
         } else {
             dest = new File(System.getProperty("java.io.tmpdir"));
         }
+        File out = new File(dest, tmpKey);
+        System.out.println("out path = " + out.getAbsolutePath());
+        ski.crunch.utils.FileUtils.deleteIfExists(out);
+        logger.info("s3 request to fetch key: {} from bucket: {}", key, bucket);
+        System.out.println("s3 request to fetch key: {} from bucket: {}" + key + " "+  bucket);
         S3Object o = this.s3Client.getObject(bucket, key);
         try (S3ObjectInputStream s3is = o.getObjectContent()) {
-            try (FileOutputStream fos = new FileOutputStream(new File(dest, key))) {
+            try (FileOutputStream fos = new FileOutputStream(out)) {
                 byte[] read_buf = new byte[1024];
                 int read_len = 0;
                 while ((read_len = s3is.read(read_buf)) > 0) {
@@ -107,6 +125,7 @@ public class S3Facade {
                 }
             }
         }
+        return out;
     }
 
     public void putObject(String bucket, String key, InputStream is) throws IOException {

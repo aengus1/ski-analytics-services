@@ -12,7 +12,8 @@ import java.util.concurrent.Callable;
                 Restore.class,
                 Config.class,
                 Wipe.class,
-                Status.class
+                Status.class,
+                Up.class
         },
         name = "crunch",
         description = "Administrative tool for loading / restoring crunch.ski data",
@@ -40,6 +41,12 @@ public class App implements Callable<Integer> {
     )
     private String dataRegion;
 
+    @Option(names = {"-d", "--source-dir"},
+    paramLabel = "PROJECT_SOURCE_DIR",
+    description = "path to source directory")
+    private String projectSourceDir;
+
+
     @Option(names = {"-v", "--verbose"})
     private boolean verbose;
     @Option(names = {"--stack-trace"})
@@ -52,7 +59,7 @@ public class App implements Callable<Integer> {
 
     @Override
     public Integer call() {
-        System.out.print("Please choose one of the subcommands: backup, restore, wipe, configure, status");
+        System.out.print("Please choose one of the subcommands: backup, restore, wipe, configure, status, up");
         return 0;
     }
 
@@ -62,6 +69,10 @@ public class App implements Callable<Integer> {
     }
     public String getProjectName() {
         return projectName;
+    }
+
+    public String getProjectSourceDir() {
+        return this.projectSourceDir;
     }
     public String getDataRegion() {
         return dataRegion;

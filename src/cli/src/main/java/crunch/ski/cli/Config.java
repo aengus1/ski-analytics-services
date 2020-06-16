@@ -27,7 +27,10 @@ public class Config implements Callable<Integer> {
     private enum Variable {
         PROJECT_NAME,
         PROFILE_NAME,
-        DATA_REGION
+        DATA_REGION,
+        DOMAIN_NAME,
+        PROJECT_SOURCE_DIR,
+        SECONDARY_REGION
     }
 
     private Map<Variable, String> values = new HashMap<>();
@@ -99,16 +102,16 @@ public class Config implements Callable<Integer> {
         File configFile = new File(storageDir, "config");
         if (!configFile.exists()) {
             System.out.println("No configuration detected");
-        }
-        try (FileReader fr = new FileReader(configFile)) {
-            try (BufferedReader br = new BufferedReader(fr)) {
-                if (br.read() == -1) {
-                    configFile.delete();
+        } else {
+            try (FileReader fr = new FileReader(configFile)) {
+                try (BufferedReader br = new BufferedReader(fr)) {
+                    if (br.read() == -1) {
+                        configFile.delete();
+                    }
                 }
             }
         }
     }
-
 
     private void writeConfig() throws IOException {
         FileWriter fileWriter = new FileWriter(configFile);

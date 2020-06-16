@@ -43,4 +43,18 @@ public class CognitoFacade {
             return false;
         }
     }
+
+    public boolean userPoolHasDomainNameConfigured(String userPoolId) {
+        DescribeUserPoolRequest request = new DescribeUserPoolRequest();
+        request.setUserPoolId(userPoolId);
+        request.setRequestCredentialsProvider(CredentialsProviderFactory.getDefaultCredentialsProvider());
+        try {
+            DescribeUserPoolResult result = describeUserPool(request);
+            String domain = result.getUserPool().getDomain();
+            System.out.println("userpool domain = " + domain);
+            return true;
+        }catch(ResourceNotFoundException ex) {
+            return false;
+        }
+    }
 }

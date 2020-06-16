@@ -1,7 +1,7 @@
 package crunch.ski.cli;
 
 import crunch.ski.cli.model.WipeOptions;
-import crunch.ski.cli.services.EnvironmentManagementService;
+import crunch.ski.cli.services.WipeService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import picocli.CommandLine;
@@ -14,7 +14,7 @@ import java.util.concurrent.Callable;
         description = "Wipes all data from an environment so it can be deleted")
 public class Wipe implements Callable<Integer> {
 
-    public static final Logger logger = LoggerFactory.getLogger(Backup.class);
+    public static final Logger logger = LoggerFactory.getLogger(Wipe.class);
 
     private WipeOptions options;
 
@@ -51,8 +51,9 @@ public class Wipe implements Callable<Integer> {
     @Override
     public Integer call() throws Exception {
         initialize();
-        EnvironmentManagementService environmentManagementService = new EnvironmentManagementService(options);
-        return environmentManagementService.wipeEnvironment() ?  0 : 1;
+
+        WipeService wipeService = new WipeService(options);
+        return wipeService.wipeEnvironment() ?  0 : 1;
     }
 
     public void initialize() throws Exception{

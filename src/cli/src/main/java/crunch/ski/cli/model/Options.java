@@ -2,11 +2,15 @@ package crunch.ski.cli.model;
 
 import java.util.Map;
 
-public class StatusOptions {
+public class Options {
+
 
     private Map<String, String> configMap;
     private String environment;
     private String module;
+    private boolean verbose;
+
+
 
     public Map<String, String> getConfigMap() {
         return configMap;
@@ -30,5 +34,13 @@ public class StatusOptions {
 
     public void setModule(String module) {
         this.module = module;
+    }
+
+    public boolean isVerbose() {
+        return verbose;
+    }
+
+    public void setVerbose(boolean verbose) {
+        this.verbose = verbose;
     }
 }

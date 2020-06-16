@@ -11,6 +11,7 @@ import ski.crunch.aws.DynamoFacade;
 import ski.crunch.aws.S3Facade;
 import ski.crunch.aws.SSMParameterFacade;
 import ski.crunch.utils.ApiGatewayResponse;
+import ski.crunch.utils.ParseException;
 
 import java.util.Map;
 
@@ -37,7 +38,7 @@ public class ParseFitActivityLambda implements RequestHandler<Map<String, Object
         this.region = System.getenv("AWS_DEFAULT_REGION");
         this.s3ActivityBucket = System.getenv("s3ActivityBucketName");
         this.activityTable = System.getenv("activityTable");
-        this.userTable =  System.getenv("userTable");
+        this.userTable = System.getenv("userTable");
         this.s3 = new S3Facade(region);
 
         try {
@@ -67,7 +68,12 @@ public class ParseFitActivityLambda implements RequestHandler<Map<String, Object
         this.locationService = new LocationIqService(locationApiKey);
 
         logger.debug("ParseFitActivityHandler called");
-        return this.activityService.processAndSaveActivity(input, context, weatherService, locationService);
+        try {
+            return this.activityService.processAndSaveActivity(input, context, weatherService, locationService);
+        } catch (ParseException ex) {
+            logger.error(" error  parsing input parameters:" + ex.getMessage());
+            return ActivityService.errorResponse("error occurred parsing input", ex);
+        }
 
     }
 }

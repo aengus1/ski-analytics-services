@@ -22,7 +22,7 @@ public class IntegrationTestHelper {
             "cloudformation_custom_resources/bucket-notification"
     };
     private static final Logger logger = LoggerFactory.getLogger(IntegrationTestHelper.class);
-    private static final String INTEGRATION_TEST_USERNAME = "integration_test_user@crunch.ski";
+    public static final String INTEGRATION_TEST_USERNAME = "integration_test_user@crunch.ski";
     private static final String INTEGRATION_TEST_PASSWORD = "abC123Def!";
     private ProfileCredentialsProvider credentialsProvider;
     private CloudFormationHelper cfHelper;
@@ -123,7 +123,7 @@ public class IntegrationTestHelper {
         String dataStackName = this.prefix+"data-var-stack";
         DynamoFacade dynamo = new DynamoFacade(
                 this.region,
-                "dev-crunch-ski-userTable",
+                this.stage+"-crunch-ski-userTable",
                 credentialsProvider
         );
 
@@ -148,7 +148,7 @@ public class IntegrationTestHelper {
         String dataStackName =this.prefix+"data-var-stack";
         DynamoFacade dynamo = new DynamoFacade(
                 this.region,
-                "dev-crunch-ski-userTable",
+                this.stage+"-crunch-ski-userTable",
                 credentialsProvider
         );
 
@@ -168,7 +168,7 @@ public class IntegrationTestHelper {
         String authStack = this.stage+"-"+projectName+"-auth";
         DynamoFacade dynamo = new DynamoFacade(
                 this.region,
-               "dev-crunch-ski-userTable",
+               this.stage+"-crunch-ski-userTable",
                 credentialsProvider
         );
 

@@ -33,6 +33,7 @@ class ActivityTest {
     private String accessKey = null;
     private final String devUserName = "testDevUser@test.com";
     private final String devPassword = "testDevPassword123";
+    private String userId = null;
     private String activityId = null;
     private IntegrationTestHelper helper;
     private ActivityService activityService = null;
@@ -47,7 +48,9 @@ class ActivityTest {
     void retrieveAccessKey() throws Exception {
         this.helper = new IntegrationTestHelper();
         helper.signup().orElseThrow(() -> new RuntimeException("Error occurred signing up"));
+        this.userId = helper.getCognitoId();
         this.accessKey = helper.retrieveAccessToken();
+
         logger.info("ACCESS KEY: " + this.accessKey);
 
 
@@ -158,6 +161,7 @@ class ActivityTest {
         }
 
         try {
+            System.out.println("fetching: " + helper.getCognitoId()+"/"+activityId+".pbf  from: " + processedActivityBucket);
             byte[] buffer = s3.getObject(processedActivityBucket, helper.getCognitoId()+"/"+activityId + ".pbf");
             ActivityOuterClass.Activity finalActivity = ActivityOuterClass.Activity.parseFrom(buffer);
             assertEquals(1, finalActivity.getSessionsCount());
@@ -173,7 +177,8 @@ class ActivityTest {
     @Test
     void testSearchFieldsAreSet() {
 
-        Optional<ActivityItem> item = activityDAO.getActivityItem(this.activityId, devUserName);
+        System.out.println("act: " + this.activityId + " " + helper.getCognitoId());
+        Optional<ActivityItem> item = activityDAO.getActivityItem(this.activityId, userId);
         assertEquals(true, item.isPresent());
 
         assertEquals("RUNNING",item.get().getActivityType());
@@ -216,11 +221,12 @@ class ActivityTest {
     @Test
     public void testActivityIdExtract() {
         try {
-            String id = activityService.extractActivityId("029781f1-4eac-453f-91e4-ae44f76c57d0.fit");
+            String id = activityService.extractActivityId("08uaefluserid/029781f1-4eac-453f-91e4-ae44f76c57d0.fit");
             System.out.println("id = " + id);
             System.out.println(id.concat(".pbf"));
         } catch (Exception ex) {
             ex.printStackTrace();
+            fail(ex);
         }
     }
 
@@ -228,11 +234,11 @@ class ActivityTest {
     void tearDown() {
 
         try {
-            //activityDAO.deleteActivityItemById(activityId, helper.getCognitoId());
-            //activityService.deleteRawActivityFromS3(activityId + ".fit");
+            activityDAO.deleteActivityItemById(activityId, helper.getCognitoId());
+            activityService.deleteRawActivityFromS3(activityId + ".fit");
             Thread.currentThread().sleep(2000);
-            //logger.info("deleting from processed bucket " + processedActivityBucket + " for activity: " + activityId + ".pbf");
-            //activityService.deleteProcessedActivityFromS3(activityId + ".pbf");
+            logger.info("deleting from processed bucket " + processedActivityBucket + " for activity: " + activityId + ".pbf");
+            activityService.deleteProcessedActivityFromS3(activityId + ".pbf");
         } catch (InterruptedException ex) {
             System.err.println("Interrupted Thread");
         } finally {

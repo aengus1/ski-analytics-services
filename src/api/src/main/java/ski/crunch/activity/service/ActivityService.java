@@ -96,7 +96,7 @@ public class ActivityService {
             String[] contentTypeArray = config.getHeaders().getContentType().split("application/");
             String contentType = "";
             if (contentTypeArray.length > 1) {
-                writeRawFileToS3(config.getBody(), config.getRequestContext().getIdentity().getCognitoIdentityId()+"/"+activityId, contentTypeArray[1]);
+                writeRawFileToS3(config.getBody(), config.getRequestContext().getIdentity().getCognitoIdentityId() + "/" + activityId, contentTypeArray[1]);
                 contentType = contentTypeArray[1];
             } else {
                 writeRawFileToS3(config.getBody(), activityId, "null");
@@ -158,12 +158,12 @@ public class ActivityService {
 
         //1. convert input
         String id = null;
-        String email = null;
+        //String email = null;
         String cognitoId = null;
         try {
             LambdaProxyConfig config = new LambdaProxyConfig(input);
             id = config.getPathParameters().get("id");
-            email = config.getRequestContext().getIdentity().getEmail();
+        //    email = config.getRequestContext().getIdentity().getEmail();
             cognitoId = config.getRequestContext().getIdentity().getCognitoIdentityId();
         } catch (ParseException ex) {
             logger.error(" error  parsing input parameters:" + ex.getMessage());
@@ -176,31 +176,31 @@ public class ActivityService {
         }
 
         //2. check this user owns the resource
-        if (!confirmActivityOwner(id, email)) {
+        if (!confirmActivityOwner(id, cognitoId)) {
             //return error response
-            logger.info("user: " + email + " attempted to access resource " + id + " that they don't own");
+            logger.info("user: " + cognitoId + " attempted to access resource " + id + " that they don't own");
             return ApiGatewayResponse.builder()
                     .setStatusCode(403)
                     .setRawBody(new ErrorResponse(403,
-                            "user: " + email + " attempted to access resource " + id + " that they don't own",
+                            "user: " + cognitoId + " attempted to access resource " + id + " that they don't own",
                             "You do not have permission to access this resource", "").toJSON())
                     .build();
         }
         //3. check the resource exists in s3
-        if (!s3.doesObjectExist(this.s3ProcessedActivityBucket, cognitoId+"/"+id)) {
-            logger.info("user: " + email + " attempted to access resource " + id
+        if (!s3.doesObjectExist(this.s3ProcessedActivityBucket, cognitoId + "/" + id)) {
+            logger.info("user: " + cognitoId + " attempted to access resource " + id
                     + " that doesn't exist.  Likely it is still queued for processing");
             return ApiGatewayResponse.builder()
                     .setStatusCode(403)
                     .setRawBody(new ErrorResponse(403,
-                            "user: " + email + " attempted to access resource " + id
+                            "user: " + cognitoId + " attempted to access resource " + id
                                     + " that doesn't exist",
                             "This resource is not available yet", "").toJSON())
                     .build();
         }
         //4. get resource
         try {
-            byte[] binaryBody = s3.getObject(s3ProcessedActivityBucket, cognitoId+"/"+id);
+            byte[] binaryBody = s3.getObject(s3ProcessedActivityBucket, cognitoId + "/" + id);
             Map<String, String> headers = new HashMap<>();
             headers.put("Content-Type", "application/json");
             headers.put("Access-Control-Allow-Origin", "*");
@@ -223,92 +223,67 @@ public class ActivityService {
         }
     }
 
-    public ApiGatewayResponse processAndSaveActivity(Map<String, Object> input, Context context,
-                                                     WeatherService weatherService, LocationService locationService) {
+    Map.Entry<String, String> extractKeyAndBucketName(Map<String, Object> input) throws ParseException {
+        String bucket = null;
+        String key = "";
+        Iterator<String> it = input.keySet().iterator();
+        while (it.hasNext()) {
+            String next = it.next();
+            ArrayList<Map> records = (ArrayList<Map>) input.get(next);
 
+            for (Map r : records) {
+                Iterator rit = r.keySet().iterator();
+                while (rit.hasNext()) {
+                    String nxt = (String) rit.next();
+                    if (nxt.equals("s3")) {
+                        Map s3Map = (Map) r.get(nxt);
+                        Map buck = (Map) s3Map.get("bucket");
+                        bucket = (String) buck.get("name");
+                        Map obj = (Map) s3Map.get("object");
+                        key = (String) obj.get("key");
+                        return Map.entry(key, bucket);
+                    }
+                }
+
+            }
+        }
+        throw new ParseException("failed to extract bucket name and key");
+    }
+
+    public ApiGatewayResponse processAndSaveActivity(Map<String, Object> input, Context context,
+                                                     WeatherService weatherService, LocationService locationService)
+            throws ParseException {
+        logger.info("process and save activity");
 
         //1. obtain bucket name and key from input
-        String bucket = null;
-        String id = "";
-        String key = "";
-        final String emailAddress;
-        String newKey = "";
-        try {
+        final Map.Entry<String, String> keyAndBucket = extractKeyAndBucketName(input);
+        final String id = extractActivityId(keyAndBucket.getKey());
+        final String userId = extractUserId(keyAndBucket.getKey());
+        String newKey = id.concat(".pbf");
 
-            logger.info("process and save activity");
-            Iterator<String> it = input.keySet().iterator();
-            while (it.hasNext()) {
-                String next = it.next();
-                ArrayList<Map> records = (ArrayList<Map>) input.get(next);
-
-                for (Map r : records) {
-                    Iterator rit = r.keySet().iterator();
-                    while (rit.hasNext()) {
-                        String nxt = (String) rit.next();
-                        if (nxt.equals("s3")) {
-                            Map s3Map = (Map) r.get(nxt);
-                            Map buck = (Map) s3Map.get("bucket");
-                            bucket = (String) buck.get("name");
-                            Map obj = (Map) s3Map.get("object");
-                            key = (String) obj.get("key");
-//                        System.out.println("bucket = " + bucket);
-//                        System.out.println("object = " + key);
-                            break;
-                        }
-                    }
-
-                }
-            }
-            assert (bucket != null);
-            assert (key != null);
-
-            //2. extract activity id
-            id = extractActivityId(key);
-            emailAddress = extractEmailAddress(key);
-            System.out.println("id = " + id);
-            System.out.println("email address = " + emailAddress);
-            newKey = id.concat(".pbf");
-
-        } catch (ParseException ex) {
-            logger.error(" error  parsing input parameters:" + ex.getMessage());
-            return errorResponse("error occurred parsing input", ex);
-        }
+        logger.info("Extracted id: {}, userId: {}, key: {}, value: {}", id, userId, keyAndBucket.getKey(), keyAndBucket.getValue());
 
 
         //3. read in raw file from s3
         try {
-            S3Facade s3Service = new S3Facade(region);
             ActivityHolder activity = null;
-            //saving to tmpdir first as had problems reading directly from inputstream
-            //per aws docs, should read data and close stream asap
-            logger.info("key = " + key);
-            File dir = new File(System.getProperty("java.io.tmpdir"));
-            File rawTmp;
-            if(key.contains("/")) {
-                String[] keyS = key.split("/");
-                dir = new File(System.getProperty("java.io.tmpdir") + "/" + keyS[0]);
-                dir.mkdir();
-                rawTmp = new File(dir, keyS[1]);
-            }else {
-                rawTmp = new File(dir, key);
-            }
 
+            File out = null;
             try {
-                FileUtils.deleteIfExists(rawTmp);
-                s3Service.saveObjectToTmpDir(bucket, key);
-            } catch (IOException e) {
+                out = s3.saveObjectToTmpDir(keyAndBucket.getValue(), keyAndBucket.getKey());
+            } catch (Exception e) {
                 logger.error("error saving file " + e.getMessage());
+                return errorResponse("error saving raw file to tmp", e);
             }
             ActivityHolderAdapter fitParser = new FitActivityHolderAdapter();
-            try (FileInputStream fis = new FileInputStream(rawTmp)) {
+            try (FileInputStream fis = new FileInputStream(out)) {
                 try (BufferedInputStream bis = new BufferedInputStream(fis)) {
                     activity = fitParser.convert(bis);
                 } catch (ParseException ex) {
                     logger.error("parse exception " + ex.getMessage());
+                    return errorResponse("error reading raw file ", ex);
                 }
 
-            } catch (FileNotFoundException ex) {
-                logger.error("error reading file " + ex.getMessage());
             } catch (IOException ex) {
                 logger.error("error reading file " + ex.getMessage());
             }
@@ -338,8 +313,8 @@ public class ActivityService {
             ConvertibleOutputStream cos = new ConvertibleOutputStream();
             result.writeTo(cos);
             System.out.println("processed bucket = " + s3ProcessedActivityBucket);
-            s3Service.putObject(s3ProcessedActivityBucket, emailAddress+"/"+newKey, cos.toInputStream());
-            S3Link s3Link = dynamo.getMapper().createS3Link(s3ProcessedActivityBucket, emailAddress+"/"+result.getId()+".pbf");
+            s3.putObject(s3ProcessedActivityBucket, userId + "/" + newKey, cos.toInputStream());
+            S3Link s3Link = dynamo.getMapper().createS3Link(s3ProcessedActivityBucket, userId + "/" + result.getId() + ".pbf");
             System.out.println("s3 link = " + s3Link.toJson());
 
 //            String cognitoIdentityId = null;
@@ -352,15 +327,17 @@ public class ActivityService {
 //            }
 //            System.out.println("id1 = " + context.getIdentity());
 //            System.out.println("id = " + context.getIdentity().getIdentityId());
+
+
             // save the link to the processed file
-            activityDAO.saveLinkToProcessed(result.getId(), emailAddress, s3Link);
+            activityDAO.saveLinkToProcessed(result.getId(), userId, s3Link);
 
             //6. add search fields to activity table
-            activityDAO.saveActivitySearchFields(result, emailAddress);
+            activityDAO.saveActivitySearchFields(result, userId);
 
 
             //7. update user settings with possible new devices / activityTypes
-            Optional<ActivityItem> activityItemOptional = activityDAO.getActivityItem(id, emailAddress);
+            Optional<ActivityItem> activityItemOptional = activityDAO.getActivityItem(id, userId);
             if (!activityItemOptional.isPresent()) {
                 logger.error("Activity Item " + id + " not present");
                 return ApiGatewayResponse.builder()
@@ -389,8 +366,9 @@ public class ActivityService {
             //9. call back the client
 
             String connectionId = "";
-            Optional<UserSettingsItem> user = userDAO.getUserByEmailAddress(emailAddress);
-            connectionId = user.orElseThrow(() -> new NotFoundException(("User " + emailAddress + " not found"))).getConnectionId();
+            //Optional<UserSettingsItem> user = userDAO.getUserByEmailAddress(userId);
+            Optional<UserSettingsItem> user = userDAO.getUserSettings(userId);
+            connectionId = user.orElseThrow(() -> new NotFoundException(("User " + userId + " not found"))).getConnectionId();
             logger.info("connection Id = " + connectionId);
 
 
@@ -427,7 +405,6 @@ public class ActivityService {
             outgoingWebSocketService.sendMessage(newDeviceActivityTypeJson, apiId, connectionId, credentialsProvider);
 
 
-
         } catch (IOException e) {
             e.printStackTrace();
             return null;
@@ -450,7 +427,7 @@ public class ActivityService {
     }
 
 
-    public String extractEmailAddress(String key) throws ParseException {
+    public String extractUserId(String key) throws ParseException {
         String id = "";
 
         if (key != null && key.length() > 1 && key.contains("/")) {
@@ -499,8 +476,7 @@ public class ActivityService {
     }
 
 
-
-    private ApiGatewayResponse errorResponse(String message, Throwable t) {
+    public static ApiGatewayResponse errorResponse(String message, Throwable t) {
         return ApiGatewayResponse.builder()
                 .setStatusCode(400)
                 .setRawBody(new ErrorResponse(400,
@@ -530,11 +506,11 @@ public class ActivityService {
     }
 
 
-    private boolean confirmActivityOwner(String activityId, String email) {
+    private boolean confirmActivityOwner(String activityId, String userId) {
 
-        Optional<ActivityItem> item = activityDAO.getActivityItem(activityId, email);
+        Optional<ActivityItem> item = activityDAO.getActivityItem(activityId, userId);
         if (item.isPresent()) {
-            return item.get().getUserId().trim().equalsIgnoreCase(email.trim());
+            return item.get().getUserId().trim().equalsIgnoreCase(userId.trim());
         } else {
             return false;
         }
