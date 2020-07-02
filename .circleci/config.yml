@@ -36,6 +36,9 @@ commands:
       - node/with-cache:
           steps:
             - run: sudo npm install -g serverless
+  install-sls-appsync-plugin:
+    steps:
+      - run: cd src/graphql && npm install serverless-appsync-plugin && cd ../../
   save-test-results:
     steps:
       - run:
@@ -65,6 +68,7 @@ jobs:
       - unit-test
       - aws-cli/configure:
           profile-name: backend_dev
+      - install-sls-appsync-plugin
       - run: ./gradlew deploy -Dstage="ci" --stacktrace
       - run: ./gradlew clean jacocoRootReport -x cli:integrationTest -Dstage="ci" --stacktrace
       - save-cache
