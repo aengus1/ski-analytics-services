@@ -2,9 +2,10 @@
 ## Script for CI / CD to automatically teardown an environment
 ##
 ## Args:  $1  name of environment to destroy
+##        $2  (optional) name of module to destroy. defaults to all
 
 
-## Modules to init //order matters!
+## Modules to destroy //order matters!
 declare -a modules=("frontend" "api" "data")
 
 ## log file location
@@ -21,19 +22,19 @@ export $TF_IN_AUTOMATION
 echo "Destroying environment " $env
 ## Exit if environment not found
 if [ -d $env ]; then
-  echo "Found environment" $env
+  echo "Found environment" $env " to destroy"
 else
-  echo "Environment "$env " not found. Exiting." >&2
+  echo "Environment "$env " to destroy not found. Exiting." >&2
   exit 1
 fi
 
 ## Initialize, Plan and Apply ALL modules
 for i in "${modules[@]}"; do
   # if mod variable is set then only action that module
-  if [ -z ${mod+x} ]; then
-    echo "Destroy Module ${i}";
+  if [ -z ${mod} ]; then
+    echo "Destroy Single Module: ${i}";
   else
-    if [ ${mod} != ${i} ]; then
+    if [ "$mod" != "$i" ]; then
       continue
       fi
   fi

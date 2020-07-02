@@ -1,0 +1,22 @@
+schema {
+    query: Query
+}
+
+type Query {
+    getActivities( sql: String!, parameters: [Parameter]! ): [String]!
+}
+
+
+type Parameter {
+    name: String,
+    type: ParamType,
+    value: String
+}
+
+enum ParamType {
+    STRING,
+    NUMBER,
+    BOOLEAN
+}
+
+
