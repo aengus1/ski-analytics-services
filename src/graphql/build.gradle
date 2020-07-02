@@ -1,0 +1,3 @@
+apply plugin: 'ski.crunch.build.deploy'
+
+deploy.dependencies = []

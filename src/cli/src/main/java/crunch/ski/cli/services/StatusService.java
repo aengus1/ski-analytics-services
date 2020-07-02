@@ -106,9 +106,13 @@ public class StatusService {
         items.add(hostingBucket);
         logger.info("hosting bucket: {}", hostingBucket);
 
-        boolean cfDistroSSM = ssmParameterFacade.parameterExists(options.getEnvironment() + "-app-cfdistro-id");
+        boolean cfDistroSSM = ssmParameterFacade.parameterExists(options.getEnvironment() + "-cfdistro-name");
         logger.info("hosting cf distrossm: {}", cfDistroSSM);
         items.add(cfDistroSSM);
+
+        boolean cfBucketSSM = ssmParameterFacade.parameterExists(options.getEnvironment() + "-app-bucket-name");
+        logger.info("bucket cf distrossm: {}", cfBucketSSM);
+        items.add(cfBucketSSM);
 
         boolean cfDistro = cfDistroSSM && cloudfrontFacade.cfDistroExists(
                 ssmParameterFacade.getParameter(options.getEnvironment() + "-app-cfdistro-id")

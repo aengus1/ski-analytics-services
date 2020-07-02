@@ -8,7 +8,7 @@
 ## Resources:
 ##                Userpool Domain
 ##                Api Domain
-##                Websocket domain (+regional acm cert)
+##                // removed Websocket domain (+regional acm cert)
 ##                GraphQL domain (todo)
 ##                Cloudformation stack to export variables to Serverless
 ##
@@ -23,9 +23,6 @@
 ## Outputs:
 ##                Cloudfront domain name of api endpoint
 ##                Cloudfront zone id of api endpoint
-##                User pool ID
-##                User table ARN
-##                Activity table ARN
 ##
 #################################################################################################################
 
@@ -100,24 +97,27 @@ variable "api_sub_domain"  {
 
 
 ######  Authentication Endpoint ###############################################################
-resource "aws_cognito_user_pool_domain" userpoolDomain {
-  domain = "${var.cognito_sub_domain}.${var.domain_name}"
-  certificate_arn = data.terraform_remote_state.shared.outputs.acm_certificate_arn
-  user_pool_id = data.terraform_remote_state.data.outputs.userpool-id
-}
 
-resource aws_route53_record "authDomainRecord" {
+## Commented due to restriction of only 4 cognito custom domains per AWS account.
+## with this hard limit in place it isn't possible to set up one custom domain per stage
 
-  name = "${var.cognito_sub_domain}.${var.domain_name}"
-  type = "A"
-  zone_id = data.terraform_remote_state.shared.outputs.hosted_zone
-  alias {
-    evaluate_target_health = false
-    name =  aws_cognito_user_pool_domain.userpoolDomain.cloudfront_distribution_arn
-    zone_id = "Z2FDTNDATAQYW2"
-  }
-  depends_on = [aws_cognito_user_pool_domain.userpoolDomain]
-}
+//resource "aws_cognito_user_pool_domain" userpoolDomain {
+//  domain = "${var.cognito_sub_domain}.${var.domain_name}"
+//  certificate_arn = data.terraform_remote_state.shared.outputs.acm_certificate_arn
+//  user_pool_id = data.terraform_remote_state.data.outputs.userpool-id
+//}
+//
+//resource aws_route53_record "authDomainRec" {
+//  name = "${var.cognito_sub_domain}.${var.domain_name}"
+//  type = "A"
+//  zone_id = data.terraform_remote_state.shared.outputs.hosted_zone
+//  alias {
+//    evaluate_target_health = false
+//    name =  aws_cognito_user_pool_domain.userpoolDomain.cloudfront_distribution_arn
+//    zone_id = "Z2FDTNDATAQYW2"
+//  }
+//  depends_on = [aws_cognito_user_pool_domain.userpoolDomain]
+//}
 
 ######  API Endpoint ###############################################################
 module "api_endpoint" {
@@ -224,20 +224,6 @@ resource aws_cloudformation_stack "output_stack" {
       "Name" : "WsEndpointZoneId${var.stage}"
         }
       },
-      "AuthEndpointCfArn${var.stage}" : {
-      "Description" : "auth endpoint cf arn",
-      "Value": "${aws_cognito_user_pool_domain.userpoolDomain.cloudfront_distribution_arn}",
-      "Export": {
-      "Name" : "AuthEndpointCfArn${var.stage}"
-        }
-      },
-      "AuthEndpointS3Bucket${var.stage}" : {
-      "Description" : "auth endpoint cf arn",
-      "Value": "${aws_cognito_user_pool_domain.userpoolDomain.s3_bucket}",
-      "Export": {
-      "Name" : "AuthEndpointS3Bucket${var.stage}"
-        }
-      },
       "CertificateArn${var.stage}" : {
       "Description" : "arn of acm certificate",
       "Value": "${data.terraform_remote_state.shared.outputs.acm_certificate_arn}",
@@ -256,6 +242,25 @@ resource aws_cloudformation_stack "output_stack" {
 }
 STACK
 }
+
+
+//commented the following auth endpoint variables from the above stack due to hard limit on cognito custom domains
+// ,
+//      "AuthEndpointCfArn${var.stage}" : {
+//      "Description" : "auth endpoint cf arn",
+//      "Value": "${aws_cognito_user_pool_domain.userpoolDomain.cloudfront_distribution_arn}",
+//      "Export": {
+//      "Name" : "AuthEndpointCfArn${var.stage}"
+//        }
+//      },
+//      "AuthEndpointS3Bucket${var.stage}" : {
+//      "Description" : "auth endpoint cf arn",
+//      "Value": "${aws_cognito_user_pool_domain.userpoolDomain.s3_bucket}",
+//      "Export": {
+//      "Name" : "AuthEndpointS3Bucket${var.stage}"
+//        }
+//      },
+
 
 ## Outputs
 #################################################################################################################
@@ -276,10 +281,10 @@ output "ws_endpoint_zone_id" {
   value = module.ws_endpoint.endpoint_zoneid
 }
 
-output "auth_endpoint_cf_arn" {
-  value = aws_cognito_user_pool_domain.userpoolDomain.cloudfront_distribution_arn
-}
-
-output "auth_endpoint_s3" {
-  value = aws_cognito_user_pool_domain.userpoolDomain.s3_bucket
-}
+//output "auth_endpoint_cf_arn" {
+//  value = aws_cognito_user_pool_domain.userpoolDomain.cloudfront_distribution_arn
+//}
+//
+//output "auth_endpoint_s3" {
+//  value = aws_cognito_user_pool_domain.userpoolDomain.s3_bucket
+//}

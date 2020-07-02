@@ -256,6 +256,7 @@ resource aws_s3_bucket "deploymentBucket" {
 }
 
 resource aws_s3_bucket "deploymentBucket2" {
+  // see https://github.com/terraform-providers/terraform-provider-aws/issues/5999
   bucket = "${var.stage}-deployment2-${var.project_name}"
   region = var.secondary_region
 

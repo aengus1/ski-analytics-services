@@ -1,4 +1,5 @@
 import ski.crunch.build.DeployServerless
+import ski.crunch.build.UnDeployServerless
 
 /*
  ####################   Build Script Section  ################################################
@@ -102,7 +103,10 @@ subprojects {
     }
     if(!getProject().getName().equals("cli")) {
         task deploy(type: DeployServerless)
+        task undeploy(type: UnDeployServerless)
+
         deploy.dependsOn build
+
     }
 
     apply from: "${getProject().getParent().getProjectDir()}/gradle/test.gradle"

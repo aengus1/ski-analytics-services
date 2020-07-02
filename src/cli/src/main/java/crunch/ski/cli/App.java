@@ -13,7 +13,9 @@ import java.util.concurrent.Callable;
                 Config.class,
                 Wipe.class,
                 Status.class,
-                Up.class
+                Up.class,
+                Down.class,
+                Settings.class
         },
         name = "crunch",
         description = "Administrative tool for loading / restoring crunch.ski data",
@@ -59,7 +61,7 @@ public class App implements Callable<Integer> {
 
     @Override
     public Integer call() {
-        System.out.print("Please choose one of the subcommands: backup, restore, wipe, configure, status, up");
+        System.out.print("Please choose one of the subcommands: backup, restore, wipe, configure, status, up, down, settings");
         return 0;
     }
 

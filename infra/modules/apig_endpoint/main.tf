@@ -81,7 +81,7 @@ resource "aws_api_gateway_domain_name" "endpoint" {
 
 ##Argh -> this needs to be a aws_api_gateway_v2_domain_name which isn't available yet
 ##  https://github.com/terraform-providers/terraform-provider-aws/pull/9391
-## TODO -> update this once becomes available in terraform
+## TODO -> aws_api_gateway_v2_domain_name update once becomes available in terraform
 resource "aws_api_gateway_domain_name" "endpoint_regional" {
   regional_certificate_arn = var.certificate_arn
   domain_name     = "${var.endpoint_sub_domain}.${var.domain_name}"

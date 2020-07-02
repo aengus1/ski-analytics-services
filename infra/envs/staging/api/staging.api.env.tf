@@ -53,13 +53,6 @@ output "ws_endpoint_zone_id" {
   value = module.api.ws_endpoint_zone_id
 }
 
-output "auth_endpoint_cf_arn" {
-  value = module.api.auth_endpoint_cf_arn
-}
-
-output "auth_endpoint_s3" {
-  value = module.api.auth_endpoint_s3
-}
 
 ## Variables
 #################################################################################################################

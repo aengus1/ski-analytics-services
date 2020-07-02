@@ -34,10 +34,10 @@ fi
 ## Initialize, Plan and Apply ALL modules
 for i in "${modules[@]}"; do
   # if mod variable is set then only action that module
-  if [ -z ${mod+x} ]; then
-    echo "Init Module ${i}";
+  if [ -z ${mod} ]; then
+    echo "Init Single Module ${i}";
   else
-    if [ ${mod} != ${i} ]; then
+    if [ $mod != ${i} ]; then
       continue
       fi
   fi
@@ -50,19 +50,21 @@ for i in "${modules[@]}"; do
     echo "Error initializing terraform" >&2
     exit 1
   fi
-  ## Plan the Data Module
+  ## Terraform Plan the  Module
   terraform plan --var-file="../../global.tfvars.json" --var-file="${env}.terraform.tfvars.json" \
   --input=false --out=tfplan_${i} 2>&1 | tee -a $LOG_FILE
   if [ $? -ne 0 ]; then
     echo "Error running tf plan for ${i} module" >&2
     exit 1
   fi
-  ## Apply the Data Module Plan
+  ## Terraform Apply the  Module Plan
   terraform apply --input=false --auto-approve tfplan_${i} >>$LOG_FILE
   if [ $? -eq 0 ]; then
     echo "Successfully provisioned terraform ${i} module"
   else
-    echo "Error initializing terraform data module" >&2
+    ## errors occur here often due to SSM tooManyUpdates error.  The solution is simply to re-try the apply.
+    ## TODO -> detect SSM TooManyUpdates error and retry
+    echo "Error initializing terraform ${i} module" >&2
     exit 1
   fi
   cd ../..
