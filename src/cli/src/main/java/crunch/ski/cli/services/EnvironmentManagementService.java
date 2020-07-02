@@ -7,7 +7,6 @@ import org.slf4j.LoggerFactory;
 import ski.crunch.aws.*;
 
 import java.io.File;
-import java.io.IOException;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
@@ -55,7 +54,7 @@ public class EnvironmentManagementService {
 
 
     public Integer provision(Options options) {
-
+        ProcessRunner processRunner = new ProcessRunner();
         // is the specified environment defined in source tree?
         String projectSrcDir = options.getConfigMap().get("PROJECT_SOURCE_DIR");
         File infraDir = new File(projectSrcDir + "/infra/envs");
@@ -89,7 +88,7 @@ public class EnvironmentManagementService {
             String[] cmdArray = moduleToInit.equals("all") ? new String[]{initEnvPath, envToInit}
                     : new String[]{initEnvPath, envToInit, moduleToInit};
 
-            int tfProvision = startProcess(cmdArray, infraDir);
+            int tfProvision = processRunner.startProcess(cmdArray, infraDir, true);
             //exit on tf failure
             if (tfProvision != 0) {
                 System.err.println("Environment " + options.getEnvironment() + "terraform provisioning failed");
@@ -123,7 +122,7 @@ public class EnvironmentManagementService {
                     //gradlewPath, gradleClean, gradleBuild, gradleDeploy, excludeFlag, excludeModule, stage
                     gradlewPath, gradleClean, gradleBuild, gradleDeploy, stage
             };
-            int gradleProvision = startProcess(cmdArray, rootDir);
+            int gradleProvision = processRunner.startProcess(cmdArray, rootDir, true);
 
             if (gradleProvision != 0) {
                 System.err.println("Environment " + options.getEnvironment() + " serverless provisioning failed");
@@ -141,6 +140,7 @@ public class EnvironmentManagementService {
 
     //TODO.  if a specific module is specified, then also delete modules that depend on it
     public Integer deProvision(Options options) {
+        ProcessRunner processRunner = new ProcessRunner();
         logger.info("De provisioning environment {} with modules {}", options.getEnvironment(), options.getModule());
 
         //determine infrastructure directory
@@ -178,7 +178,7 @@ public class EnvironmentManagementService {
                     gradlewPath, gradleUndeploy, stage
             };
 
-            int gradleDeProvision = startProcess(cmdArray, rootDir);
+            int gradleDeProvision = processRunner.startProcess(cmdArray, rootDir, true);
 
             if (gradleDeProvision != 0) {
                logger.error("Environment {} serverless de-provisioning failed. Gradle undeploy returned an error code."
@@ -205,7 +205,7 @@ public class EnvironmentManagementService {
             String[] cmdArray = moduleToDestroy.equals("all") ? new String[]{destroyEnvPath, envToDestroy}
                     : new String[]{destroyEnvPath, envToDestroy, moduleToDestroy};
 
-            int tfDeProvision = startProcess(cmdArray, infraDir);
+            int tfDeProvision = processRunner.startProcess(cmdArray, infraDir, true);
 
             //exit on tf failure
             if (tfDeProvision != 0) {
@@ -241,34 +241,6 @@ public class EnvironmentManagementService {
         return statusMap;
     }
 
-    private int startProcess(String[] cmdArray, File directory) {
-        String output = "";
-        String error = "";
-        Process process;
-        try {
-            ProcessBuilder processBuilder = new ProcessBuilder(cmdArray);
-            processBuilder.environment().put("CLI_BUILD", "TRUE");
-            processBuilder.directory(directory);
-            processBuilder.inheritIO();
-            process = processBuilder.start();
-            process.waitFor();
-//            InputStream is = process.getInputStream();
-//            InputStream es = process.getErrorStream();
-//            output = StreamUtils.convertStreamToString(is);
-//            error = StreamUtils.convertStreamToString(es);
-            return process.exitValue();
-        } catch (IOException e) {
-            e.printStackTrace();
-            return 1;
-        } catch (InterruptedException ex) {
-            ex.printStackTrace();
-            return 1;
-//        } finally {
-//            System.out.println(output);
-//            System.err.println(error);
-        }
-
-    }
 
     private void checkSourceTreeDefined() {
 

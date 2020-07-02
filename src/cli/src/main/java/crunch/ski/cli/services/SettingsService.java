@@ -57,12 +57,11 @@ public class SettingsService {
         //get terraform data module output
         ProcessRunner processRunner = new ProcessRunner();
         String[] cmdArray = new String[]{"terraform", "show", "-json"};
-        int terraformShowData = processRunner.startProcess(cmdArray, dataDir);
+        processRunner.startProcess(cmdArray, dataDir, false);
         JsonNode terraformShowDataOutput = objectMapper.readTree(processRunner.getInputStream());
 
         //get terraform api module output
-        String[] cmdArrayApi = new String[]{"terraform", "show", "-json"};
-        int terraformShowApi = processRunner.startProcess(cmdArray, apiDir);
+        processRunner.startProcess(cmdArray, apiDir, false);
         JsonNode terraformShowApiOutput = objectMapper.readTree(processRunner.getInputStream());
         String wsDomain = terraformShowApiOutput.path("values").path("outputs").path("ws_endpoint_cf_domain_name").asText();
 
@@ -72,7 +71,7 @@ public class SettingsService {
         //get sls info output
         File graphqlDir = new File(projectSrcDir, "src/graphql");
         String[] graphqlCmds = new String[]{"sls", "info", "--stage=dev"};
-        int graphqlInfo = processRunner.startProcess(graphqlCmds, graphqlDir);
+        processRunner.startProcess(graphqlCmds, graphqlDir, false);
         String slsInfo = StreamUtils.convertStreamToString(processRunner.getInputStream());
         String graphqlEndpoint = "";
         String[] slsInfoSplit = slsInfo.split(System.lineSeparator());

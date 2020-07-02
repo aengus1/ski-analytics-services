@@ -9,21 +9,19 @@ public class ProcessRunner {
     private InputStream errorStream;
 
 
-    public int startProcess(String[] cmdArray, File directory) {
-        String output = "";
-        String error = "";
+    public int startProcess(String[] cmdArray, File directory, boolean isInheritIO) {
         Process process;
         try {
             ProcessBuilder processBuilder = new ProcessBuilder(cmdArray);
             processBuilder.environment().put("CLI_BUILD", "TRUE");
             processBuilder.directory(directory);
-            //processBuilder.inheritIO();
+            if(isInheritIO) {
+             processBuilder.inheritIO();
+            }
             process = processBuilder.start();
             process.waitFor();
             this.inputStream = process.getInputStream();
             this.errorStream = process.getErrorStream();
-//            output = StreamUtils.convertStreamToString(is);
-//            error = StreamUtils.convertStreamToString(es);
             return process.exitValue();
         } catch (IOException e) {
             e.printStackTrace();
@@ -31,9 +29,6 @@ public class ProcessRunner {
         } catch (InterruptedException ex) {
             ex.printStackTrace();
             return 1;
-//        } finally {
-//            System.out.println(output);
-//            System.err.println(error);
         }
     }
 

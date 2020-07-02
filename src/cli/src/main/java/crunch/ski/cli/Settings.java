@@ -37,10 +37,9 @@ public class Settings  implements Callable<Integer> {
 
     /**
      * test constructor
-     * @param environment
-     * @param module
+     * @param environment String
      */
-    public Settings(String environment, String module) {
+    public Settings(String environment) {
         this();
         this.environment = environment;
     }
