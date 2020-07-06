@@ -158,11 +158,13 @@ public class ActivityService {
 
         //1. convert input
         String id = null;
+        String path = null;
         //String email = null;
         String cognitoId = null;
         try {
             LambdaProxyConfig config = new LambdaProxyConfig(input);
-            id = config.getPathParameters().get("id");
+            path = config.getPathParameters().get("id");
+            id = path.substring(0, path.lastIndexOf("."));
         //    email = config.getRequestContext().getIdentity().getEmail();
             cognitoId = config.getRequestContext().getIdentity().getCognitoIdentityId();
         } catch (ParseException ex) {
@@ -176,6 +178,7 @@ public class ActivityService {
         }
 
         //2. check this user owns the resource
+        logger.info("confirming {} owns {}", cognitoId, id);
         if (!confirmActivityOwner(id, cognitoId)) {
             //return error response
             logger.info("user: " + cognitoId + " attempted to access resource " + id + " that they don't own");
@@ -187,20 +190,20 @@ public class ActivityService {
                     .build();
         }
         //3. check the resource exists in s3
-        if (!s3.doesObjectExist(this.s3ProcessedActivityBucket, cognitoId + "/" + id)) {
-            logger.info("user: " + cognitoId + " attempted to access resource " + id
+        if (!s3.doesObjectExist(this.s3ProcessedActivityBucket, cognitoId + "/" + path)) {
+            logger.info("user: " + cognitoId + " attempted to access resource " + path
                     + " that doesn't exist.  Likely it is still queued for processing");
             return ApiGatewayResponse.builder()
                     .setStatusCode(403)
                     .setRawBody(new ErrorResponse(403,
-                            "user: " + cognitoId + " attempted to access resource " + id
+                            "user: " + cognitoId + " attempted to access resource " + path
                                     + " that doesn't exist",
                             "This resource is not available yet", "").toJSON())
                     .build();
         }
         //4. get resource
         try {
-            byte[] binaryBody = s3.getObject(s3ProcessedActivityBucket, cognitoId + "/" + id);
+            byte[] binaryBody = s3.getObject(s3ProcessedActivityBucket, cognitoId + "/" + path);
             Map<String, String> headers = new HashMap<>();
             headers.put("Content-Type", "application/json");
             headers.put("Access-Control-Allow-Origin", "*");
@@ -217,7 +220,7 @@ public class ActivityService {
             return ApiGatewayResponse.builder()
                     .setStatusCode(500)
                     .setRawBody(new ErrorResponse(403,
-                            "error occurred retrieving file: " + id + " from S3 bucket: " + this.s3ProcessedActivityBucket,
+                            "error occurred retrieving file: " + path + " from S3 bucket: " + this.s3ProcessedActivityBucket,
                             "Unexpected error occurred.", "").toJSON())
                     .build();
         }
@@ -314,7 +317,8 @@ public class ActivityService {
             result.writeTo(cos);
             System.out.println("processed bucket = " + s3ProcessedActivityBucket);
             s3.putObject(s3ProcessedActivityBucket, userId + "/" + newKey, cos.toInputStream());
-            S3Link s3Link = dynamo.getMapper().createS3Link(s3ProcessedActivityBucket, userId + "/" + result.getId() + ".pbf");
+            S3Link s3Link = dynamo.getMapper().createS3Link(region, s3ProcessedActivityBucket, userId + "/" + result.getId() + ".pbf");
+
             System.out.println("s3 link = " + s3Link.toJson());
 
 //            String cognitoIdentityId = null;

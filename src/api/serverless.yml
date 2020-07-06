@@ -12,6 +12,9 @@ provider:
   stackName: ${{opt:stage}}-${{self:custom.projectName}}-${{self:service}}
   deploymentBucket: ${{opt:stage}}-deployment-${{self:custom.projectName}}
   stage: ${{opt:stage}}
+  tracing:
+    apiGateway: true
+    lambda: true
   iamRoleStatements:
     - Effect: Allow
       Action:
@@ -153,7 +156,7 @@ functions:
     environment:
       s3RawActivityBucketName: ${{self:custom.rawActivityBucketName}}
       activityTable: ${{self:custom.activityTable}}
-      userTable: ${{cf:${{self:custom.userTable}}
+      userTable: ${{self:custom.userTable}}
       currentStage: ${{opt:stage}}
     events:
      - http:
