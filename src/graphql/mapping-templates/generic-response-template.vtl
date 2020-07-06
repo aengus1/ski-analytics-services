@@ -1,5 +1,5 @@
 #if($context.result["id"] == $context.identity.sub)
-    $utils.toJson($context.result);
+    $utils.toJson($context.result)
 #else
     $utils.unauthorized()
 #end

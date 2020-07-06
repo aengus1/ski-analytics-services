@@ -63,7 +63,7 @@ public class SettingsService {
         //get terraform api module output
         processRunner.startProcess(cmdArray, apiDir, false);
         JsonNode terraformShowApiOutput = objectMapper.readTree(processRunner.getInputStream());
-        String wsDomain = terraformShowApiOutput.path("values").path("outputs").path("ws_endpoint_cf_domain_name").asText();
+        String wsDomain = terraformShowApiOutput.path("values").path("outputs").path("ws_endpoint_cf_domain_name").path("value").asText();
 
         String userPoolId = terraformShowDataOutput.path("values").path("outputs").path("userpool-id").path("value").asText();
         String userPoolClientId = terraformShowDataOutput.path("values").path("outputs").path("userpool-client-id").path("value").textValue();

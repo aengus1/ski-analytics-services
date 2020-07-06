@@ -34,7 +34,9 @@ public class ActivityDAO extends AbstractDAO {
         if(dynamoDBService == null) {
             System.out.println("null service :(");
         }
+        logger.debug("attempting to load activity with user id: {} and activityId: {}", userId, activityId);
         ActivityItem activityItem = dynamoDBService.getMapper().load(ActivityItem.class, userId, activityId);
+
         System.out.println("activity loaded: " + activityItem.getId());
         activityItem.setProcessedActivity(s3LinkToProcessed);
         System.out.println("dynamo service = " + dynamoDBService);

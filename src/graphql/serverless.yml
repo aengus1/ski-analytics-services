@@ -50,14 +50,14 @@ custom:
 
     ##cognito
   ## note that region is intentionally specified in cf output reference
-  userPoolArn: ${{cf.${{self:custom.primaryRegion}}:${{self:custom.dataStack}}.{{opt:stage}}UserPoolArn}}
+  userPoolArn: ${{cf.${{self:custom.primaryRegion}}:${{self:custom.dataStack}}.UserPoolArn${{opt:stage}}}}
   userTableDSName: ${{opt:stage}}_crunch_UserTable_DS
   authStackName: ${{opt:stage}}-${{self:custom.projectName}}-auth
   appSync:
     name: ${{opt:stage}}-appsync-api
     authenticationType: "AMAZON_COGNITO_USER_POOLS"
     userPoolConfig:
-      userPoolId: ${{cf.${{self:custom.primaryRegion}}:${{self:custom.dataStack}}.{{opt:stage}}UserPoolId}}
+      userPoolId: ${{cf.${{self:custom.primaryRegion}}:${{self:custom.dataStack}}.UserPoolId${{opt:stage}}}}
       awsRegion: ${{self:custom.primaryRegion}}
       defaultAction: "ALLOW"
     logConfig:
