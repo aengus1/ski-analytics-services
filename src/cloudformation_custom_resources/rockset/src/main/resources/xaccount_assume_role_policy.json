@@ -4,7 +4,7 @@
     {
       "Effect": "Allow",
       "Principal": {
-        "AWS": "arn:aws:iam::${accountId}:root"
+        "AWS": "arn:aws:iam::${accountId}:user/rockset"
       },
       "Action": "sts:AssumeRole",
       "Condition": {

@@ -16,7 +16,7 @@ public class RocksetCollectionLambda extends AbstractCustomResourceLambda {
             String apiKey = RocksetService.getApiKey(resourceProperties.getRegion(), resourceProperties.getApiKeySSM(), credentialsProvider);
             RocksetService rocksetService = new RocksetService(resourceProperties.getRegion(), resourceProperties.getApiServer(), apiKey);
 
-            return rocksetService.createCollection(request, resourceProperties, UUID.randomUUID().toString());
+            return rocksetService.createCollection(request, resourceProperties, UUID.randomUUID().toString(), false);
 
         }catch(Exception ex){
             ex.printStackTrace();

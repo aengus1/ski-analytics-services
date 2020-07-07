@@ -316,7 +316,7 @@ public class RocksetServiceTest {
                 Optional.of(100l), Optional.empty(), Optional.empty(),Optional.empty(), Optional.empty())).thenReturn("created_at");
 
         // act
-        CloudformationResponse response = rocksetService.createCollection(request, resourceProperties, UUID.randomUUID().toString());
+        CloudformationResponse response = rocksetService.createCollection(request, resourceProperties, UUID.randomUUID().toString(), false);
 
         //assert
         assertEquals("successfully created rockset collection: created_at", response.getData().get("Message").asText());

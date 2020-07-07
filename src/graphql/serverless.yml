@@ -171,3 +171,51 @@ resources:
                 - dynamodb:BatchWriteItem
               Resource:  "arn:aws:dynamodb:${{self:custom.primaryRegion}}:*:table/${{self:custom.userTable}}"
 
+    RocksetIntegration:
+      Type: Custom::RocksetIntegration
+      Version: 1.0
+      Properties:
+        ServiceToken: ${{cf:${{opt:stage}}-${{self:custom.projectName}}-cf-rockset.RocksetIntegrationFunctionArn}}
+        Name: ${{opt:stage}}-searchIntegration
+        Region: ${{self:custom.primaryRegion}}
+        Stage: ${{opt:stage}}
+        ApiKeySSM: ${{opt:stage}}-rockset-api-key
+        ExternalId: "7f8a915dfc74e3b5aea8f37f34f1d869726a8aca5c6a8e14d36a4825db25d628"
+        RocksetAccountId: "318212636800"
+        IntegrationType: "dynamodb"
+        AccessibleResources:
+          - "arn:aws:dynamodb:*:*:table/*"
+          - "arn:aws:dynamodb:*:*:table/*/stream/*"
+        Tags: ${{self:custom.resourceTags}}
+    RocksetWorkspace:
+      Type: Custom::RocksetWorkspace
+      Version: 1.0
+      Properties:
+        ServiceToken: ${{cf:${{opt:stage}}-${{self:custom.projectName}}-cf-rockset.RocksetWorkspaceFunctionArn}}
+        Name: activity_workspace
+        Description: crunch.ski activity table search
+        Region:  ${{self:custom.primaryRegion}}
+        ApiKeySSM:  ${{opt:stage}}-rockset-api-key
+    RocksetCollection:
+      Type: Custom::RocksetCollection
+      Version: 1.0
+      Properties:
+        ServiceToken: ${{cf:${{opt:stage}}-${{self:custom.projectName}}-cf-rockset.RocksetCollectionFunctionArn}}
+        Name: ${{opt:stage}}-ActivityCollection
+        Description: searchable version of Activity table
+        Workspace:
+          Fn::GetAtt:
+            - RocksetWorkspace
+            - WorkspaceName
+        Region: ${{self:custom.primaryRegion}}
+        Stage: ${{opt:stage}}
+        IntegrationName:
+          Fn::GetAtt:
+            - RocksetIntegration
+            - IntegrationName
+        ApiKeySSM: ${{opt:stage}}-rockset-api-key
+        DynamoDbDataSource:
+          DynamoDbAwsRegion:  ${{self:custom.primaryRegion}}
+          DynamoDbTableName:  ${{opt:stage}}-${{self:custom.projectName}}-Activity
+          DynamoDbRcu: 1
+
