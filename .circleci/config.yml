@@ -88,5 +88,7 @@ workflows:
 ## for provisioning script:
 ## cd src/graphql &&  npm install serverless-appsync-plugin
 
+## for deprovisioning script:
+## stage-appsync-dynamodb-role doesn't delete with graphql stack
 ## SSM weather and location parameters had disppeared
 ## need to pass stage parameter to integration test

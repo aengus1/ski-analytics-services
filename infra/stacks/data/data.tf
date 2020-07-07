@@ -13,7 +13,6 @@
 ##                S3 bucket to store raw activity data
 ##                S3 bucket to store processed activity data
 ##                S3 bucket to store deployment artifacts (sls lambdas)
-##                S3 bucket to store deployment artifacts in secondary-region (graphql lambda)
 ##                Cloudformation stack to export variables to Serverless
 ##
 ## Dependencies:
@@ -255,12 +254,6 @@ resource aws_s3_bucket "deploymentBucket" {
   }
 }
 
-resource aws_s3_bucket "deploymentBucket2" {
-  // see https://github.com/terraform-providers/terraform-provider-aws/issues/5999
-  bucket = "${var.stage}-deployment2-${var.project_name}"
-  region = var.secondary_region
-
-}
 
 //resource aws_s3_bucket_policy "rawActivityBucketPolicy" {
 //
