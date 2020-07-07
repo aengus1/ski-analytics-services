@@ -36,7 +36,6 @@ public class SettingsService {
         JsonNode dataSettingsJson = objectMapper.readTree(dataSettings);
         boolean isProdProfile = dataSettingsJson.get("stage").textValue().equals("prod");
         String authRegion = dataSettingsJson.get("primary_region").textValue();
-        String appSyncRegion = dataSettingsJson.get("secondary_region").textValue();
 
         //parse global settings
         File globalSettings = new File(infraDir, "global.tfvars.json");
@@ -47,7 +46,7 @@ public class SettingsService {
         File apiDir = new File(envDir, "api");
         File apiSettings = new File(apiDir, options.getEnvironment() + ".terraform.tfvars.json");
         JsonNode apiSettingsJson = objectMapper.readTree(apiSettings);
-        String apiDomain = apiSettingsJson.get("api_sub_domain").textValue()+"." + domainName;
+        String apiDomain = "https://"+apiSettingsJson.get("api_sub_domain").textValue()+"." + domainName +"/"+options.getEnvironment();
 
         // waiting on terraform issue aws_api_gateway_v2_domain_name before can use custom domain name for ws endpoint
         //  https://github.com/terraform-providers/terraform-provider-aws/pull/9391
@@ -60,27 +59,14 @@ public class SettingsService {
         processRunner.startProcess(cmdArray, dataDir, false);
         JsonNode terraformShowDataOutput = objectMapper.readTree(processRunner.getInputStream());
 
-        //get terraform api module output
-        processRunner.startProcess(cmdArray, apiDir, false);
-        JsonNode terraformShowApiOutput = objectMapper.readTree(processRunner.getInputStream());
-        String wsDomain = terraformShowApiOutput.path("values").path("outputs").path("ws_endpoint_cf_domain_name").path("value").asText();
-
         String userPoolId = terraformShowDataOutput.path("values").path("outputs").path("userpool-id").path("value").asText();
         String userPoolClientId = terraformShowDataOutput.path("values").path("outputs").path("userpool-client-id").path("value").textValue();
 
-        //get sls info output
-        File graphqlDir = new File(projectSrcDir, "src/graphql");
-        String[] graphqlCmds = new String[]{"sls", "info", "--stage=dev"};
-        processRunner.startProcess(graphqlCmds, graphqlDir, false);
-        String slsInfo = StreamUtils.convertStreamToString(processRunner.getInputStream());
-        String graphqlEndpoint = "";
-        String[] slsInfoSplit = slsInfo.split(System.lineSeparator());
-        for (int i = 0; i< slsInfoSplit.length; i++) {
-            if(slsInfoSplit[i].contains("appsync endpoints:")) {
-                graphqlEndpoint = slsInfoSplit[i+1];
-                break;
-            }
-        }
+        //get sls info graphql output
+        String graphqlEndpoint = getSlsInfo(projectSrcDir, "graphql", processRunner, "appsync endpoints");
+
+        //get sls info websocket output
+        String wsEndpoint = getSlsInfo(projectSrcDir, "websocket", processRunner, "endpoints");
 
 
         properties.put("isProdProfile", isProdProfile);
@@ -91,10 +77,28 @@ public class SettingsService {
         properties.put("userPoolWebClientId", userPoolClientId);
 
         properties.put("graphQLEndpoint", graphqlEndpoint);
-        properties.put("appSyncRegion", appSyncRegion);
+        properties.put("appSyncRegion", authRegion);
         properties.put("apiEndpoint", apiDomain);
-        properties.put("wsEndpoint", wsDomain);
+        properties.put("wsEndpoint", wsEndpoint);
 
         return properties;
+    }
+
+    private String getSlsInfo(String projectSrcDir, String moduleName, ProcessRunner processRunner, String outputName) throws IOException {
+        String slsInfo;
+        String[] slsInfoSplit;
+        File websocketDir = new File(projectSrcDir, "src/"+moduleName);
+        String[] slsCmds = new String[]{"sls", "info", "--stage="+options.getEnvironment()};
+        processRunner.startProcess(slsCmds, websocketDir, false);
+        slsInfo = StreamUtils.convertStreamToString(processRunner.getInputStream());
+        String output = "";
+        slsInfoSplit = slsInfo.split(System.lineSeparator());
+        for (int i = 0; i< slsInfoSplit.length; i++) {
+            if(slsInfoSplit[i].contains(outputName+":")) {
+                output = slsInfoSplit[i+1];
+                break;
+            }
+        }
+        return output;
     }
 }
