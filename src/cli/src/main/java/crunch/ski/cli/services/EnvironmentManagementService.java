@@ -166,6 +166,14 @@ public class EnvironmentManagementService {
         // run serverless de-provisioning first
         if (options.getModule().equalsIgnoreCase("application")
                 || options.getModule().equalsIgnoreCase("all")) {
+
+            try {
+                //graphql module is not deleting this role.  I don't know why.
+                IAMFacade iamFacade = new IAMFacade(options.getConfigMap().get("DATA_REGION"));
+                iamFacade.deleteRole(options.getEnvironment() + "-appsync-dynamodb-role");
+            } catch (Exception ex) {
+                ex.printStackTrace();
+            }
             File rootDir = new File(projectSrcDir);
             System.out.println("root Dir = " + rootDir.getAbsolutePath());
             String gradlewPath = "./gradlew";
