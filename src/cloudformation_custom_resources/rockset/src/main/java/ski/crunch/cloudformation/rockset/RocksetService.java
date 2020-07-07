@@ -180,9 +180,9 @@ public class RocksetService {
     }
 
     public CloudformationResponse createCollection(CloudformationRequest request, RocksetCollectionResourceProperties resourceProperties,
-                                                   String physicalResourceId) {
-
+                                                   String physicalResourceId, boolean retry) {
         logger.debug("Creating rockset collection: " + physicalResourceId);
+
         try {
             String result = rocksetRestClient.createCollection(resourceProperties.getName(), resourceProperties.getWorkspace(),
                     resourceProperties.getDescription(), resourceProperties.getDataSources(), resourceProperties.getIntegrationName(),
@@ -194,6 +194,14 @@ public class RocksetService {
                 response.withOutput("Message", "successfully created rockset collection: " + result);
                 response.withPhysicalResourceId(physicalResourceId);
                 return response;
+
+                //seems to be a timing error if this is called too soon after creating an integration and associated role / policy
+                //wait 10 seconds and retry
+            } else if (!retry && result.contains("is not authorized to perform: sts:AssumeRole on resource") ) {
+                Thread.currentThread().sleep(10000l);
+                return createCollection(request, resourceProperties, physicalResourceId, true);
+
+
             } else {
                 throw new RocksetApiException("Unexpected response " + result);
             }

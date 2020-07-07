@@ -1,4 +1,4 @@
-<Configuration status="INFO">
+<Configuration status="DEBUG">
     <Appenders>
         <Lambda name="Lambda">
             <PatternLayout>
