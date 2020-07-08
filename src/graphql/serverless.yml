@@ -55,6 +55,7 @@ custom:
   userPoolArn: ${{cf.${{self:custom.primaryRegion}}:${{self:custom.dataStack}}.UserPoolArn${{opt:stage}}}}
   userTableDSName: ${{opt:stage}}_crunch_UserTable_DS
   authStackName: ${{opt:stage}}-${{self:custom.projectName}}-auth
+
   appSync:
     name: ${{opt:stage}}-appsync-api
     authenticationType: "AMAZON_COGNITO_USER_POOLS"
@@ -112,15 +113,43 @@ custom:
         field: deleteTag
         request: delete-tag-request-template.vtl
         response: generic-response-template.vtl
+      - type: Query
+        field: getActivities
+        kind: PIPELINE
+        request: empty.vtl
+        response: passthrough.vtl
+        functions:
+          - retrieveRocksetKeyFunction
+          - callRocksetApiFunction
     schema: schema.graphql
     dataSources:
-      - type: AMAZON_DYNAMODB
+      - type: AMAZON_DYNAMODB  #UPDATE API
         name: ${{self:custom.userTableDSName}}
         description: "user settings table"
         config:
           tableName: ${{self:custom.userTable}}
           serviceRoleArn: { Fn::GetAtt: [DynamoDBRole, Arn] } # Where AppSyncDynamoDBServiceRole is an IAM role defined in Resources
           region: ${{self:custom.primaryRegion}}
+      - type: AWS_LAMBDA  #SEARCH API
+        name: ${{opt:stage}}_retrieve_rockset_key
+        description: Lambda function to retrieve rockset API key
+        config:
+          functionName: RetrieveRocksetApiKey
+      - type: HTTP #SEARCH API
+        name: ${{opt:stage}}_rockset_api
+        description: Rockset Rest API
+        config:
+          endpoint: https://api.rs2.usw2.rockset.com
+    functionConfigurations:
+      - dataSource: ${{opt:stage}}_retrieve_rockset_key
+        name: retrieveRocksetKeyFunction
+        request: generic-lambda-request.vtl
+        response: retrieve-ssm-param-response.vtl
+      - dataSource: ${{opt:stage}}_rockset_api
+        name: callRocksetApiFunction
+        request: rockset-api-request.vtl
+        response: rockset-api-response.vtl
+
 functions:
   RetrieveRocksetApiKey:
     handler: search/retrieve_rockset_api_key.handler
