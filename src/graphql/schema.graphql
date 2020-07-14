@@ -36,10 +36,18 @@ enum Operator {
     STARTS_WITH
 
 }
+enum DataType {
+    STRING
+    INT
+    FLOAT
+    BOOLEAN
+    DATE
+}
 input Criteria {
     name: String
     value: String
     operator: Operator
+    type: DataType
 }
 input PageInfo {
     pageSize: Int

@@ -1,6 +1,15 @@
+## variables for predicate building
 #set($predicateString= {})
 #set($concat= "")
-    {
+
+## pagination arithmetic
+#set($limit = "")
+#if($ctx.arguments.pagination)
+    #set($offsetA = $ctx.arguments.pagination.pageNumber - 1)
+    #set($offset = $offsetA * $ctx.arguments.pagination.pageSize)
+    #set($limit = "LIMIT $offset , $ctx.argments.pagination.pageSize")
+#end
+{
         "method": "POST",
         "resourcePath": "/v1/orgs/self/queries",
         "params":{
@@ -25,7 +34,7 @@
                       $util.qr($predicateString.put("concat", " $concat AND $item.name = :_$item.name "))
                     #end
                 ],
-                "query": "SELECT * from activity_workspace.$ctx.prev.result.get(1)_ActivityCollection WHERE userId = :_userId $predicateString.get("concat") LIMIT 1"
+                "query": "SELECT count(*) as count, * from activity_workspace.$ctx.prev.result.get(1)_ActivityCollection WHERE userId = :_userId $predicateString.get("concat") $limit"
             }
         },
         "headers":{
