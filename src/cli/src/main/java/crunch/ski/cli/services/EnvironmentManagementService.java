@@ -60,7 +60,7 @@ public class EnvironmentManagementService {
         File infraDir = new File(projectSrcDir + "/infra/envs");
         System.out.println("infradir = " + infraDir.getAbsolutePath());
         String[] envs = infraDir.list();
-        if (!Arrays.stream(envs).filter(x -> x.equalsIgnoreCase(options.getEnvironment())).findAny().isPresent()) {
+        if (!Arrays.stream(envs).anyMatch(x -> x.equalsIgnoreCase(options.getEnvironment()))) {
             System.err.println("Environment " + options.getEnvironment() + " configuration does not exist.  Run create first ");
             return 1;
         }
@@ -163,9 +163,12 @@ public class EnvironmentManagementService {
             return 1;
         }
 
+
         // run serverless de-provisioning first
         if (options.getModule().equalsIgnoreCase("application")
                 || options.getModule().equalsIgnoreCase("all")) {
+
+            // manually de-provision the parts that `sls remove` will fail on
 
             try {
                 //graphql module is not deleting this role.  I don't know why.
@@ -174,6 +177,10 @@ public class EnvironmentManagementService {
             } catch (Exception ex) {
                 ex.printStackTrace();
             }
+
+
+
+
             File rootDir = new File(projectSrcDir);
             System.out.println("root Dir = " + rootDir.getAbsolutePath());
             String gradlewPath = "./gradlew";

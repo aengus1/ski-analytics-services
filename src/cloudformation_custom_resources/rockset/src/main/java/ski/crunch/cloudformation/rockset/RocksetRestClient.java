@@ -6,6 +6,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ArrayNode;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 import com.google.common.annotations.VisibleForTesting;
+import org.apache.http.Header;
 import org.apache.http.HttpEntity;
 import org.apache.http.client.entity.EntityBuilder;
 import org.apache.http.client.methods.CloseableHttpResponse;
@@ -13,6 +14,7 @@ import org.apache.http.client.methods.HttpDelete;
 import org.apache.http.client.methods.HttpPost;
 import org.apache.http.impl.client.CloseableHttpClient;
 import org.apache.http.impl.client.HttpClients;
+import org.apache.http.util.EntityUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import ski.crunch.cloudformation.rockset.model.DataSource;
@@ -51,9 +53,9 @@ public class RocksetRestClient {
     /**
      * test constructor
      *
-     * @param apiServer
-     * @param apiKey
-     * @param client
+     * @param apiServer String rockset server url
+     * @param apiKey String rockset api key
+     * @param client CloseableHttpClient httpClient
      */
     public RocksetRestClient(String apiServer, String apiKey, CloseableHttpClient client) {
         this(apiServer, apiKey);
@@ -67,7 +69,7 @@ public class RocksetRestClient {
      * @param integrationName String the name of the AWS role that has been configured to use with Rockset     *
      * @param description     String description of integration
      * @param integrationType RocksetIntegrationType the AWS service to use as a data source
-     * @param awsAccountId String AWS Account ID of this account
+     * @param awsAccountId    String AWS Account ID of this account
      * @return String response integrationResponse
      * @throws JsonProcessingException on error building JSON
      * @throws IOException             on error communicating with rockset
@@ -76,10 +78,12 @@ public class RocksetRestClient {
 
         JsonNode payload = constructCreateIntegrationRequest(roleName, integrationName, description, integrationType, awsAccountId);
         String payloadStr = objectMapper.writer().writeValueAsString(payload);
-        logger.debug("Create integration request: " + payloadStr);
+        System.out.println("cir: " + payloadStr);
+        System.out.println("ApiKey " + apiKey);
+        logger.info("Create integration request: " + payloadStr);
         String responseString = doPost(payloadStr, "https://" + apiServer + INTEGRATION_ENDPOINT);
-        logger.debug("Create integration response" + objectMapper.writerWithDefaultPrettyPrinter().writeValueAsString(responseString));
-
+        logger.info("Create integration response" + objectMapper.writerWithDefaultPrettyPrinter().writeValueAsString(responseString));
+        System.out.println("cire: " + objectMapper.writerWithDefaultPrettyPrinter().writeValueAsString(responseString));
         return responseString;
     }
 
@@ -89,7 +93,7 @@ public class RocksetRestClient {
      *
      * @param integrationName String name of integration
      * @return String response
-     * @throws IOException
+     * @throws IOException on io
      */
     public String deleteIntegration(String integrationName) throws IOException {
         logger.debug("delete called for: " + integrationName);
@@ -105,7 +109,7 @@ public class RocksetRestClient {
      * @param workspaceName String name of workspace to create
      * @param description   String description of workspace
      * @return String response
-     * @throws IOException
+     * @throws IOException on io
      */
     public String createWorkspace(String workspaceName, String description) throws IOException {
         logger.debug("Create workspace called: " + workspaceName);
@@ -119,9 +123,10 @@ public class RocksetRestClient {
 
     /**
      * Constructs and posts rockset delete workspace request
+     *
      * @param workspaceName String workspace name
      * @return String response
-     * @throws IOException
+     * @throws IOException on io
      */
     public String deleteWorkspace(String workspaceName) throws IOException {
         logger.debug("delete workspace called for: " + workspaceName);
@@ -133,18 +138,19 @@ public class RocksetRestClient {
 
     /**
      * Constructs and posts rockset create collection request
-     * @param name String collection name
-     * @param workspace String workspace name
-     * @param description String collection description
-     * @param dataSourceList List<DataSource> datasource list
+     *
+     * @param name            String collection name
+     * @param workspace       String workspace name
+     * @param description     String collection description
+     * @param dataSourceList  List<DataSource> datasource list
      * @param integrationName String name of integration
-     * @param retentionSecs Optional<Long> retention time seconds
-     * @param eventTimeField String event time field
+     * @param retentionSecs   Optional<Long> retention time seconds
+     * @param eventTimeField  String event time field
      * @param eventTimeFormat String event time format
-     * @param eventTimeZone String event timezone
-     * @param fieldMappings List<FieldMapping> fieldmappings
+     * @param eventTimeZone   String event timezone
+     * @param fieldMappings   List<FieldMapping> fieldmappings
      * @return String response
-     * @throws IOException
+     * @throws IOException on io
      */
     public String createCollection(String name, String workspace, String description, List<DataSource> dataSourceList, String integrationName,
                                    Optional<Long> retentionSecs, Optional<String> eventTimeField, Optional<String> eventTimeFormat, Optional<String> eventTimeZone,
@@ -153,15 +159,16 @@ public class RocksetRestClient {
         JsonNode request = constructCreateCollectionRequest(name, description, dataSourceList, integrationName, retentionSecs,
                 eventTimeField, eventTimeFormat, eventTimeZone, fieldMappings);
         String payloadStr = objectMapper.writer().writeValueAsString(request);
-        String response = doPost(payloadStr,"https://" + apiServer + ENDPOINT + "/" + workspace + "/collections" );
+        String response = doPost(payloadStr, "https://" + apiServer + ENDPOINT + "/" + workspace + "/collections");
         logger.debug("Create collection response" + objectMapper.writerWithDefaultPrettyPrinter().writeValueAsString(response));
         return response;
     }
 
     /**
      * Constructs and posts a delete collection request
+     *
      * @param collectionName String collection name
-     * @param workspace String workspace name
+     * @param workspace      String workspace name
      * @return String response
      * @throws IOException
      */
@@ -177,7 +184,7 @@ public class RocksetRestClient {
         JsonNode root = objectMapper.createObjectNode();
         ObjectNode roleNode = objectMapper.createObjectNode();
         ObjectNode arnNode = objectMapper.createObjectNode();
-        arnNode.put("aws_role_arn", "arn:aws:iam::" + awsAccountId +":role/" +roleName);
+        arnNode.put("aws_role_arn", "arn:aws:iam::" + awsAccountId + ":role/" + roleName);
         roleNode.set("aws_role", arnNode);
         ((ObjectNode) root).put("name", integrationName);
         ((ObjectNode) root).put("description", description);
@@ -214,7 +221,7 @@ public class RocksetRestClient {
         sources.add(source);
         ((ObjectNode) root).set("sources", sources);
 
-        if(retentionSecs.isPresent()) {
+        if (retentionSecs.isPresent()) {
             ((ObjectNode) root).put("retention_secs", retentionSecs.get());
         }
         if (eventTimeField.isPresent()) {
@@ -245,6 +252,17 @@ public class RocksetRestClient {
         httpPost.setHeader("Authorization", "ApiKey " + apiKey);
         httpPost.setHeader("Content-Type", "application/json");
         httpPost.setEntity(entity);
+
+        //debug -> print post
+        if (logger.isDebugEnabled()) {
+            logger.debug("posting to rockset");
+            logger.debug(httpPost.toString());
+            for (Header header : httpPost.getAllHeaders()) {
+                logger.debug(header.getName() + ": " + header.getValue());
+            }
+            logger.debug(EntityUtils.toString(entity));
+        }
+
         CloseableHttpResponse response = client.execute(httpPost);
         return StreamUtils.convertStreamToString(response.getEntity().getContent());
     }

@@ -1,25 +1,36 @@
-{
-  "method": "POST",
-  "resourcePath": "/v1/orgs/self/queries",
-  "params":{
-    "body":{
-      "sql": {
-        "parameters": [
-           #foreach( $item in $ctx.args.parameters )
-             {
-                "value": "$item.value",
-                 "name": "$item.name",
-                 "type" : "$item.type"
-             }
-             #if( $foreach.hasNext ),#end
-           #end
-        ],
-        "query": "$ctx.args.sql"
-      }
-   },
-   "headers":{
-      "Content-Type": "application/json",
-      "Authorization": " ApiKey $ctx.prev.result"
-      }
+#set($predicateString= {})
+#set($concat= "")
+    {
+        "method": "POST",
+        "resourcePath": "/v1/orgs/self/queries",
+        "params":{
+            "body":{
+                "sql": {
+                    "parameters": [
+                        {
+                            "name": "_userId",
+                            "value": "$util.escapeJavaScript($ctx.identity.sub)",
+                            "type" : "string"
+                        }  #if($ctx.args.predicates.size() > 0),#end
+
+                    #foreach( $item in $ctx.arguments.predicates)
+                     #set($lType= $item.type.toLowerCase())
+                      {
+                          "name" : "$util.escapeJavaScript("_")$item.name",
+                          "value" : "$item.value",
+                          "type" : "$lType"
+                      } #if( $foreach.hasNext),#end
+
+                      #set($concat = $predicateString.get("concat"))
+                      $util.qr($predicateString.put("concat", " $concat AND $item.name = :_$item.name "))
+                    #end
+                ],
+                "query": "SELECT * from activity_workspace.$ctx.prev.result.get(1)_ActivityCollection WHERE userId = :_userId $predicateString.get("concat") LIMIT 1"
+            }
+        },
+        "headers":{
+            "Content-Type": "application/json",
+            "Authorization": " ApiKey $ctx.prev.result.get(0)"
+        }
     }
 }

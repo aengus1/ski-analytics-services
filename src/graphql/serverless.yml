@@ -121,6 +121,14 @@ custom:
         functions:
           - retrieveRocksetKeyFunction
           - callRocksetApiFunction
+      - type: Query
+        field: searchActivities
+        kind: PIPELINE
+        request: empty.vtl
+        response: passthrough.vtl
+        functions:
+          - retrieveRocksetKeyFunction
+          - callRocksetApiFunction
     schema: schema.graphql
     dataSources:
       - type: AMAZON_DYNAMODB  #UPDATE API
@@ -243,7 +251,8 @@ resources:
       Version: 1.0
       Properties:
         ServiceToken: ${{cf:${{opt:stage}}-${{self:custom.projectName}}-cf-rockset.RocksetCollectionFunctionArn}}
-        Name: ${{opt:stage}}-ActivityCollection
+        # had to replace dash with underscore to avoid escape sequennce in SQL when referring to this collection
+        Name: ${{opt:stage}}_ActivityCollection
         Description: searchable version of Activity table
         Workspace:
           Fn::GetAtt:

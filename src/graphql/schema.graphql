@@ -1,7 +1,12 @@
 input Parameter {
     name: String
-    type: String
     value: String
+    type: ParamType
+}
+enum ParamType {
+    STRING,
+    BOOLEAN,
+    NUMBER
 }
 
 type Mutation {
@@ -20,9 +25,30 @@ type Mutation {
     renameTag(id: ID!, tag: String!, newName: String!): String
 }
 
+enum Operator {
+    EQ
+    NE
+    GT
+    GTE
+    LT
+    LTE
+    LIKE
+    STARTS_WITH
+
+}
+input Criteria {
+    name: String
+    value: String
+    operator: Operator
+}
+input PageInfo {
+    pageSize: Int
+    pageNumber: Int
+}
 type Query {
     getUser: User
     getActivities(sql: String!, parameters: [Parameter]!): [String]!
+    searchActivities(predicates: [Criteria], pagination: PageInfo, order: String): String!
 }
 
 type Schema {

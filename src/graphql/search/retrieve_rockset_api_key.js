@@ -24,8 +24,8 @@ exports.handler = async (event, context, callback) => {
     const stage = process.env.stage;
     const param = await getParam(stage+"-rockset-api-key");
 
-    console.log("ssm = " + JSON.stringify(param));
+    //console.log("ssm = " + JSON.stringify(param));
     console.log("context: ", context);
     console.log("VTL details: ", event);
-    callback(null, param);
+    callback(null, [param, stage]);
 };
