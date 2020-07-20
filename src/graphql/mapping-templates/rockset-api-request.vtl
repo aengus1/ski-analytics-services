@@ -5,10 +5,19 @@
 ## pagination arithmetic
 #set($limit = "")
 #if($ctx.arguments.pagination)
+    #if(!$ctx.arguments.pagination.pageNumber)
+        $util.error($ctx.error.message, $ctx.error.type)
+    #end
+    #if(!$ctx.arguments.pagination.pageSize)
+        $util.error($ctx.error.message, $ctx.error.type)
+    #end
     #set($offsetA = $ctx.arguments.pagination.pageNumber - 1)
     #set($offset = $offsetA * $ctx.arguments.pagination.pageSize)
-    #set($limit = "LIMIT $offset , $ctx.argments.pagination.pageSize")
+    #set($limit = "LIMIT $ctx.arguments.pagination.pageSize OFFSET $offset")
 #end
+
+## to debug
+## $util.validate(false, $limit)
 {
         "method": "POST",
         "resourcePath": "/v1/orgs/self/queries",
@@ -34,7 +43,7 @@
                       $util.qr($predicateString.put("concat", " $concat AND $item.name = :_$item.name "))
                     #end
                 ],
-                "query": "SELECT  * from activity_workspace.$ctx.prev.result.get(1)_ActivityCollection WHERE userId = :_userId $predicateString.get("concat")"
+ "query": "SELECT  * from activity_workspace.$ctx.prev.result.get(1)_ActivityCollection WHERE userId = :_userId $predicateString.get("concat") $limit"
             }
         },
         "headers":{
