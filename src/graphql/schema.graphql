@@ -1,3 +1,20 @@
+type ActivitySearchResult {
+    id: ID!
+    activityType: String
+    activitySubType: String
+    ascent: Int
+    descent: Int
+    maxHr: Int
+    avHr: Int
+    duration: Int
+    distance: Int
+    maxSpeed: Float
+    avSpeed: Float
+    device: String
+    date: String
+    lastUpdate: String
+}
+
 input Parameter {
     name: String
     value: String
@@ -56,7 +73,7 @@ input PageInfo {
 type Query {
     getUser: User
     getActivities(sql: String!, parameters: [Parameter]!): [String]!
-    searchActivities(predicates: [Criteria], pagination: PageInfo, order: String): String!
+    searchActivities(predicates: [Criteria], pagination: PageInfo, order: String): [ActivitySearchResult]
 }
 
 type Schema {

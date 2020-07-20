@@ -1,0 +1,26 @@
+#if($ctx.error)
+    $util.error($ctx.error.message, $ctx.error.type)
+#end
+#set($result=[])
+
+#foreach($activity in $context.result)
+    #set($item= {})
+
+    $util.qr($item.put("id", $activity.id))
+    $util.qr($item.put("activityType", $activity.activityType))
+    $util.qr($item.put("activitySubType", $activity.activitySubType))
+    $util.qr($item.put("ascent", $activity.ascent))
+    $util.qr($item.put("descent", $activity.descent))
+    $util.qr($item.put("maxHr", $activity.maxHr))
+    $util.qr($item.put("avHr", $activity.avHr))
+    $util.qr($item.put("duration", $activity.duration))
+    $util.qr($item.put("distance", $activity.distance))
+    $util.qr($item.put("maxSpeed", $activity.maxSpeed))
+    $util.qr($item.put("avSpeed", $activity.avSpeed))
+    $util.qr($item.put("device", $activity.device))
+    $util.qr($item.put("date", $activity.date))
+    $util.qr($item.put("lastUpdate", $activity.lastUpdateTimestamp))
+
+    $util.qr($result.add($item))
+#end
+$util.toJson($result)

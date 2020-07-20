@@ -1,1 +1,6 @@
+## unable to parse json via vtl.. delegate to a lambda instead
+## #set($body=$ctx.result.body)
+## #set($jsonBody=$util.toJson($body))
+## [$body[0]]
+
 [$ctx.result.body]

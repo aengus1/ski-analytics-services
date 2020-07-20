@@ -34,7 +34,7 @@
                       $util.qr($predicateString.put("concat", " $concat AND $item.name = :_$item.name "))
                     #end
                 ],
-                "query": "SELECT count(*) as count, * from activity_workspace.$ctx.prev.result.get(1)_ActivityCollection WHERE userId = :_userId $predicateString.get("concat") $limit"
+                "query": "SELECT  * from activity_workspace.$ctx.prev.result.get(1)_ActivityCollection WHERE userId = :_userId $predicateString.get("concat")"
             }
         },
         "headers":{

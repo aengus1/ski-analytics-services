@@ -129,6 +129,7 @@ custom:
         functions:
           - retrieveRocksetKeyFunction
           - callRocksetApiFunction
+          - parseRocksetResponseFunction
     schema: schema.graphql
     dataSources:
       - type: AMAZON_DYNAMODB  #UPDATE API
@@ -143,6 +144,11 @@ custom:
         description: Lambda function to retrieve rockset API key
         config:
           functionName: RetrieveRocksetApiKey
+      - type: AWS_LAMBDA  #SEARCH API
+        name: ${{opt:stage}}_parse_rockset_response
+        description: Lambda function to parse rockset response
+        config:
+          functionName: ParseRocksetResponse
       - type: HTTP #SEARCH API
         name: ${{opt:stage}}_rockset_api
         description: Rockset Rest API
@@ -157,12 +163,23 @@ custom:
         name: callRocksetApiFunction
         request: rockset-api-request.vtl
         response: rockset-api-response.vtl
+      - dataSource: ${{opt:stage}}_parse_rockset_response
+        name: parseRocksetResponseFunction
+        request: rockset-parse-request.vtl
+        response: rockset-parse-response.vtl
 
 functions:
   RetrieveRocksetApiKey:
     handler: search/retrieve_rockset_api_key.handler
     memorySize: 128
     description: Retrieves rockset API key from SSM store
+    environment:
+      stage: ${{opt:stage}}
+      region: ${{self:custom.primaryRegion}}
+  ParseRocksetResponse:
+    handler: search/parse_rockset_response.handler
+    memorySize: 128
+    description: parses rockset query response
     environment:
       stage: ${{opt:stage}}
       region: ${{self:custom.primaryRegion}}
