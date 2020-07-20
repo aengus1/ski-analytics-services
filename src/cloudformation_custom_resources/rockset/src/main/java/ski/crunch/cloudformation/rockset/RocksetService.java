@@ -29,6 +29,7 @@ public class RocksetService {
     public static final String ROLE_DESCRIPTION = "Role for rockset x-account permissions";
     public static final String POLICY_DESCRIPTION = "Policy for rockset to access integration source";
     public static final String INTEGRATION_DESCRIPTION = " aws integration";
+    public static final Long SLEEP_BEFORE_ROCKSET_CALL = 10000L;
 
     private IAMFacade iamFacade;
     private RocksetRestClient rocksetRestClient;
@@ -42,8 +43,8 @@ public class RocksetService {
     /**x
      * Test constructor
      *
-     * @param iamFacade
-     * @param rocksetRestClient
+     * @param iamFacade IAMFacade
+     * @param rocksetRestClient RocksetRestClient
      */
     public RocksetService(IAMFacade iamFacade, RocksetRestClient rocksetRestClient) {
         this.iamFacade = iamFacade;
@@ -87,7 +88,7 @@ public class RocksetService {
                 throw new OperationNotSupportedException("Currently only xaccount integration types are supported");
                 //TODO -> deal with access key auth
             }
-
+            Thread.currentThread().sleep(SLEEP_BEFORE_ROCKSET_CALL);  //getting auth error with rockset due to delay in IAM role creation
             String createIntegrationResponse = rocksetRestClient.createIntegration(
                     roleName,
                     (resourceProperties.getName() +"_"+ nameSuffix),
@@ -95,6 +96,9 @@ public class RocksetService {
                     resourceProperties.getIntegrationType(),
                     resourceProperties.getAwsAccountId()
             );
+            if(createIntegrationResponse.contains("failed")) {
+                throw new RocksetApiException(createIntegrationResponse);
+            }
 
             CloudformationResponse response = CloudformationResponse.successResponse(request);
             response.withOutput("IntegrationName", (resourceProperties.getName() +"_"+ nameSuffix));

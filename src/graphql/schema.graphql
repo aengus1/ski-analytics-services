@@ -1,7 +1,29 @@
+type ActivitySearchResult {
+    id: ID!
+    activityType: String
+    activitySubType: String
+    ascent: Int
+    descent: Int
+    maxHr: Int
+    avHr: Int
+    duration: Int
+    distance: Int
+    maxSpeed: Float
+    avSpeed: Float
+    device: String
+    date: String
+    lastUpdate: String
+}
+
 input Parameter {
     name: String
-    type: String
     value: String
+    type: ParamType
+}
+enum ParamType {
+    STRING,
+    BOOLEAN,
+    NUMBER
 }
 
 type Mutation {
@@ -20,9 +42,43 @@ type Mutation {
     renameTag(id: ID!, tag: String!, newName: String!): String
 }
 
+enum Operator {
+    EQ
+    NE
+    GT
+    GTE
+    LT
+    LTE
+    LIKE
+    STARTS_WITH
+
+}
+enum DataType {
+    STRING
+    INT
+    FLOAT
+    BOOLEAN
+    DATE
+}
+input Criteria {
+    name: String
+    value: String
+    operator: Operator
+    type: DataType
+}
+input PageInfo {
+    pageSize: Int
+    pageNumber: Int
+}
+
+input OrderInfo {
+    attribute: String!
+    asc: Boolean
+}
 type Query {
     getUser: User
     getActivities(sql: String!, parameters: [Parameter]!): [String]!
+    searchActivities(predicates: [Criteria]!, pagination: PageInfo, order: OrderInfo): [ActivitySearchResult]
 }
 
 type Schema {

@@ -1,1 +1,6 @@
-#return($context.result.Parameter.Value)
+#set ($resultList = [])
+## api key
+$util.qr($resultList.add($context.result[0].Parameter.Value))
+## stage
+$util.qr($resultList.add($context.result[1]))
+#return($resultList)
