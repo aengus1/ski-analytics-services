@@ -1,6 +1,15 @@
 ## variables for predicate building
 #set($predicateString= {})
 #set($concat= "")
+#set($operatorMap = {})
+$util.qr($operatorMap.put("EQ", "="))
+$util.qr($operatorMap.put("NE", "!="))
+$util.qr($operatorMap.put("GT", ">"))
+$util.qr($operatorMap.put("GTE", ">="))
+$util.qr($operatorMap.put("LT", "<"))
+$util.qr($operatorMap.put("LTE", "<="))
+##$util.qr($operatorMap.put("LIKE", "LIKE %"))
+##$util.qr($operatorMap.put("STARTS_WITH", "="))
 
 ## pagination arithmetic
 #set($limit = "")
@@ -19,7 +28,6 @@
 ## $util.validate(false, $limit)
 
 ## ordering
-## ordering
 #set($orderby = "")
 #if($ctx.arguments.order)
     #set($dir="")
@@ -32,6 +40,7 @@
 #end
 ## debug
 ##$util.validate(false, $orderby)
+
 {
         "method": "POST",
         "resourcePath": "/v1/orgs/self/queries",
@@ -54,7 +63,7 @@
                       } #if( $foreach.hasNext),#end
 
                       #set($concat = $predicateString.get("concat"))
-                      $util.qr($predicateString.put("concat", " $concat AND $item.name = :_$item.name "))
+                      $util.qr($predicateString.put("concat", " $concat AND $item.name $operatorMap.get($item.operator) :_$item.name "))
                     #end
                 ],
  "query": "SELECT  * from activity_workspace.$ctx.prev.result.get(1)_ActivityCollection WHERE userId = :_userId $predicateString.get("concat") $orderby $limit"
