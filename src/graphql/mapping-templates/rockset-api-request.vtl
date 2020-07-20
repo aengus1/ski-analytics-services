@@ -15,9 +15,23 @@
     #set($offset = $offsetA * $ctx.arguments.pagination.pageSize)
     #set($limit = "LIMIT $ctx.arguments.pagination.pageSize OFFSET $offset")
 #end
-
 ## to debug
 ## $util.validate(false, $limit)
+
+## ordering
+## ordering
+#set($orderby = "")
+#if($ctx.arguments.order)
+    #set($dir="")
+    #if($ctx.arguments.order.asc)
+        #set($dir="asc")
+    #else
+        #set($dir="desc")
+    #end
+    #set($orderby=" ORDER BY $ctx.arguments.order.attribute $dir")
+#end
+## debug
+##$util.validate(false, $orderby)
 {
         "method": "POST",
         "resourcePath": "/v1/orgs/self/queries",
@@ -43,7 +57,7 @@
                       $util.qr($predicateString.put("concat", " $concat AND $item.name = :_$item.name "))
                     #end
                 ],
- "query": "SELECT  * from activity_workspace.$ctx.prev.result.get(1)_ActivityCollection WHERE userId = :_userId $predicateString.get("concat") $limit"
+ "query": "SELECT  * from activity_workspace.$ctx.prev.result.get(1)_ActivityCollection WHERE userId = :_userId $predicateString.get("concat") $orderby $limit"
             }
         },
         "headers":{

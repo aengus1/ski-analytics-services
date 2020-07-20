@@ -70,10 +70,15 @@ input PageInfo {
     pageSize: Int
     pageNumber: Int
 }
+
+input OrderInfo {
+    attribute: String!
+    asc: Boolean
+}
 type Query {
     getUser: User
     getActivities(sql: String!, parameters: [Parameter]!): [String]!
-    searchActivities(predicates: [Criteria], pagination: PageInfo, order: String): [ActivitySearchResult]
+    searchActivities(predicates: [Criteria]!, pagination: PageInfo, order: OrderInfo): [ActivitySearchResult]
 }
 
 type Schema {
