@@ -13,6 +13,7 @@ type ActivitySearchResult {
     device: String
     date: String
     lastUpdate: String
+    count: Int
 }
 
 input Parameter {

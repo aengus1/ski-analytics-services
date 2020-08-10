@@ -66,7 +66,7 @@ $util.qr($operatorMap.put("LTE", "<="))
                       $util.qr($predicateString.put("concat", " $concat AND $item.name $operatorMap.get($item.operator) :_$item.name "))
                     #end
                 ],
- "query": "SELECT  * from activity_workspace.$ctx.prev.result.get(1)_ActivityCollection WHERE userId = :_userId $predicateString.get("concat") $orderby $limit"
+ "query": "SELECT * FROM (SELECT  * from activity_workspace.$ctx.prev.result.get(1)_ActivityCollection WHERE userId = :_userId $predicateString.get("concat") $orderby $limit ) as query JOIN (SELECT count(*) AS cnt from activity_workspace.$ctx.prev.result.get(1)_ActivityCollection WHERE userId = :_userId $predicateString.get("concat")) AS cnt on 1=1"
             }
         },
         "headers":{
