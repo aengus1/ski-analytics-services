@@ -1,0 +1,14 @@
+## units_twelveHr:  users preferred time unit.  units_twelveHr: 1 =>  12:00 AM, units_twelveHr: 0 => 24:00
+{
+    "version": "2017-02-28",
+    "operation": "UpdateItem",
+    "key": {
+        "id": $util.dynamodb.toDynamoDBJson($ctx.identity.sub)
+    },
+    "update" : {
+        "expression" : "SET units_twelveHr= :units_twelveHr",
+        "expressionValues" : {
+            ":units_twelveHr" :  $util.dynamodb.toDynamoDBJson($ctx.args.units_twelveHr)
+        }
+    }
+}

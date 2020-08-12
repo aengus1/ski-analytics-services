@@ -113,6 +113,26 @@ custom:
         field: deleteTag
         request: delete-tag-request-template.vtl
         response: generic-response-template.vtl
+      - dataSource: ${{self:custom.userTableDSName}}
+        type: Mutation
+        field: saveUnitsKms
+        request: save-units-kms.vtl
+        response: generic-response-template.vtl
+      - dataSource: ${{self:custom.userTableDSName}}
+        type: Mutation
+        field: saveUnitsPace
+        request: save-units-pace.vtl
+        response: generic-response-template.vtl
+      - dataSource: ${{self:custom.userTableDSName}}
+        type: Mutation
+        field: saveUnitsTime
+        request: save-units-time.vtl
+        response: generic-response-template.vtl
+      - dataSource: ${{self:custom.userTableDSName}}
+        type: Mutation
+        field: saveUnitsDate
+        request: save-units-date.vtl
+        response: generic-response-template.vtl
       - type: Query
         field: getActivities
         kind: PIPELINE

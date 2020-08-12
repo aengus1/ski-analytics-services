@@ -1,0 +1,15 @@
+## units_ddmm:  users preferred date format.  units_ddmm: 1 => dd/mm/yyyy   units_ddmm: 0 => mm/dd/yyyy
+
+{
+    "version": "2017-02-28",
+    "operation": "UpdateItem",
+    "key": {
+        "id": $util.dynamodb.toDynamoDBJson($ctx.identity.sub)
+    },
+    "update" : {
+        "expression" : "SET units_ddmm= :units_ddmm",
+        "expressionValues" : {
+            ":units_ddmm" :  $util.dynamodb.toDynamoDBJson($ctx.args.units_ddmm)
+        }
+    }
+}

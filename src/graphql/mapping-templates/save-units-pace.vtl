@@ -1,0 +1,16 @@
+## units_pace:  users preferred pace unit.
+## Metric: 1 => ms,  2 => km/h  3=> min/km
+## Imperial: 4 => ft/sec  5 => mph  6 => min /mile
+{
+    "version": "2017-02-28",
+    "operation": "UpdateItem",
+    "key": {
+        "id": $util.dynamodb.toDynamoDBJson($ctx.identity.sub)
+    },
+    "update" : {
+        "expression" : "SET units_pace= :units_pace",
+        "expressionValues" : {
+            ":units_pace" :  $util.dynamodb.toDynamoDBJson($ctx.args.units_pace)
+        }
+    }
+}

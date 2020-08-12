@@ -1,0 +1,14 @@
+## units_kms:  users preferred distance unit.  units_kms: 1 => km   units_kms: 0 => miles
+{
+    "version": "2017-02-28",
+    "operation": "UpdateItem",
+    "key": {
+        "id": $util.dynamodb.toDynamoDBJson($ctx.identity.sub)
+    },
+    "update" : {
+        "expression" : "SET units_kms= :units_kms",
+        "expressionValues" : {
+            ":units_kms" :  $util.dynamodb.toDynamoDBJson($ctx.args.units_kms)
+        }
+    }
+}

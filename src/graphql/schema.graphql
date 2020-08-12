@@ -41,6 +41,10 @@ type Mutation {
     addTag(id: ID!, tag: String!): String
     deleteTag(id: ID!, tag: String!): String
     renameTag(id: ID!, tag: String!, newName: String!): String
+    saveUnitsKms(id: ID!, units_kms: Int): User
+    saveUnitsPace(id: ID!, units_pace: Int): User
+    saveUnitsTime(id: ID!, units_twelveHr: Int): User
+    saveUnitsDate(id: ID!, units_ddmm: Int): User
 }
 
 enum Operator {
@@ -96,4 +100,9 @@ type User {
     tags: [String]
     devices: [String]
     activityTypes: [String]
+    units_kms: Int
+    units_twelveHr: Int
+    units_pace: Int
+    units_ddmm: Int
+
 }
